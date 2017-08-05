@@ -1,33 +1,37 @@
+///<reference path="../../services/index.tsx"/>
 import * as React from 'react';
-import * as TodoActions from '../../redux/actions/todos';
 import * as style from './style.css';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
+import {Route, RouteComponentProps} from 'react-router';
 import { RootState } from '../../redux/reducers';
-import { Header, MainSection } from '../../components';
+import PublicContainer from "../User/index";
+// import  * as Services from "../../services";
 
 export namespace App {
   export interface Props extends RouteComponentProps<void> {
-    todos: TodoItemData[];
-    actions: typeof TodoActions;
+    /* empty */
   }
 
   export interface State {
-    /* empty */
+    isLogin: boolean;
   }
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export class App extends React.Component<App.Props, App.State> {
 
+  constructor(props:App.Props){
+    super(props);
+    this.state = {
+      isLogin : false,
+    }
+  }
+
   render() {
-    const { todos, actions, children } = this.props;
+    const {children } = this.props;
     return (
       <div className={style.normal}>
-        <Header addTodo={actions.addTodo} />
-        <MainSection todos={todos} actions={actions} />
-        {children}
+        <Route path={`/user`} component={PublicContainer}/>
       </div>
     );
   }
@@ -35,12 +39,12 @@ export class App extends React.Component<App.Props, App.State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    todos: state.todos
+    /* empty */
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions as any, dispatch)
+    /* empty */
   };
 }
