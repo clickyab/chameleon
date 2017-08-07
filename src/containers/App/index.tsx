@@ -1,34 +1,21 @@
-///<reference path="../../services/index.tsx"/>
-import * as React from 'react';
-import * as style from './style.css';
-import { connect } from 'react-redux';
-import {Route, RouteComponentProps} from 'react-router';
-import { RootState } from '../../redux/reducers';
+import * as React from "react";
+import * as style from "./style.css";
+import { connect } from "react-redux";
+import {Route} from "react-router";
+import { RootState } from "../../redux/reducers";
 import PublicContainer from "../User/index";
-// import  * as Services from "../../services";
-
-export namespace App {
-  export interface Props extends RouteComponentProps<void> {
-    /* empty */
-  }
-
-  export interface State {
-    isLogin: boolean;
-  }
-}
 
 @connect(mapStateToProps, mapDispatchToProps)
-export class App extends React.Component<App.Props, App.State> {
+export class App extends React.Component {
 
-  constructor(props:App.Props){
+  constructor(props: any) {
     super(props);
     this.state = {
       isLogin : false,
-    }
+    };
   }
 
-  render() {
-    const {children } = this.props;
+  public render() {
     return (
       <div className={style.normal}>
         <Route path={`/user`} component={PublicContainer}/>
