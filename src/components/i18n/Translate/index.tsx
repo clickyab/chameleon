@@ -1,7 +1,7 @@
 /**
  * @file Datetime directive
  * @desc convert datetime to locale
- * @example <Datetime value={Date.now()} format={"LLLL"} />
+ * @example <Translate value={'hello <b> _{fullName}</b>'} params={{fullName :"click yab"}} html={true}/>
  */
 import * as React from "react";
 import I18n from "../../../services/i18n/index";
