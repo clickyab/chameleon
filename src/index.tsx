@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, Route, Switch } from 'react-router';
-import { createBrowserHistory } from 'history';
-import { configureStore } from './redux/store';
-import { App } from './containers/App';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { Router, Route, Switch } from "react-router";
+import { createBrowserHistory } from "history";
+import { configureStore } from "./redux/store";
+import { App } from "./containers/App";
 
 const store = configureStore();
 const history = createBrowserHistory();
@@ -17,5 +17,5 @@ ReactDOM.render(
       </Switch>
     </Router>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root"),
 );
