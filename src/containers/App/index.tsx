@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as style from "./style.css";
+import "./style.less";
 import { connect } from "react-redux";
 import {Route} from "react-router";
 import { RootState } from "../../redux/reducers";
@@ -17,7 +17,7 @@ export class App extends React.Component {
 
   public render() {
     return (
-      <div className={style.normal}>
+      <div >
         <Route path={`/user`} component={PublicContainer}/>
       </div>
     );

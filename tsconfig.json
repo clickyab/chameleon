@@ -13,6 +13,7 @@
     "removeComments": true,
     "strictNullChecks": false,
     "outDir": "build",
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "es6",
       "es7",

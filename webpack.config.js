@@ -61,11 +61,11 @@ module.exports = {
               options: {
                 ident: "postcss",
                 plugins: [
-                  require("postcss-import")({ addDependencyTo: webpack }),
+                  require("postcss-import")({addDependencyTo: webpack}),
                   require("postcss-url")(),
                   require("postcss-cssnext")(),
                   require("postcss-reporter")(),
-                  require("postcss-browser-reporter")({ disabled: isProduction }),
+                  require("postcss-browser-reporter")({disabled: isProduction}),
                 ],
               },
             },
@@ -73,9 +73,9 @@ module.exports = {
         }),
       },
       // static assets
-      { test: /\.html$/, use: "html-loader" },
-      { test: /\.png$/, use: "url-loader?limit=10000" },
-      { test: /\.jpg$/, use: "file-loader" },
+      {test: /\.html$/, use: "html-loader"},
+      {test: /\.png$/, use: "url-loader?limit=10000"},
+      {test: /\.jpg$/, use: "file-loader"},
     ],
     rules: [
       {
@@ -86,6 +86,11 @@ module.exports = {
       {
         loader: "babel-loader",
         test: /\.jsx$/,
+        options: {
+          plugins: [
+            ["import", {libraryName: "antd", style: "css"}],
+          ],
+        },
       },
       {
         loader: "react-hot-loader!awesome-typescript-loader",
@@ -99,6 +104,16 @@ module.exports = {
           "postcss-loader",
         ],
         test: /\.css$/,
+      },
+      {
+        test: /\.less$/,
+        use: [{
+          loader: "style-loader" // creates style nodes from JS strings
+        }, {
+          loader: "css-loader" // translates CSS into CommonJS
+        }, {
+          loader: "less-loader" // compiles Less to CSS
+        }]
       },
     ],
   },
