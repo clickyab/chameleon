@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/core-js": "^0.9.42",
     "@types/classnames": "2.2.0",
     "@types/history": "4.6.0",
     "@types/node": "8.0.14",
@@ -45,6 +46,8 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "cookies-js": "^1.2.3",
+    "core-js": "^2.5.0",
+    "inherits": "^2.0.3",
     "moment": "^2.18.1",
     "moment-jalaali": "^0.7.0",
     "momentjs": "^2.0.0",
@@ -55,8 +58,10 @@
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
+    "request": "^2.81.0",
     "tslint": "^5.5.0",
     "tslint-react": "^3.2.0",
-    "url-parse": "^1.1.9"
+    "url-parse": "^1.1.9",
+    "whatwg-fetch": "^2.0.3"
   }
 }
