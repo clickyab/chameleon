@@ -32,7 +32,7 @@ export default class PublicLoginContainer extends React.Component<IProps, IState
   private submitMail() {
     const api = new UserApi();
     api.userMailCheckPost({
-      payloadData: {email: "sinaehsani@ymail.com"},
+      payloadData: {email: this.state.email},
     }).then((data) => {
       console.log(data);
     }).catch((err) => {
