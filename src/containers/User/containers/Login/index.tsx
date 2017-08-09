@@ -13,33 +13,49 @@ interface IProps extends RouteComponentProps<void> {
 }
 
 interface IState {
-  user: any;
+  email: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class PublicLoginContainer extends React.Component<IProps, IState> {
 
   private i18n = I18n.getInstance();
+
   constructor(props: IProps) {
     super(props);
 
+    this.state = {
+      email: "test@test.com",
+    };
+  }
+
+  private submitMail() {
     const api = new UserApi();
     api.userMailCheckPost({
-      payloadData : {email : "sinaehsani@ymail.com"},
+      payloadData: {email: "sinaehsani@ymail.com"},
     }).then((data) => {
-        console.log(data);
-      }).catch((err) => {
+      console.log(data);
+    }).catch((err) => {
       console.log(err);
     });
+  }
 
+  private handleChangeEmail(e) {
+    this.setState({
+      email: e.target.value,
+    });
   }
 
   public render() {
+    const mailPlaceHolder = this.i18n._t("Enter your Email address.");
+
     return (
       <div>
         <h1>Login Page</h1>
-        <Translate value="a _{name} _{name}" html={true} params={{name : "sina"}}/>
-        <DateTime value={Date.now()} />
+        <Translate value="a _{name} _{name}" html={true} params={{name: "sina"}}/>
+        <DateTime value={Date.now()}/>
+        <input placeholder={mailPlaceHolder.toString()} onChange={this.handleChangeEmail.bind(this)}/>
+        <button onClick={this.submitMail.bind(this)}>Check</button>
         <Link to={`./register`}>Register Page</Link>
       </div>
     );
