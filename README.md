@@ -17,27 +17,27 @@ Note that this project use `tslint` with default config and all contributors mus
     │   ├── components                       # Global Components           
     │   │   ├── Avatar                       # Avatar component
     │   │   │   ├── style                    # component styles
-    │   │   │   └── index.tsx                # source of `dashboard` component 
+    │   │   │   └── index.ts                # source of `dashboard` component 
     │   │   .         
     │   │   .         
-    │   │   └── index.tsx                    # export components          
+    │   │   └── index.ts                    # export components          
     │   ├── constants                        # Global application constants                     
     │   ├── containers                       # Main containers (react components that has route)
     │   │   ├── Private                      # Private routes components
     │   │   │    ├── Dashboard               # Dashboard component
     │   │   │    │   ├── style               # component styles
-    │   │   │    │   └── index.tsx           # source of `dashboard` component 
+    │   │   │    │   └── index.ts           # source of `dashboard` component 
     │   │   │    .         
     │   │   │    .         
-    │   │   │    └── index.tsx               # export private components
+    │   │   │    └── index.ts               # export private components
     │   │   ├── Public                       # Public routes components
     │   │   │    ├── Sigin-in                # Sign in component
     │   │   │    │   ├── style               # component styles
-    │   │   │    │   └── index.tsx           # source of `sign in` component 
+    │   │   │    │   └── index.ts           # source of `sign in` component 
     │   │   │    .         
     │   │   │    .         
-    │   │   │    └── index.tsx               # export private components
-    │   │   └── index.tsx                    # Source files (alternatively `lib` or `app`)                
+    │   │   │    └── index.ts               # export private components
+    │   │   └── index.ts                    # Source files (alternatively `lib` or `app`)                
     │   └── README.md                        # Source files (alternatively `lib` or `app`)
     ├── types                                # Global types (typescript types)
     ├── tsconfig.json

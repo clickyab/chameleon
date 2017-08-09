@@ -1,5 +1,5 @@
-import { combineReducers, Reducer } from 'redux';
-import todos from './todos';
+import { combineReducers, Reducer } from "redux";
+import todos from "./todos";
 
 export interface RootState {
   todos: TodoStoreState;

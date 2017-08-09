@@ -6,6 +6,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import DateTime from "../../../../components/i18n/DateTime/index";
+import {UserApi} from "../../../../api/api";
 
 interface IProps extends RouteComponentProps<void> {
   setUser: any;
@@ -21,6 +22,15 @@ export default class PublicLoginContainer extends React.Component<IProps, IState
   private i18n = I18n.getInstance();
   constructor(props: IProps) {
     super(props);
+
+    const api = new UserApi();
+    api.userMailCheckPost({
+      payloadData : {email : "sinaehsani@ymail.com"},
+    }).then((data) => {
+        console.log(data);
+      }).catch((err) => {
+      console.log(err);
+    });
 
   }
 
