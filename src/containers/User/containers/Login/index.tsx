@@ -8,6 +8,7 @@ import Translate from "../../../../components/i18n/Translate/index";
 import DateTime from "../../../../components/i18n/DateTime/index";
 import {UserApi} from "../../../../api/api";
 import {Input, Button} from "antd";
+import {Card} from "antd";
 
 interface IProps extends RouteComponentProps<void> {
   setUser: any;
@@ -51,14 +52,13 @@ export default class PublicLoginContainer extends React.Component<IProps, IState
     const mailPlaceHolder = this.i18n._t("Enter your Email address.");
 
     return (
-      <div>
-        <h1>Login Page</h1>
+      <Card>
         <Translate value="a _{name} _{name}" html={true} params={{name: "sina"}}/>
         <DateTime value={Date.now()}/>
-        <Input  placeholder={mailPlaceHolder.toString()} onChange={this.handleChangeEmail.bind(this)}/>
-        <Button onClick={this.submitMail.bind(this)}>Check</Button>
+        <Input placeholder={mailPlaceHolder.toString()} onChange={this.handleChangeEmail.bind(this)}/>
+        <Button type="primary" onClick={this.submitMail.bind(this)}>Check</Button>
         <Link to={`./register`}>Register Page</Link>
-      </div>
+      </Card>
     );
   }
 }
