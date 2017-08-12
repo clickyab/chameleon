@@ -1,3 +1,5 @@
+var autoprefixer = require("autoprefixer");
+
 var webpack = require("webpack");
 var path = require("path");
 
@@ -41,37 +43,6 @@ module.exports = {
             "awesome-typescript-loader",
           ],
       },
-      // css
-      {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [
-            {
-              loader: "css-loader",
-              query: {
-                importLoaders: 1,
-                localIdentName: "[local]__[hash:base64:5]",
-                modules: true,
-                sourceMap: !isProduction,
-              },
-            },
-            {
-              loader: "postcss-loader",
-              options: {
-                ident: "postcss",
-                plugins: [
-                  require("postcss-import")({addDependencyTo: webpack}),
-                  require("postcss-url")(),
-                  require("postcss-cssnext")(),
-                  require("postcss-reporter")(),
-                  require("postcss-browser-reporter")({disabled: isProduction}),
-                ],
-              },
-            },
-          ],
-        }),
-      },
       // static assets
       {test: /\.html$/, use: "html-loader"},
       {test: /\.png$/, use: "url-loader?limit=10000"},
@@ -84,36 +55,39 @@ module.exports = {
         test: /\.tsx?$/,
       },
       {
-        loader: "babel-loader",
-        test: /\.jsx$/,
-        options: {
-          plugins: [
-            ["import", {libraryName: "antd", style: "css"}],
-          ],
-        },
-      },
-      {
         loader: "react-hot-loader!awesome-typescript-loader",
         test: /\.tsx?$/,
       },
       {
-        include: path.resolve("./src"),
-        loaders: [
-          "style-loader",
-          "css-loader?modules&importLoaders=10&localIdentName=[local]___[hash:base64:5]",
-          "postcss-loader",
-        ],
-        test: /\.css$/,
-      },
-      {
         test: /\.less$/,
-        use: [{
-          loader: "style-loader" // creates style nodes from JS strings
-        }, {
-          loader: "css-loader" // translates CSS into CommonJS
-        }, {
-          loader: "less-loader" // compiles Less to CSS
-        }]
+        use: [
+          require.resolve("style-loader"),
+          require.resolve("css-loader"),
+          {
+            loader: require.resolve("postcss-loader"),
+            options: {
+              ident: "postcss", // https://webpack.js.org/guides/migrating/#complex-options
+              plugins: () => [
+                require("postcss-flexbugs-fixes"),
+                autoprefixer({
+                  browsers: [
+                    ">1%",
+                    "last 4 versions",
+                    "Firefox ESR",
+                    "not ie < 9", // React doesn"t support IE8 anyway
+                  ],
+                  flexbox: "no-2009",
+                }),
+              ],
+            },
+          },
+          {
+            loader: require.resolve("less-loader"),
+            options: {
+              modifyVars: {"@primary-color": "#1DA57A"},
+            },
+          },
+        ],
       },
     ],
   },

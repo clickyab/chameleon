@@ -1,9 +1,9 @@
 import * as React from "react";
-import "./style.less";
 import { connect } from "react-redux";
 import {Route} from "react-router";
 import { RootState } from "../../redux/reducers";
 import PublicContainer from "../User/index";
+import "./style.less";
 
 @connect(mapStateToProps, mapDispatchToProps)
 export class App extends React.Component {
@@ -17,7 +17,7 @@ export class App extends React.Component {
 
   public render() {
     return (
-      <div >
+      <div>
         <Route path={`/user`} component={PublicContainer}/>
       </div>
     );
