@@ -1,37 +1,31 @@
 import * as React from "react";
-import { connect } from "react-redux";
 import {Route} from "react-router";
-import { RootState } from "../../redux/reducers";
 import PublicContainer from "../User/index";
+import LayoutSwitcher from "../../components/LayoutSwitcher";
+
 import "./style.less";
 
-@connect(mapStateToProps, mapDispatchToProps)
-export class App extends React.Component {
+interface IProps  {
+}
 
-  constructor(props: any) {
+interface IState {
+  isLogin: boolean;
+}
+
+export class App extends React.Component<IProps, IState> {
+
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      isLogin : false,
+      isLogin : true,
     };
   }
 
   public render() {
     return (
-      <div>
-        <Route path={`/user`} component={PublicContainer}/>
-      </div>
+      <LayoutSwitcher condition={this.state.isLogin}>
+        <Route path={`/user`} component={PublicContainer} />
+      </LayoutSwitcher>
     );
   }
-}
-
-function mapStateToProps(state: RootState) {
-  return {
-    /* empty */
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    /* empty */
-  };
 }
