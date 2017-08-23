@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Layout, Menu, Icon, Row, Col, Breadcrumb } from "antd";
-
+import SidebarMenu from "../../sidebar/index";
 import "./style.less";
 
 const { Header, Sider, Content } = Layout;
@@ -53,26 +53,12 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
           </Content>
         </Layout>
         <Sider
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          width="300"
-        >
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1">
-              <Icon type="user" />
-              <span>nav 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span>nav 2</span>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>nav 3</span>
-            </Menu.Item>
-          </Menu>
+            trigger={null}
+            collapsible
+            collapsed={this.state.collapsed}
+            width="300"
+          >
+          <SidebarMenu collapsed={this.state.collapsed}/>
         </Sider>
       </Layout>
     );

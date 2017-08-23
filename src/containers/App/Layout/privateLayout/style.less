@@ -1,3 +1,5 @@
+@import "../../theme";
+
 .header {
   padding: 10px 0 !important;
   margin: 0 16px;
@@ -31,14 +33,41 @@
 }
 .sidebar {
   direction: rtl;
+  .ant-menu-item-selected {
+    background-color:  @sidebar-list-hover !important;
+  }
   li {
+    border-radius: 4px;
+    &:hover, &:active, &:focus, &:visited {
+      background: @sidebar-list-hover !important;
+    }
     i {
       margin-left: 8px;
       margin-right: 0;
     }
   }
 }
-.ant-layout-sider-children{
+.menu-list {
   width: 85%;
-  margin:0 auto;
+  margin: 0 auto;
+}
+.badge {
+  float: left;
+  margin-top: 11px; 
+  direction: ltr;
+  p {
+    color: @sidebar-badge;
+    line-height: 1.8;    
+  }
+}
+.ghostButton {
+  width: 100%;
+  direction: rtl;
+  height: @ghost-button-height !important;
+  color: #A1C0EE !important;
+  border-color: #A1C0EE !important;
+}
+.campaignButton {
+  padding: 0 !important;
+  margin-bottom: 20px !important;
 }
