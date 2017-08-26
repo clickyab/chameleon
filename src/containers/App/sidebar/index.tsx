@@ -1,53 +1,77 @@
 import * as React from "react";
+import {withRouter} from "react-router";
 import {Layout, Menu, Icon, Badge, Button} from "antd";
+import I18n from "../../../services/i18n/index";
 
 const {Sider}: any = Layout;
 
 interface IProps {
     collapsed: boolean;
+    history?: Array<Object>;
 }
 
 interface IState {}
 
-export default class SidebarMenu extends React.Component<IProps, IState> {
+class SidebarMenu extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
+    }
+
+    private i18n = I18n.getInstance();
+
+    private sideBarRouting(key) {
+        switch (key) {
+            case "createCampaign":
+                return this.props.history.push("/campaign/create");
+            case "dashboard":
+                return this.props.history.push("/");
+            case "campaigns":
+                return this.props.history.push("/campaign");
+            case "media":
+                return this.props.history.push("/media");
+            case "explore":
+                return this.props.history.push("/explore");
+            case "reports":
+                return this.props.history.push("/report");
+            case "suppors":
+                return this.props.history.push("/support");
+        }
     }
 
     public render() {
         return (
             <div className={this.props.collapsed ? "" : "menu-list"}>
                 <div className="logo" />
-                <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]}>
-                    <Menu.Item key="0" className="campaignButton">
+                <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]} onClick={e => this.sideBarRouting(e.key)}>
+                    <Menu.Item key="createCampaign" className="campaignButton">
                         <Button className="ghostButton" size="large" ghost>
                             <Icon type="plus"/>
-                            Create Campaign
+                            <span>{this.i18n._t("Create Campaign")}</span>
                         </Button>
                     </Menu.Item>
-                    <Menu.Item key="1">
+                    <Menu.Item key="dashboard">
                         <Icon type="user" />
-                        <span>Dashboard</span>
+                        <span>{this.i18n._t("Dashboard")}</span>
                     </Menu.Item>
-                    <Menu.Item key="2">
+                    <Menu.Item key="campaigns">
                         <Icon type="video-camera" />
-                        <span>Campaigns</span>
+                        <span>{this.i18n._t("Campaigns")}</span>
                     </Menu.Item>
-                    <Menu.Item key="3">
+                    <Menu.Item key="media">
                         <Icon type="upload" />
-                        <span>Media</span>
+                        <span>{this.i18n._t("Media")}</span>
                     </Menu.Item>
-                    <Menu.Item key="4">
+                    <Menu.Item key="explore">
                         <Icon type="upload" />
-                        <span>Help</span>
+                        <span>{this.i18n._t("explore")}</span>
                     </Menu.Item>
-                    <Menu.Item key="5">
+                    <Menu.Item key="reports">
                         <Icon type="upload" />
-                        <span>Reports</span>
+                        <span>{this.i18n._t("Reports")}</span>
                     </Menu.Item>
-                    <Menu.Item key="6">
+                    <Menu.Item key="suppors">
                         <Icon type="upload" />
-                        <span>Support</span>
+                        <span>{this.i18n._t("Support")}</span>
                         <Badge style={{ backgroundColor: "#a0bfee" }} className={this.props.collapsed ? "" : "badge"} count={14} />
                     </Menu.Item>
                 </Menu>
@@ -56,3 +80,5 @@ export default class SidebarMenu extends React.Component<IProps, IState> {
     }
 
 }
+
+export default withRouter<IProps>(SidebarMenu as any);
