@@ -67,7 +67,7 @@ export default class AAA {
    * @param {boolean}   remember      set cookie expire time or set session cookie
    * @param {Date}      expireTime    define expire date time (default is 7 day)
    */
-  public setToken(token: string, remember: boolean = true, expireTime: Date): void {
+  public setToken(token: string, remember: boolean = true, expireTime?: Date): void {
     const cookieOptions: any = {};
 
     // Check for set time for cookie
@@ -105,6 +105,11 @@ export default class AAA {
    * @returns {string | null}
    */
   public getToken(): string | null {
-    return this.token;
+    if (this.token) {
+      return this.token;
+    } else if ( Cookie.get(this.CookieName)){
+      return Cookie.get(this.CookieName);
+    }
+    return null;
   }
 }

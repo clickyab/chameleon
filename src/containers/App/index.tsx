@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {RootState} from "../../redux/reducers/index";
 
 import "./style.less";
+import AAA from "../../services/AAA/index";
 
 
 interface IProps {
@@ -31,8 +32,12 @@ class App extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+
+    const aaa = AAA.getInstance();
+    const token  = aaa.getToken();
+
     this.state = {
-      isLogin: false,
+      isLogin: token ? true : false,
     };
   }
 
