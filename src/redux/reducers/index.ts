@@ -1,10 +1,11 @@
 import { combineReducers, Reducer } from "redux";
-import todos from "./todos";
+import appReducer from "./../app/reducer";
+import {AppStoreState} from "./../app/store";
 
 export interface RootState {
-  todos: TodoStoreState;
+  app: AppStoreState;
 }
 
 export default combineReducers<RootState>({
-  todos
+  app: appReducer
 });

@@ -5,14 +5,18 @@ import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
-import {UserApi} from "../../../../api/api";
+import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Card, Row, message, Col, notification} from "antd";
-import {TextField, Checkbox, RaisedButton, FontIcon, Toggle, FlatButton} from "material-ui";
+import {TextField, Checkbox, RaisedButton, FontIcon, Toggle} from "material-ui";
+import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
 
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
-  setUser: any;
+  isLogin: boolean;
+  user: UserResponseLoginOKAccount;
+  setUser: (user: UserResponseLoginOKAccount) => {};
+  setIsLogin: () => {};
   form: any;
 }
 
@@ -33,10 +37,14 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      email: "test@test.com",
+      email: "",
       step: STEPS.CHECK_MAIL,
       isCorporation: false,
     };
+
+    if (this.props.isLogin) {
+      document.location.href = "/";
+    }
   }
 
   public render() {
@@ -259,13 +267,18 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           }
         })
         .then((data) => {
+
+          // store account data in store
+          this.props.setUser(data.account);
+          this.props.setIsLogin();
+
+          // show notification
           notification.success({
-            message: this.i18n._t("You singin successfully."),
+            message: this.i18n._t("You sign in successfully."),
             description: "",
           });
         })
         .catch((error) => {
-        console.log(11111, error);
           notification.error({
             message: "Login Failed",
             description: this.i18n._t(error.error.text).toString(),
@@ -294,10 +307,17 @@ class PublicLoginForm extends React.Component<IProps, IState> {
         }
       }).then((data) => {
         alert(JSON.stringify(data));
+
+        // store sccount data in store
+        this.props.setUser(data.account);
+        this.props.setIsLogin();
+
+        // show notification
         notification.success({
           message: "Registration",
           description: this.i18n._t("Your account created successfully.").toString(),
         });
+
       }).catch((error) => {
         if (error.error) {
           notification.error({
@@ -356,13 +376,15 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    /* empty */
+    isLogin: state.app.isLogin,
+    user: state.app.user,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    /* empty */
+    setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
+    setIsLogin: () => dispatch(setIsLogin()),
   };
 }
 
