@@ -9,6 +9,7 @@ import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Card, Row, message, Col, notification} from "antd";
 import {TextField, Checkbox, RaisedButton, FontIcon, Toggle} from "material-ui";
 import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
+import AAA from "../../../../services/AAA/index";
 
 const FormItem = Form.Item;
 
@@ -42,9 +43,9 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       isCorporation: false,
     };
 
-    if (this.props.isLogin) {
-      document.location.href = "/";
-    }
+    // if (this.props.isLogin) {
+    //   document.location.href = "/";
+    // }
   }
 
   public render() {
@@ -105,9 +106,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 )}
               </FormItem>
               <FormItem>
-                {getFieldDecorator("password", {
-                  rules: [{required: true, message: "Please input your password!"}],
-                })(
+                {getFieldDecorator("rememberMe")(
                   <Checkbox label={this.i18n._t("Remember me")}/>
                 )}
               </FormItem>
@@ -271,6 +270,9 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           // store account data in store
           this.props.setUser(data.account);
           this.props.setIsLogin();
+
+          const aaa = AAA.getInstance();
+          aaa.setToken(data.token, values.rememberMe);
 
           // show notification
           notification.success({
