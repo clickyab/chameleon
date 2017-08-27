@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Layout, Menu, Icon, Row, Col, Breadcrumb } from "antd";
+import {Breadcrumb, Icon, Layout} from "antd";
 import SidebarMenu from "../../sidebar/index";
+import {PrivateFooter} from "./footer/index";
 import "./style.less";
 
-const { Header, Sider, Content } = Layout;
+const {Header, Sider, Content} = Layout;
 
 interface IProps {
   children: JSX.Element;
@@ -36,7 +37,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
         <Layout>
           <Header className="header">
             <Breadcrumb separator=">" className="breadcrumb">
-              <Breadcrumb.Item><Icon type="home" /></Breadcrumb.Item>
+              <Breadcrumb.Item><Icon type="home"/></Breadcrumb.Item>
               <Breadcrumb.Item href="">Application Center</Breadcrumb.Item>
               <Breadcrumb.Item href="">Application List</Breadcrumb.Item>
               <Breadcrumb.Item>An Application</Breadcrumb.Item>
@@ -51,13 +52,14 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
           <Content className="content">
             {this.props.children}
           </Content>
+          <PrivateFooter/>
         </Layout>
         <Sider
-            trigger={null}
-            collapsible
-            collapsed={this.state.collapsed}
-            width="300"
-          >
+          trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
+          width="300"
+        >
           <SidebarMenu collapsed={this.state.collapsed}/>
         </Sider>
       </Layout>
