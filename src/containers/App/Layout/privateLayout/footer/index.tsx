@@ -6,14 +6,14 @@ const {Footer} = Layout;
 const i18n = I18n.getInstance();
 
 export const PrivateFooter = (): JSX.Element => (
-  <Footer>
-    <ul className="pFooter">
-      <li>{i18n._t("Clickyab@v1.1")}</li>
-      <li><a href="">{i18n._t("contact us")}</a></li>
-      <li><a href="">{i18n._t("faq")}</a></li>
-      <li><a href="">{i18n._t("rules")}</a></li>
-      <li><a href="">{i18n._t("blog")}</a></li>
-    </ul>
-  </Footer>
+    <Footer>
+        <ul className="pFooter">
+            <li><b>{i18n._t("Clickyab@v1.1")}</b></li>
+            <li><a href="">{i18n._t("contact us")}</a></li>
+            <li><a href="">{i18n._t("faq")}</a></li>
+            <li><a href="">{i18n._t("rules")}</a></li>
+            <li><a href="">{i18n._t("blog")}</a></li>
+        </ul>
+    </Footer>
 );
 

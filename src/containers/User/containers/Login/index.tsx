@@ -10,6 +10,7 @@ import {Form, Card, Row, message, Col, notification} from "antd";
 import {TextField, Checkbox, RaisedButton, FontIcon, Toggle} from "material-ui";
 import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
+import Icon from "../../../../components/Icon/index" ;
 
 const FormItem = Form.Item;
 
@@ -56,7 +57,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
         <div>
-            <Row className="logo-img" align="middle" justify="center"></Row>
+            <Row className="logo-img"  align="middle" justify="center"></Row>
           {this.state.step === STEPS.CHECK_MAIL &&
           <Card className="login-box" noHovering>
             <h5 className="text-center">
@@ -80,7 +81,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Next Step"/>}
                   primary={true}
                   className="button-full-width button-next-step"
-                  icon={<FontIcon className="muidfocs-icon-custom-github"/>}
+                  icon={<Icon name="arrow" color="white"/>}
                 />
               </FormItem>
             </form>
@@ -117,7 +118,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Enter"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<FontIcon className="muidocs-icon-custom-github"/>}
+                  icon={<FontIcon/>}
                 />
               </FormItem>
             </form>
