@@ -55,14 +55,15 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
-        <div className="login-box">
+        <div>
+            <Row className="logo-img" align="middle" justify="center"></Row>
           {this.state.step === STEPS.CHECK_MAIL &&
-          <Card noHovering>
+          <Card className="login-box" noHovering>
             <h5 className="text-center">
               <Translate value="Enter your email address"/>
             </h5>
             <form onSubmit={this.submitMail.bind(this)}>
-              <FormItem>
+              <FormItem className="login-input">
                 {getFieldDecorator("email", {
                   rules: [{required: true, message: "Please input your username!"}],
                 })(
@@ -78,15 +79,15 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   type="submit"
                   label={<Translate value="Next Step"/>}
                   primary={true}
-                  className="button-full-width"
-                  icon={<FontIcon className="muidocs-icon-custom-github"/>}
+                  className="button-full-width button-next-step"
+                  icon={<FontIcon className="muidfocs-icon-custom-github"/>}
                 />
               </FormItem>
             </form>
           </Card>
           }
           {this.state.step === STEPS.LOGIN &&
-          <Card noHovering>
+          <Card className="login-box" noHovering>
             <h5 className="text-center">
               <Translate value="You try to login with this email:"/>
               <br/>
@@ -123,16 +124,16 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           </Card>
           }
           {this.state.step === STEPS.REGISTER &&
-          <a onClick={() => {
+          <a  onClick={() => {
             this.setState({
               step: STEPS.CHECK_MAIL,
             });
           }}>
-            <h6>{this.i18n._t("Back")}</h6>
+            <h6 className="back-button">{this.i18n._t("Back")}</h6>
           </a>
           }
           {this.state.step === STEPS.REGISTER &&
-          <Card noHovering>
+          <Card className="login-box" noHovering>
             <form onSubmit={this.submitRegister.bind(this)}>
               <Row gutter={16}>
                 <Col span={12}>
@@ -233,8 +234,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             </form>
           </Card>
           }
-          {this.state.step !== STEPS.REGISTER &&
-          <Row className="text-center">
+          {this.state.step !== STEPS.REGISTER && this.state.step !== STEPS.LOGIN &&
+          <Row className="text-center forgot-password">
             <p>
               <Translate value="Do you Forgot your password?"/>
             </p>
