@@ -1,18 +1,21 @@
 import * as React from "react";
-import {Route} from "react-router";
+import {Redirect, Route} from "react-router";
 import PublicContainer from "../User/index";
 import LayoutSwitcher from "../../components/LayoutSwitcher";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import {connect} from "react-redux";
 import {RootState} from "../../redux/reducers/index";
-
+import Dashboard from "./Dashboard/index";
 import "./style.less";
 import AAA from "../../services/AAA/index";
+import {PrivateRoute} from "../../components/PrivateRoute/index";
+import {setIsLogin} from "../../redux/app/actions/index";
 
 
 interface IProps {
   isLogin: boolean;
+  setIsLogin: () => {}
 }
 
 interface IState {
@@ -27,9 +30,8 @@ const muiTheme = getMuiTheme({
   },
 });
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class App extends React.Component<IProps, IState> {
-
   constructor(props: IProps) {
     super(props);
 
@@ -37,7 +39,7 @@ class App extends React.Component<IProps, IState> {
     const token  = aaa.getToken();
 
     this.state = {
-      isLogin: token ? true : false,
+      isLogin: !!token ? true : false,
     };
   }
 
@@ -46,14 +48,20 @@ class App extends React.Component<IProps, IState> {
       this.setState({
         isLogin: newProps.isLogin,
       });
+      this.props.setIsLogin();
     }
   }
+
 
   public render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <LayoutSwitcher condition={this.state.isLogin}>
+          <Route exact path={`/`} render={(): JSX.Element => (
+            this.state.isLogin ? <Redirect to={`/dashboard`}/> : <Redirect to={`/user/login`}/>
+          )}/>
           <Route path={`/user`} component={PublicContainer}/>
+          <PrivateRoute path={`/dashboard`} component={Dashboard}/>
         </LayoutSwitcher>
       </MuiThemeProvider>
     );
@@ -66,6 +74,12 @@ function mapStateToProps(state: RootState) {
     isLogin: state.app.isLogin,
     user: state.app.user,
   };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setIsLogin: () => dispatch(setIsLogin())
+  }
 }
 
 export default App;

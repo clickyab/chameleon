@@ -4,7 +4,7 @@ import PublicLayout from "../../containers/App/Layout/publicLayout";
 
 export interface IProps  {
   condition: boolean;
-  children: JSX.Element;
+  children?: any;
 }
 
 export default class LayoutSwitcher extends React.Component<IProps> {
