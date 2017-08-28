@@ -90,12 +90,6 @@ p {
 .back-button{
   margin-bottom:10px;
 }
-//slide company
-.company:not(:empty)
-{
-  height:auto;
-}
-
 // customized Scrollbar
 *::-webkit-scrollbar {
   width: .8em;
@@ -110,5 +104,37 @@ p {
   background-color:@sidebar-menu-item;
   border-radius:10px;
   outline: 1px solid slategrey;
+}
+// Profile notice (last column) for rtl version all left parameter should be right
+.profile-notice{
+  border-left:solid 2px #E0E0E0 ;
+  h6{
+    padding-left:20px ;
+  }
+  ul{
+    padding-left:35px;
+    list-style: disc;
+  }
+  li{
+    margin-top:8px;
+  }
+}
+// Profile layout Container
+.profile-container{
+  padding: 35px;
+}
+// disbale Row in profile for email and password change
+.column-disable{
+  border: solid 1px #ECEDEF ;
+  background: repeating-linear-gradient( 45deg, #FBFBFB, #F5F5F5 5px, #F5F5F5 5px, #FBFBFB 5px);
+}
+// Enable Description for enabling password edite
+.enable-des{
+  margin-top: -20px;
+  margin-bottom: 10px;
+  font-weight: 400;
+a{
+  text-decoration: underline;
+}
 }
 
