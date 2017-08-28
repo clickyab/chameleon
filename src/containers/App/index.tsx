@@ -10,12 +10,13 @@ import Dashboard from "./Dashboard/index";
 import "./style.less";
 import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
-import {setIsLogin} from "../../redux/app/actions/index";
+import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
 
 
 interface IProps {
   isLogin: boolean;
-  setIsLogin: () => {}
+  setIsLogin: () => {};
+  unsetIsLogin: () => {};
 }
 
 interface IState {
@@ -32,6 +33,7 @@ const muiTheme = getMuiTheme({
 
 @connect(mapStateToProps, mapDispatchToProps)
 class App extends React.Component<IProps, IState> {
+
   constructor(props: IProps) {
     super(props);
 
@@ -48,10 +50,12 @@ class App extends React.Component<IProps, IState> {
       this.setState({
         isLogin: newProps.isLogin,
       });
-      this.props.setIsLogin();
     }
   }
 
+  public componentDidMount() {
+    !!AAA.getInstance().getToken() ? this.props.setIsLogin() : this.props.unsetIsLogin()
+  }
 
   public render() {
     return (
@@ -78,7 +82,8 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setIsLogin: () => dispatch(setIsLogin())
+    setIsLogin: () => dispatch(setIsLogin()),
+    unsetIsLogin: () => dispatch(unsetIsLogin())
   }
 }
 
