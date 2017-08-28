@@ -118,7 +118,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Enter"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<FontIcon/>}
+                  icon={<Icon name="arrow"/>}
                 />
               </FormItem>
             </form>
@@ -229,7 +229,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Enter"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<FontIcon className="muidocs-icon-custom-github"/>}
+                  icon={<Icon name="arrow"/>}
                 />
               </FormItem>
             </form>
