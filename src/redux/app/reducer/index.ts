@@ -3,9 +3,10 @@ import * as Actions from "../actions/constants";
 import {AppStoreState} from "../store";
 import {UserResponseLoginOKAccount} from "../../../api/api";
 import IAction from "../../IActions";
+import AAA from "../../../services/AAA/index";
 
 const initialState: AppStoreState = {
-  isLogin: false,
+  isLogin: !!AAA.getInstance().getToken(),
   user: null,
 };
 

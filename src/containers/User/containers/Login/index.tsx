@@ -6,11 +6,11 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Form, Card, Row, message, Col, notification} from "antd";
-import {TextField, Checkbox, RaisedButton, FontIcon, Toggle} from "material-ui";
-import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
+import {Card, Col, Form, message, notification, Row} from "antd";
+import {Checkbox, FontIcon, RaisedButton, TextField, Toggle} from "material-ui";
+import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
-import Icon from "../../../../components/Icon/index" ;
+import Icon from "../../../../components/Icon/index";
 
 const FormItem = Form.Item;
 
@@ -43,10 +43,12 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       step: STEPS.CHECK_MAIL,
       isCorporation: false,
     };
+  }
 
-    // if (this.props.isLogin) {
-    //   document.location.href = "/";
-    // }
+  public componentDidMount() {
+    if (this.props.isLogin) {
+      this.props.history.push("/");
+    }
   }
 
   public render() {
@@ -57,7 +59,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
         <div>
-            <Row className="logo-img"  align="middle" justify="center"></Row>
+          <Row className="logo-img" align="middle" justify="center"></Row>
           {this.state.step === STEPS.CHECK_MAIL &&
           <Card className="login-box" noHovering>
             <h5 className="text-center">
@@ -125,7 +127,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           </Card>
           }
           {this.state.step === STEPS.REGISTER &&
-          <a  onClick={() => {
+          <a onClick={() => {
             this.setState({
               step: STEPS.CHECK_MAIL,
             });
@@ -262,16 +264,19 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
       const userApi = new UserApi();
       userApi.userLoginPost({
-          payloadData: {
-            email: this.state.email,
-            password: values.password
-          }
-        })
+        payloadData: {
+          email: this.state.email,
+          password: values.password
+        }
+      })
         .then((data) => {
 
           // store account data in store
           this.props.setUser(data.account);
           this.props.setIsLogin();
+
+          // redirect to dashboard
+          this.props.history.push("/dashboard");
 
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
@@ -310,11 +315,13 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           user_type: values.corporation ? "corporation" : "personal",
         }
       }).then((data) => {
-        alert(JSON.stringify(data));
 
         // store sccount data in store
         this.props.setUser(data.account);
         this.props.setIsLogin();
+
+        // redirect to dashboard
+        this.props.history.push("/dashboard");
 
         // show notification
         notification.success({
