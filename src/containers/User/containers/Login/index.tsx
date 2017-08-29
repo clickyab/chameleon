@@ -274,11 +274,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           this.props.setUser(data.account);
           this.props.setIsLogin();
 
-          // redirect to dashboard
-          this.props.history.push("/dashboard");
-
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
+
+          // redirect to dashboard
+          this.props.history.push("/dashboard");
 
           // show notification
           notification.success({
