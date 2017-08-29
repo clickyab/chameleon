@@ -8,7 +8,7 @@
 // disbale Row in profile for email and password change
 .column-disable{
   border: solid 1px @border-profile-content ;
-  background:
+  background: @disabled-row;
 }
 .column-enable{
   border: solid 1px transparent;
@@ -24,8 +24,22 @@
 }
 .disable-des
 {
-  margin-top: -20px;
+  margin-top   : -20px;
   margin-bottom: 10px;
-  font-weight: 400;
-  visibility: hidden;
+  font-weight  : 400;
+  visibility   : hidden;
+}
+.btn-save-change{
+  border-radius: 20px !important;
+  border       : solid 2px @border-profile-content !important;
+  button{
+    border-radius: 20px !important;
+
+  }
+  div{
+    border-radius: 20px !important;
+    span{
+      color      : gray;
+    }
+  }
 }

@@ -72,10 +72,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
                     <Menu.Item key="suppors">
                         <Icon type="upload" />
                         <span>{this.i18n._t("Support")}</span>
-                        {this.props.collapsed &&
-                        <Badge className="dot-badge"  dot={true}  count={14} />}
-                        {!this.props.collapsed &&
-                        <Badge  style={{ backgroundColor: "#a0bfee" }}  className="badge" count={14} />}
+                        <Badge style={{ backgroundColor: "#a0bfee" }} className={this.props.collapsed ? "" : "badge"} count={14} />
                     </Menu.Item>
                 </Menu>
             </div>

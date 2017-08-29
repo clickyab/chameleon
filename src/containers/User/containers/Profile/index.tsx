@@ -61,33 +61,77 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             <div className="profile-container">
                     <Row gutter={16} type="flex" align="top" justify="center">
                         <Col span={18}>
+                            {this.state.isCorporation &&
+                            <Row gutter={16} type="flex" align="top" >
+                                <Col span={8}>
+                                    <FormItem>
+                                        {getFieldDecorator("Corpration Name", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
+                                        })(
+                                        <TextField
+                                            fullWidth={true}
+                                            floatingLabelText={this.i18n._t("Corpration Name")}
+                                        />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={8}>
+                                    <FormItem>
+                                        {getFieldDecorator("Submit number/ID", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit number/ID!")}],
+                                        })(
+                                        <TextField
+                                            fullWidth={true}
+                                            floatingLabelText={this.i18n._t("Submit number/ID")}
+                                        />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={8}>
+                                    <FormItem>
+                                        {getFieldDecorator("Economic code", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Economic code!")}],
+                                        })(
+                                        <TextField
+                                            fullWidth={true}
+                                            floatingLabelText={this.i18n._t("Economic code")}
+                                        />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>}
                             <Row gutter={16} type="flex" align="top" >
                             <Col span={12}>
                                 <FormItem>
+                                    {getFieldDecorator("Name", {
+                                        rules: [{required: true, message: this.i18n._t("Please input your Submit Name!")}],
+                                    })(
                                     <TextField
                                         fullWidth={true}
                                         floatingLabelText={this.i18n._t("Name")}
-                                        autoFocus={true}
-                                    />
+                                    />)}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem>
+                                    {getFieldDecorator("Last name", {
+                                        rules: [{required: true, message: this.i18n._t("Please input your Submit last name!")}],
+                                    })(
                                     <TextField
                                         fullWidth={true}
-                                        floatingLabelText={this.i18n._t("Family")}
-                                    />
+                                        floatingLabelText={this.i18n._t("Last name")}
+                                    />)}
                                 </FormItem>
                             </Col>
                             </Row>
                             <Row  gutter={16} className={ (this.state.isDisable) ? "column-disable" : "column-enable"}  type="flex" align="top" >
                                 <Col span={12}>
                                     <FormItem>
+                                        {getFieldDecorator("Email", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Email!")}],
+                                        })(
                                         <TextField
                                             fullWidth={true}
                                             floatingLabelText={this.i18n._t("Email")}
                                             disabled={true}
-                                        />
+                                        />)}
                                     </FormItem>
                                     <p className={ (this.state.isDisable) ? "enable-des" : "disable-des"}>You can't change your Email. for changing your password <a onClick={() => {
                                         this.setState({
@@ -97,32 +141,73 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                 </Col>
                                 <Col span={12}>
                                     <FormItem>
+                                        {getFieldDecorator("password", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit password!")}],
+                                        })(
                                         <TextField
                                             fullWidth={true}
                                             floatingLabelText={this.i18n._t("Password")}
                                             type="password"
                                             disabled={this.state.isDisable}
-                                        />
+                                        />)}
                                     </FormItem>
                                 </Col>
                             </Row>
                             <Row gutter={16} type="flex" align="top" >
-                                <Col span={12}>
-                                    <FormItem>
+                            <Col span={12}>
+                                <FormItem>
+                                    {getFieldDecorator("Mobile", {
+                                        rules: [{required: true, message: this.i18n._t("Please input your Submit mobile!")}],
+                                    })(
                                         <TextField
                                             fullWidth={true}
                                             floatingLabelText={this.i18n._t("Mobile")}
-                                            autoFocus={true}
-                                        />
+                                        />)}
+                                </FormItem>
+                            </Col>
+                            <Col span={12}>
+                                <FormItem>
+                                    {getFieldDecorator("phone", {
+                                        rules: [{required: true, message: this.i18n._t("Please input your Submit phone!")}],
+                                    })(
+                                        <TextField
+                                            fullWidth={true}
+                                            floatingLabelText={this.i18n._t("phone")}
+                                        />)}
+                                </FormItem>
+                            </Col>
+                        </Row>
+                            <Row gutter={16} type="flex" align="top" >
+                                <Col span={12}>
+                                    <FormItem>
+                                            <TextField
+                                                fullWidth={true}
+                                                floatingLabelText={this.i18n._t("Post Address")}
+                                            />
                                     </FormItem>
                                 </Col>
                                 <Col span={12}>
                                     <FormItem>
-                                        <TextField
-                                            fullWidth={true}
-                                            floatingLabelText={this.i18n._t("Phone")}
-                                        />
+                                        {getFieldDecorator("Address", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Address!")}],
+                                        })(
+                                            <TextField
+                                                fullWidth={true}
+                                                floatingLabelText={this.i18n._t("Address")}
+                                                defaultValue="Defualt address goes here"
+                                                disabled={true}
+                                            />)}
                                     </FormItem>
+                                </Col>
+                            </Row>
+                            <Row gutter={16} type="flex"  align="top"  >
+                                <Col span={24} >
+                                <RaisedButton
+                                    type="Enter"
+                                    label={<Translate value="Save Changes"/>}
+                                    className="btn-save-change"
+                                    style={{color: "green"}}
+                                />
                                 </Col>
                             </Row>
                         </Col>
