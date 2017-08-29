@@ -27,39 +27,36 @@ const {Sider} = Layout;
 const FormItem = Form.Item;
 
 
-export namespace App {
-    export namespace Public {
-        export namespace Register {
-            export interface Props extends RouteComponentProps<void> {
-                form: any;
-            }
-
-            export interface State {
-                isDisable: boolean;
-            }
-        }
-    }
+export interface IProps extends RouteComponentProps<void> {
+    form: any;
 }
+
+export interface IState {
+    isDisable: boolean ;
+    isCorporation: boolean ;
+}
+
 
 
 @connect(mapStateToProps, mapDispatchToProps)
 
-class PublicProfileContainer extends React.Component<App.Public.Register.Props, App.Public.Register.State> {
+class PublicProfileContainer extends React.Component<IProps, IState> {
 
     private i18n = I18n.getInstance();
 
 
-    constructor(props: App.Public.Register.Props) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
             isDisable: true,
+            isCorporation: false
         };
     }
     render() {
         const mailPlaceHolder = this.i18n._t("Email");
         const passwordPlaceHolder = this.i18n._t("Password");
-        // const {getFieldDecorator} = this.props.form;
+        const {getFieldDecorator} = this.props.form;
         return (
             <div className="profile-container">
                     <Row gutter={16} type="flex" align="top" justify="center">
@@ -83,7 +80,7 @@ class PublicProfileContainer extends React.Component<App.Public.Register.Props, 
                                 </FormItem>
                             </Col>
                             </Row>
-                            <Row  gutter={16} className={ (this.state.isDisable) ? "column-disable" : ""}  type="flex" align="top" >
+                            <Row  gutter={16} className={ (this.state.isDisable) ? "column-disable" : "column-enable"}  type="flex" align="top" >
                                 <Col span={12}>
                                     <FormItem>
                                         <TextField
@@ -92,7 +89,7 @@ class PublicProfileContainer extends React.Component<App.Public.Register.Props, 
                                             disabled={true}
                                         />
                                     </FormItem>
-                                    <p className="enable-des">You can't change your Email. for changing your password <a onClick={() => {
+                                    <p className={ (this.state.isDisable) ? "enable-des" : "disable-des"}>You can't change your Email. for changing your password <a onClick={() => {
                                         this.setState({
                                             isDisable: !this.state.isDisable,
                                         });
