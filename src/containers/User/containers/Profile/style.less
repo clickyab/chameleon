@@ -1,0 +1,45 @@
+@import "~antd/dist/antd.less";
+@import "../../../App/theme";
+
+// Profile layout Container
+.profile-container{
+  padding: 35px;
+}
+// disbale Row in profile for email and password change
+.column-disable{
+  border: solid 1px @border-profile-content ;
+  background: @disable-row-bg;
+}
+.column-enable{
+  border: solid 1px transparent;
+}
+// Enable Description for enabling password edit
+.enable-des{
+  margin-top: -20px;
+  margin-bottom: 10px;
+  font-weight: 400;
+  a{
+    text-decoration: underline;
+  }
+}
+.disable-des
+{
+  margin-top   : -20px;
+  margin-bottom: 10px;
+  font-weight  : 400;
+  visibility   : hidden;
+}
+.btn-save-change{
+  border-radius: 20px !important;
+  border       : solid 2px @border-profile-content !important;
+  button{
+    border-radius: 20px !important;
+
+  }
+  div{
+    border-radius: 20px !important;
+    span{
+      color      : lightgray;
+    }
+  }
+}
