@@ -37,11 +37,8 @@ class App extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    const aaa = AAA.getInstance();
-    const token  = aaa.getToken();
-
     this.state = {
-      isLogin: !!token ? true : false,
+      isLogin: this.props.isLogin
     };
   }
 
@@ -54,7 +51,11 @@ class App extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    !!AAA.getInstance().getToken() ? this.props.setIsLogin() : this.props.unsetIsLogin()
+    if(!!AAA.getInstance().getToken()){
+      this.setState({isLogin: true})
+    } else {
+      this.props.unsetIsLogin();
+    }
   }
 
   public render() {
