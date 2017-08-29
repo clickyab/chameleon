@@ -42,7 +42,6 @@ export default class PublicProfileContainer extends React.Component<App.Public.R
             isDisable: true,
         };
     }
-
     render() {
         const mailPlaceHolder = this.i18n._t("Email");
         const passwordPlaceHolder = this.i18n._t("Password");
