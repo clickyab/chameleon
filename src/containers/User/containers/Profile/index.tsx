@@ -6,10 +6,22 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Form, Card, Row, message, Col, notification , Layout} from "antd";
+import {Form, Card, Row, message, Col, notification, Layout} from "antd";
 import {TextField, Checkbox, RaisedButton, FontIcon, Toggle, SelectField} from "material-ui";
 import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
+
+import "./style.less";
+
+
+export interface IProps extends RouteComponentProps<void> {
+    form: any;
+}
+
+export interface IState {
+    isDisable: boolean;
+    isCorporation: boolean;
+}
 
 const {Sider} = Layout;
 const FormItem = Form.Item;
@@ -31,9 +43,11 @@ export namespace App {
 
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class PublicProfileContainer extends React.Component<App.Public.Register.Props, App.Public.Register.State> {
+
+class PublicProfileContainer extends React.Component<App.Public.Register.Props, App.Public.Register.State> {
 
     private i18n = I18n.getInstance();
+
 
     constructor(props: App.Public.Register.Props) {
         super(props);
@@ -135,14 +149,15 @@ export default class PublicProfileContainer extends React.Component<App.Public.R
     }
 }
 function mapStateToProps(state: RootState) {
-  return {
-    /* empty */
-  };
+    return {
+        /* empty */
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    /* empty */
-  };
+    return {
+        /* empty */
+    };
 }
 
+export default Form.create()(PublicProfileContainer);
