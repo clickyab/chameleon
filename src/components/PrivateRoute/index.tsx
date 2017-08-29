@@ -1,15 +1,17 @@
 import {Redirect, Route} from "react-router";
 import * as React from "react";
+import AAA from "../../services/AAA/index";
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
-    true ? (
+    !!AAA.getInstance().getToken() ? (
       <Component {...props}/>
     ) : (
       <Redirect to={{
-        pathname: "/public/login",
+        pathname: "/",
         state: { from: props.location },
       }}/>
     )
   )}/>
 );
+
