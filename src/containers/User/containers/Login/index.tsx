@@ -34,7 +34,6 @@ enum STEPS { CHECK_MAIL, LOGIN, REGISTER}
 class PublicLoginForm extends React.Component<IProps, IState> {
 
   private i18n = I18n.getInstance();
-
   constructor(props: IProps) {
     super(props);
 
@@ -53,8 +52,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
   public render() {
     const mailPlaceHolder = this.i18n._t("Email");
-    const passwordPlaceHolder = this.i18n._t("Password");
-    const {getFieldDecorator} = this.props.form;
+      const passwordPlaceHolder = this.i18n._t("Password");
+      const {getFieldDecorator} = this.props.form;
 
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
@@ -120,7 +119,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Enter"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<FontIcon/>}
+                  icon={<Icon name="arrow"/>}
                 />
               </FormItem>
             </form>
@@ -231,7 +230,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Enter"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<FontIcon className="muidocs-icon-custom-github"/>}
+                  icon={<Icon name="arrow"/>}
                 />
               </FormItem>
             </form>
