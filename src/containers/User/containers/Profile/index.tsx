@@ -27,16 +27,6 @@ const {Sider} = Layout;
 const FormItem = Form.Item;
 
 
-export interface IProps extends RouteComponentProps<void> {
-    form: any;
-}
-
-export interface IState {
-    isDisable: boolean ;
-    isCorporation: boolean ;
-}
-
-
 
 @connect(mapStateToProps, mapDispatchToProps)
 
