@@ -58,7 +58,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
         <div>
-          <Row className="logo-img" align="middle" justify="center"></Row>
+          <Row className="logo-img" align="middle" justify="center"/>
           {this.state.step === STEPS.CHECK_MAIL &&
           <Card className="login-box" noHovering>
             <h5 className="text-center">
