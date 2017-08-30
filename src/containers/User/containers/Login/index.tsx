@@ -58,7 +58,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
         <div>
-          <Row className="logo-img" align="middle" justify="center"></Row>
+          <Row className="logo-img" align="middle" justify="center"/>
           {this.state.step === STEPS.CHECK_MAIL &&
           <Card className="login-box" noHovering>
             <h5 className="text-center">
@@ -274,11 +274,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           this.props.setUser(data.account);
           this.props.setIsLogin();
 
-          // redirect to dashboard
-          this.props.history.push("/dashboard");
-
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
+
+          // redirect to dashboard
+          this.props.history.push("/dashboard");
 
           // show notification
           notification.success({
