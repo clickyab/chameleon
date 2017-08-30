@@ -11,6 +11,7 @@ import "./style.less";
 import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
+import CampaignContainer from "../Campaign/index";
 
 
 interface IProps {
@@ -51,8 +52,8 @@ class App extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    if(!!AAA.getInstance().getToken()){
-      this.setState({isLogin: true})
+    if (!!AAA.getInstance().getToken()) {
+      this.setState({isLogin: true});
     } else {
       this.props.unsetIsLogin();
     }
@@ -67,6 +68,7 @@ class App extends React.Component<IProps, IState> {
           )}/>
           <Route path={`/user`} component={PublicContainer}/>
           <PrivateRoute path={`/dashboard`} component={Dashboard}/>
+          <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
         </LayoutSwitcher>
       </MuiThemeProvider>
     );
