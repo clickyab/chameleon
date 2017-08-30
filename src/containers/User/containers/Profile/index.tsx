@@ -7,9 +7,21 @@ import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Card, Row, message, Col, notification, Layout} from "antd";
-import {TextField, Checkbox, RaisedButton, FontIcon, Toggle, SelectField } from "material-ui";
+import {TextField, Checkbox, RaisedButton, FontIcon, Toggle, SelectField} from "material-ui";
 import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
+import CONFIG from "../../../../constants/config" ;
+
+import "./style.less";
+
+export interface IProps extends RouteComponentProps<void> {
+    form: any;
+}
+
+export interface IState {
+    isDisable: boolean;
+    isCorporation: boolean;
+}
 
 import "./style.less";
 
@@ -36,11 +48,6 @@ export interface IState {
     isCorporation: boolean ;
 }
 
-const styles = {
-    underlineStyle: {
-        borderColor: "red",
-    }
-};
 
 @connect(mapStateToProps, mapDispatchToProps)
 
@@ -62,7 +69,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
         const passwordPlaceHolder = this.i18n._t("Password");
         const {getFieldDecorator} = this.props.form;
         return (
-            <div className="profile-container">
+            <div className={ ( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container" }  >
                     <Row gutter={16} type="flex" align="top" justify="center">
                         <Col span={18}>
                             {this.state.isCorporation &&
@@ -192,15 +199,12 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                 </Col>
                                 <Col span={12}>
                                     <FormItem>
-                                        {getFieldDecorator("Address", {
-                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Address!")}],
-                                        })(
                                             <TextField
                                                 fullWidth={true}
                                                 floatingLabelText={this.i18n._t("Address")}
                                                 defaultValue="Defualt address goes here"
                                                 disabled={true}
-                                            />)}
+                                            />
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -210,6 +214,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                     type="Enter"
                                     label={<Translate value="Save Changes"/>}
                                     className="btn-save-change"
+                                    style={{color: "green"}}
                                 />
                                 </Col>
                             </Row>
