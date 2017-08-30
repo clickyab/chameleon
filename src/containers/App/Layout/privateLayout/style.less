@@ -65,8 +65,8 @@
   width: 100%;
   direction: rtl;
   height: @ghost-button-height !important;
-  color: #A1C0EE !important;
-  border-color: #A1C0EE !important;
+  color: @sidebar-menu-item !important;
+  border-color: @sidebar-menu-item !important;
 }
 .campaignButton {
   padding: 0 !important;
@@ -85,5 +85,21 @@
   }
 }
 .ant-layout{
-  height: 100vh;
+ min-height: 100vh;
 }
+// little badge in collapsed sidebar
+.dot-badge{
+  top:-8px;
+}
+.dot-badge{
+  sup{
+    box-shadow: 0 0 0 1px @layout-sider-background !important;
+  }
+}
+//Menu item color for sidebar
+
+.ant-menu-item{
+  font-weight: bold;
+  color:@sidebar-menu-item !important;
+  }
+
