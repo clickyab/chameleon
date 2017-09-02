@@ -7,14 +7,17 @@
  */
 
 import * as React from "react";
-import {Step, StepButton, Stepper} from "material-ui/Stepper";
-import {Row} from "antd";
+import {Step, StepButton, Stepper } from "material-ui/Stepper";
+import StepProps = __MaterialUI.Stepper.StepProps;
+import {Row, Steps} from "antd";
 import STEPS from "../../steps";
 import Translate from "../../../../components/i18n/Translate/index";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
+
+import "./style.less";
 
 /**
  * @interface
@@ -68,11 +71,20 @@ class ProgressBar extends React.Component<IProps, IState> {
    * @desc check if route has id, set that in the store
    */
   public componentWillMount() {
+    StepProps.disableFocusRipple = true ;
+    StepProps.disableTouchRipple = true ;
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
     }
   }
-
+  private checkStateClass(step: STEPS , type: STEPS) {
+    if (step === type) {
+        return "active-step";
+      }
+    if (step > type) {
+      return "complete-step" ;
+      }
+  }
   /**
    * @desc Handle click on wizard's steps and set current step in the store
    * @func
@@ -110,39 +122,39 @@ class ProgressBar extends React.Component<IProps, IState> {
   public render() {
     const {stepIndex} = this.state;
     return (
-      <Row>
+      <Row className="progress-bar">
         <Stepper linear={false}>
-          <Step active={stepIndex === STEPS.TYPE} completed={stepIndex > STEPS.TYPE}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.TYPE)}  active={stepIndex === STEPS.TYPE} completed={stepIndex > STEPS.TYPE}>
             <StepButton onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
               <Translate value="Campaign Type"/>
             </StepButton>
           </Step>
-          <Step active={stepIndex === STEPS.NAMING} completed={stepIndex > STEPS.NAMING}>
-            <StepButton onClick={() => this.onClickStepHandler(STEPS.NAMING)}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.NAMING)}   active={stepIndex === STEPS.NAMING} completed={stepIndex > STEPS.NAMING}>
+            <StepButton  onClick={() => this.onClickStepHandler(STEPS.NAMING)}>
               <Translate value="Campaign Name"/>
             </StepButton>
           </Step>
-          <Step active={stepIndex === STEPS.BUDGET} completed={stepIndex > STEPS.BUDGET}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.BUDGET)}  active={stepIndex === STEPS.BUDGET} completed={stepIndex > STEPS.BUDGET}>
             <StepButton onClick={() => this.onClickStepHandler(STEPS.BUDGET)}>
               <Translate value="Budget and Finance"/>
             </StepButton>
           </Step>
-          <Step active={stepIndex === STEPS.TARGETING} completed={stepIndex > STEPS.TARGETING}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.TARGETING)}  active={stepIndex === STEPS.TARGETING} completed={stepIndex > STEPS.TARGETING}>
             <StepButton onClick={() => this.onClickStepHandler(STEPS.TARGETING)}>
               <Translate value="Targeting"/>
             </StepButton>
           </Step>
-          <Step active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.SELECT_PUBLISHER)}  active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
             <StepButton onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)}>
               <Translate value="Select Publisher"/>
             </StepButton>
           </Step>
-          <Step active={stepIndex === STEPS.UPLOAD} completed={stepIndex > STEPS.UPLOAD}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.UPLOAD)}  active={stepIndex === STEPS.UPLOAD} completed={stepIndex > STEPS.UPLOAD}>
             <StepButton onClick={() => this.onClickStepHandler(STEPS.UPLOAD)}>
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
-          <Step active={stepIndex === STEPS.CHECK_PUBLISH}>
+          <Step className={this.checkStateClass(stepIndex,STEPS.CHECK_PUBLISH)}  active={stepIndex === STEPS.CHECK_PUBLISH}>
             <StepButton onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)}>
               <Translate value="Check and Publish"/>
             </StepButton>

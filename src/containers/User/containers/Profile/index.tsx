@@ -41,7 +41,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
         this.state = {
             isDisable: true,
-            isCorporation: false
+            isCorporation: true
         };
     }
     render() {
@@ -52,42 +52,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             <div className={ ( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container" }  >
                     <Row gutter={16} type="flex" align="top" justify="center">
                         <Col span={18}>
-                            {this.state.isCorporation &&
-                            <Row gutter={16} type="flex" align="top" >
-                                <Col span={8}>
-                                    <FormItem>
-                                        {getFieldDecorator("Corpration Name", {
-                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
-                                        })(
-                                        <TextField
-                                            fullWidth={true}
-                                            floatingLabelText={this.i18n._t("Corpration Name")}
-                                        />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={8}>
-                                    <FormItem>
-                                        {getFieldDecorator("Submit number/ID", {
-                                            rules: [{required: true, message: this.i18n._t("Please input your Submit number/ID!")}],
-                                        })(
-                                        <TextField
-                                            fullWidth={true}
-                                            floatingLabelText={this.i18n._t("Submit number/ID")}
-                                        />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={8}>
-                                    <FormItem>
-                                        {getFieldDecorator("Economic code", {
-                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Economic code!")}],
-                                        })(
-                                        <TextField
-                                            fullWidth={true}
-                                            floatingLabelText={this.i18n._t("Economic code")}
-                                        />)}
-                                    </FormItem>
-                                </Col>
-                            </Row>}
                             <Row gutter={16} type="flex" align="top" >
                             <Col span={12}>
                                 <FormItem>
@@ -112,7 +76,43 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                 </FormItem>
                             </Col>
                             </Row>
-                            <Row  gutter={16} className={ (this.state.isDisable) ? "column-disable" : "column-enable"}  type="flex" align="top" >
+                            {this.state.isCorporation &&
+                            <Row gutter={16} type="flex" align="top" >
+                                <Col span={8}>
+                                    <FormItem>
+                                        {getFieldDecorator("Corpration Name", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
+                                        })(
+                                            <TextField
+                                                fullWidth={true}
+                                                floatingLabelText={this.i18n._t("Corpration Name")}
+                                            />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={8}>
+                                    <FormItem>
+                                        {getFieldDecorator("Submit number/ID", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit number/ID!")}],
+                                        })(
+                                            <TextField
+                                                fullWidth={true}
+                                                floatingLabelText={this.i18n._t("Submit number/ID")}
+                                            />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={8}>
+                                    <FormItem>
+                                        {getFieldDecorator("Economic code", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit Economic code!")}],
+                                        })(
+                                            <TextField
+                                                fullWidth={true}
+                                                floatingLabelText={this.i18n._t("Economic code")}
+                                            />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>}
+                            <Row  gutter={16}  type="flex" align="top" >
                                 <Col span={12}>
                                     <FormItem>
                                         {getFieldDecorator("Email", {
@@ -122,13 +122,10 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                             fullWidth={true}
                                             floatingLabelText={this.i18n._t("Email")}
                                             disabled={true}
-                                        />)}
+                                        />)
+                                        }
                                     </FormItem>
-                                    <p className={ (this.state.isDisable) ? "enable-des" : "disable-des"}>You can't change your Email. for changing your password <a onClick={() => {
-                                        this.setState({
-                                            isDisable: !this.state.isDisable,
-                                        });
-                                    }}> Click here</a></p>
+                                    <p className="enable-des">You can't change your password after regetration</p>
                                 </Col>
                                 <Col span={12}>
                                     <FormItem>
@@ -141,6 +138,24 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                             type="password"
                                             disabled={this.state.isDisable}
                                         />)}
+                                    </FormItem>
+                                    <p className={ (this.state.isDisable) ? "enable-des" : "disable-des"}>If you want to change your password <a onClick={() => {
+                                        this.setState({
+                                            isDisable: !this.state.isDisable,
+                                        });
+                                    }}> Click here</a></p>
+                                </Col>
+                            </Row>
+                            <Row gutter={16} type="flex" align="top" >
+                                <Col span={12}>
+                                    <FormItem>
+                                        {getFieldDecorator("ID", {
+                                            rules: [{required: true, message: this.i18n._t("Please input your Submit your ID!")}],
+                                        })(
+                                            <TextField
+                                                fullWidth={true}
+                                                floatingLabelText={this.i18n._t("ID")}
+                                            />)}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -193,7 +208,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                 <RaisedButton
                                     type="Enter"
                                     label={<Translate value="Save Changes"/>}
-                                    className="btn-save-change"
                                     style={{color: "green"}}
                                 />
                                 </Col>
@@ -201,13 +215,13 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                         </Col>
                         <Col span={6}>
                             <Col  className="profile-notice">
-                                <h6><Icon name="arrow"/>You Sould know</h6>
+                                <h6><Icon name="arrow"/>You Should know</h6>
                                 <ul>
                                     <li>Filling bullet fields are required</li>
                                     <li>You can't change your password to any of your former passwords for security
                                         reasons
                                     </li>
-                                    <li>Your defualt avatar set to your Gavatar.com avatar. You can change your default
+                                    <li>Your default avatar set to your Gavatar.com avatar. You can change your default
                                         avatar by clicking on it
                                     </li>
                                 </ul>
