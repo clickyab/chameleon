@@ -1,0 +1,74 @@
+@import "~antd/dist/antd.less";
+@import "../../../App/theme";
+
+.progress-bar {
+  height: 100px;
+  margin: 10px;
+  button{
+    background-color: transparent !important;
+  }
+  button > div > span > span:last-child {    //Positioning text on bottom of Bullet
+    position: absolute;
+    top: 45px;
+    left: 0;
+    right: 0;
+  }
+  span{
+    font-size:14px;
+  }
+  text{
+    fill: @step-inactive-text;
+  }
+  circle {
+    display: none;                         //Disable showing all Bullets (only active and completed state Should have bullet)
+  }
+  .active-step {
+    svg {
+      fill: @step-active-color !important;
+      color: @step-active-color !important;
+    }
+    circle {
+      display: block;
+    }
+    text{
+      fill:@step-active-text
+    }
+  }
+  .complete-step{
+    circle{
+      display: block;
+    }
+     + div > span{
+      border-color : @primary-color !important;
+       transition: all 0.2s ease-in;
+    }
+  }
+  @media screen and (max-width: 1400px) {
+    text {
+      font-size: 12px;
+    }
+
+    span {
+      font-size: 12px;
+    }
+
+    svg {
+      height: 19px !important;
+      width: 19px !important;
+    }
+  }
+
+  @media screen and (max-width: 1250px) {
+    span {
+      font-size: 10px;
+    }
+
+    svg {
+      height: 12px !important;
+      width: 12px !important;
+    }
+  }
+  div > div {
+    width: auto;
+  }
+}
