@@ -12,7 +12,7 @@ import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
 import Icon from "../../../../components/Icon/index";
 
-import 'style.less';
+import "./style.less";
 
 const FormItem = Form.Item;
 
