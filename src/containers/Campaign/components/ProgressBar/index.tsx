@@ -71,8 +71,6 @@ class ProgressBar extends React.Component<IProps, IState> {
    * @desc check if route has id, set that in the store
    */
   public componentWillMount() {
-    StepProps.disableFocusRipple = true ;
-    StepProps.disableTouchRipple = true ;
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
     }
