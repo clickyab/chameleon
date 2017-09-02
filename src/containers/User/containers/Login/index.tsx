@@ -11,6 +11,7 @@ import {Checkbox, FontIcon, RaisedButton, TextField, Toggle} from "material-ui";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
 import Icon from "../../../../components/Icon/index";
+import PasswordStrength from "../../../../components/PasswordStrength/index";
 
 const FormItem = Form.Item;
 
@@ -180,7 +181,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 {getFieldDecorator("password", {
                   rules: [{required: true, message: "Please input your password!"}],
                 })(
-                  <TextField
+                  <PasswordStrength
                     fullWidth={true}
                     floatingLabelText={this.i18n._t("Password")}
                     type="password"
