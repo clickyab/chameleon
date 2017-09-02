@@ -116,8 +116,7 @@ class ProgressBar extends React.Component<IProps, IState> {
         return this.props.history.push(`${this.props.match.path}/check-publish${suffix}`);
     }
   }
-
-  public render() {
+    public render() {
     const {stepIndex} = this.state;
     return (
       <Row className="progress-bar">
