@@ -157,6 +157,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   }
 
   render() {
+    console.log(this.state);
     const {getFieldDecorator} = this.props.form;
     return (
       <div className={( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container"}>
@@ -329,6 +330,14 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 </Col>
               </Row>
               <Row gutter={16} type="flex" align="top">
+                <Col span={12}>
+                  <LocationSelect
+                    onChange={this.handleChangeLocation.bind(this)}
+                    countryId={1}
+                    cityId={this.state.user.city_id}
+                    provinceId={this.state.user.province_id}
+                  />
+                </Col>
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("land_line", {
