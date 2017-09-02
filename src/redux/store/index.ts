@@ -1,22 +1,15 @@
-import { createStore, applyMiddleware, Store } from "redux";
-import { logger } from "../../middleware";
-import rootReducer, { RootState } from "../reducers";
+import {loadState, saveState} from "./localStorage/index";
+import configureStore from "./config/index";
+import {RootState} from "../reducers/index";
+import {Store} from "redux";
 
-export function configureStore(initialState?: RootState): Store<RootState> {
-  const create = window.devToolsExtension
-    ? window.devToolsExtension()(createStore)
-    : createStore;
+// Load initial state from local storage if exist
+const initialState: RootState = loadState();
 
-  const createStoreWithMiddleware = applyMiddleware(logger)(create);
+// Pass initial state to store config
+export const store: Store<RootState> = configureStore(initialState);
 
-  const store = createStoreWithMiddleware(rootReducer, initialState) as Store<RootState>;
-
-  if (module.hot) {
-    module.hot.accept("../reducers", () => {
-      const nextReducer = require("../reducers");
-      store.replaceReducer(nextReducer);
-    });
-  }
-
-  return store;
-}
+// Sync store with local storage
+store.subscribe(() => {
+  saveState(store.getState())
+});

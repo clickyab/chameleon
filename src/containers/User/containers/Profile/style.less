@@ -55,6 +55,8 @@
     text-decoration: underline;
   }
 }
+
+// Disable Description without change height of container
 .disable-des
 {
   margin-top   : -20px;
@@ -62,17 +64,13 @@
   font-weight  : 400;
   visibility   : hidden;
 }
-.btn-save-change{
-  border-radius: 20px !important;
-  border       : solid 2px @border-profile-content !important;
-  button{
-    border-radius: 20px !important;
 
-  }
+// Save Changes button
+.btn-save-change{
   div{
-    border-radius: 20px !important;
+    background: @primary-color;
     span{
-      color      : gray;
+      color      : white;
     }
   }
 }

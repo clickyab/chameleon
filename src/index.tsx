@@ -3,11 +3,14 @@ import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {Router, Route, Switch} from "react-router";
 import {createBrowserHistory} from "history";
-import {configureStore} from "./redux/store";
+import {store} from "./redux/store";
 import App from "./containers/App";
 
-const store = configureStore();
+import injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
+
 const history = createBrowserHistory();
+
 
 ReactDOM.render(
   <Provider store={store}>

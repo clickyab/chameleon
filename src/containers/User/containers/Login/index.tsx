@@ -11,21 +11,24 @@ import {Checkbox, FontIcon, RaisedButton, TextField, Toggle} from "material-ui";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
 import Icon from "../../../../components/Icon/index";
+import PasswordStrength from "../../../../components/PasswordStrength/index";
+
+import "./style.less";
 
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
-  isLogin: boolean;
-  user: UserResponseLoginOKAccount;
-  setUser: (user: UserResponseLoginOKAccount) => {};
-  setIsLogin: () => {};
-  form: any;
+    isLogin: boolean;
+    user: UserResponseLoginOKAccount;
+    setUser: (user: UserResponseLoginOKAccount) => {};
+    setIsLogin: () => {};
+    form: any;
 }
 
 interface IState {
-  email: string;
-  isCorporation: boolean;
-  step: STEPS;
+    email: string;
+    isCorporation: boolean;
+    step: STEPS;
 }
 
 enum STEPS { CHECK_MAIL, LOGIN, REGISTER}
@@ -58,7 +61,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
         <div>
-          <Row className="logo-img" align="middle" justify="center"></Row>
+          <Row className="logo-img" align="middle" justify="center"/>
           {this.state.step === STEPS.CHECK_MAIL &&
           <Card className="login-box" noHovering>
             <h5 className="text-center">
@@ -180,7 +183,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 {getFieldDecorator("password", {
                   rules: [{required: true, message: "Please input your password!"}],
                 })(
-                  <TextField
+                  <PasswordStrength
                     fullWidth={true}
                     floatingLabelText={this.i18n._t("Password")}
                     type="password"
@@ -274,11 +277,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           this.props.setUser(data.account);
           this.props.setIsLogin();
 
-          // redirect to dashboard
-          this.props.history.push("/dashboard");
-
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
+
+          // redirect to dashboard
+          this.props.history.push("/dashboard");
 
           // show notification
           notification.success({
