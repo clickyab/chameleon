@@ -14,6 +14,8 @@ import Icon from "../../../../components/Icon/index";
 
 import "./style.less";
 
+import "./style.less";
+
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
