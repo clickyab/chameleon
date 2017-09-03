@@ -84,7 +84,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   type="submit"
                   label={<Translate value="Next Step"/>}
                   primary={true}
-                  className="button-full-width button-next-step"
+                  className="button-full-width button-login-next-step"
                   icon={<Icon name="arrow" color="white"/>}
                 />
               </FormItem>

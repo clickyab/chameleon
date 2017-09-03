@@ -14,6 +14,9 @@ import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
 import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
+import CONFIG from "../../../../constants/config" ;
+
+import "./style.less";
 
 /**
  * @interface IOwnProps
@@ -233,30 +236,28 @@ class TypeComponent extends React.Component <IProps, IState> {
 
   public render() {
     return (
-      <div dir="rtl">
+      <div dir={CONFIG.DIR} className="campaign-content">
         <Row>
-          <Col>
-            <h2 className="text-center">Select Campaign Type</h2>
-            <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
-          </Col>
+          <h3 className="text-center">Select Campaign Type</h3>
+          <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
         </Row>
         <hr/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
-        <Row>
+        <Row className="campaign-device">
           {JSON.stringify(this.state)}
-          <SelectBox items={this.deviceTypes} initialSelect={this.state.selectedDevice}
+          <SelectBox span={8} items={this.deviceTypes} initialSelect={this.state.selectedDevice}
                      onChange={this.handleChangeDevicesType.bind(this)}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
             className="button-next-step"
+            icon={<Icon name="arrow" color="white"/>}
           />
-
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-        <Row>
+        <Row className="campaign-type">
           <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
                      onChange={this.handleChangeWebType.bind(this)}/>
           <RaisedButton
@@ -264,17 +265,12 @@ class TypeComponent extends React.Component <IProps, IState> {
             label={<Translate value="Next Step"/>}
             primary={true}
             className="button-next-step"
-          />
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            primary={false}
-            className="button-next-step"
+            icon={<Icon name="arrow" color="white"/>}
           />
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
-        <Row>
+        <Row className="campaign-type">
           <SelectBox items={this.applicationTypes}
                      initialSelect={this.state.selectedApplicationType}
                      onChange={this.handleChangeApplicationType.bind(this)}/>
@@ -283,12 +279,7 @@ class TypeComponent extends React.Component <IProps, IState> {
             label={<Translate value="Next Step"/>}
             primary={true}
             className="button-next-step"
-          />
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            primary={false}
-            className="button-next-step"
+            icon={<Icon name="arrow" color="white"/>}
           />
         </Row>
         }
