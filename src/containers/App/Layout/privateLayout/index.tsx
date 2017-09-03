@@ -1,9 +1,8 @@
 import * as React from "react";
-import {Icon, Layout} from "antd";
+import {Breadcrumb, Icon, Layout} from "antd";
 import SidebarMenu from "../../sidebar/index";
 import {PrivateFooter} from "./footer/index";
 import "./style.less";
-import PrivateBreadcrumb from "./Breadcrumb/index";
 
 const {Header, Sider, Content} = Layout;
 
@@ -37,7 +36,13 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
       <Layout>
         <Layout>
           <Header className="header">
-            <PrivateBreadcrumb/>
+            <Breadcrumb separator=">" className="breadcrumb">
+              <Breadcrumb.Item><Icon type="home"/></Breadcrumb.Item>
+              <Breadcrumb.Item href="">Application Center</Breadcrumb.Item>
+              <Breadcrumb.Item href="">Application List</Breadcrumb.Item>
+              <Breadcrumb.Item>An Application</Breadcrumb.Item>
+            </Breadcrumb>
+
             <Icon
               className="trigger"
               type={this.state.collapsed ? "menu-fold" : "menu-unfold"}
