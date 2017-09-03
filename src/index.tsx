@@ -6,11 +6,7 @@ import {createBrowserHistory} from "history";
 import {store} from "./redux/store";
 import App from "./containers/App";
 
-import injectTapEventPlugin = require("react-tap-event-plugin");
-injectTapEventPlugin();
-
 const history = createBrowserHistory();
-
 
 ReactDOM.render(
   <Provider store={store}>

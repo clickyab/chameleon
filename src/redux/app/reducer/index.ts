@@ -8,7 +8,6 @@ import AAA from "../../../services/AAA/index";
 const initialState: AppStoreState = {
   isLogin: !!AAA.getInstance().getToken(),
   user: null,
-  breadcrumb: ""
 };
 
 
@@ -43,18 +42,5 @@ export default handleActions<AppStoreState, any>({
       ...state,
       isLogin: false,
     };
-  },
-
-  [Actions.SET_BREADCRUMB]: (state, action) => {
-    return {
-      ...state,
-      breadcrumb: action.payload
-    }
-  },
-  [Actions.UNSET_BREADCRUMB]: (state) => {
-    return {
-      ...state,
-      breadcrumb: ""
-    }
   },
 }, initialState);
