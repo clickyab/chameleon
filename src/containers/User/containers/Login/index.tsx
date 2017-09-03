@@ -13,20 +13,22 @@ import AAA from "../../../../services/AAA/index";
 import Icon from "../../../../components/Icon/index";
 import PasswordStrength from "../../../../components/PasswordStrength/index";
 
+import "./style.less";
+
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
-  isLogin: boolean;
-  user: UserResponseLoginOKAccount;
-  setUser: (user: UserResponseLoginOKAccount) => {};
-  setIsLogin: () => {};
-  form: any;
+    isLogin: boolean;
+    user: UserResponseLoginOKAccount;
+    setUser: (user: UserResponseLoginOKAccount) => {};
+    setIsLogin: () => {};
+    form: any;
 }
 
 interface IState {
-  email: string;
-  isCorporation: boolean;
-  step: STEPS;
+    email: string;
+    isCorporation: boolean;
+    step: STEPS;
 }
 
 enum STEPS { CHECK_MAIL, LOGIN, REGISTER}
