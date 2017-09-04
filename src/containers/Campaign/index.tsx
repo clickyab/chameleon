@@ -17,6 +17,7 @@ import SelectPublisherComponent from "./containers/SelectPublisher/index";
 import UploadComponent from "./containers/Upload/index";
 import CheckPublishComponent from "./containers/CheckPublish/index";
 import STEPS from "./steps";
+import CONFIG from "../../constants/config" ;
 
 /**
  * @interface
@@ -40,7 +41,7 @@ export default class CampaignContainer extends React.Component <IProps, IState> 
   public render() {
     const {match} = this.props;
     return (
-      <div dir="rtl">
+      <div dir={CONFIG.DIR}>
         <Row>
           <ProgressBar/>
         </Row>

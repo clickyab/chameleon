@@ -1,0 +1,39 @@
+@import "../../../App/theme";
+
+.campaign-content{
+  margin-top: @campaign-top-distance;
+}
+.campaign-device{
+  .ant-row-flex-middle{
+    min-height:@campaign-selectbox-height !important;
+  }
+}
+
+.center-select-box{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height:@campaign-selectbox-height !important;
+}
+
+.campaign-device , .campaign-type{
+  margin-top:@campaign-type-top;
+  text-align: center;
+}
+.select-box{
+  min-height: 245px !important;
+}
+
+.button-next-step{
+  margin-top: 25px !important;
+  height: @campaign-button-height ;
+  width: 220px;
+  button{
+    height: @campaign-button-height !important;
+    line-height: @campaign-button-height !important;
+    div > div{
+      height: @campaign-button-height !important;
+    }
+  }
+}

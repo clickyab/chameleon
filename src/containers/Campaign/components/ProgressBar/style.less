@@ -1,17 +1,21 @@
-@import "~antd/dist/antd.less";
 @import "../../../App/theme";
 
 .progress-bar {
   height: 100px;
   margin: 10px;
+  margin-bottom: 30px;
   button{
     background-color: transparent !important;
   }
-  button > div > span > span:last-child {    //Positioning text on bottom of Bullet
-    position: absolute;
-    top: 45px;
-    left: 0;
-    right: 0;
+  button{
+    > span {
+      > span:last-child {    //Positioning text on bottom of Bullet
+        position: absolute;
+        top: 45px;
+        left: 0;
+        right: 0;
+      }
+    }
   }
   span{
     font-size:14px;
@@ -38,10 +42,12 @@
     circle{
       display: block;
     }
-     + div > span{
-      border-color : @primary-color !important;
-       transition: all 0.2s ease-in;
-    }
+     + div {
+       > span{
+         border-color : @primary-color !important;
+         transition: all 0.2s ease-in;
+       }
+     }
   }
   @media screen and (max-width: 1400px) {
     text {
@@ -68,7 +74,9 @@
       width: 12px !important;
     }
   }
-  div > div {
-    width: auto;
+  div {
+    > div {
+      width: auto;
+    }
   }
 }
