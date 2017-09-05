@@ -11,5 +11,5 @@ export const store: Store<RootState> = configureStore(initialState);
 
 // Sync store with local storage
 store.subscribe(() => {
-  saveState(store.getState())
+  saveState(store.getState());
 });
