@@ -10,6 +10,8 @@ import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedB
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {Select} from "antd";
+import Icon from "../../../../components/Icon";
+import CONFIG from "../../../../constants/config";
 
 const Option = Select.Option;
 
@@ -97,21 +99,20 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
     const {getFieldDecorator} = this.props.form;
     return (
-      <div style={{direction: "rtl"}}>
-        <Row>
+      <div dir={CONFIG.DIR} className="campaign-content" >
+        <Row className="campaign-title">
           <Col>
-            <h2 className="text-center"><Translate value="Budget And Finance"/></h2>
-            <p className="text-center">Set configuration for campaign's budget and finance:</p>
+            <h2><Translate value="Budget And Finance"/></h2>
+            <p>Set configuration for campaign's budget and finance:</p>
           </Col>
         </Row>
         <Form onSubmit={this.handleSubmit.bind(this)}>
-
-          <Row>
-            <Col span={20}>
-              <Row>
-                <Col span={16}>
-                  {this.i18n._t("Currency_Name")}
-                </Col>
+          <Row type="flex" align="middle">
+            <Col span={4}>
+              <label>Max Budget</label>
+            </Col>
+            <Col span={10} offset={10}>
+              <Row type="flex" align="middle">
                 <Col span={8}>
                   <FormItem>
                     {getFieldDecorator("max-budget", {
@@ -121,23 +122,25 @@ class BudgetComponent extends React.Component <IProps, IState> {
                       <TextField
                         hintText={this.i18n._t("Maximum Campaign's budget")}
                         type="number"
+                        step={5}
                         fullWidth={true}
                       />
                     )}
                   </FormItem>
                 </Col>
+                <Col span={16} className="currency">
+                  {this.i18n._t("Currency_Name")}
+                </Col>
               </Row>
-            </Col>
-            <Col span={4}>
-              <label>Max Budget</label>
             </Col>
           </Row>
 
-          <Row>
-            <Col span={20}>
-              <Col span={16}>
-                {this.i18n._t("Currency_Name")}
-              </Col>
+          <Row type="flex" align="middle">
+            <Col span={4}>
+              <label><Translate value="Daily Budget"/></label>
+            </Col>
+            <Col span={10} offset={10}>
+              <Row type="flex" align="middle">
               <Col span={8}>
                 <FormItem>
                   {getFieldDecorator("daily-budget", {
@@ -152,28 +155,35 @@ class BudgetComponent extends React.Component <IProps, IState> {
                   )}
                 </FormItem>
               </Col>
-            </Col>
-            <Col span={4}>
-              <label><Translate value="Daily Budget"/></label>
+                <Col span={16} className="currency">
+                  {this.i18n._t("Currency_Name")}
+                </Col>
+              </Row>
             </Col>
           </Row>
 
-          <Row>
-            <Col span={20}>
+          <Row type="flex" align="middle">
+            <Col span={4}>
+              <label>
+                <Translate value="Pricing Strategy"/>
+              </label>
+            </Col>
+            <Col span={10} offset={10}>
               <FormItem>
                 {getFieldDecorator("pricing", {
                   initialValue: true,
                 })(
-                  <RadioButtonGroup name="pricing" onChange={this.handleChangePricing.bind(this)}>
-                    <RadioButton
+                  <RadioButtonGroup className="campaign-radio-group" name="pricing"
+                                    onChange={this.handleChangePricing.bind(this)}>
+                    <RadioButton    className="campaign-radio-button"
                       value={IPricing.CPC}
                       label={this.i18n._t("CPC (per click)")}
                     />
-                    <RadioButton
+                    <RadioButton    className="campaign-radio-button"
                       value={IPricing.CPM}
                       label={this.i18n._t("CPM (per 10,000 views)")}
                     />
-                    <RadioButton
+                    <RadioButton    className="campaign-radio-button"
                       value={IPricing.CPA}
                       label={this.i18n._t("CPA (per action)")}
                     />
@@ -181,19 +191,14 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
             </Col>
-            <Col span={4}>
-              <label>
-                <Translate value="Pricing Strategy"/>
-              </label>
-            </Col>
           </Row>
 
-          <Row>
-            <Col span={20}>
-              <Row>
-                <Col span={16}>
-                  {this.i18n._t("Currency_Name")}
-                </Col>
+          <Row type="flex" align="middle">
+            <Col span={4}>
+              <label><Translate value="Click price"/></label>
+            </Col>
+            <Col span={10} offset={10}>
+              <Row type="flex" align="middle">
                 <Col span={8}>
                   <FormItem>
                     {getFieldDecorator("click-price", {
@@ -208,16 +213,19 @@ class BudgetComponent extends React.Component <IProps, IState> {
                     )}
                   </FormItem>
                 </Col>
+                <Col span={16} className="currency">
+                  {this.i18n._t("Currency_Name")}
+                </Col>
               </Row>
-            </Col>
-            <Col span={4}>
-              <label><Translate value="Click price"/></label>
             </Col>
           </Row>
 
-          <Row>
+          <Row type="flex" align="middle">
+            <Col span={4}>
+              <label><Translate value="Subscribers"/></label>
+            </Col>
             <Col span={20}>
-              <FormItem>
+              <FormItem className="campaign-tag">
                 {getFieldDecorator("Subscribers", {
                   rules: [{required: true, message: this.i18n._t("Subscribers!")}],
                 })(
@@ -233,22 +241,21 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
             </Col>
-            <Col span={4}>
-              <label><Translate value="Subscribers"/></label>
-            </Col>
           </Row>
-          <Row>
+          <Row >
+            <RaisedButton
+              onClick={this.handleBack.bind(this)}
+              label={<Translate value="Back"/>}
+              primary={false}
+              className="button-back-step"
+              icon={<Icon name="arrow" color="white"/>}
+            />
             <RaisedButton
               onClick={this.handleSubmit.bind(this)}
               label={<Translate value="Next Step"/>}
               primary={true}
               className="button-next-step"
-            />
-            <RaisedButton
-              onClick={this.handleBack.bind(this)}
-              label={<Translate value="Back"/>}
-              primary={false}
-              className="button-next-step"
+              icon={<Icon name="arrow" color="white"/>}
             />
           </Row>
         </Form>

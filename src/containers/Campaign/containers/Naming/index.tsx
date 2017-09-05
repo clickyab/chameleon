@@ -9,6 +9,8 @@ import {Row, Col, notification} from "antd";
 import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedButton} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
+import Icon from "../../../../components/Icon";
+import CONFIG from "../../../../constants/config";
 
 const FormItem = Form.Item;
 
@@ -91,31 +93,35 @@ class NamingComponent extends React.Component <IProps, IState> {
   public render() {
     const {getFieldDecorator} = this.props.form;
     return (
-      <div dir="rtl">
-        <Row>
+      <div dir={CONFIG.DIR} className="campaign-content">
+        <Row className="campaign-title">
           <Col>
-            <h2 className="text-center"><Translate value="Campaign Naming"/></h2>
-            <p className="text-center">Set configuration for ad name, period of time to show ad and ad"s status:</p>
+            <h2><Translate value="Campaign Naming"/></h2>
+            <p>Set configuration for ad name, period of time to show ad and ad"s status:</p>
           </Col>
         </Row>
         <Form onSubmit={this.handleSubmit.bind(this)}>
-          <Row>
-            <Col span={20}>
+          <Row type="flex" align="middle">
+            <Col span={4}>
+              <label>Status</label>
+            </Col>
+            <Col span={20} className="form-select-column">
               <FormItem>
                 {getFieldDecorator("status", {
                   initialValue: true,
                   rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
                 })(
-                  <SelectField style={{width: 120}} onChange={this.handleChangeStatus.bind(this)}>
+                  <SelectField className={(CONFIG.DIR === "rtl") ? "form-select-rtl" : "form-select"}
+                               onChange={this.handleChangeStatus.bind(this)}>
                     <MenuItem key={`n_active`} value={true} primaryText={this.i18n._t("Active")}/>
                     <MenuItem key={`n_inactive`} value={false} primaryText={this.i18n._t("Inactive")}/>
                   </SelectField>)}
               </FormItem>
             </Col>
             <Col span={4}>
-              <label>Status</label>
+              <label>Show Ad"s Days</label>
             </Col>
-            <Col span={20}>
+            <Col span={15} offset={5}>
               <FormItem>
                 {getFieldDecorator("name", {
                   rules: [{required: true, message: this.i18n._t("Please input your Campaign Name!")}],
@@ -127,41 +133,28 @@ class NamingComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
             </Col>
-            <Col span={4}>
-              <label>Show Ad"s Days</label>
-            </Col>
+            <Col span={4}><label>Campaign Date</label></Col>
             <Col span={20}>
               <FormItem>
                 {getFieldDecorator("days", {
                   initialValue: true,
                 })(
-                  <RadioButtonGroup name="days" onChange={this.handleChangeDay.bind(this)}>
-                    <RadioButton
-                      value={true}
-                      label={this.i18n._t("All days")}
+                  <RadioButtonGroup className="campaign-radio-group" name="days"
+                                    onChange={this.handleChangeDay.bind(this)}>
+                    <RadioButton className="campaign-radio-button"
+                                 value={true}
+                                 label={this.i18n._t("All days")}
                     />
-                    <RadioButton
-                      value={false}
-                      label={this.i18n._t("Specific Period")}
+                    <RadioButton className="campaign-radio-button"
+                                 value={false}
+                                 label={this.i18n._t("Specific Period")}
                     />
                   </RadioButtonGroup>
                 )}
               </FormItem>
               {!this.state.allDay &&
-              <Row>
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator("start-date", {
-                      rules: [{required: true, message: this.i18n._t("Please select start date!")}],
-                    })(
-                      <TextField
-                        hintText={this.i18n._t("Start date")}
-                        fullWidth={true}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={12}>
+              <Row gutter={16}>
+                <Col span={9} offset={6}>
                   <FormItem>
                     {getFieldDecorator("stop-date", {
                       rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
@@ -173,42 +166,43 @@ class NamingComponent extends React.Component <IProps, IState> {
                     )}
                   </FormItem>
                 </Col>
-              </Row>
-              }
-            </Col>
-            <Col span={4}><label>Campaign Date</label></Col>
-            <Col span={20}>
-              <FormItem>
-                {getFieldDecorator("time", {
-                  initialValue: true,
-                })(
-                  <RadioButtonGroup name="times" onChange={this.handleChangeTime.bind(this)}>
-                    <RadioButton
-                      value={true}
-                      label={this.i18n._t("All Times")}
-                    />
-                    <RadioButton
-                      value={false}
-                      label={this.i18n._t("Specific Times")}
-                    />
-                  </RadioButtonGroup>
-                )}
-              </FormItem>
-              {!this.state.allTime &&
-              <Row>
-                <Col span={12}>
+                <Col span={9}>
                   <FormItem>
-                    {getFieldDecorator("start-time", {
-                      rules: [{required: true, message: this.i18n._t("Please select start time!")}],
+                    {getFieldDecorator("start-date", {
+                      rules: [{required: true, message: this.i18n._t("Please select start date!")}],
                     })(
                       <TextField
-                        hintText={this.i18n._t("Start time")}
+                        hintText={this.i18n._t("Start date")}
                         fullWidth={true}
                       />
                     )}
                   </FormItem>
                 </Col>
-                <Col span={12}>
+              </Row>
+              }
+            </Col>
+            <Col span={4}><label>Campaign Time</label></Col>
+            <Col span={20}>
+              <FormItem>
+                {getFieldDecorator("time", {
+                  initialValue: true,
+                })(
+                  <RadioButtonGroup className="campaign-radio-group" name="times"
+                                    onChange={this.handleChangeTime.bind(this)}>
+                    <RadioButton className="campaign-radio-button"
+                                 value={true}
+                                 label={this.i18n._t("All Times")}
+                    />
+                    <RadioButton className="campaign-radio-button"
+                                 value={false}
+                                 label={this.i18n._t("Specific Times")}
+                    />
+                  </RadioButtonGroup>
+                )}
+              </FormItem>
+              {!this.state.allTime &&
+              <Row gutter={16}>
+                <Col span={9} offset={6}>
                   <FormItem>
                     {getFieldDecorator("stop-time", {
                       rules: [{required: true, message: this.i18n._t("Please select stop time!")}],
@@ -220,23 +214,36 @@ class NamingComponent extends React.Component <IProps, IState> {
                     )}
                   </FormItem>
                 </Col>
+                <Col span={9}>
+                  <FormItem>
+                    {getFieldDecorator("start-time", {
+                      rules: [{required: true, message: this.i18n._t("Please select start time!")}],
+                    })(
+                      <TextField
+                        hintText={this.i18n._t("Start time")}
+                        fullWidth={true}
+                      />
+                    )}
+                  </FormItem>
+                </Col>
               </Row>
               }
             </Col>
-            <Col span={4}><label>Campaign Time</label></Col>
           </Row>
-          <Row>
+          <Row type="flex" align="middle">
+            <RaisedButton
+              onClick={this.handleBack.bind(this)}
+              label={<Translate value="Back"/>}
+              primary={false}
+              className="button-back-step"
+              icon={<Icon name="arrow" color="white"/>}
+            />
             <RaisedButton
               onClick={this.handleSubmit.bind(this)}
               label={<Translate value="Next Step"/>}
               primary={true}
               className="button-next-step"
-            />
-            <RaisedButton
-              onClick={this.handleBack.bind(this)}
-              label={<Translate value="Back"/>}
-              primary={false}
-              className="button-next-step"
+              icon={<Icon name="arrow" color="white"/>}
             />
           </Row>
         </Form>
