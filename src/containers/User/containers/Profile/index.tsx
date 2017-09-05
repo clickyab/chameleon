@@ -89,7 +89,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
         return;
       }
 
-
       const userApi = new UserApi();
       if (this.state.isCorporation) {
         userApi.userCorporationPut({
