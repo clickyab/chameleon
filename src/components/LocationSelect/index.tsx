@@ -14,6 +14,7 @@ import {
 } from "../../api/api";
 import {Row, Col} from "antd";
 import {SelectField, MenuItem} from "material-ui";
+import I18n from "../../services/i18n/index";
 
 /**
  * define component props
@@ -79,6 +80,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @type {LocationApi}
    */
   api = new LocationApi();
+  private i18n = I18n.getInstance();
 
   constructor(props: IProps) {
     super(props);
@@ -94,16 +96,18 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    */
   public componentDidMount() {
     // check has initial location
-    if (!!this.props.countryId && !!this.props.provinceId && !!this.props.cityId) {
+    console.log(this.props);
+    if (!!this.props.countryId) {
       this.loadCountries()
         .then(() => {
-          return this.setCountry(null, -1, this.props.countryId);
-        })
-        .then(() => {
-          return this.setProvince(null, -1, this.props.provinceId);
-        })
-        .then(() => {
-          return this.setCity(null, -1, this.props.cityId);
+          if (this.props.provinceId) {
+            this.setProvince(null, -1, this.props.provinceId)
+              .then(() => {
+                if (this.props.cityId) {
+                  this.setCity(null, -1, this.props.cityId);
+                }
+              });
+          }
         });
     } else {
       this.loadCountries();
@@ -111,7 +115,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
   }
 
   /**
-   * Load countries and select first item as default.
+   * Load countries and check first item as default.
    *
    * @returns {Promise<LocationCountries>}
    */
@@ -121,7 +125,8 @@ export default class LocationSelect extends React.Component<IProps, IState> {
         this.setState({
           countries,
         });
-        this.setCountry(null, 0, this.props.countryId ? this.props.countryId : countries[0].id);
+        console.log(1111111);
+        return this.setCountry(null, 0, this.props.countryId ? this.props.countryId : countries[0].id);
       });
   }
 
@@ -137,6 +142,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @returns {Promise<LocationProvinces>}
    */
   private setCountry(event, index: number, countryId: number, selectFirstItem?: boolean) {
+    console.log(countryId);
     const country = this.state.countries.find((c) => (c.id === countryId));
     return this.api.locationProvincesCountryIdGet({countryId: country.id.toString()})
       .then((provinces) => {
@@ -166,6 +172,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
     const province = this.state.provinces.find((c) => (c.id === provinceId));
     return this.api.locationCitiesProvincesIdGet({provincesId: province.id.toString()})
       .then((cities) => {
+        console.log(cities);
         this.setState({
           province,
           cities,
@@ -206,28 +213,34 @@ export default class LocationSelect extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Row>
+      <Row gutter={16}>
         <Col span={8}>
-          <SelectField style={{width: 120}}
-                       onChange={this.setCountry.bind(this)}
-                       value={this.state.country ? this.state.country.id : null}>
-            {this.state.countries.map((country) => {
-              return (<MenuItem key={`c_${country.id}`} value={country.id} primaryText={country.name}/>);
-            })}
-          </SelectField>
+        <SelectField style={{width: 120}}
+        onChange={this.setCountry.bind(this)}
+        value={this.state.country ? this.state.country.id : null}>
+        {this.state.countries.map((country) => {
+        return (<MenuItem key={`c_${country.id}`} value={country.id} primaryText={country.name}/>);
+        })}
+        </SelectField>
         </Col>
-        <Col span={8}>
-          <SelectField style={{width: 120}} value={this.state.province ? this.state.province.id : null}
-                       onChange={this.setProvince.bind(this)}>
+        <Col span={12}>
+          <SelectField
+            floatingLabelText={this.i18n._t("Province")}
+            fullWidth={true}
+            value={this.state.province ? this.state.province.id : null}
+            onChange={this.setProvince.bind(this)}>
             {this.state.provinces.map((province) => {
               return (
                 <MenuItem key={`p_${province.id}`} value={province.id} primaryText={province.name}/>);
             })}
           </SelectField>
         </Col>
-        <Col span={8}>
-          <SelectField style={{width: 120}} onChange={this.setCity.bind(this)}
-                       value={this.state.city ? this.state.city.id : null}>
+        <Col span={12}>
+          <SelectField
+            floatingLabelText={this.i18n._t("City")}
+            fullWidth={true}
+            onChange={this.setCity.bind(this)}
+            value={this.state.city ? this.state.city.id : null}>
             {this.state.cities.map((city) => {
               return (<MenuItem key={`ci_${city.id}`} value={city.id} primaryText={city.name}/>);
             })}
