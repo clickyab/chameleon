@@ -14,6 +14,12 @@ interface IProps {
    * @returns {void}
    */
   onChange?: (items: string[]) => void;
+
+  /**
+   * @desc selected items array
+   * @param {string[]}
+   */
+  selectedItems?: string[];
 }
 
 /**
@@ -43,7 +49,7 @@ export default class IranMap extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       hoverItem: null,
-      selectedItems: [],
+      selectedItems: this.props.selectedItems ? this.props.selectedItems : [],
     };
 
     /**
@@ -118,6 +124,7 @@ export default class IranMap extends React.Component<IProps, IState> {
   }
 
   render() {
+    console.log(this.state.selectedItems);
     return (
       <Row type="flex">
         <Col>
