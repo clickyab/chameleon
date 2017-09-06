@@ -120,6 +120,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                       rules: [{required: true, message: this.i18n._t("Please input maximum campaign's budget!")}],
                     })(
                       <TextField
+                        className="campaign-textfield"
                         hintText={this.i18n._t("Maximum Campaign's budget")}
                         type="number"
                         step={5}
@@ -148,6 +149,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                     rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
                   })(
                     <TextField
+                      className="campaign-textfield"
                       hintText={this.i18n._t("Daily Campaign's budget")}
                       type="number"
                       fullWidth={true}
@@ -206,6 +208,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                       rules: [{required: true, message: this.i18n._t("Please input click's price!")}],
                     })(
                       <TextField
+                        className="campaign-textfield"
                         hintText={this.i18n._t("click price")}
                         type="number"
                         fullWidth={true}
