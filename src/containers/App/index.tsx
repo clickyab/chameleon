@@ -12,6 +12,7 @@ import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
 import CampaignContainer from "../Campaign/index";
+import {UserApi} from "../../api/api";
 
 
 interface IProps {
@@ -51,9 +52,22 @@ class App extends React.Component<IProps, IState> {
     }
   }
 
+  /**
+   * check token exist and try to get user from server and authenticate user's token.
+   */
   public componentDidMount() {
     if (!!AAA.getInstance().getToken()) {
-      this.setState({isLogin: true});
+      const userApi = new UserApi();
+      userApi.userPingGet({})
+        .then(() => {
+          this.setState({isLogin: true});
+        })
+        .catch((error) => {
+          if (error.status === 401) {
+            AAA.getInstance().unsetToken();
+            window.location.href = ("/");
+          }
+        });
     } else {
       this.props.unsetIsLogin();
     }
@@ -87,7 +101,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setIsLogin: () => dispatch(setIsLogin()),
     unsetIsLogin: () => dispatch(unsetIsLogin())
-  }
+  };
 }
 
 export default App;
