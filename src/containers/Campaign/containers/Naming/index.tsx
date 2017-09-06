@@ -9,6 +9,7 @@ import {Row, Col, notification} from "antd";
 import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedButton} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
+import PersianDatePicker from "../../../../components/datePicker/index";
 
 const FormItem = Form.Item;
 
@@ -154,10 +155,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     {getFieldDecorator("start-date", {
                       rules: [{required: true, message: this.i18n._t("Please select start date!")}],
                     })(
-                      <TextField
-                        hintText={this.i18n._t("Start date")}
-                        fullWidth={true}
-                      />
+                      <PersianDatePicker onChange={value => console.log(value)}/>
                     )}
                   </FormItem>
                 </Col>
@@ -166,10 +164,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     {getFieldDecorator("stop-date", {
                       rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
                     })(
-                      <TextField
-                        hintText={this.i18n._t("End date")}
-                        fullWidth={true}
-                      />
+                      <PersianDatePicker onChange={value => console.log(value)}/>
                     )}
                   </FormItem>
                 </Col>
