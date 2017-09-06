@@ -49,12 +49,12 @@ export default handleActions<AppStoreState, any>({
     return {
       ...state,
       breadcrumb: action.payload
-    }
+    };
   },
   [Actions.UNSET_BREADCRUMB]: (state) => {
     return {
       ...state,
       breadcrumb: ""
-    }
+    };
   },
 }, initialState);
