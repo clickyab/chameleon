@@ -16,6 +16,8 @@ import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config" ;
 
+import Iranmap from "../../../../components/IranMap/index"
+
 import "./style.less";
 
 /**
