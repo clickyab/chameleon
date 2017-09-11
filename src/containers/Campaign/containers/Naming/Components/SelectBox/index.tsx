@@ -44,7 +44,6 @@ export default class SelectBox extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
   }
-
   componentWillMount() {
     const selectedItem = this.props.initialSelect !== null ? this.props.items.find((item) => (item.value === this.props.initialSelect)) : null;
     console.log(111, selectedItem, this.props.items.find((item) => (item.value === this.props.initialSelect)));
@@ -65,7 +64,7 @@ export default class SelectBox extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Row type="flex" align="middle" justify="center">
+      <Row type="flex" gutter={16} align="middle" justify="center">
         {this.props.items.map((item) => {
           return (
             <Col key={`s_${item.value}`} span={ (this.props.span) ? this.props.span : 4 } className={"select-box" + (this.props.className ? this.props.className : "")} >

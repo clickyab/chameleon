@@ -159,11 +159,37 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <Row gutter={16} type="flex" align="top" justify="center">
             <Col span={18}>
+              <Row gutter={16} type="flex" align="top">
+                <Col span={12}>
+                  <FormItem>
+                    {getFieldDecorator("first_name", {
+                      initialValue: this.state.isCorporation ? this.state.user.corporation.first_name : this.state.user.personal.first_name,
+                      rules: [{required: true, message: this.i18n._t("Please input your Submit Name!")}],
+                    })(
+                      <TextField
+                        fullWidth={true}
+                        floatingLabelText={this.i18n._t("Name")}
+                      />)}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem>
+                    {getFieldDecorator("last_name", {
+                      initialValue: this.state.isCorporation ? this.state.user.corporation.last_name : this.state.user.personal.last_name,
+                      rules: [{required: true, message: this.i18n._t("Please input your Submit last name!")}],
+                    })(
+                      <TextField
+                        fullWidth={true}
+                        floatingLabelText={this.i18n._t("Last name")}
+                      />)}
+                  </FormItem>
+                </Col>
+              </Row>
               {this.state.isCorporation &&
               <Row gutter={16} type="flex" align="top">
                 <Col span={8}>
                   <FormItem>
-                    {getFieldDecorator("name", {
+                    {getFieldDecorator("corporationName", {
                       initialValue: this.state.isCorporation ? this.state.user.corporation.name : null,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
                     })(
@@ -198,32 +224,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   </FormItem>
                 </Col>
               </Row>}
-              <Row gutter={16} type="flex" align="top">
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator("first_name", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.first_name : this.state.user.personal.first_name,
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit Name!")}],
-                    })(
-                      <TextField
-                        fullWidth={true}
-                        floatingLabelText={this.i18n._t("Name")}
-                      />)}
-                  </FormItem>
-                </Col>
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator("last_name", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.last_name : this.state.user.personal.last_name,
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit last name!")}],
-                    })(
-                      <TextField
-                        fullWidth={true}
-                        floatingLabelText={this.i18n._t("Last name")}
-                      />)}
-                  </FormItem>
-                </Col>
-              </Row>
               <Row gutter={16} className={(this.state.isDisable) ? "column-disable" : "column-enable"} type="flex"
                    align="top">
                 <Col span={12}>
@@ -238,12 +238,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                         disabled={true}
                       />)}
                   </FormItem>
-                  <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}>You can't change your Email. for
-                    changing your password <a onClick={() => {
-                      this.setState({
-                        isDisable: !this.state.isDisable,
-                      });
-                    }}> Click here</a></p>
+                  <p className="enable-des"><Translate value="You can't change email address after registration"/></p>
                 </Col>
                 <Col span={12}>
                   <FormItem>
@@ -258,6 +253,11 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                         disabled={this.state.isDisable}
                       />)}
                   </FormItem>
+                  <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate value="If you want to change your password"/><a onClick={() => {
+                      this.setState({
+                        isDisable: !this.state.isDisable,
+                      });
+                    }}><Translate value="Click here"/></a></p>
                 </Col>
               </Row>
               <Row gutter={16} type="flex" align="top">

@@ -19,6 +19,8 @@ import CheckPublishComponent from "./containers/CheckPublish/index";
 import STEPS from "./steps";
 import CONFIG from "../../constants/config" ;
 
+import "./style.less";
+
 /**
  * @interface
  *
