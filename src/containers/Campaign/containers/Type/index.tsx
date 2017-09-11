@@ -16,6 +16,8 @@ import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config" ;
 
+import Phone from "../../../../components/PhoneInput/index";
+
 
 import "./style.less";
 
@@ -249,6 +251,7 @@ class TypeComponent extends React.Component <IProps, IState> {
           <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
         </Row>
         <hr/>
+        <Phone/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
         <Row className="campaign-device">
           <SelectBox span={8} items={this.deviceTypes} initialSelect={null}

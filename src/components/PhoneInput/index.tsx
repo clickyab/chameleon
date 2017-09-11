@@ -123,17 +123,18 @@ export default class PhoneInput extends React.Component<IProps, IState> {
     return (
       <div className="phone-input">
         <div>
-          <img src={require(`./flags/${this.state.code.toLocaleLowerCase()}.png`)}/>
+          <img className="phone-flag" src={require(`./flags/${this.state.code.toLocaleLowerCase()}.png`)}/>
         </div>
         <div className="country-code">
           <span>+</span>
-          <span style={{borderRight: "1px solid #ccc"}}>
+          <span className="country-code-num">
           <TextField
             disabled={true}
             defaultValue={this.state.dialCode}
             onChange={this.handleChangeCode.bind(this)}
             hintText={"98"}
-            style={{width: 40}}/>
+            underlineStyle={{ display: "none"}}
+            style={{width: 20}}/>
         </span>
         </div>
         <div>
