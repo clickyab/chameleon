@@ -7,7 +7,7 @@ import {Moment} from "moment";
  * @interface IProps
  */
 interface IProps {
-  onChange: (value: Moment) => void
+  onChange: (value: Moment) => void;
 }
 
 /**
