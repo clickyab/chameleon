@@ -20,6 +20,10 @@ interface IProps {
    * @param {string[]}
    */
   selectedItems?: string[];
+  /**
+   * @param {string[]}
+   */
+  className?: string;
 }
 
 /**
@@ -127,9 +131,9 @@ export default class IranMap extends React.Component<IProps, IState> {
     console.log(this.state.selectedItems);
     return (
       <Row type="flex">
-        <Col>
+        <Col className="city-selector">
           <div style={{overflowY: "auto", height: "500px"}} onMouseLeave={() => this.mouseLeave()}>
-            <Checkbox
+            <Checkbox className="all-city-selector"
               checked={this.state.selectedItems.length === map.g.path.length}
               onCheck={() => this.checkAll()}
               onMouseLeave={() => this.mouseLeave()}
@@ -147,9 +151,9 @@ export default class IranMap extends React.Component<IProps, IState> {
             })}
           </div>
         </Col>
-        <Col>
+        <Col className="map-selector">
           <svg width={"500"} height={"500"} viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" version="1.1">
-            <g>
+            <g id="map-graphic">
               {map.g.path.map((path) => {
                 return <path
                   onMouseLeave={() => this.mouseLeave()}
@@ -158,7 +162,7 @@ export default class IranMap extends React.Component<IProps, IState> {
                   className={`land ${this.state.hoverItem === path.id ? "selected" : ""} ${this.state.selectedItems.indexOf(path.id) > -1 ? "selected" : ""}`}
                   d={path.d}
                   id={path.id}
-                  xlinkTitle={path.title}></path>;
+                  xlinkTitle={path.title}/>;
               })}
             </g>
           </svg>

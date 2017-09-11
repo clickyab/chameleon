@@ -1,11 +1,46 @@
+@import "../../containers/App/theme";
+
 .land {
   fill: #CCCCCC;
   fill-opacity: 1;
   stroke: white;
   stroke-opacity: 1;
   stroke-width: 0.5;
-  &.selected{
+  &.selected {
     cursor: pointer;
     fill: #5E6670;
   }
+}
+
+.city-selector {
+  border: 1px solid @map-border-color;
+  border-left: transparent;
+  font-size: @map-font-size;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: @map-border-color;
+  }
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  }
+  // > div > div >div > div > div > svg{    Change Checkbox border color - but it's dynamically change - there is no use
+  //  fill:@map-border-color !important;
+  //}
+}
+
+.map-selector {
+  border: 1px solid @map-border-color;
+}
+
+#map-graphic{
+  transform: translate(20px, 80px) scale(1.2)   //It should be handled by javascript
+}
+
+.all-city-selector{
+  border : 1px solid @map-border-color ;
+  border-top: transparent;
+  border-left:transparent;
 }

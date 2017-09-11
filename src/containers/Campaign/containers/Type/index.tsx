@@ -16,6 +16,7 @@ import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config" ;
 
+
 import "./style.less";
 
 /**
@@ -49,6 +50,7 @@ interface IState {
   selectedDevice?: DEVICE_TYPES;
   selectedWebType?: WEB_TYPES;
   selectedApplicationType?: APPLICATION_TYPES;
+  buttonDisable?: boolean;
 }
 
 /**
@@ -161,6 +163,7 @@ class TypeComponent extends React.Component <IProps, IState> {
     this.state = {
       internalStep: INTERNAL_STEPS.SELECT_DEVICE_TYPE,
       selectedDevice: DEVICE_TYPES.WEB,
+      buttonDisable: true,
     };
   }
 
@@ -182,6 +185,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeDevicesType(value: DEVICE_TYPES) {
     this.setState({
       selectedDevice: value,
+      buttonDisable: false,
     });
   }
 
@@ -193,6 +197,7 @@ class TypeComponent extends React.Component <IProps, IState> {
       INTERNAL_STEPS.SELECT_DESKTOP_TYPE : INTERNAL_STEPS.SELECT_APPLICATION_TYPE;
     this.setState({
       internalStep: step,
+      buttonDisable: true,
     });
   }
 
@@ -212,6 +217,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeWebType(value: WEB_TYPES) {
     this.setState({
       selectedWebType: value,
+      buttonDisable: false,
     });
   }
 
@@ -222,6 +228,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeApplicationType(value: APPLICATION_TYPES) {
     this.setState({
       selectedApplicationType: value,
+      buttonDisable: false,
     });
   }
 
@@ -244,13 +251,13 @@ class TypeComponent extends React.Component <IProps, IState> {
         <hr/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
         <Row className="campaign-device">
-          {JSON.stringify(this.state)}
-          <SelectBox span={8} items={this.deviceTypes} initialSelect={this.state.selectedDevice}
+          <SelectBox span={8} items={this.deviceTypes} initialSelect={null}
                      onChange={this.handleChangeDevicesType.bind(this)}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
+            disabled={this.state.buttonDisable}
             className="button-next-step"
             icon={<Icon name="arrow" color="white"/>}
           />
@@ -258,12 +265,13 @@ class TypeComponent extends React.Component <IProps, IState> {
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
         <Row className="campaign-type">
-          <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
+          <SelectBox items={this.desktopTypes} initialSelect={null}
                      onChange={this.handleChangeWebType.bind(this)}/>
           <RaisedButton
             onClick={this.handleChangeWebType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
+            disabled={this.state.buttonDisable}
             className="button-next-step"
             icon={<Icon name="arrow" color="white"/>}
           />
@@ -272,12 +280,13 @@ class TypeComponent extends React.Component <IProps, IState> {
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
         <Row className="campaign-type">
           <SelectBox items={this.applicationTypes}
-                     initialSelect={this.state.selectedApplicationType}
+                     initialSelect={null}
                      onChange={this.handleChangeApplicationType.bind(this)}/>
           <RaisedButton
             onClick={this.handleChangeWebType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
+            disabled={this.state.buttonDisable}
             className="button-next-step"
             icon={<Icon name="arrow" color="white"/>}
           />
