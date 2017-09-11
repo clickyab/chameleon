@@ -37,36 +37,23 @@ export class BaseAPI {
     }
 }
 
-export interface AaaGenderType {
-}
-
-export interface AaaUserCorporation {
-    "address"?: AaaUserCorporationAddress;
-    "cellphone"?: AaaUserCorporationAddress;
-    "city_id"?: AaaUserCorporationCityId;
-    "country_id"?: AaaUserCorporationCityId;
-    "created_at"?: string;
-    "economic_code"?: AaaUserCorporationAddress;
-    "first_name"?: AaaUserCorporationAddress;
-    "last_name"?: AaaUserCorporationAddress;
-    "name"?: AaaUserCorporationAddress;
-    "national_id"?: AaaUserCorporationAddress;
-    "phone"?: AaaUserCorporationAddress;
-    "province_id"?: AaaUserCorporationCityId;
-    "register_code"?: AaaUserCorporationAddress;
-    "updated_at"?: string;
+export interface AaaCorporation {
+    "economic_code"?: AaaCorporationEconomicCode;
+    "id"?: number;
+    "legal_name"?: string;
+    "legal_register"?: AaaCorporationEconomicCode;
     "user_id"?: number;
-    "zip_code"?: AaaUserCorporationCityId;
 }
 
-export interface AaaUserCorporationAddress {
+export interface AaaCorporationEconomicCode {
     "String"?: string;
     "Valid"?: boolean;
 }
 
-export interface AaaUserCorporationCityId {
-    "Int64"?: number;
-    "Valid"?: boolean;
+export interface AaaGenderType {
+}
+
+export interface AaaUserValidStatus {
 }
 
 export interface ControllerErrorResponseSimple {
@@ -74,6 +61,17 @@ export interface ControllerErrorResponseSimple {
 }
 
 export interface ControllerNormalResponse {
+}
+
+export interface ControllersBrowserResponse extends Array<ControllersBrowserResponseInner> {
+}
+
+export interface ControllersBrowserResponseInner {
+    "active"?: boolean;
+    "created_at"?: string;
+    "id"?: number;
+    "name"?: string;
+    "updated_at"?: string;
 }
 
 export interface ControllersCatResponse extends Array<ControllersCatResponseInner> {
@@ -139,7 +137,7 @@ export interface DmnActiveStatus {
 export interface DmnDomain {
     "active"?: string;
     "created_at"?: string;
-    "description"?: AaaUserCorporationAddress;
+    "description"?: AaaCorporationEconomicCode;
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
@@ -201,6 +199,14 @@ export interface OrmBase {
     "active"?: boolean;
     "created_at"?: string;
     "id"?: number;
+    "updated_at"?: string;
+}
+
+export interface OrmBrowser {
+    "active"?: boolean;
+    "created_at"?: string;
+    "id"?: number;
+    "name"?: string;
     "updated_at"?: string;
 }
 
@@ -282,26 +288,10 @@ export interface UserCheckMailResponse {
 export interface UserCheckMailResponseDomains {
     "active"?: string;
     "created_at"?: string;
-    "description"?: AaaUserCorporationAddress;
+    "description"?: AaaCorporationEconomicCode;
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
-}
-
-export interface UserCorporation {
-    "address"?: string;
-    "cellphone"?: string;
-    "city_id"?: number;
-    "country_id"?: number;
-    "economic_code"?: string;
-    "first_name"?: string;
-    "last_name"?: string;
-    "name"?: string;
-    "national_id"?: string;
-    "phone"?: string;
-    "province_id"?: number;
-    "register_code"?: string;
-    "zip_code"?: number;
 }
 
 export interface UserForget {
@@ -313,28 +303,13 @@ export interface UserLoginPayload {
     "password"?: string;
 }
 
-export interface UserPersonalPayload {
-    "address"?: string;
-    "cellphone"?: string;
-    "city_id"?: number;
-    "country_id"?: number;
-    "first_name"?: string;
-    "gender"?: string;
-    "last_name"?: string;
-    "national_id"?: string;
-    "phone"?: string;
-    "province_id"?: number;
-    "zip_code"?: number;
-}
-
 export interface UserRegisterPayload {
-    "company_name"?: string;
     "email"?: string;
     "first_name"?: string;
     "last_name"?: string;
+    "legal_name"?: string;
     "mobile"?: string;
     "password"?: string;
-    "user_type"?: string;
 }
 
 export interface UserResponseLoginOK {
@@ -343,51 +318,55 @@ export interface UserResponseLoginOK {
 }
 
 export interface UserResponseLoginOKAccount {
+    "address"?: AaaCorporationEconomicCode;
+    "avatar"?: AaaCorporationEconomicCode;
+    "cellphone"?: AaaCorporationEconomicCode;
+    "city_id"?: UserResponseLoginOKAccountCityId;
     "corporation"?: UserResponseLoginOKAccountCorporation;
+    "created_at"?: string;
     "email"?: string;
+    "first_name"?: string;
+    "gender"?: string;
     "id"?: number;
-    "personal"?: UserResponseLoginOKAccountPersonal;
-    "user_type"?: string;
+    "land_line"?: AaaCorporationEconomicCode;
+    "last_name"?: string;
+    "password"?: string;
+    "postal_code"?: AaaCorporationEconomicCode;
+    "ssn"?: AaaCorporationEconomicCode;
+    "status"?: string;
+    "updated_at"?: string;
+}
+
+export interface UserResponseLoginOKAccountCityId {
+    "Int64"?: number;
+    "Valid"?: boolean;
 }
 
 export interface UserResponseLoginOKAccountCorporation {
-    "address"?: AaaUserCorporationAddress;
-    "cellphone"?: AaaUserCorporationAddress;
-    "city_id"?: AaaUserCorporationCityId;
-    "country_id"?: AaaUserCorporationCityId;
-    "created_at"?: string;
-    "economic_code"?: AaaUserCorporationAddress;
-    "first_name"?: AaaUserCorporationAddress;
-    "last_name"?: AaaUserCorporationAddress;
-    "name"?: AaaUserCorporationAddress;
-    "national_id"?: AaaUserCorporationAddress;
-    "phone"?: AaaUserCorporationAddress;
-    "province_id"?: AaaUserCorporationCityId;
-    "register_code"?: AaaUserCorporationAddress;
-    "updated_at"?: string;
+    "economic_code"?: AaaCorporationEconomicCode;
+    "id"?: number;
+    "legal_name"?: string;
+    "legal_register"?: AaaCorporationEconomicCode;
     "user_id"?: number;
-    "zip_code"?: AaaUserCorporationCityId;
-}
-
-export interface UserResponseLoginOKAccountPersonal {
-    "address"?: AaaUserCorporationAddress;
-    "cellphone"?: AaaUserCorporationAddress;
-    "city_id"?: AaaUserCorporationCityId;
-    "country_id"?: AaaUserCorporationCityId;
-    "created_at"?: string;
-    "first_name"?: string;
-    "gender"?: string;
-    "last_name"?: string;
-    "national_id"?: AaaUserCorporationAddress;
-    "phone"?: AaaUserCorporationAddress;
-    "province_id"?: AaaUserCorporationCityId;
-    "updated_at"?: string;
-    "user_id"?: number;
-    "zip_code"?: AaaUserCorporationCityId;
 }
 
 export interface UserSendActivePayload {
     "email"?: string;
+}
+
+export interface UserUserPayload {
+    "address"?: string;
+    "avatar"?: string;
+    "cell_phone"?: string;
+    "city_id"?: number;
+    "corporation"?: UserResponseLoginOKAccountCorporation;
+    "email"?: string;
+    "first_name"?: string;
+    "gender"?: string;
+    "land_line"?: string;
+    "last_name"?: string;
+    "postal_code"?: string;
+    "ssn"?: string;
 }
 
 
@@ -396,6 +375,30 @@ export interface UserSendActivePayload {
  * ControllersApi - fetch parameter creator
  */
 export const ControllersApiFetchParamCreator = {
+    /**
+     * @func
+     * assetBrowserGet
+     * @param token the security token, get it from login route param
+     */
+    assetBrowserGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/asset/browser`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
     /**
      * @func
      * assetCategoryGet
@@ -612,6 +615,22 @@ export const ControllersApiFetchParamCreator = {
  */
 export const ControllersApiFp = {
     /**
+     * assetBrowserGet
+     * @param token the security token, get it from login route (def)
+     */
+    assetBrowserGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersBrowserResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.assetBrowserGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                    throw response;
+                }
+            });
+        };
+    },
+    /**
      * assetCategoryGet
      * @param token the security token, get it from login route (def)
      */
@@ -749,6 +768,13 @@ export const ControllersApiFp = {
  */
 export class ControllersApi extends BaseAPI {
     /**
+     * assetBrowserGet
+     * @param token the security token, get it from login route (def)
+     */
+    assetBrowserGet(params: {  token?: string; }, options: any = {}) {
+        return ControllersApiFp.assetBrowserGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * assetCategoryGet
      * @param token the security token, get it from login route (def)
      */
@@ -814,6 +840,13 @@ export class ControllersApi extends BaseAPI {
  */
 export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: string) {
     return {
+        /**
+         * assetBrowserGet
+         * @param token the security token, get it from login route (def)
+         */
+        assetBrowserGet(params: {  token?: string; }, options: any = {}) {
+            return ControllersApiFp.assetBrowserGet(params, options)(fetch, basePath);
+        },
         /**
          * assetCategoryGet
          * @param token the security token, get it from login route (def)
@@ -1114,35 +1147,6 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
-     * userCorporationPut
-     * @param token the security token, get it from login route param
-     * @param payloadData  param
-     */
-    userCorporationPut(params: {  token?: string; payloadData?: UserCorporation; }, options: any = {}): FetchArgs {
-        // verify required parameter "token" is set
-        if (params["token"] == null) {
-            params["token"] = AAA.getInstance().getToken();
-        }
-        const baseUrl = `/user/corporation`;
-        let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
-
-        let contentTypeHeader: Dictionary<string> = {};
-        contentTypeHeader = { "Content-Type": "application/json" };
-        if (params["payloadData"]) {
-            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
-        }
-        fetchOptions.headers = assign({
-            "token": params["token"],
-        }, contentTypeHeader, fetchOptions.headers);
-
-        return {
-            url: url.format(urlObj),
-            options: fetchOptions,
-        };
-    },
-    /**
-     * @func
      * userLoginPost
      * @param payloadData  param
      */
@@ -1320,7 +1324,7 @@ export const UserApiFetchParamCreator = {
      * @param token the security token, get it from login route param
      * @param payloadData  param
      */
-    userPersonalPut(params: {  token?: string; payloadData?: UserPersonalPayload; }, options: any = {}): FetchArgs {
+    userPersonalPut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -1419,23 +1423,6 @@ export const UserApiFp = {
      */
     userActivePost(params: { payloadData?: UserSendActivePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
         const fetchArgs = UserApiFetchParamCreator.userActivePost(params, options);
-        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
-            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else {
-                    throw response;
-                }
-            });
-        };
-    },
-    /**
-     * userCorporationPut
-     * @param token the security token, get it from login route (def)
-     * @param payloadData  (def)
-     */
-    userCorporationPut(params: { token?: string; payloadData?: UserCorporation;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<AaaUserCorporation> {
-        const fetchArgs = UserApiFetchParamCreator.userCorporationPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1564,7 +1551,7 @@ export const UserApiFp = {
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
-    userPersonalPut(params: { token?: string; payloadData?: UserPersonalPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+    userPersonalPut(params: { token?: string; payloadData?: UserUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
         const fetchArgs = UserApiFetchParamCreator.userPersonalPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1629,14 +1616,6 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userActivePost(params, options)(this.fetch, this.basePath);
     }
     /**
-     * userCorporationPut
-     * @param token the security token, get it from login route (def)
-     * @param payloadData  (def)
-     */
-    userCorporationPut(params: {  token?: string; payloadData?: UserCorporation; }, options: any = {}) {
-        return UserApiFp.userCorporationPut(params, options)(this.fetch, this.basePath);
-    }
-    /**
      * userLoginPost
      * @param payloadData  (def)
      */
@@ -1691,7 +1670,7 @@ export class UserApi extends BaseAPI {
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
-    userPersonalPut(params: {  token?: string; payloadData?: UserPersonalPayload; }, options: any = {}) {
+    userPersonalPut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}) {
         return UserApiFp.userPersonalPut(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -1728,14 +1707,6 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
          */
         userActivePost(params: {  payloadData?: UserSendActivePayload; }, options: any = {}) {
             return UserApiFp.userActivePost(params, options)(fetch, basePath);
-        },
-        /**
-         * userCorporationPut
-         * @param token the security token, get it from login route (def)
-         * @param payloadData  (def)
-         */
-        userCorporationPut(params: {  token?: string; payloadData?: UserCorporation; }, options: any = {}) {
-            return UserApiFp.userCorporationPut(params, options)(fetch, basePath);
         },
         /**
          * userLoginPost
@@ -1792,7 +1763,7 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
          * @param token the security token, get it from login route (def)
          * @param payloadData  (def)
          */
-        userPersonalPut(params: {  token?: string; payloadData?: UserPersonalPayload; }, options: any = {}) {
+        userPersonalPut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}) {
             return UserApiFp.userPersonalPut(params, options)(fetch, basePath);
         },
         /**
