@@ -59,6 +59,10 @@ module.exports = {
         test: /\.tsx?$/,
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
+      {
         test: /\.less$/,
         use: [
           require.resolve("style-loader"),
@@ -84,8 +88,13 @@ module.exports = {
           {
             loader: require.resolve("less-loader"),
             options: {},
-          },
+          }
         ],
+      },
+      {
+        test: /\.png$/,
+        exclude: /node_modules/,
+        loader: 'file-loader?name=images/[name].[ext]',
       },
     ],
   },
