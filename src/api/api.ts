@@ -37,25 +37,6 @@ export class BaseAPI {
     }
 }
 
-export interface AaaCorporation {
-    "economic_code"?: AaaCorporationEconomicCode;
-    "id"?: number;
-    "legal_name"?: string;
-    "legal_register"?: AaaCorporationEconomicCode;
-    "user_id"?: number;
-}
-
-export interface AaaCorporationEconomicCode {
-    "String"?: string;
-    "Valid"?: boolean;
-}
-
-export interface AaaGenderType {
-}
-
-export interface AaaUserValidStatus {
-}
-
 export interface ControllerErrorResponseSimple {
     "error"?: NotAuthorizedError;
 }
@@ -137,10 +118,15 @@ export interface DmnActiveStatus {
 export interface DmnDomain {
     "active"?: string;
     "created_at"?: string;
-    "description"?: AaaCorporationEconomicCode;
+    "description"?: DmnDomainDescription;
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
+}
+
+export interface DmnDomainDescription {
+    "String"?: string;
+    "Valid"?: boolean;
 }
 
 export interface LocationCities extends Array<LocationCitiesInner> {
@@ -288,7 +274,7 @@ export interface UserCheckMailResponse {
 export interface UserCheckMailResponseDomains {
     "active"?: string;
     "created_at"?: string;
-    "description"?: AaaCorporationEconomicCode;
+    "description"?: DmnDomainDescription;
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
@@ -318,36 +304,26 @@ export interface UserResponseLoginOK {
 }
 
 export interface UserResponseLoginOKAccount {
-    "address"?: AaaCorporationEconomicCode;
-    "avatar"?: AaaCorporationEconomicCode;
-    "cellphone"?: AaaCorporationEconomicCode;
-    "city_id"?: UserResponseLoginOKAccountCityId;
-    "corporation"?: UserResponseLoginOKAccountCorporation;
-    "created_at"?: string;
+    "address"?: string;
+    "avatar"?: string;
+    "cellphone"?: string;
+    "city_id"?: number;
+    "city_name"?: string;
+    "country_id"?: number;
+    "country_name"?: string;
+    "economic_code"?: string;
     "email"?: string;
     "first_name"?: string;
     "gender"?: string;
     "id"?: number;
-    "land_line"?: AaaCorporationEconomicCode;
+    "land_line"?: string;
     "last_name"?: string;
-    "password"?: string;
-    "postal_code"?: AaaCorporationEconomicCode;
-    "ssn"?: AaaCorporationEconomicCode;
-    "status"?: string;
-    "updated_at"?: string;
-}
-
-export interface UserResponseLoginOKAccountCityId {
-    "Int64"?: number;
-    "Valid"?: boolean;
-}
-
-export interface UserResponseLoginOKAccountCorporation {
-    "economic_code"?: AaaCorporationEconomicCode;
-    "id"?: number;
     "legal_name"?: string;
-    "legal_register"?: AaaCorporationEconomicCode;
-    "user_id"?: number;
+    "legal_register"?: string;
+    "postal_code"?: string;
+    "province_id"?: number;
+    "province_name"?: string;
+    "ssn"?: string;
 }
 
 export interface UserSendActivePayload {
@@ -359,13 +335,44 @@ export interface UserUserPayload {
     "avatar"?: string;
     "cell_phone"?: string;
     "city_id"?: number;
-    "corporation"?: UserResponseLoginOKAccountCorporation;
+    "corporation"?: UserUserPayloadCorporation;
     "email"?: string;
     "first_name"?: string;
     "gender"?: string;
     "land_line"?: string;
     "last_name"?: string;
     "postal_code"?: string;
+    "ssn"?: string;
+}
+
+export interface UserUserPayloadCorporation {
+    "economic_code"?: DmnDomainDescription;
+    "id"?: number;
+    "legal_name"?: string;
+    "legal_register"?: DmnDomainDescription;
+    "user_id"?: number;
+}
+
+export interface UserUserResponse {
+    "address"?: string;
+    "avatar"?: string;
+    "cellphone"?: string;
+    "city_id"?: number;
+    "city_name"?: string;
+    "country_id"?: number;
+    "country_name"?: string;
+    "economic_code"?: string;
+    "email"?: string;
+    "first_name"?: string;
+    "gender"?: string;
+    "id"?: number;
+    "land_line"?: string;
+    "last_name"?: string;
+    "legal_name"?: string;
+    "legal_register"?: string;
+    "postal_code"?: string;
+    "province_id"?: number;
+    "province_name"?: string;
     "ssn"?: string;
 }
 
@@ -1405,7 +1412,7 @@ export const UserApiFp = {
      * userActivePatch
      * @param payloadData  (def)
      */
-    userActivePatch(params: { payloadData?: UserCheckActivePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+    userActivePatch(params: { payloadData?: UserCheckActivePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
         const fetchArgs = UserApiFetchParamCreator.userActivePatch(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1453,7 +1460,7 @@ export const UserApiFp = {
      * userLogoutCloseotherGet
      * @param token the security token, get it from login route (def)
      */
-    userLogoutCloseotherGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+    userLogoutCloseotherGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
         const fetchArgs = UserApiFetchParamCreator.userLogoutCloseotherGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1583,12 +1590,12 @@ export const UserApiFp = {
      * userRegisterPost
      * @param payloadData  (def)
      */
-    userRegisterPost(params: { payloadData?: UserRegisterPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+    userRegisterPost(params: { payloadData?: UserRegisterPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
         const fetchArgs = UserApiFetchParamCreator.userRegisterPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
-                    return response.json();
+                    return response;
                 } else {
                     throw response;
                 }

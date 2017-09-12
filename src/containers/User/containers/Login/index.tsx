@@ -18,25 +18,26 @@ import "./style.less";
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
-    isLogin: boolean;
-    user: UserResponseLoginOKAccount;
-    setUser: (user: UserResponseLoginOKAccount) => {};
-    setIsLogin: () => {};
-    form: any;
+  isLogin: boolean;
+  user: UserResponseLoginOKAccount;
+  setUser: (user: UserResponseLoginOKAccount) => {};
+  setIsLogin: () => {};
+  form: any;
 }
 
 interface IState {
-    email: string;
-    isCorporation: boolean;
-    step: STEPS;
+  email: string;
+  isCorporation: boolean;
+  step: STEPS;
 }
 
-enum STEPS { CHECK_MAIL, LOGIN, REGISTER}
+enum STEPS { CHECK_MAIL, LOGIN, REGISTER, VERIFICATION}
 
 @connect(mapStateToProps, mapDispatchToProps)
 class PublicLoginForm extends React.Component<IProps, IState> {
 
   private i18n = I18n.getInstance();
+
   constructor(props: IProps) {
     super(props);
 
@@ -55,8 +56,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
   public render() {
     const mailPlaceHolder = this.i18n._t("Email");
-      const passwordPlaceHolder = this.i18n._t("Password");
-      const {getFieldDecorator} = this.props.form;
+    const passwordPlaceHolder = this.i18n._t("Password");
+    const {getFieldDecorator} = this.props.form;
 
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
@@ -239,6 +240,39 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             </form>
           </Card>
           }
+          {this.state.step === STEPS.VERIFICATION &&
+          <Card className="login-box" noHovering>
+            <h5 className="text-center">
+              {this.state.email}
+            </h5>
+            <p>
+              {this.i18n._t("Check your email for verification code that has been sent to your email.").toString()}
+            </p>
+            <form onSubmit={this.submitVerification.bind(this)}>
+              <FormItem>
+                {getFieldDecorator("number", {
+                  rules: [{required: true, message: "Please input your verification code!"}],
+                })(
+                  <TextField
+                    fullWidth={true}
+                    type="number"
+                    hintText={this.i18n._t("verification code")}
+                    autoFocus={true}
+                  />
+                )}
+              </FormItem>
+              <FormItem>
+                <RaisedButton
+                  type="submit"
+                  label={<Translate value="verify"/>}
+                  primary={true}
+                  className="button-full-width"
+                  icon={<Icon name="arrow"/>}
+                />
+              </FormItem>
+            </form>
+          </Card>
+          }
           {this.state.step !== STEPS.REGISTER && this.state.step !== STEPS.LOGIN &&
           <Row className="text-center forgot-password">
             <p>
@@ -313,22 +347,12 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           last_name: values.lastName,
           mobile: values.mobile,
           password: values.password,
-          company_name: values.companyName,
-          user_type: values.corporation ? "corporation" : "personal",
+          legal_name: values.companyName,
         }
       }).then((data) => {
 
-        // store sccount data in store
-        this.props.setUser(data.account);
-        this.props.setIsLogin();
-
-        // redirect to dashboard
-        this.props.history.push("/dashboard");
-
-        // show notification
-        notification.success({
-          message: "Registration",
-          description: this.i18n._t("Your account created successfully.").toString(),
+        this.setState({
+          step: STEPS.VERIFICATION
         });
 
       }).catch((error) => {
@@ -349,6 +373,36 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           });
         }
       });
+    });
+  }
+
+  private submitVerification(e) {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const api = new UserApi();
+        api.userActivePatch({
+          payloadData: {
+            email: this.state.email,
+            number: parseInt(values.number),
+          }
+        })
+          .then((data) => {
+
+            // store sccount data in store
+            // this.props.setUser(data);
+            // this.props.setIsLogin();
+
+            // redirect to dashboard
+            this.props.history.push("/dashboard");
+
+            // show notification
+            notification.success({
+              message: "Registration",
+              description: this.i18n._t("Your account created successfully.").toString(),
+            });
+          });
+      }
     });
   }
 

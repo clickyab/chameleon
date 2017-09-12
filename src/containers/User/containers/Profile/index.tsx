@@ -38,11 +38,10 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    console.log(this.props.user.user_type);
 
     this.state = {
       isDisable: true,
-      isCorporation: this.props.user.user_type !== "personal",
+      isCorporation: this.props.user.corporation && this.props.user.corporation.legal_name ? true : false,
       user: this.props.user,
     };
   }
@@ -68,7 +67,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
           user: {
             ...this.state.user,
             personal: {
-              ...this.state.user.personal,
+              ...this.state.user,
               city_id: city,
             }
           }
@@ -253,11 +252,12 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                         disabled={this.state.isDisable}
                       />)}
                   </FormItem>
-                  <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate value="If you want to change your password"/><a onClick={() => {
-                      this.setState({
-                        isDisable: !this.state.isDisable,
-                      });
-                    }}><Translate value="Click here"/></a></p>
+                  <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
+                    value="If you want to change your password"/><a onClick={() => {
+                    this.setState({
+                      isDisable: !this.state.isDisable,
+                    });
+                  }}><Translate value="Click here"/></a></p>
                 </Col>
               </Row>
               <Row gutter={16} type="flex" align="top">
