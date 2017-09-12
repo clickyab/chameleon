@@ -632,7 +632,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -648,7 +654,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -664,7 +676,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -680,7 +698,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -696,7 +720,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -713,7 +743,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -730,7 +766,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -746,7 +788,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -763,7 +811,13 @@ export const ControllersApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response;
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1007,7 +1061,13 @@ export const LocationApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1022,7 +1082,13 @@ export const LocationApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1038,7 +1104,13 @@ export const LocationApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1419,7 +1491,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1435,7 +1513,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1451,7 +1535,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1467,7 +1557,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1483,7 +1579,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1499,7 +1601,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1515,7 +1623,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1532,7 +1646,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1548,7 +1668,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1565,7 +1691,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1581,7 +1713,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
@@ -1597,7 +1735,13 @@ export const UserApiFp = {
                 if (response.status >= 200 && response.status < 300) {
                     return response;
                 } else {
-                    throw response;
+                  return response.json()
+                  .then(res => {
+                    throw res;
+                  })
+                  .catch((err) => {
+                    throw err;
+                  });
                 }
             });
         };
