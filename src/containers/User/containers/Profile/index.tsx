@@ -38,11 +38,10 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    console.log(this.props.user.user_type);
 
     this.state = {
       isDisable: true,
-      isCorporation: this.props.user.user_type !== "personal",
+      isCorporation: this.props.user && this.props.user.legal_name ? true : false,
       user: this.props.user,
     };
   }
@@ -57,7 +56,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
           user: {
             ...this.state.user,
             corporation: {
-              ...this.state.user.corporation,
+              ...this.state.user,
               city_id: city,
             }
           }
@@ -68,7 +67,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
           user: {
             ...this.state.user,
             personal: {
-              ...this.state.user.personal,
+              ...this.state.user,
               city_id: city,
             }
           }
@@ -90,63 +89,34 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
       }
 
       const userApi = new UserApi();
-      if (this.state.isCorporation) {
-        userApi.userCorporationPut({
-          payloadData: {
-            ...values
-          }
-        }).then(() => {
-          notification.success({
-            message: "Update Profile",
-            description: this.i18n._t("Your corporation profile has been updated successfully.").toString(),
-          });
-        }).catch((error) => {
-          if (error.error) {
-            notification.error({
-              message: "Update Failed",
-              description: this.i18n._t(error.error.text).toString(),
-            });
-          } else {
 
-            let errors: string[] = [];
-            Object.keys(error).map((key: string) => {
-              errors.push(this.i18n._t(error[key].text).toString());
-            });
-            notification.error({
-              message: "Update Failed",
-              description: errors.join("<br>"),
-            });
-          }
+      userApi.userPersonalPut({
+        payloadData: {
+          ...values
+        }
+      }).then(() => {
+        notification.success({
+          message: "Update Profile",
+          description: this.i18n._t("Your corporation profile has been updated successfully.").toString(),
         });
-      } else {
-        userApi.userPersonalPut({
-          payloadData: {
-            ...values
-          }
-        }).then(() => {
-          notification.success({
-            message: "Update Profile",
-            description: this.i18n._t("Your corporation profile has been updated successfully.").toString(),
+      }).catch((error) => {
+        if (error.error) {
+          notification.error({
+            message: "Update Failed",
+            description: this.i18n._t(error.error.text).toString(),
           });
-        }).catch((error) => {
-          if (error.error) {
-            notification.error({
-              message: "Update Failed",
-              description: this.i18n._t(error.error.text).toString(),
-            });
-          } else {
+        } else {
 
-            let errors: string[] = [];
-            Object.keys(error).map((key: string) => {
-              errors.push(this.i18n._t(error[key].text).toString());
-            });
-            notification.error({
-              message: "Update Failed",
-              description: errors.join("<br>"),
-            });
-          }
-        });
-      }
+          let errors: string[] = [];
+          Object.keys(error).map((key: string) => {
+            errors.push(this.i18n._t(error[key].text).toString());
+          });
+          notification.error({
+            message: "Update Failed",
+            description: errors.join("<br>"),
+          });
+        }
+      });
 
     });
   }
@@ -163,7 +133,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("first_name", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.first_name : this.state.user.personal.first_name,
+                      initialValue: this.state.user.first_name,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit Name!")}],
                     })(
                       <TextField
@@ -175,7 +145,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("last_name", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.last_name : this.state.user.personal.last_name,
+                      initialValue: this.state.user.last_name,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit last name!")}],
                     })(
                       <TextField
@@ -190,7 +160,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 <Col span={8}>
                   <FormItem>
                     {getFieldDecorator("corporationName", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.name : null,
+                      initialValue: this.state.user.legal_name,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
                     })(
                       <TextField
@@ -202,7 +172,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 <Col span={8}>
                   <FormItem>
                     {getFieldDecorator("register_code", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.register_code : null,
+                      initialValue: this.state.user.legal_register,
                       rules: [{required: true, message: this.i18n._t("Please input your register code!")}],
                     })(
                       <TextField
@@ -214,7 +184,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 <Col span={8}>
                   <FormItem>
                     {getFieldDecorator("economic_code", {
-                      initialValue: this.state.isCorporation ? this.props.user.corporation.economic_code : null,
+                      initialValue: this.props.user.economic_code,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit Economic code!")}],
                     })(
                       <TextField
@@ -253,18 +223,19 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                         disabled={this.state.isDisable}
                       />)}
                   </FormItem>
-                  <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate value="If you want to change your password"/><a onClick={() => {
-                      this.setState({
-                        isDisable: !this.state.isDisable,
-                      });
-                    }}><Translate value="Click here"/></a></p>
+                  <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
+                    value="If you want to change your password"/><a onClick={() => {
+                    this.setState({
+                      isDisable: !this.state.isDisable,
+                    });
+                  }}><Translate value="Click here"/></a></p>
                 </Col>
               </Row>
               <Row gutter={16} type="flex" align="top">
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("cellphone", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.cellphone : this.state.user.personal.cellphone,
+                      initialValue: this.state.user.cellphone,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit mobile!")}],
                     })(
                       <TextField
@@ -276,7 +247,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("phone", {
-                      initialValue: this.state.isCorporation ? this.state.user.corporation.phone : this.state.user.personal.phone,
+                      initialValue: this.state.user.land_line,
                       rules: [{required: true, message: this.i18n._t("Please input your Submit phone!")}],
                     })(
                       <TextField
@@ -291,12 +262,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   <LocationSelect
                     onChange={this.handleChangeLocation.bind(this)}
                     countryId={1}
-                    cityId={this.state.isCorporation ?
-                      (this.state.user.corporation.city_id ? this.state.user.corporation.city_id.Int64 : null) :
-                      (this.state.user.personal.city_id ? this.state.user.personal.city_id.Int64 : null)}
-                    provinceId={this.state.isCorporation ?
-                      (this.state.user.corporation.city_id ? this.state.user.corporation.city_id.Int64 : null) :
-                      (this.state.user.personal.city_id ? this.state.user.personal.city_id.Int64 : null)}
+                    cityId={this.state.user.city_id}
+                    provinceId={this.state.user.province_id}
                   />
                 </Col>
                 <Col span={12}>
