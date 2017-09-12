@@ -251,7 +251,6 @@ class TypeComponent extends React.Component <IProps, IState> {
           <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
         </Row>
         <hr/>
-        <Phone/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
         <Row className="campaign-device">
           <SelectBox span={8} items={this.deviceTypes} initialSelect={null}

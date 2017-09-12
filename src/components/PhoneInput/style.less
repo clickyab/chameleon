@@ -8,27 +8,48 @@
     display: flex;
     align-items: center;
   }
-
   .country-code {
     padding-right: 5px;
-    margin-right: 5px;
+    margin-top: 49px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #DBDDE1;
+    height: 15px;
+    * {
+      height: 20px !important;
+      font-size:13px !important;
+      margin-top: -5px ;
+    }
+    > span{
+      color:@select-border-color ;
+    }
+    .plus-code{
+      margin-top: -7px;
+    }
+  }
+  .country-code-num {
+    border-right: 1px solid #ccc;
+  }
+  .phone-flag {
+    margin-top: 36px;
+    padding-right: 5px;
+    height: auto;
+    width: @flag-width;
+    border-bottom: 1px solid #DBDDE1;
+    padding-bottom: 8px;
+  }
+
+  // Remove increment and decrement arrow of number input
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
-.country-code {
-  margin-top: 22px;
-  * {
-    height: 20px !important;
-  }
-}
-.country-code-num{
-  border-right: 1px solid #ccc ;
-}
 
-.phone-flag{
-  margin-top:22px;
-  margin-right: 5px;
-  height: @flag-height;
-  width: @flag-width;
-}
+
+
+
+
+
 

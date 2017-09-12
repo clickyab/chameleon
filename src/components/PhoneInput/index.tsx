@@ -122,11 +122,11 @@ export default class PhoneInput extends React.Component<IProps, IState> {
   public render() {
     return (
       <div className="phone-input">
-        <div>
+        <div className="flag-wraper">
           <img className="phone-flag" src={require(`./flags/${this.state.code.toLocaleLowerCase()}.png`)}/>
         </div>
         <div className="country-code">
-          <span>+</span>
+          <span className="plus-code">+</span>
           <span className="country-code-num">
           <TextField
             disabled={true}
@@ -141,6 +141,7 @@ export default class PhoneInput extends React.Component<IProps, IState> {
           <TextField
             floatingLabelText={this.i18n._t("Mobile Phone Number").toString()}
             defaultValue={this.state.phone}
+            type="number"
             onChange={this.handleChangePhone.bind(this)}
             fullWidth={true}/>
         </div>
