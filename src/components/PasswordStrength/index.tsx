@@ -70,7 +70,7 @@ export default class PasswordStrength extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <div style={{position: "relative"}}>
+      <div className="password-strength">
         <Icon className="strength-meter" type={this.state.strengthIcon}/>
         <TextField {...this.props} onKeyUp={this.checkStrength}/>
       </div>
