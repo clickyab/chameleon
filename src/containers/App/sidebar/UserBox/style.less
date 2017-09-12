@@ -1,0 +1,68 @@
+.mini-container {
+  position: absolute;
+  top: 65%;
+  width: 100%;
+  right: 0;
+  background: #113160;
+  cursor: pointer;
+  color: #A1C0EE;
+
+  .mini-close {
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: row-reverse;
+    height: 65px;
+  }
+
+  .avatar {
+    margin: 0 5%;
+  }
+
+  .avatar-close-menu {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .mini-info {
+    direction: rtl;
+  }
+
+  .mini-bell {
+    margin-right: auto;
+    padding-left: 10%;
+
+    > .bell-icon {
+      font-size: 18px;
+      position: absolute;
+      top: -10px;
+    }
+  }
+
+  .mini-open {
+    display: block;
+    width: 95%;
+    direction: rtl;
+
+    ul {
+      li {
+        border-bottom: 1px dotted #1B509A;
+        padding: 10px 15px;
+        margin-left: 10%;
+
+        &:last-child {
+          border: 0;
+        }
+      }
+    }
+  }
+
+  .user-box-icon {
+    position: absolute;
+    top: -12px;
+    left: 9%;
+    background: #113160;
+  }
+}

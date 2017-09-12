@@ -14,7 +14,7 @@ import {RootState} from "../../../../../redux/reducers/index";
  *
  */
 interface IProps extends RouteComponentProps<BreadcrumbProps> {
-  breadcrumb: string
+  breadcrumb: string;
 }
 
 @connect(mapStateToProps)
@@ -32,7 +32,7 @@ class PrivateBreadcrumb extends React.Component<IProps> {
 
     // Replace last breadcrumb item with props [maybe use in campaign edit, replace id with name]
     if (this.props.breadcrumb.length > 0) {
-      locationPath[locationPath.length - 1] = this.props.breadcrumb
+      locationPath[locationPath.length - 1] = this.props.breadcrumb;
     }
 
     return (
