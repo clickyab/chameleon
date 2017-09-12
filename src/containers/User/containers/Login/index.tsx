@@ -326,7 +326,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
         .catch((error) => {
           notification.error({
             message: "Login Failed",
-            description: this.i18n._t(error.error.text).toString(),
+            description: this.i18n._t(error.statusText).toString(),
           });
         });
     });
@@ -389,9 +389,14 @@ class PublicLoginForm extends React.Component<IProps, IState> {
         })
           .then((data) => {
 
-            // store sccount data in store
-            // this.props.setUser(data);
-            // this.props.setIsLogin();
+            // store account data in store
+            this.props.setUser(data.account);
+            this.props.setIsLogin();
+
+
+            const aaa = AAA.getInstance();
+            aaa.setToken(data.token, true);
+
 
             // redirect to dashboard
             this.props.history.push("/dashboard");
