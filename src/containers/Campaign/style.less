@@ -2,7 +2,8 @@
 
 .campaign-content {
   margin-top: @campaign-top-distance;
-  margin-right: @campaign-right-distance;
+  margin-right: @campaign-side-distance;
+  margin-left: @campaign-side-distance;
     label{
       font-size: @campaign-label-font;
     }
@@ -140,6 +141,7 @@ span[role="menuitem"] {
       > div {
         svg {
           height: @radio-button-height !important;
+          fill: @campaign-form-symbol-color !important;
         }
       }
     }

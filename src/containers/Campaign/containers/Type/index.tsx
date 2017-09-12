@@ -16,6 +16,8 @@ import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config" ;
 
+import Phone from "../../../../components/PhoneInput/index";
+
 
 import "./style.less";
 
