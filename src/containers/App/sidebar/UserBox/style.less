@@ -2,13 +2,13 @@
 
 .mini-container {
   position: absolute;
-  top: 65%;
+  margin-top: 30%;
   width: 100%;
   right: 0;
   background: @user-box-background-color;
   cursor: pointer;
   color: @sidebar-link-color ;
-
+  border-top:1px solid #234478 ;
   .mini-close {
     display: flex;
     justify-content: baseline;
@@ -71,4 +71,18 @@
     left: 9%;
     background: #113160;
   }
+
+
+  .profile-collapse-badge , .profile-badge{
+    sup{
+      box-shadow: 0 0 0 1px  @user-box-background-color !important;
+      background-color: @badge-dot-color;
+      height: @badge-dot-size;
+    }
+  }
+  .profile-collapse-badge{
+    bottom:-6px;
+    right: -2px;
+  }
 }
+

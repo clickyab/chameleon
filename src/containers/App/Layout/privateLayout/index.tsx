@@ -34,7 +34,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Layout>
+      <Layout style={{ minHeight: "100vh" }}>
         <Layout>
           <Header className="header">
             <PrivateBreadcrumb/>
