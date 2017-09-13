@@ -115,7 +115,7 @@ export default class UserBox extends React.Component<IProps, IState> {
 
           <div className="mini-bell">
             <Badge dot className="profile-badge">
-              <Icon type="bell" className="bell-icon" style={{fontSize: 18}} onClick={this.handleBellClick}/>
+              <Icon type="bell" className="bell-icon" style={{ fontSize: "18px" }} onClick={this.handleBellClick}/>
             </Badge>
           </div>
         </div>

@@ -273,6 +273,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   icon={<Icon name="arrow"/>}
                 />
               </FormItem>
+              <Row className="text-center">
+                <a onClick={this.resendVerificationCode.bind(this)}>
+                  <Translate value="Resend Verification Code"/>
+                </a>
+              </Row>
             </form>
           </Card>
           }
@@ -461,6 +466,20 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           description: this.i18n._t(error.statusText).toString(),
         });
       });
+  }
+
+  private resendVerificationCode() {
+    const api = new UserApi();
+    api.userActivePost({
+      payloadData: {
+        email: this.state.email,
+      }
+    }).then(() => {
+      notification.success({
+        message: "Resend Verification Code",
+        description: this.i18n._t("Your verification has been sent.").toString(),
+      });
+    });
   }
 
   private submitMail(e) {
