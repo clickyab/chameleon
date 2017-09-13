@@ -35,7 +35,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
         return this.props.history.push("/explore");
       case "reports":
         return this.props.history.push("/report");
-      case "suppors":
+      case "support":
         return this.props.history.push("/support");
     }
   }
@@ -72,7 +72,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
             <Icon type="upload"/>
             <span>{this.i18n._t("Reports")}</span>
           </Menu.Item>
-          <Menu.Item key="suppors">
+          <Menu.Item key="support">
             <Icon type="upload"/>
             <span>{this.i18n._t("Support")}</span>
             {this.props.collapsed &&
