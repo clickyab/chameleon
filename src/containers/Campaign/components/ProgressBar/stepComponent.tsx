@@ -13,7 +13,7 @@ export default class Step extends React.Component<any> {
   public render() {
     let {className, ...rest} = this.props;
     return (
-      <MaterialStep {...rest} className={className}>
+      <MaterialStep {...rest} className={className} >
         {this.props.children}
       </MaterialStep>
     );

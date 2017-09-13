@@ -1,11 +1,13 @@
+@import "../../../App/theme";
+
 .mini-container {
   position: absolute;
   top: 65%;
   width: 100%;
   right: 0;
-  background: #113160;
+  background: @user-box-background-color;
   cursor: pointer;
-  color: #A1C0EE;
+  color: @sidebar-link-color ;
 
   .mini-close {
     display: flex;
@@ -51,6 +53,10 @@
         border-bottom: 1px dotted #1B509A;
         padding: 10px 15px;
         margin-left: 10%;
+        a {
+          color: @sidebar-link-color;
+          font-size: @user-box-item-size ;
+        }
 
         &:last-child {
           border: 0;
