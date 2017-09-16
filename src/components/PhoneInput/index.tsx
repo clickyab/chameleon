@@ -137,7 +137,7 @@ export default class PhoneInput extends React.Component<IProps, IState> {
             style={{width: 20}}/>
         </span>
         </div>
-        <div>
+        <div className="phone-text-field">
           <TextField
             floatingLabelText={this.i18n._t("Mobile Phone Number").toString()}
             defaultValue={this.state.phone}

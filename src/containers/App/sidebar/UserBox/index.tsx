@@ -98,7 +98,7 @@ export default class UserBox extends React.Component<IProps, IState> {
           </div>
 
           <div className="mini-bell">
-            <Badge dot>
+            <Badge dot className="profile-badge">
               <Icon type="bell" className="bell-icon" style={{fontSize: 18}} onClick={this.handleBellClick}/>
             </Badge>
           </div>
@@ -128,6 +128,7 @@ export default class UserBox extends React.Component<IProps, IState> {
     return (
       <div className="mini-container">
         <div className="avatar-close-menu">
+          <Badge dot className="profile-collapse-badge" />
           <Avatar icon="user"/>
         </div>
       </div>
