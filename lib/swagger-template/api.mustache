@@ -10,7 +10,7 @@ import "whatwg-fetch";
 interface Dictionary<T> { [index: string]: T; }
 export interface FetchAPI { (url: string, init?: any): Promise<any>; }
 
-const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
+export const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
 
 export interface FetchArgs {
     url: string;
@@ -193,9 +193,11 @@ export const {{classname}}Fp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
