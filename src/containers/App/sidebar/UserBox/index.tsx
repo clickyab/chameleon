@@ -1,6 +1,7 @@
 import * as React from "react";
 import "./style.less";
-import {Avatar, Badge, Icon, notification} from "antd";
+import {Badge, Icon, notification} from "antd";
+import Avatar from "../../../../components/Avatar/index";
 import {Link} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
 
@@ -77,6 +78,7 @@ export default class UserBox extends React.Component<IProps, IState> {
       description: ":)"
     });
   }
+
   /**
    * @desc Handle Profile completion with dash-offset
    *
@@ -85,9 +87,10 @@ export default class UserBox extends React.Component<IProps, IState> {
    * @return {number}
    */
   private handlePercent(): number {
-    return 1000 - ( Math.floor(115 * 25) ) / 100 ;
+    return 1000 - ( Math.floor(115 * 25) ) / 100;
     // return 1000 - ( (125 * this.props.percent) ) / 100 ;
   }
+
   /**
    * @desc render this function when menu unfolded
    *
@@ -100,13 +103,7 @@ export default class UserBox extends React.Component<IProps, IState> {
       <div className="mini-container">
         <div className="mini-close" onClick={this.handleContainerClick}>
           <Icon className="user-box-icon" type="up"/>
-          <div className="avatar">
-            <svg className="profile-progress">
-              <circle className="progress-border inactive"  cx="16" cy="16" r="18"  strokeWidth="1" fill="transparent" />*/}
-              <circle className="progress-border active" strokeDashoffset={this.handlePercent()} cx="16" cy="16" r="18"  strokeWidth="1" fill="transparent" />
-            </svg>
-            <Avatar icon="user"/>
-          </div>
+          <Avatar defualtIcon={true} progress={66}/>
           <div className="mini-info">
             کسری انصاری
             <br/>
@@ -145,11 +142,7 @@ export default class UserBox extends React.Component<IProps, IState> {
       <div className="mini-container">
         <div className="avatar-close-menu">
           <Badge dot className="profile-collapse-badge"/>
-          <svg className="profile-progress">
-            <circle className="progress-border inactive"  cx="16" cy="16" r="18"  strokeWidth="1" fill="transparent" />*/}
-            <circle className="progress-border active" strokeDashoffset={this.handlePercent()} cx="16" cy="16" r="18"  strokeWidth="1" fill="transparent" />
-          </svg>
-          <Avatar icon="user"/>
+          <Avatar defualtIcon={true} progress={66}/>
         </div>
       </div>
     );
