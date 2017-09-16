@@ -64,6 +64,7 @@
     "inherits": "^2.0.3",
     "json2po": "^1.0.5",
     "material-ui": "^0.18.7",
+    "md5": "^2.2.1",
     "moment": "^2.18.1",
     "moment-jalaali": "^0.7.0",
     "momentjs": "^2.0.0",
