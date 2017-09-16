@@ -1,6 +1,9 @@
 import * as React from "react";
 import "./style.less";
 import {Badge, Icon, notification} from "antd";
+import {connect} from "react-redux";
+import {RootState} from "../../../../redux/reducers/index";
+import {UserResponseLoginOKAccount} from "../../../../api/api";
 import Avatar from "../../../../components/Avatar/index";
 import {Link} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
@@ -11,6 +14,7 @@ import I18n from "../../../../services/i18n/index";
 interface IProps {
   collapse: boolean;
   percent?: number;
+  user?: UserResponseLoginOKAccount;
 }
 
 /**
@@ -28,6 +32,12 @@ interface IState {
  * @class
  *
  */
+function mapStateToProps(state: RootState) {
+  return {
+    user: state.app.user,
+  };
+}
+@connect(mapStateToProps)
 export default class UserBox extends React.Component<IProps, IState> {
 
   /**
@@ -41,9 +51,7 @@ export default class UserBox extends React.Component<IProps, IState> {
     this.state = {
       open: false
     };
-
     this.handleContainerClick = this.handleContainerClick.bind(this);
-    this.handlePercent = this.handlePercent.bind(this);
   }
 
   /**
@@ -80,18 +88,6 @@ export default class UserBox extends React.Component<IProps, IState> {
   }
 
   /**
-   * @desc Handle Profile completion with dash-offset
-   *
-   * @func
-   *
-   * @return {number}
-   */
-  private handlePercent(): number {
-    return 1000 - ( Math.floor(115 * 25) ) / 100;
-    // return 1000 - ( (125 * this.props.percent) ) / 100 ;
-  }
-
-  /**
    * @desc render this function when menu unfolded
    *
    * @func
@@ -103,7 +99,7 @@ export default class UserBox extends React.Component<IProps, IState> {
       <div className="mini-container">
         <div className="mini-close" onClick={this.handleContainerClick}>
           <Icon className="user-box-icon" type="up"/>
-          <Avatar defualtIcon={true} progress={66}/>
+          <Avatar user={this.props.user} progress={25}/>
           <div className="mini-info">
             کسری انصاری
             <br/>
@@ -142,7 +138,7 @@ export default class UserBox extends React.Component<IProps, IState> {
       <div className="mini-container">
         <div className="avatar-close-menu">
           <Badge dot className="profile-collapse-badge"/>
-          <Avatar defualtIcon={true} progress={66}/>
+          <Avatar user={this.props.user} progress={66}/>
         </div>
       </div>
     );
