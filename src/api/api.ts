@@ -18,7 +18,7 @@ import "whatwg-fetch";
 interface Dictionary<T> { [index: string]: T; }
 export interface FetchAPI { (url: string, init?: any): Promise<any>; }
 
-const BASE_PATH = "http://staging.crab.clickyab.ae/api".replace(/\/+$/, "");
+export const BASE_PATH = "http://staging.crab.clickyab.ae/api".replace(/\/+$/, "");
 
 export interface FetchArgs {
     url: string;
@@ -76,6 +76,46 @@ export interface ControllersIspResponseInner {
     "updated_at"?: string;
 }
 
+export interface ControllersListPublisherDefResponse {
+    "checkable"?: boolean;
+    "columns"?: Array<ControllersListPublisherDefResponseColumns>;
+    "hash"?: string;
+    "multiselect"?: boolean;
+}
+
+export interface ControllersListPublisherDefResponseColumns {
+    "data"?: string;
+    "filter"?: boolean;
+    "filter_valid_map"?: { [key: string]: Array<string>; };
+    "name"?: string;
+    "searchable"?: boolean;
+    "sortable"?: boolean;
+    "title"?: string;
+    "type"?: string;
+    "visible"?: boolean;
+}
+
+export interface ControllersListPublisherResponse {
+    "data"?: Array<ControllersListPublisherResponseData>;
+    "hash"?: string;
+    "page"?: number;
+    "per_page"?: number;
+    "total"?: number;
+}
+
+export interface ControllersListPublisherResponseData {
+    "_actions"?: string;
+    "created_at"?: string;
+    "domain"?: string;
+    "id"?: number;
+    "name"?: string;
+    "pub_type"?: string;
+    "status"?: string;
+    "supplier"?: string;
+    "updated_at"?: string;
+    "user_id"?: number;
+}
+
 export interface ControllersManufacturers extends Array<ControllersManufacturersInner> {
 }
 
@@ -112,11 +152,8 @@ export interface ControllersWhiteBlackListsInner {
     "user_id"?: number;
 }
 
-export interface DmnActiveStatus {
-}
-
 export interface DmnDomain {
-    "active"?: string;
+    "active"?: boolean;
     "created_at"?: string;
     "description"?: DmnDomainDescription;
     "id"?: number;
@@ -242,24 +279,61 @@ export interface OrmWhiteBlackList {
     "user_id"?: number;
 }
 
+export interface PermissionColumn {
+    "data"?: string;
+    "filter"?: boolean;
+    "filter_valid_map"?: { [key: string]: Array<string>; };
+    "name"?: string;
+    "searchable"?: boolean;
+    "sortable"?: boolean;
+    "title"?: string;
+    "type"?: string;
+    "visible"?: boolean;
+}
+
+export interface PubPubType {
+}
+
+export interface PubPublisher {
+    "created_at"?: string;
+    "domain"?: string;
+    "id"?: number;
+    "name"?: string;
+    "pub_type"?: string;
+    "status"?: string;
+    "supplier"?: string;
+    "updated_at"?: string;
+    "user_id"?: number;
+}
+
+export interface PubPublisherDataTable {
+    "_actions"?: string;
+    "created_at"?: string;
+    "domain"?: string;
+    "id"?: number;
+    "name"?: string;
+    "pub_type"?: string;
+    "status"?: string;
+    "supplier"?: string;
+    "updated_at"?: string;
+    "user_id"?: number;
+}
+
+export interface PubStatus {
+}
+
 export interface TransT9Base {
     "params"?: Array<string>;
     "text"?: string;
 }
 
-export interface UserCallBack {
+export interface UserCallBackPayload {
     "new_password"?: string;
-    "token"?: string;
 }
 
 export interface UserChangePassword {
     "current_password"?: string;
     "new_password"?: string;
-}
-
-export interface UserCheckActivePayload {
-    "email"?: string;
-    "number"?: number;
 }
 
 export interface UserCheckMailPayload {
@@ -272,7 +346,7 @@ export interface UserCheckMailResponse {
 }
 
 export interface UserCheckMailResponseDomains {
-    "active"?: string;
+    "active"?: boolean;
     "created_at"?: string;
     "description"?: DmnDomainDescription;
     "id"?: number;
@@ -280,7 +354,7 @@ export interface UserCheckMailResponseDomains {
     "updated_at"?: string;
 }
 
-export interface UserForget {
+export interface UserForgetPayload {
     "email"?: string;
 }
 
@@ -326,31 +400,21 @@ export interface UserResponseLoginOKAccount {
     "ssn"?: string;
 }
 
-export interface UserSendActivePayload {
-    "email"?: string;
-}
-
 export interface UserUserPayload {
     "address"?: string;
     "avatar"?: string;
     "cell_phone"?: string;
     "city_id"?: number;
-    "corporation"?: UserUserPayloadCorporation;
+    "economic_code"?: string;
     "email"?: string;
     "first_name"?: string;
     "gender"?: string;
     "land_line"?: string;
     "last_name"?: string;
+    "legal_name"?: string;
+    "legal_register"?: string;
     "postal_code"?: string;
     "ssn"?: string;
-}
-
-export interface UserUserPayloadCorporation {
-    "economic_code"?: DmnDomainDescription;
-    "id"?: number;
-    "legal_name"?: string;
-    "legal_register"?: DmnDomainDescription;
-    "user_id"?: number;
 }
 
 export interface UserUserResponse {
@@ -374,6 +438,15 @@ export interface UserUserResponse {
     "province_id"?: number;
     "province_name"?: string;
     "ssn"?: string;
+}
+
+export interface UserVerifyIdResponse {
+    "account"?: UserResponseLoginOKAccount;
+    "token"?: string;
+}
+
+export interface UserVerifyResendPayload {
+    "email_string"?: string;
 }
 
 
@@ -587,6 +660,75 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
+     * publisherListDefinitionGet
+     * @param token the security token, get it from login route param
+     */
+    publisherListDefinitionGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/publisher/list/definition`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * publisherListGet
+     * @param token the security token, get it from login route param
+     * @param status  param
+     * @param domain  search the domain field param
+     * @param c  count per page param
+     * @param p  page number param
+     * @param pubType  param
+     */
+    publisherListGet(params: {  token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/publisher/list`;
+        let urlObj = url.parse(baseUrl, true);
+        urlObj.query =  assign({}, urlObj.query);
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["pubType"] !== undefined) {
+            urlObj.query["pub_type"] = params["pubType"];
+        }
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * uploadModulePost
      * @param module  param
      * @param token the security token, get it from login route param
@@ -634,9 +776,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -656,9 +800,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -678,9 +824,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -700,9 +848,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -722,9 +872,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -745,9 +897,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -768,9 +922,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -790,9 +946,64 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * publisherListDefinitionGet
+     * @param token the security token, get it from login route (def)
+     */
+    publisherListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherDefResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.publisherListDefinitionGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * publisherListGet
+     * @param token the security token, get it from login route (def)
+     * @param status  (def)
+     * @param domain  search the domain field (def)
+     * @param c  count per page (def)
+     * @param p  page number (def)
+     * @param pubType  (def)
+     */
+    publisherListGet(params: { token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.publisherListGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -813,9 +1024,11 @@ export const ControllersApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -885,6 +1098,25 @@ export class ControllersApi extends BaseAPI {
      */
     inventoryPresetsGet(params: {  token?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryPresetsGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * publisherListDefinitionGet
+     * @param token the security token, get it from login route (def)
+     */
+    publisherListDefinitionGet(params: {  token?: string; }, options: any = {}) {
+        return ControllersApiFp.publisherListDefinitionGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * publisherListGet
+     * @param token the security token, get it from login route (def)
+     * @param status  (def)
+     * @param domain  search the domain field (def)
+     * @param c  count per page (def)
+     * @param p  page number (def)
+     * @param pubType  (def)
+     */
+    publisherListGet(params: {  token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string; }, options: any = {}) {
+        return ControllersApiFp.publisherListGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * uploadModulePost
@@ -958,6 +1190,25 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          */
         inventoryPresetsGet(params: {  token?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryPresetsGet(params, options)(fetch, basePath);
+        },
+        /**
+         * publisherListDefinitionGet
+         * @param token the security token, get it from login route (def)
+         */
+        publisherListDefinitionGet(params: {  token?: string; }, options: any = {}) {
+            return ControllersApiFp.publisherListDefinitionGet(params, options)(fetch, basePath);
+        },
+        /**
+         * publisherListGet
+         * @param token the security token, get it from login route (def)
+         * @param status  (def)
+         * @param domain  search the domain field (def)
+         * @param c  count per page (def)
+         * @param p  page number (def)
+         * @param pubType  (def)
+         */
+        publisherListGet(params: {  token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string; }, options: any = {}) {
+            return ControllersApiFp.publisherListGet(params, options)(fetch, basePath);
         },
         /**
          * uploadModulePost
@@ -1063,9 +1314,11 @@ export const LocationApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1084,9 +1337,11 @@ export const LocationApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1106,9 +1361,11 @@ export const LocationApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1178,13 +1435,13 @@ export const LocationApiFactory = function (fetch?: FetchAPI, basePath?: string)
 export const UserApiFetchParamCreator = {
     /**
      * @func
-     * userActivePatch
+     * userEmailVerifyResendPost
      * @param payloadData  param
      */
-    userActivePatch(params: {  payloadData?: UserCheckActivePayload; }, options: any = {}): FetchArgs {
-        const baseUrl = `/user/active`;
+    userEmailVerifyResendPost(params: {  payloadData?: UserVerifyResendPayload; }, options: any = {}): FetchArgs {
+        const baseUrl = `/user/email/verify/resend`;
         let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "PATCH" }, options);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
@@ -1202,19 +1459,20 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
-     * userActivePost
-     * @param payloadData  param
+     * userEmailVerifyTokenGet
+     * @param token  param
      */
-    userActivePost(params: {  payloadData?: UserSendActivePayload; }, options: any = {}): FetchArgs {
-        const baseUrl = `/user/active`;
+    userEmailVerifyTokenGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/email/verify/{token}`
+            .replace(`{${"token"}}`, `${ params["token"] }`);
         let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
-        contentTypeHeader = { "Content-Type": "application/json" };
-        if (params["payloadData"]) {
-            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
-        }
         if (contentTypeHeader) {
             fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
         }
@@ -1322,30 +1580,6 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
-     * userPasswordCallbackPut
-     * @param payloadData  param
-     */
-    userPasswordCallbackPut(params: {  payloadData?: UserCallBack; }, options: any = {}): FetchArgs {
-        const baseUrl = `/user/password/callback`;
-        let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
-
-        let contentTypeHeader: Dictionary<string> = {};
-        contentTypeHeader = { "Content-Type": "application/json" };
-        if (params["payloadData"]) {
-            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
-        }
-        if (contentTypeHeader) {
-            fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
-        }
-
-        return {
-            url: url.format(urlObj),
-            options: fetchOptions,
-        };
-    },
-    /**
-     * @func
      * userPasswordChangePut
      * @param token the security token, get it from login route param
      * @param payloadData  param
@@ -1375,10 +1609,40 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
+     * userPasswordChangeTokenPut
+     * @param token  param
+     * @param payloadData  param
+     */
+    userPasswordChangeTokenPut(params: {  token?: string; payloadData?: UserCallBackPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/password/change/{token}`
+            .replace(`{${"token"}}`, `${ params["token"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        if (contentTypeHeader) {
+            fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
+        }
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * userPasswordForgetPost
      * @param payloadData  param
      */
-    userPasswordForgetPost(params: {  payloadData?: UserForget; }, options: any = {}): FetchArgs {
+    userPasswordForgetPost(params: {  payloadData?: UserForgetPayload; }, options: any = {}): FetchArgs {
         const baseUrl = `/user/password/forget`;
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
@@ -1399,27 +1663,23 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
-     * userPersonalPut
-     * @param token the security token, get it from login route param
-     * @param payloadData  param
+     * userPasswordVerifyTokenGet
+     * @param token  param
      */
-    userPersonalPut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}): FetchArgs {
+    userPasswordVerifyTokenGet(params: {  token?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
         }
-        const baseUrl = `/user/personal`;
+        const baseUrl = `/user/password/verify/{token}`
+            .replace(`{${"token"}}`, `${ params["token"] }`);
         let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
-        contentTypeHeader = { "Content-Type": "application/json" };
-        if (params["payloadData"]) {
-            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        if (contentTypeHeader) {
+            fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
         }
-        fetchOptions.headers = assign({
-            "token": params["token"],
-        }, contentTypeHeader, fetchOptions.headers);
 
         return {
             url: url.format(urlObj),
@@ -1474,6 +1734,35 @@ export const UserApiFetchParamCreator = {
             options: fetchOptions,
         };
     },
+    /**
+     * @func
+     * userUpdatePut
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    userUpdatePut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/update`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
 };
 
 /**
@@ -1481,11 +1770,11 @@ export const UserApiFetchParamCreator = {
  */
 export const UserApiFp = {
     /**
-     * userActivePatch
+     * userEmailVerifyResendPost
      * @param payloadData  (def)
      */
-    userActivePatch(params: { payloadData?: UserCheckActivePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
-        const fetchArgs = UserApiFetchParamCreator.userActivePatch(params, options);
+    userEmailVerifyResendPost(params: { payloadData?: UserVerifyResendPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        const fetchArgs = UserApiFetchParamCreator.userEmailVerifyResendPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1493,9 +1782,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1503,11 +1794,11 @@ export const UserApiFp = {
         };
     },
     /**
-     * userActivePost
-     * @param payloadData  (def)
+     * userEmailVerifyTokenGet
+     * @param token  (def)
      */
-    userActivePost(params: { payloadData?: UserSendActivePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
-        const fetchArgs = UserApiFetchParamCreator.userActivePost(params, options);
+    userEmailVerifyTokenGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserVerifyIdResponse> {
+        const fetchArgs = UserApiFetchParamCreator.userEmailVerifyTokenGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1515,9 +1806,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1537,9 +1830,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1559,9 +1854,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1581,9 +1878,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1603,31 +1902,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
-                    throw err;
-                  });
-                }
-            });
-        };
-    },
-    /**
-     * userPasswordCallbackPut
-     * @param payloadData  (def)
-     */
-    userPasswordCallbackPut(params: { payloadData?: UserCallBack;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
-        const fetchArgs = UserApiFetchParamCreator.userPasswordCallbackPut(params, options);
-        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
-            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else {
-                  return response.json()
-                  .then(res => {
-                    throw res;
-                  })
-                  .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1648,9 +1927,36 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * userPasswordChangeTokenPut
+     * @param token  (def)
+     * @param payloadData  (def)
+     */
+    userPasswordChangeTokenPut(params: { token?: string; payloadData?: UserCallBackPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        const fetchArgs = UserApiFetchParamCreator.userPasswordChangeTokenPut(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1661,7 +1967,7 @@ export const UserApiFp = {
      * userPasswordForgetPost
      * @param payloadData  (def)
      */
-    userPasswordForgetPost(params: { payloadData?: UserForget;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+    userPasswordForgetPost(params: { payloadData?: UserForgetPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
         const fetchArgs = UserApiFetchParamCreator.userPasswordForgetPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1670,9 +1976,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1680,12 +1988,11 @@ export const UserApiFp = {
         };
     },
     /**
-     * userPersonalPut
-     * @param token the security token, get it from login route (def)
-     * @param payloadData  (def)
+     * userPasswordVerifyTokenGet
+     * @param token  (def)
      */
-    userPersonalPut(params: { token?: string; payloadData?: UserUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
-        const fetchArgs = UserApiFetchParamCreator.userPersonalPut(params, options);
+    userPasswordVerifyTokenGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        const fetchArgs = UserApiFetchParamCreator.userPasswordVerifyTokenGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1693,9 +2000,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1715,9 +2024,11 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1737,9 +2048,36 @@ export const UserApiFp = {
                 } else {
                   return response.json()
                   .then(res => {
+                    res.status = response.status;
                     throw res;
                   })
                   .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * userUpdatePut
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userUpdatePut(params: { token?: string; payloadData?: UserUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        const fetchArgs = UserApiFetchParamCreator.userUpdatePut(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
                     throw err;
                   });
                 }
@@ -1753,18 +2091,18 @@ export const UserApiFp = {
  */
 export class UserApi extends BaseAPI {
     /**
-     * userActivePatch
+     * userEmailVerifyResendPost
      * @param payloadData  (def)
      */
-    userActivePatch(params: {  payloadData?: UserCheckActivePayload; }, options: any = {}) {
-        return UserApiFp.userActivePatch(params, options)(this.fetch, this.basePath);
+    userEmailVerifyResendPost(params: {  payloadData?: UserVerifyResendPayload; }, options: any = {}) {
+        return UserApiFp.userEmailVerifyResendPost(params, options)(this.fetch, this.basePath);
     }
     /**
-     * userActivePost
-     * @param payloadData  (def)
+     * userEmailVerifyTokenGet
+     * @param token  (def)
      */
-    userActivePost(params: {  payloadData?: UserSendActivePayload; }, options: any = {}) {
-        return UserApiFp.userActivePost(params, options)(this.fetch, this.basePath);
+    userEmailVerifyTokenGet(params: {  token?: string; }, options: any = {}) {
+        return UserApiFp.userEmailVerifyTokenGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * userLoginPost
@@ -1795,13 +2133,6 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userMailCheckPost(params, options)(this.fetch, this.basePath);
     }
     /**
-     * userPasswordCallbackPut
-     * @param payloadData  (def)
-     */
-    userPasswordCallbackPut(params: {  payloadData?: UserCallBack; }, options: any = {}) {
-        return UserApiFp.userPasswordCallbackPut(params, options)(this.fetch, this.basePath);
-    }
-    /**
      * userPasswordChangePut
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
@@ -1810,19 +2141,26 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userPasswordChangePut(params, options)(this.fetch, this.basePath);
     }
     /**
+     * userPasswordChangeTokenPut
+     * @param token  (def)
+     * @param payloadData  (def)
+     */
+    userPasswordChangeTokenPut(params: {  token?: string; payloadData?: UserCallBackPayload; }, options: any = {}) {
+        return UserApiFp.userPasswordChangeTokenPut(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * userPasswordForgetPost
      * @param payloadData  (def)
      */
-    userPasswordForgetPost(params: {  payloadData?: UserForget; }, options: any = {}) {
+    userPasswordForgetPost(params: {  payloadData?: UserForgetPayload; }, options: any = {}) {
         return UserApiFp.userPasswordForgetPost(params, options)(this.fetch, this.basePath);
     }
     /**
-     * userPersonalPut
-     * @param token the security token, get it from login route (def)
-     * @param payloadData  (def)
+     * userPasswordVerifyTokenGet
+     * @param token  (def)
      */
-    userPersonalPut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}) {
-        return UserApiFp.userPersonalPut(params, options)(this.fetch, this.basePath);
+    userPasswordVerifyTokenGet(params: {  token?: string; }, options: any = {}) {
+        return UserApiFp.userPasswordVerifyTokenGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * userPingGet
@@ -1838,6 +2176,14 @@ export class UserApi extends BaseAPI {
     userRegisterPost(params: {  payloadData?: UserRegisterPayload; }, options: any = {}) {
         return UserApiFp.userRegisterPost(params, options)(this.fetch, this.basePath);
     }
+    /**
+     * userUpdatePut
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userUpdatePut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}) {
+        return UserApiFp.userUpdatePut(params, options)(this.fetch, this.basePath);
+    }
 }
 
 /**
@@ -1846,18 +2192,18 @@ export class UserApi extends BaseAPI {
 export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
     return {
         /**
-         * userActivePatch
+         * userEmailVerifyResendPost
          * @param payloadData  (def)
          */
-        userActivePatch(params: {  payloadData?: UserCheckActivePayload; }, options: any = {}) {
-            return UserApiFp.userActivePatch(params, options)(fetch, basePath);
+        userEmailVerifyResendPost(params: {  payloadData?: UserVerifyResendPayload; }, options: any = {}) {
+            return UserApiFp.userEmailVerifyResendPost(params, options)(fetch, basePath);
         },
         /**
-         * userActivePost
-         * @param payloadData  (def)
+         * userEmailVerifyTokenGet
+         * @param token  (def)
          */
-        userActivePost(params: {  payloadData?: UserSendActivePayload; }, options: any = {}) {
-            return UserApiFp.userActivePost(params, options)(fetch, basePath);
+        userEmailVerifyTokenGet(params: {  token?: string; }, options: any = {}) {
+            return UserApiFp.userEmailVerifyTokenGet(params, options)(fetch, basePath);
         },
         /**
          * userLoginPost
@@ -1888,13 +2234,6 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
             return UserApiFp.userMailCheckPost(params, options)(fetch, basePath);
         },
         /**
-         * userPasswordCallbackPut
-         * @param payloadData  (def)
-         */
-        userPasswordCallbackPut(params: {  payloadData?: UserCallBack; }, options: any = {}) {
-            return UserApiFp.userPasswordCallbackPut(params, options)(fetch, basePath);
-        },
-        /**
          * userPasswordChangePut
          * @param token the security token, get it from login route (def)
          * @param payloadData  (def)
@@ -1903,19 +2242,26 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
             return UserApiFp.userPasswordChangePut(params, options)(fetch, basePath);
         },
         /**
+         * userPasswordChangeTokenPut
+         * @param token  (def)
+         * @param payloadData  (def)
+         */
+        userPasswordChangeTokenPut(params: {  token?: string; payloadData?: UserCallBackPayload; }, options: any = {}) {
+            return UserApiFp.userPasswordChangeTokenPut(params, options)(fetch, basePath);
+        },
+        /**
          * userPasswordForgetPost
          * @param payloadData  (def)
          */
-        userPasswordForgetPost(params: {  payloadData?: UserForget; }, options: any = {}) {
+        userPasswordForgetPost(params: {  payloadData?: UserForgetPayload; }, options: any = {}) {
             return UserApiFp.userPasswordForgetPost(params, options)(fetch, basePath);
         },
         /**
-         * userPersonalPut
-         * @param token the security token, get it from login route (def)
-         * @param payloadData  (def)
+         * userPasswordVerifyTokenGet
+         * @param token  (def)
          */
-        userPersonalPut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}) {
-            return UserApiFp.userPersonalPut(params, options)(fetch, basePath);
+        userPasswordVerifyTokenGet(params: {  token?: string; }, options: any = {}) {
+            return UserApiFp.userPasswordVerifyTokenGet(params, options)(fetch, basePath);
         },
         /**
          * userPingGet
@@ -1930,6 +2276,14 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
          */
         userRegisterPost(params: {  payloadData?: UserRegisterPayload; }, options: any = {}) {
             return UserApiFp.userRegisterPost(params, options)(fetch, basePath);
+        },
+        /**
+         * userUpdatePut
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        userUpdatePut(params: {  token?: string; payloadData?: UserUserPayload; }, options: any = {}) {
+            return UserApiFp.userUpdatePut(params, options)(fetch, basePath);
         },
     };
 };

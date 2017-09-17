@@ -20,6 +20,7 @@ export default class PublicContainer extends React.Component<IProps> {
       <div>
         <Route path={`${match.url}/login`} component={PublicLoginContainer}/>
         <Route path={`${match.url}/recover-password`} component={PublicRecoverPassword}/>
+        <Route path={`${match.url}/register/verification/:token`} component={PublicLoginContainer}/>
         <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
       </div>
     );
