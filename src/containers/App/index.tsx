@@ -64,8 +64,8 @@ class App extends React.Component<IProps, IState> {
         })
         .catch((error) => {
           if (error.status === 401) {
-         //    AAA.getInstance().unsetToken();
-         //    window.location.href = ("/");
+            AAA.getInstance().unsetToken();
+            window.location.href = ("/");
           }
         });
     } else {
