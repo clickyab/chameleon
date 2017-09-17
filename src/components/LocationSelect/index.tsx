@@ -223,7 +223,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
         })}
         </SelectField>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <SelectField
             floatingLabelText={this.i18n._t("Province")}
             fullWidth={true}
@@ -235,7 +235,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
             })}
           </SelectField>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <SelectField
             floatingLabelText={this.i18n._t("City")}
             fullWidth={true}
