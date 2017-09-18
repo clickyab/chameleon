@@ -257,7 +257,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                     />
                   </FormItem>
                   <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
-                    value="If you want to change your password"/>
+                    value="If you want to change your password "/>
                     <a onClick={() => {
                       this.setState({
                         showPasswordModal: true,
@@ -330,14 +330,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 </Col>
               </Row>
               <Row gutter={16} type="flex" align="top">
-                <Col span={12}>
-                  <LocationSelect
-                    onChange={this.handleChangeLocation.bind(this)}
-                    countryId={1}
-                    cityId={this.state.user.city_id}
-                    provinceId={this.state.user.province_id}
-                  />
-                </Col>
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("land_line", {

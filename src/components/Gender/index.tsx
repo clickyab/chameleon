@@ -1,4 +1,6 @@
 import * as React from "react";
+import Translate from "../i18n/Translate/index";
+import "./style.less";
 
 
 interface IProps {
@@ -32,13 +34,15 @@ export default class Gender extends React.Component <IProps, IState> {
 
   render() {
     return (
-      <div>
-        <div className={this.state.value === "male" ? "active" : null} onClick={() => {
+      <div className="gender">
+        <Translate value="gender"/>
+        <br/>
+        <div className={`gender-item ${this.state.value === "male" ? "active" : ""}`} onClick={() => {
           this.onClick("male");
         }}>
           Male
         </div>
-        <div className={this.state.value === "female" ? "active" : null} onClick={() => {
+        <div className={`gender-item ${this.state.value === "female" ? "active" : ""}`} onClick={() => {
           this.onClick("female");
         }}>
           Female
