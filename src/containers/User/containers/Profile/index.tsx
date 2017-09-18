@@ -331,14 +331,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
               </Row>
               <Row gutter={16} type="flex" align="top">
                 <Col span={12}>
-                  <LocationSelect
-                    onChange={this.handleChangeLocation.bind(this)}
-                    countryId={1}
-                    cityId={this.state.user.city_id}
-                    provinceId={this.state.user.province_id}
-                  />
-                </Col>
-                <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("land_line", {
                       initialValue: this.state.user.land_line,

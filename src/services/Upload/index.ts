@@ -90,7 +90,7 @@ export default class Upload {
             resp = {
               status: res.error ? UPLOAD_STATUS.FAILED : UPLOAD_STATUS.FINISHED,
               progress: res.error ? 0 : 100,
-
+              url: res.error ? null : res.src,
             };
           } catch (e) {
             resp = {
