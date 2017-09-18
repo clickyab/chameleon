@@ -16,7 +16,7 @@ export default class Gender extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: null
+      value: props.value || null
     };
 
     this.onClick = this.onClick.bind(this);
@@ -34,18 +34,20 @@ export default class Gender extends React.Component <IProps, IState> {
 
   render() {
     return (
-      <div className="gender">
+      <div>
         <Translate value="gender"/>
-        <br/>
-        <div className={`gender-item ${this.state.value === "male" ? "active" : ""}`} onClick={() => {
-          this.onClick("male");
-        }}>
-          Male
-        </div>
-        <div className={`gender-item ${this.state.value === "female" ? "active" : ""}`} onClick={() => {
-          this.onClick("female");
-        }}>
-          Female
+        <div className="gender">
+          <br/>
+          <div className={`gender-item ${this.state.value === "female" ? "active" : ""}`} onClick={() => {
+            this.onClick("female");
+          }}>
+            Female
+          </div>
+          <div className={`gender-item ${this.state.value === "male" ? "active" : ""}`} onClick={() => {
+            this.onClick("male");
+          }}>
+            Male
+          </div>
         </div>
       </div>
     );
