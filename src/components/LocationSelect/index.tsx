@@ -173,6 +173,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
     const province = this.state.provinces.find((c) => (c.id === provinceId));
     return this.api.locationCitiesProvincesIdGet({provincesId: province.id.toString()})
       .then((cities) => {
+        console.log(cities);
         this.setState({
           province,
           cities,

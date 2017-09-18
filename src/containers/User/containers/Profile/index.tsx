@@ -17,6 +17,7 @@ import LocationSelect from "../../../../components/LocationSelect/index";
 import Gender from "../../../../components/Gender/index";
 import Upload, {UPLOAD_MODULES} from "../../../../services/Upload/index";
 import {error} from "util";
+import ChangePassword from "./components/ChangePassword/index";
 
 const FormItem = Form.Item;
 
@@ -30,6 +31,7 @@ export interface IState {
   isDisable: boolean;
   isCorporation: boolean;
   user: UserResponseLoginOKAccount;
+  showPasswordModal: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -43,6 +45,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
+      showPasswordModal: false,
       isDisable: true,
       isCorporation: this.props.user && this.props.user.legal_name ? true : false,
       user: this.props.user,
@@ -88,7 +91,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   }
 
   private handleSubmit(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.props.form.validateFields((err, values) => {
       console.log(values);
       if (err) {
@@ -154,6 +157,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   }
 
   render() {
+    console.log(this.state);
     const {getFieldDecorator} = this.props.form;
     return (
       <div className={( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container"}>
@@ -253,11 +257,13 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                     />
                   </FormItem>
                   <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
-                    value="If you want to change your password "/><a onClick={() => {
-                    this.setState({
-                      isDisable: !this.state.isDisable,
-                    });
-                  }}><Translate value="Click here"/></a></p>
+                    value="If you want to change your password "/>
+                    <a onClick={() => {
+                      this.setState({
+                        showPasswordModal: true,
+                      });
+                    }}><Translate value="Click here"/></a>
+                  </p>
                 </Col>
               </Row>
 
@@ -287,7 +293,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       />)}
                   </FormItem>
                 </Col>
-                  <Col span={12}>
+                <Col span={12}>
                   <LocationSelect
                     onChange={this.handleChangeLocation.bind(this)}
                     countryId={1}
@@ -377,6 +383,14 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             </Col>
           </Row>
         </Form>
+        <ChangePassword
+          onOk={() => {
+            this.setState({showPasswordModal: false});
+          }}
+          onCancel={() => {
+            this.setState({showPasswordModal: false});
+          }}
+          visible={this.state.showPasswordModal}/>
       </div>
     );
   }
