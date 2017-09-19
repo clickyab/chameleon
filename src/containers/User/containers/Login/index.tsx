@@ -14,6 +14,7 @@ import Icon from "../../../../components/Icon/index";
 import PasswordStrength from "../../../../components/PasswordStrength/index";
 
 import "./style.less";
+import PhoneInput from "../../../../components/PhoneInput/index";
 
 const FormItem = Form.Item;
 
@@ -198,10 +199,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 {getFieldDecorator("mobile", {
                   rules: [{required: true, message: "Please input your phone!"}],
                 })(
-                  <TextField
-                    fullWidth={true}
-                    floatingLabelText={this.i18n._t("Phone Number")}
-                  />
+                  <PhoneInput/>
                 )}
               </FormItem>
               <FormItem>

@@ -1,10 +1,9 @@
 import * as React from "react";
-import {Route, RouteComponentProps} from "react-router";
+import {Redirect, Route, RouteComponentProps} from "react-router";
 import {RootState} from "../../redux/reducers/index";
 import {connect} from "react-redux";
 import PublicLoginContainer from "./containers/Login";
-import {PrivateRoute} from "../../components";
-import PublicProfileContainer from "./containers/Profile/index";
+import UserArea from "./components/UserArea";
 import PublicRecoverPassword from "./containers/RecoverPassword/index";
 
 interface IProps extends RouteComponentProps<void> {
@@ -20,7 +19,8 @@ export default class PublicContainer extends React.Component<IProps> {
       <div>
         <Route path={`${match.url}/login`} component={PublicLoginContainer}/>
         <Route path={`${match.url}/recover-password`} component={PublicRecoverPassword}/>
-        <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
+        <Route path={`${match.url}/register/verification/:token`} component={PublicLoginContainer}/>
+        <Route path={`${match.url}/`} component={UserArea}/>
       </div>
     );
   }

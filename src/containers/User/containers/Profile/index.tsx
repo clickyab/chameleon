@@ -14,6 +14,10 @@ import CONFIG from "../../../../constants/config" ;
 
 import "./style.less";
 import LocationSelect from "../../../../components/LocationSelect/index";
+import Gender from "../../../../components/Gender/index";
+import Upload, {UPLOAD_MODULES} from "../../../../services/Upload/index";
+import {error} from "util";
+import ChangePassword from "./components/ChangePassword/index";
 
 const FormItem = Form.Item;
 
@@ -27,6 +31,7 @@ export interface IState {
   isDisable: boolean;
   isCorporation: boolean;
   user: UserResponseLoginOKAccount;
+  showPasswordModal: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -40,10 +45,19 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
+      showPasswordModal: false,
       isDisable: true,
       isCorporation: this.props.user && this.props.user.legal_name ? true : false,
       user: this.props.user,
     };
+  }
+
+  componentDidMount() {
+    const api = new UserApi();
+    api.userPingGet({})
+      .then((res) => {
+        this.setState({user: res.account});
+      });
   }
 
   private handleChangeLocation(country, province, city) {
@@ -77,7 +91,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   }
 
   private handleSubmit(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.props.form.validateFields((err, values) => {
       console.log(values);
       if (err) {
@@ -90,7 +104,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
       const userApi = new UserApi();
 
-      userApi.userPersonalPut({
+      userApi.userUpdatePut({
         payloadData: {
           ...values
         }
@@ -121,11 +135,33 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
     });
   }
 
+  uploadAvatar(file) {
+    const uploader = new Upload(UPLOAD_MODULES.AVATAR, file);
+    uploader.upload((state) => {
+      // todo:: show progress
+      console.log(state);
+    })
+      .then((res) => {
+        notification.success({
+          message: this.i18n._t("Upload Avatar"),
+          description: this.i18n._t("Your avatar changed successfully.").toString(),
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: this.i18n._t("Upload Avatar"),
+          description: this.i18n._t("Error in change avatar.").toString(),
+        });
+      });
+
+  }
+
   render() {
     console.log(this.state);
     const {getFieldDecorator} = this.props.form;
     return (
       <div className={( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container"}>
+        <input type="file" onChange={(e) => this.uploadAvatar(e.target.files[0])} ref="avatar" accept="image/*"/>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <Row gutter={16} type="flex" align="top" justify="center">
             <Col span={18}>
@@ -146,7 +182,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   <FormItem>
                     {getFieldDecorator("last_name", {
                       initialValue: this.state.user.last_name,
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit last name!")}],
+                      rules: [{required: true, message: this.i18n._t("Please input your last name!")}],
                     })(
                       <TextField
                         fullWidth={true}
@@ -159,9 +195,9 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
               <Row gutter={16} type="flex" align="top">
                 <Col span={8}>
                   <FormItem>
-                    {getFieldDecorator("corporationName", {
+                    {getFieldDecorator("legal_name", {
                       initialValue: this.state.user.legal_name,
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit Corpration Name!")}],
+                      rules: [{required: true, message: this.i18n._t("Please input your Submit Corporation Name!")}],
                     })(
                       <TextField
                         fullWidth={true}
@@ -212,31 +248,67 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 </Col>
                 <Col span={12}>
                   <FormItem>
-                    {getFieldDecorator("password", {
-                      initialValue: "********",
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit password!")}],
-                    })(
-                      <TextField
-                        fullWidth={true}
-                        floatingLabelText={this.i18n._t("Password")}
-                        type="password"
-                        disabled={this.state.isDisable}
-                      />)}
+                    <TextField
+                      value={"********"}
+                      fullWidth={true}
+                      floatingLabelText={this.i18n._t("Password")}
+                      type="password"
+                      disabled={this.state.isDisable}
+                    />
                   </FormItem>
                   <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
-                    value="If you want to change your password"/><a onClick={() => {
-                    this.setState({
-                      isDisable: !this.state.isDisable,
-                    });
-                  }}><Translate value="Click here"/></a></p>
+                    value="If you want to change your password"/>
+                    <a onClick={() => {
+                      this.setState({
+                        showPasswordModal: true,
+                      });
+                    }}><Translate value="Click here"/></a>
+                  </p>
                 </Col>
               </Row>
+
+              <Row gutter={16} type="flex" align="top">
+                <Col>
+                  <FormItem>
+                    {getFieldDecorator("gender", {
+                      initialValue: this.state.user.gender,
+                      rules: [{required: true, message: this.i18n._t("Please select your Gender!")}],
+                    })(
+                      <Gender/>
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+
               <Row gutter={16} type="flex" align="top">
                 <Col span={12}>
                   <FormItem>
-                    {getFieldDecorator("cellphone", {
+                    {getFieldDecorator("ssn", {
+                      initialValue: this.state.user.ssn,
+                      rules: [{required: true, message: this.i18n._t("Please input your National ID!")}],
+                    })(
+                      <TextField
+                        fullWidth={true}
+                        floatingLabelText={this.i18n._t("National ID")}
+                      />)}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <LocationSelect
+                    onChange={this.handleChangeLocation.bind(this)}
+                    countryId={1}
+                    cityId={this.state.user.city_id}
+                    provinceId={this.state.user.province_id}
+                  />
+                </Col>
+              </Row>
+
+              <Row gutter={16} type="flex" align="top">
+                <Col span={12}>
+                  <FormItem>
+                    {getFieldDecorator("cell_phone", {
                       initialValue: this.state.user.cellphone,
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit mobile!")}],
+                      rules: [{required: true, message: this.i18n._t("Please input your mobile number!")}],
                     })(
                       <TextField
                         fullWidth={true}
@@ -246,41 +318,41 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                 </Col>
                 <Col span={12}>
                   <FormItem>
-                    {getFieldDecorator("phone", {
-                      initialValue: this.state.user.land_line,
-                      rules: [{required: true, message: this.i18n._t("Please input your Submit phone!")}],
+                    {getFieldDecorator("postal_code", {
+                      initialValue: this.state.user.postal_code,
+                      rules: [{required: true, message: this.i18n._t("Please input your postal code!")}],
                     })(
                       <TextField
                         fullWidth={true}
-                        floatingLabelText={this.i18n._t("phone")}
+                        floatingLabelText={this.i18n._t("Postal Code")}
                       />)}
                   </FormItem>
                 </Col>
               </Row>
               <Row gutter={16} type="flex" align="top">
                 <Col span={12}>
-                  <LocationSelect
-                    onChange={this.handleChangeLocation.bind(this)}
-                    countryId={1}
-                    cityId={this.state.user.city_id}
-                    provinceId={this.state.user.province_id}
-                  />
-                </Col>
-                <Col span={12}>
                   <FormItem>
-                    <TextField
-                      fullWidth={true}
-                      floatingLabelText={this.i18n._t("Post Address")}
-                    />
+                    {getFieldDecorator("land_line", {
+                      initialValue: this.state.user.land_line,
+                      rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
+                    })(
+                      <TextField
+                        fullWidth={true}
+                        floatingLabelText={this.i18n._t("Phone")}
+                      />)}
                   </FormItem>
                 </Col>
                 <Col span={12}>
                   <FormItem>
-                    <TextField
-                      fullWidth={true}
-                      floatingLabelText={this.i18n._t("Address")}
-                      disabled={true}
-                    />
+                    {getFieldDecorator("address", {
+                      initialValue: this.state.user.address,
+                      rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
+                    })(
+                      <TextField
+                        fullWidth={true}
+                        floatingLabelText={this.i18n._t("Address")}
+                      />
+                    )}
                   </FormItem>
                 </Col>
               </Row>
@@ -311,6 +383,14 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             </Col>
           </Row>
         </Form>
+        <ChangePassword
+          onOk={() => {
+            this.setState({showPasswordModal: false});
+          }}
+          onCancel={() => {
+            this.setState({showPasswordModal: false});
+          }}
+          visible={this.state.showPasswordModal}/>
       </div>
     );
   }
