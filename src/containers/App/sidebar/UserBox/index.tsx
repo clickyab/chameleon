@@ -2,11 +2,13 @@ import * as React from "react";
 import "./style.less";
 import {Badge, Icon, notification} from "antd";
 import {connect} from "react-redux";
+import {withRouter} from "react-router";
 import {RootState} from "../../../../redux/reducers/index";
 import {UserResponseLoginOKAccount} from "../../../../api/api";
 import Avatar from "../../../../components/Avatar/index";
 import {Link} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
+import Menu from "antd/es/menu";
 
 /**
  * @interface Props
@@ -15,6 +17,7 @@ interface IProps {
   collapse: boolean;
   percent?: number;
   user?: UserResponseLoginOKAccount;
+  history?: Array<Object>;
 }
 
 /**
@@ -38,7 +41,7 @@ function mapStateToProps(state: RootState) {
   };
 }
 @connect(mapStateToProps)
-export default class UserBox extends React.Component<IProps, IState> {
+class UserBox extends React.Component<IProps, IState> {
 
   /**
    * @constructor
@@ -60,6 +63,22 @@ export default class UserBox extends React.Component<IProps, IState> {
    */
   private i18n = I18n.getInstance();
 
+  private userBoxRouting(key) {
+    switch (key) {
+      case "editProfile":
+        return this.props.history.push("/user/profile");
+      case "transactions":
+        return this.props.history.push("/");
+      case "charge":
+        return this.props.history.push("/");
+      case "withdraw":
+        return this.props.history.push("/");
+      case "userManagement":
+        return this.props.history.push("/");
+      case "logout":
+        return this.props.history.push("/");
+    }
+  }
   /**
    * @func
    *
@@ -75,7 +94,7 @@ export default class UserBox extends React.Component<IProps, IState> {
   }
 
   /**
-   * @desc create notification when click on notif icon
+   * @desc create notification when click on notify icon
    *
    * @func
    *
@@ -113,14 +132,27 @@ export default class UserBox extends React.Component<IProps, IState> {
           </div>
         </div>
         {this.state.open && <div className="mini-open">
-          <ul>
-            <li><Link to="#">{this.i18n._t("edit profile")}</Link></li>
-            <li><Link to="#">{this.i18n._t("transactions")}</Link></li>
-            <li><Link to="#">{this.i18n._t("charge")}</Link></li>
-            <li><Link to="#">{this.i18n._t("withdraw")}</Link></li>
-            <li><Link to="#">{this.i18n._t("user management")}</Link></li>
-            <li><Link to="#">{this.i18n._t("logout")}</Link></li>
-          </ul>
+          <Menu theme="dark"  mode="inline"  defaultSelectedKeys={["1"]}
+                onClick={e => this.userBoxRouting(e.key)}>
+            <Menu.Item key="editProfile">
+              <span>{this.i18n._t("Edit profile")}</span>
+            </Menu.Item>
+            <Menu.Item key="transactions">
+              <span>{this.i18n._t("Transactions")}</span>
+            </Menu.Item>
+            <Menu.Item key="charge">
+              <span>{this.i18n._t("Charge")}</span>
+            </Menu.Item>
+            <Menu.Item key="withdraw">
+              <span>{this.i18n._t("Withdraw")}</span>
+            </Menu.Item>
+            <Menu.Item key="userManagement">
+              <span>{this.i18n._t("user management")}</span>
+            </Menu.Item>
+            <Menu.Item key="logout">
+              <span>{this.i18n._t("logout")}</span>
+            </Menu.Item>
+          </Menu>
         </div>}
       </div>
     );
@@ -135,7 +167,7 @@ export default class UserBox extends React.Component<IProps, IState> {
    */
   private closeMenuRender(): JSX.Element {
     return (
-      <div className="mini-container">
+      <div className="mini-container container-close">
         <div className="avatar-close-menu">
           <Badge dot className="profile-collapse-badge"/>
           <Avatar user={this.props.user} progress={66}/>
@@ -150,3 +182,5 @@ export default class UserBox extends React.Component<IProps, IState> {
     );
   }
 }
+
+export default withRouter<IProps>(UserBox as any);

@@ -12,6 +12,7 @@ import Translate from "../../../../components/i18n/Translate/index";
 import {Select} from "antd";
 import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
+import Tooltip from "../../../../components/Tooltip/index";
 
 const Option = Select.Option;
 
@@ -109,6 +110,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <Row type="flex" align="middle">
             <Col span={4}>
+              <Tooltip/>
               <label>Max Budget</label>
             </Col>
             <Col span={10} offset={10}>
@@ -138,6 +140,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
           <Row type="flex" align="middle">
             <Col span={4}>
+              <Tooltip/>
               <label><Translate value="Daily Budget"/></label>
             </Col>
             <Col span={10} offset={10}>
@@ -166,6 +169,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
           <Row type="flex" align="middle">
             <Col span={4}>
+              <Tooltip/>
               <label>
                 <Translate value="Pricing Strategy"/>
               </label>
@@ -197,6 +201,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
           <Row type="flex" align="middle">
             <Col span={4}>
+              <Tooltip/>
               <label><Translate value="Click price"/></label>
             </Col>
             <Col span={10} offset={10}>
@@ -225,6 +230,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
           <Row type="flex" align="middle">
             <Col span={4}>
+              <Tooltip/>
               <label><Translate value="Subscribers"/></label>
             </Col>
             <Col span={20}>

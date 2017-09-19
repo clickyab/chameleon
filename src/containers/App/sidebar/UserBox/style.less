@@ -2,14 +2,16 @@
 
 .mini-container {
   position: absolute;
-  margin-top: 30%;
   width: 100%;
   right: 0;
+  bottom:0;
   background: @user-box-background-color;
   cursor: pointer;
   color: @sidebar-link-color ;
   border-top:1px solid #234478 ;
-
+  &.container-close{
+    bottom:0 ;
+  }
   .mini-close {
     display: flex;
     justify-content: baseline;
@@ -46,23 +48,58 @@
 
   .mini-open {
     display: block;
-    width: 95%;
+    width: 100%;
     direction: rtl;
-
     ul {
       li {
         border-bottom: 1px dotted #1B509A;
-        padding: 10px 15px;
+        padding: 10px 20px;
         margin-left: 10%;
         a {
           color: @sidebar-link-color;
           font-size: @user-box-item-size ;
         }
-
         &:last-child {
           border: 0;
         }
       }
+    }
+    .ant-menu{
+      background: transparent;
+        li {
+          padding: 0;
+          padding-right:20px;
+        }
+    }
+  }
+  .ant-menu-item{
+    @media screen and (max-height: 700px)
+    {
+      padding: 0px 20px;
+      height: 30px !important;
+      line-height: 30px !important;
+    }
+    &:before{
+      content:"\203A";
+      font-weight: bold;
+      font-size: 16px;
+      width: 0;
+      float:right;
+      color:white;
+      opacity: 0;
+      transition: all ease-in 0.2s;
+    }
+  }
+  .ant-menu-item-selected{
+
+    background: transparent !important;
+    &:before{
+      content:"\203A";
+      width: auto;
+      display: block;
+      margin-left:5px;
+      opacity: 1;
+      transition: all ease-in 0.2s;
     }
   }
 

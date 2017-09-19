@@ -111,7 +111,7 @@ class ChangePassword extends React.Component<IProps, IState> {
 
   render() {
     const {getFieldDecorator} = this.props.form;
-    return (<Modal
+    return (<Modal okText={this.i18n._t("Submit").toString()} cancelText={this.i18n._t("Cancel").toString()}
         title={this.i18n._t("Change Password").toString()}
         visible={this.state.showPasswordModal}
         onCancel={() => {

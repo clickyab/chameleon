@@ -16,7 +16,7 @@ export default class Gender extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: props.value || null
+      value: (props.value) ? props.value : null
     };
 
     this.onClick = this.onClick.bind(this);
@@ -31,7 +31,9 @@ export default class Gender extends React.Component <IProps, IState> {
       this.props.onChange(gender);
     }
   }
-
+componentWillReceiveProps(nextProps: IProps) {
+   this.setState({value: nextProps.value });
+}
   render() {
     return (
       <div>
