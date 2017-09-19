@@ -257,7 +257,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                     />
                   </FormItem>
                   <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
-                    value="If you want to change your password "/>
+                    value="If you want to change your password"/>
                     <a onClick={() => {
                       this.setState({
                         showPasswordModal: true,
