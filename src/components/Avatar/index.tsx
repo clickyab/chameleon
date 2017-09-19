@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Avatar as AntAvatar} from "antd";
-import {UserResponseLoginOKAccount} from "../../api/api";
+import {BASE_PATH, UserResponseLoginOKAccount} from "../../api/api";
 import "./style.less";
 
 const md5 = require("md5");
@@ -12,6 +12,7 @@ interface IProps {
   progress?: number | null;
   size?: "large" | "small" | "default";
   user: UserResponseLoginOKAccount;
+  className?: string | null ;
 }
 
 /**
@@ -103,7 +104,7 @@ export default class Avatar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="avatar">
+      <div className={(this.props.className) ? (this.props.className + " avatar") : "avatar"}>
         {this.props.progress &&
         <svg className="profile-progress">
           <circle className="progress-border inactive" cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
@@ -116,7 +117,7 @@ export default class Avatar extends React.Component<IProps, IState> {
                   style={{transform: this.handleProgressPosition(this.props.size)}}/>
         </svg>}
         {this.props.user.avatar &&
-        <AntAvatar src={this.props.user.avatar} size={this.props.size}/>}
+        <AntAvatar src={BASE_PATH.replace("/api", "") + "/uploads/avatar/" + this.props.user.avatar} size={this.props.size}/>}
         {!this.props.user.avatar &&
         <AntAvatar src={this.handleGravatar(this.props.user.email, 100)} size={this.props.size}/>}
       </div>

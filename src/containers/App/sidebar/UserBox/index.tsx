@@ -9,6 +9,7 @@ import Avatar from "../../../../components/Avatar/index";
 import {Link} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
 import Menu from "antd/es/menu";
+import CONFIG from "../../../../constants/config";
 
 /**
  * @interface Props
@@ -68,15 +69,15 @@ class UserBox extends React.Component<IProps, IState> {
       case "editProfile":
         return this.props.history.push("/user/profile");
       case "transactions":
-        return this.props.history.push("/");
+        return this.props.history.push("/transaction-history");
       case "charge":
-        return this.props.history.push("/");
+        return this.props.history.push("/charge-account");
       case "withdraw":
         return this.props.history.push("/");
       case "userManagement":
         return this.props.history.push("/");
       case "logout":
-        return this.props.history.push("/");
+        return this.props.history.push("/logout");
     }
   }
   /**
@@ -120,7 +121,7 @@ class UserBox extends React.Component<IProps, IState> {
           <Icon className="user-box-icon" type="up"/>
           <Avatar user={this.props.user} progress={25}/>
           <div className="mini-info">
-            کسری انصاری
+            {(CONFIG.DIR === "rtl") ? (this.props.user.last_name + " " + this.props.user.first_name) : (this.props.user.first_name + " " + this.props.user.last_name) }
             <br/>
             اعتبار : 15000
           </div>
