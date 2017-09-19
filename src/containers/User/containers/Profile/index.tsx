@@ -161,7 +161,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
     const {getFieldDecorator} = this.props.form;
     return (
       <div className={( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container"}>
-        <input type="file" onChange={(e) => this.uploadAvatar(e.target.files[0])} ref="avatar" accept="image/*"/>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <Row gutter={16} type="flex" align="top" justify="center">
             <Col span={18}>
@@ -257,7 +256,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                     />
                   </FormItem>
                   <p className={(this.state.isDisable) ? "enable-des" : "disable-des"}><Translate
-                    value="If you want to change your password "/>
+                    value="If you want to change your password"/>
                     <a onClick={() => {
                       this.setState({
                         showPasswordModal: true,

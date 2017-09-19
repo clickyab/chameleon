@@ -47,6 +47,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
     };
+    this.props.setIsLogin();
   }
 
   public componentDidMount() {
