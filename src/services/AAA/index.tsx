@@ -26,7 +26,7 @@ export default class AAA {
    * Declare Cookie name
    * @type {string}
    */
-  private CookieName: string =  "USER_TOKEN";
+  private CookieName: string = "USER_TOKEN";
 
   /**
    * @prop token
@@ -107,7 +107,7 @@ export default class AAA {
   public getToken(): string | null {
     if (this.token) {
       return this.token;
-    } else if ( Cookie.get(this.CookieName)){
+    } else if (Cookie.get(this.CookieName)) {
       return Cookie.get(this.CookieName);
     }
     return null;

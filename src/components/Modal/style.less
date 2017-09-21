@@ -1,0 +1,41 @@
+@import "../../containers/App/theme";
+
+.modal-wrapper {
+  .ant-modal-content {
+    border-radius: 3px;
+  }
+  .ant-modal-header {
+    border-radius: 0;
+    background: @modal-header-bg-color;
+    color:@modal-header-color;
+    border-bottom: 1px solid #E4E6E9;
+
+    .ant-modal-title {
+      text-align: center;
+    }
+  }
+
+  .ant-modal-footer {
+    text-align: left;
+  }
+}
+
+.ant-modal-mask{
+  display: none;
+}
+
+.vertical-center-modal {
+  &:before {
+    content: "";
+    background: @modal-background-color;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+.blur{
+  filter:blur(3px);
+  transition: filte linear .3s;
+}

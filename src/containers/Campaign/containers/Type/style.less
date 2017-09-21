@@ -1,0 +1,47 @@
+@import "../../../App/theme";
+
+.campaign-device{
+  .ant-row-flex-middle{
+    min-height:@campaign-selectbox-height !important;
+  }
+}
+
+.center-select-box{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height:@campaign-selectbox-height !important;
+}
+
+.campaign-device , .campaign-type{
+  margin-top:@campaign-type-top;
+  text-align: center;
+}
+
+.button-next-step{
+  margin-top: 25px !important;
+  height: @campaign-button-height ;
+  width: 220px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+  button{
+    height: @campaign-button-height !important;
+    line-height: @campaign-button-height !important;
+    div {
+      > div{
+        height: @campaign-button-height !important;
+      }
+    }
+  }
+}
+
+.button-back-step{
+.button-next-step ;
+  button{
+    div {
+      > div{
+        background-color: transparent !important;        //Remove Hover
+      }
+    }
+  }
+}

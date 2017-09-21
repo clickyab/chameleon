@@ -1,5 +1,6 @@
+///<reference path="../../../../../node_modules/@types/react-router/index.d.ts"/>
 import * as React from "react";
-import {RouteComponentProps} from "react-router";
+import {RouteComponentProps, withRouter} from "react-router";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
@@ -14,35 +15,36 @@ import Icon from "../../../../components/Icon/index";
 import PasswordStrength from "../../../../components/PasswordStrength/index";
 
 import "./style.less";
+import PhoneInput from "../../../../components/PhoneInput/index";
 
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
-    isLogin: boolean;
-    user: UserResponseLoginOKAccount;
-    setUser: (user: UserResponseLoginOKAccount) => {};
-    setIsLogin: () => {};
-    form: any;
+  isLogin: boolean;
+  user: UserResponseLoginOKAccount;
+  setUser: (user: UserResponseLoginOKAccount) => {};
+  setIsLogin: () => {};
+  form: any;
 }
 
 interface IState {
-    email: string;
-    isCorporation: boolean;
-    step: STEPS;
+  email: string;
+  isCorporation: boolean;
+  step: STEPS;
 }
 
-enum STEPS { CHECK_MAIL, LOGIN, REGISTER}
+enum STEPS { CHECK_MAIL, LOGIN, REGISTER, VERIFICATION}
 
 @connect(mapStateToProps, mapDispatchToProps)
 class PublicLoginForm extends React.Component<IProps, IState> {
 
   private i18n = I18n.getInstance();
+
   constructor(props: IProps) {
     super(props);
-
     this.state = {
       email: "",
-      step: STEPS.CHECK_MAIL,
+      step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
     };
   }
@@ -51,12 +53,16 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     if (this.props.isLogin) {
       this.props.history.push("/");
     }
+
+    if (this.props.match.params["token"]) {
+      this.submitVerificationFromUrl();
+    }
   }
 
   public render() {
     const mailPlaceHolder = this.i18n._t("Email");
-      const passwordPlaceHolder = this.i18n._t("Password");
-      const {getFieldDecorator} = this.props.form;
+    const passwordPlaceHolder = this.i18n._t("Password");
+    const {getFieldDecorator} = this.props.form;
 
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
@@ -70,7 +76,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             <form onSubmit={this.submitMail.bind(this)}>
               <FormItem className="login-input">
                 {getFieldDecorator("email", {
-                  rules: [{required: true, message: "Please input your username!"}],
+                  rules: [{required: true, type: "email", message: "Please input a valid email!"}],
                 })(
                   <TextField
                     fullWidth={true}
@@ -84,7 +90,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   type="submit"
                   label={<Translate value="Next Step"/>}
                   primary={true}
-                  className="button-full-width button-next-step"
+                  className="button-full-width button-login-next-step"
                   icon={<Icon name="arrow" color="white"/>}
                 />
               </FormItem>
@@ -194,10 +200,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 {getFieldDecorator("mobile", {
                   rules: [{required: true, message: "Please input your phone!"}],
                 })(
-                  <TextField
-                    fullWidth={true}
-                    floatingLabelText={this.i18n._t("Phone Number")}
-                  />
+                  <PhoneInput/>
                 )}
               </FormItem>
               <FormItem>
@@ -236,6 +239,44 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   icon={<Icon name="arrow"/>}
                 />
               </FormItem>
+            </form>
+          </Card>
+          }
+          {this.state.step === STEPS.VERIFICATION &&
+          <Card className="login-box" noHovering>
+            <h5 className="text-center">
+              {this.state.email}
+            </h5>
+            <p>
+              {this.i18n._t("Check your email for verification code that has been sent to your email.").toString()}
+            </p>
+            <form onSubmit={this.submitVerification.bind(this)}>
+              <FormItem>
+                {getFieldDecorator("number", {
+                  rules: [{required: true, message: "Please input your verification code!"}],
+                })(
+                  <TextField
+                    fullWidth={true}
+                    type="number"
+                    hintText={this.i18n._t("verification code")}
+                    autoFocus={true}
+                  />
+                )}
+              </FormItem>
+              <FormItem>
+                <RaisedButton
+                  type="submit"
+                  label={<Translate value="verify"/>}
+                  primary={true}
+                  className="button-full-width"
+                  icon={<Icon name="arrow"/>}
+                />
+              </FormItem>
+              <Row className="text-center">
+                <a onClick={this.resendVerificationCode.bind(this)}>
+                  <Translate value="Resend Verification Code"/>
+                </a>
+              </Row>
             </form>
           </Card>
           }
@@ -289,11 +330,18 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             description: "",
           });
         })
-        .catch((error) => {
+        .catch((res) => {
+
           notification.error({
             message: "Login Failed",
-            description: this.i18n._t(error.error.text).toString(),
+            description: this.i18n._t(res.error.text).toString(),
           });
+
+          if (res.error.text === "not verified.") {
+            this.setState({
+              step: STEPS.VERIFICATION
+            });
+          }
         });
     });
   }
@@ -313,22 +361,12 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           last_name: values.lastName,
           mobile: values.mobile,
           password: values.password,
-          company_name: values.companyName,
-          user_type: values.corporation ? "corporation" : "personal",
+          legal_name: values.companyName,
         }
       }).then((data) => {
 
-        // store sccount data in store
-        this.props.setUser(data.account);
-        this.props.setIsLogin();
-
-        // redirect to dashboard
-        this.props.history.push("/dashboard");
-
-        // show notification
-        notification.success({
-          message: "Registration",
-          description: this.i18n._t("Your account created successfully.").toString(),
+        this.setState({
+          step: STEPS.VERIFICATION
         });
 
       }).catch((error) => {
@@ -338,7 +376,6 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             description: this.i18n._t(error.error.text).toString(),
           });
         } else {
-
           let errors: string[] = [];
           Object.keys(error).map((key: string) => {
             errors.push(this.i18n._t(error[key].text).toString());
@@ -348,6 +385,98 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             description: errors.join("<br>"),
           });
         }
+      });
+    });
+  }
+
+  private submitVerification(e) {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const api = new UserApi();
+        api.userActivePatch({
+          payloadData: {
+            email: this.state.email,
+            number: parseInt(values.number),
+          }
+        })
+          .then((data) => {
+
+            // store account data in store
+            this.props.setUser(data.account);
+            this.props.setIsLogin();
+
+
+            const aaa = AAA.getInstance();
+            aaa.setToken(data.token, true);
+
+
+            // redirect to dashboard
+            this.props.history.push("/dashboard");
+
+            // show notification
+            notification.success({
+              message: "Registration",
+              description: this.i18n._t("Your account created successfully.").toString(),
+            });
+          })
+          .catch((error) => {
+            notification.error({
+              message: "Verification Failed",
+              description: this.i18n._t(error.error.text).toString(),
+            });
+          });
+      }
+    });
+  }
+
+  private submitVerificationFromUrl() {
+    // fixme :: change api call to specific method for verification by hash code
+    const api = new UserApi();
+    api.userActivePatch({
+      payloadData: {
+        email: this.state.email,
+        number: parseInt(this.props.match.params["token"]),
+      }
+    })
+      .then((data) => {
+
+        // store account data in store
+        this.props.setUser(data.account);
+        this.props.setIsLogin();
+
+
+        const aaa = AAA.getInstance();
+        aaa.setToken(data.token, true);
+
+
+        // redirect to dashboard
+        this.props.history.push("/dashboard");
+
+        // show notification
+        notification.success({
+          message: "Registration",
+          description: this.i18n._t("Your account created successfully.").toString(),
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Verification Failed",
+          description: this.i18n._t(error.statusText).toString(),
+        });
+      });
+  }
+
+  private resendVerificationCode() {
+    const api = new UserApi();
+    api.userActivePost({
+      payloadData: {
+        email: this.state.email,
+      }
+    }).then(() => {
+      notification.success({
+        message: "Resend Verification Code",
+        description: this.i18n._t("Your verification has been sent.").toString(),
       });
     });
   }
@@ -379,7 +508,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             }
 
           }).catch((err) => {
-            console.log(err);
+            notification.error({
+              message: "Check mail Failed",
+              description: this.i18n._t("Please check your email and try again").toString(),
+            });
+
           });
         }
       }
@@ -401,4 +534,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default Form.create()(PublicLoginForm);
+export default Form.create()(withRouter(PublicLoginForm as any));

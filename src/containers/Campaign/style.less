@@ -1,0 +1,163 @@
+@import "../App/theme";
+
+.campaign-content {
+  margin-top: @campaign-top-distance;
+  margin-right: @campaign-side-distance;
+  margin-left: @campaign-side-distance;
+    label{
+      font-size: @campaign-label-font;
+    }
+  .form-select-column{
+    > .ant-form-item{
+      margin:auto !important;
+      height: 25px !important;
+    }
+  }
+  .campaign-tag{
+    margin-bottom:0;
+  }
+
+  .ant-form-item{
+    margin-top:15px !important;
+    margin-bottom:15px !important;
+    .ant-form-explain{
+      margin-top: -10px !important;
+    }
+  }
+
+  .campaign-textfield{
+    > div{
+      font-size:13px;      //Resize text-field placeholder
+    }
+  }
+}
+
+.campaign-title {
+  margin-bottom: 50px;
+}
+
+//Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
+.form-select-rtl {
+  height: @form-select-height !important;
+  width: @form-select-width !important;
+  hr {
+    display: none;
+  }
+  #status {
+    div {
+      > :nth-child(2):not(svg) {
+        padding-right: 10px !important;
+        line-height: @form-select-height !important;
+        height: @form-select-height !important;
+        font-size: 13px;
+        border: solid 1px @select-border-color !important;
+      }
+      button {
+        height: @form-select-height !important;
+        width: @form-select-width !important;
+        left: 0 !important;
+        right: auto !important;
+        padding: 0 !important;
+        fill: @campaign-form-symbol-color !important;
+        svg {
+          height:@form-select-height ;
+          border: none !important;
+          position: absolute;
+          top:0;
+          left:5px;
+        }
+      }
+    }
+  }
+}
+
+.form-select {
+  height: @form-select-height !important;
+  width: @form-select-width !important;
+  hr {
+    display: none;
+  }
+  #status {
+    div {
+      > :nth-child(2):not(svg) {
+        padding-right: 0 !important;
+        padding-left: 10px !important;
+        line-height: @form-select-height !important;
+        height: @form-select-height !important;
+        font-size: 13px;
+        border: solid 1px @select-border-color !important;
+      }
+      button {
+        height: @form-select-height !important;
+        width: @form-select-width !important;
+        padding: auto !important;
+        fill: @campaign-form-symbol-color !important;
+        > div{
+          height: @form-select-height !important;
+          //margin-left: @form-select-width/2 ;
+          //margin-top: -((@form-select-height)/2);
+        }
+        svg {
+          height:@form-select-height !important; ;
+          border: none !important;
+          position: absolute;
+          top:-2px;
+          right:5px;
+        }
+      }
+    }
+  }
+}
+
+span[role="menuitem"] {
+  text-align: center;
+  > div {
+    > div {
+      padding: 0 !important;
+      > div {
+        width: @form-select-width;
+      }
+    }
+  }
+}
+
+// End Of Form-selector style
+
+// Radio Button styles (Inline)
+.campaign-radio-group {
+  display: flex;
+  height: @radio-button-height !important;
+}
+
+.campaign-radio-button {
+  width: @radio-button-width !important;
+  height: @radio-button-height !important;
+  input {
+    height: @radio-button-height !important;
+  }
+  > div {
+    label {
+      line-height:@radio-button-height !important;
+      font-size:12px;
+    }
+    > div {
+      height: @radio-button-height !important;
+      > div {
+        svg {
+          height: @radio-button-height !important;
+          fill: @campaign-form-symbol-color !important;
+        }
+      }
+    }
+  }
+}
+
+.currency{
+  font-size: 14px;
+  color:#5E6670;
+}
+
+// Datepicker 2 style
+.tether-element{
+  z-index: 5;
+}

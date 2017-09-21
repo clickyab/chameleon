@@ -15,9 +15,11 @@
     "outDir": "build",
     "allowSyntheticDefaultImports": true,
     "lib": [
+      "es2015",
       "es6",
-      "es7",
-      "dom"
+      "es2017",
+      "dom",
+      "scripthost"
     ]
   },
   "exclude": [

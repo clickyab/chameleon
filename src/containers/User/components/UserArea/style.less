@@ -1,0 +1,60 @@
+@import "../../../App/theme";
+
+.user-area {
+  margin-top: 35px;
+  margin-right: 35px;
+  .profile-progress {
+    width: 64px !important;
+    height: 64px !important;
+    circle {
+      cx: 32px !important;
+      cy: 32px !important;
+      r: 34px !important;
+      transform: translate(0px, 64px) rotate(-90deg) !important;
+    }
+  }
+  .avatar-wrapper{
+    display: flex;
+    align-items: center;
+    h2{
+      margin: 15px;
+    }
+  }
+  .ul-wrapper {
+    display: flex;
+    justify-content: center;
+    clear: both;
+    > ul {
+      > li {
+        float: right;
+        margin-right: 30px;
+        margin-left: 30px;
+
+        a{
+          color: @user-area-link-color;
+          text-decoration: none !important;
+          &:hover{
+            color:@primary-color;
+          }
+          &.active{
+            color:@primary-color;
+            border-bottom:2px solid @primary-color;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.user-area-avatar {
+  > span {
+    height: 64px !important;
+    width: 64px !important;
+    border-radius: 50% !important;
+  }
+  &.avatar {
+    float: right;
+  }
+}
+

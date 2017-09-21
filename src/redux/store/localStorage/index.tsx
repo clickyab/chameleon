@@ -8,13 +8,13 @@ import {RootState} from "../../reducers/index";
  */
 export const loadState = (): RootState => {
   try {
-    const serializedState = localStorage.getItem('state');
+    const serializedState = localStorage.getItem("state");
     if (serializedState === null) {
       return undefined;
     }
     return JSON.parse(serializedState);
   } catch (e) {
-    return undefined
+    return undefined;
   }
 };
 
@@ -28,7 +28,7 @@ export const loadState = (): RootState => {
 export const saveState = (state: RootState): void => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
+    localStorage.setItem("state", serializedState);
   } catch (e) {
     console.log(e);
   }

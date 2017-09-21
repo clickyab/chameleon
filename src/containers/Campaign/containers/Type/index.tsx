@@ -14,6 +14,12 @@ import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
 import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
+import CONFIG from "../../../../constants/config" ;
+
+import Phone from "../../../../components/PhoneInput/index";
+
+
+import "./style.less";
 
 /**
  * @interface IOwnProps
@@ -46,6 +52,7 @@ interface IState {
   selectedDevice?: DEVICE_TYPES;
   selectedWebType?: WEB_TYPES;
   selectedApplicationType?: APPLICATION_TYPES;
+  buttonDisable?: boolean;
 }
 
 /**
@@ -158,6 +165,7 @@ class TypeComponent extends React.Component <IProps, IState> {
     this.state = {
       internalStep: INTERNAL_STEPS.SELECT_DEVICE_TYPE,
       selectedDevice: DEVICE_TYPES.WEB,
+      buttonDisable: true,
     };
   }
 
@@ -179,6 +187,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeDevicesType(value: DEVICE_TYPES) {
     this.setState({
       selectedDevice: value,
+      buttonDisable: false,
     });
   }
 
@@ -190,6 +199,7 @@ class TypeComponent extends React.Component <IProps, IState> {
       INTERNAL_STEPS.SELECT_DESKTOP_TYPE : INTERNAL_STEPS.SELECT_APPLICATION_TYPE;
     this.setState({
       internalStep: step,
+      buttonDisable: true,
     });
   }
 
@@ -209,6 +219,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeWebType(value: WEB_TYPES) {
     this.setState({
       selectedWebType: value,
+      buttonDisable: false,
     });
   }
 
@@ -219,6 +230,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeApplicationType(value: APPLICATION_TYPES) {
     this.setState({
       selectedApplicationType: value,
+      buttonDisable: false,
     });
   }
 
@@ -233,62 +245,52 @@ class TypeComponent extends React.Component <IProps, IState> {
 
   public render() {
     return (
-      <div dir="rtl">
+      <div dir={CONFIG.DIR} className="campaign-content">
         <Row>
-          <Col>
-            <h2 className="text-center">Select Campaign Type</h2>
-            <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
-          </Col>
+          <h3 className="text-center">Select Campaign Type</h3>
+          <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
         </Row>
         <hr/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
-        <Row>
-          {JSON.stringify(this.state)}
-          <SelectBox items={this.deviceTypes} initialSelect={this.state.selectedDevice}
+        <Row className="campaign-device">
+          <SelectBox span={8} items={this.deviceTypes} initialSelect={null}
                      onChange={this.handleChangeDevicesType.bind(this)}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
+            disabled={this.state.buttonDisable}
             className="button-next-step"
+            icon={<Icon name="arrow" color="white"/>}
           />
-
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-        <Row>
-          <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
+        <Row className="campaign-type">
+          <SelectBox items={this.desktopTypes} initialSelect={null}
                      onChange={this.handleChangeWebType.bind(this)}/>
           <RaisedButton
             onClick={this.handleChangeWebType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
+            disabled={this.state.buttonDisable}
             className="button-next-step"
-          />
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            primary={false}
-            className="button-next-step"
+            icon={<Icon name="arrow" color="white"/>}
           />
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
-        <Row>
+        <Row className="campaign-type">
           <SelectBox items={this.applicationTypes}
-                     initialSelect={this.state.selectedApplicationType}
+                     initialSelect={null}
                      onChange={this.handleChangeApplicationType.bind(this)}/>
           <RaisedButton
             onClick={this.handleChangeWebType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
+            disabled={this.state.buttonDisable}
             className="button-next-step"
-          />
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            primary={false}
-            className="button-next-step"
+            icon={<Icon name="arrow" color="white"/>}
           />
         </Row>
         }
