@@ -81,7 +81,6 @@ class SidebarMenu extends React.Component<IProps, IState> {
             <Badge style={{backgroundColor: "#a0bfee"}} className="badge" count={14}/>}
           </Menu.Item>
         </Menu>
-
         <UserBox collapse={this.props.collapsed}/>
       </div>
     );

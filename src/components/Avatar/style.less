@@ -1,0 +1,18 @@
+@import "../../containers/App/theme" ;
+
+
+.profile-progress{
+  position: absolute;
+  overflow: visible !important;
+}
+.progress-border{
+  &.active{
+    stroke-dasharray: 1000;
+    z-index: 5;
+    stroke: #3BBE8B;
+    transform:translate(0px,32px) rotate(-90deg)
+  }
+  &.inactive {
+    stroke: rgba(210,210,210,.4);
+  }
+}

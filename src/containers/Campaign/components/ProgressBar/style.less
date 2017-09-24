@@ -24,7 +24,7 @@
       }
       > span:last-child {    //Positioning text on bottom of Bullet
         position: absolute;
-        top: 45px;
+        top: 50px;
         left: 0;
         transform:translateX(-25%);
       }
@@ -57,12 +57,21 @@
     circle{
       display: block;
     }
+    span{
+      color: @primary-color;
+    }
      + div {
        > span{
          border-color : @primary-color !important;
          transition: all 0.2s ease-in;
        }
      }
+  }
+  @media screen and (min-width: 1400px) {
+    svg{
+      height: @step-wizard-size !important;
+      width: @step-wizard-size !important;
+    }
   }
   @media screen and (max-width: 1400px) {
     text {
@@ -74,8 +83,8 @@
     }
 
     svg {
-      height: 22px !important;
-      width: 22px !important;
+      height: @step-wizard-size - 6  !important;
+      width: @step-wizard-size - 6 !important;
     }
   }
 
@@ -85,8 +94,8 @@
     }
 
     svg {
-      height: 18px !important;
-      width: 18px !important;
+      height: @step-wizard-size - 10 !important;
+      width: @step-wizard-size - 10 !important;
     }
   }
   div {

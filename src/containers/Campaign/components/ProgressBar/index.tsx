@@ -125,7 +125,7 @@ class ProgressBar extends React.Component<IProps, IState> {
         <Stepper linear={false}>
           <Step className={this.checkStateClass(stepIndex, STEPS.TYPE)} active={stepIndex === STEPS.TYPE}
                 completed={stepIndex > STEPS.TYPE}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
+            <StepButton  disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
               <Translate value="Campaign Type"/>
             </StepButton>
           </Step>

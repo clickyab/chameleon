@@ -1,3 +1,4 @@
+///<reference path="../../../../../node_modules/@types/react-router/index.d.ts"/>
 import * as React from "react";
 import {RouteComponentProps, withRouter} from "react-router";
 import {Link} from "react-router-dom";
@@ -14,6 +15,7 @@ import Icon from "../../../../components/Icon/index";
 import PasswordStrength from "../../../../components/PasswordStrength/index";
 
 import "./style.less";
+import PhoneInput from "../../../../components/PhoneInput/index";
 
 const FormItem = Form.Item;
 
@@ -45,6 +47,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
     };
+    this.props.setIsLogin();
   }
 
   public componentDidMount() {
@@ -198,10 +201,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 {getFieldDecorator("mobile", {
                   rules: [{required: true, message: "Please input your phone!"}],
                 })(
-                  <TextField
-                    fullWidth={true}
-                    floatingLabelText={this.i18n._t("Phone Number")}
-                  />
+                  <PhoneInput/>
                 )}
               </FormItem>
               <FormItem>

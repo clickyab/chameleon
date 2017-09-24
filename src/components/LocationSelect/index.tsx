@@ -15,6 +15,8 @@ import {
 import {Row, Col} from "antd";
 import {SelectField, MenuItem} from "material-ui";
 import I18n from "../../services/i18n/index";
+import CONFIG from "../../constants/config";
+import "./style.less";
 
 /**
  * define component props
@@ -125,8 +127,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
         this.setState({
           countries,
         });
-        console.log(1111111);
-        return this.setCountry(null, 0, this.props.countryId ? this.props.countryId : countries[0].id);
+        return this.setCountry(null, 0, !!this.props.countryId ? this.props.countryId : countries[0].id, true);
       });
   }
 
@@ -213,18 +214,18 @@ export default class LocationSelect extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Row gutter={16}>
-        <Col span={8}>
-        <SelectField style={{width: 120}}
-        onChange={this.setCountry.bind(this)}
-        value={this.state.country ? this.state.country.id : null}>
-        {this.state.countries.map((country) => {
-        return (<MenuItem key={`c_${country.id}`} value={country.id} primaryText={country.name}/>);
-        })}
-        </SelectField>
-        </Col>
-        <Col span={12}>
-          <SelectField
+      <Row type="flex" align="bottom" gutter={16}>
+        {/*<Col span={8}>*/}
+        {/*<SelectField style={{width: 120}}*/}
+        {/*onChange={this.setCountry.bind(this)}*/}
+        {/*value={this.state.country ? this.state.country.id : null}>*/}
+        {/*{this.state.countries.map((country) => {*/}
+        {/*return (<MenuItem key={`c_${country.id}`} value={country.id} primaryText={country.name}/>);*/}
+        {/*})}*/}
+        {/*</SelectField>*/}
+        {/*</Col>*/}
+        <Col span={12}  className="location-select-column" >
+          <SelectField className={(CONFIG.DIR === "rtl") ? "location-select-rtl" : "location-select"}
             floatingLabelText={this.i18n._t("Province")}
             fullWidth={true}
             value={this.state.province ? this.state.province.id : null}
@@ -235,8 +236,8 @@ export default class LocationSelect extends React.Component<IProps, IState> {
             })}
           </SelectField>
         </Col>
-        <Col span={12}>
-          <SelectField
+        <Col span={12} className="location-select-column">
+          <SelectField className={(CONFIG.DIR === "rtl") ? "location-select-rtl" : "location-select"}
             floatingLabelText={this.i18n._t("City")}
             fullWidth={true}
             onChange={this.setCity.bind(this)}
