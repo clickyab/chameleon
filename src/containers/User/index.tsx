@@ -33,6 +33,7 @@ componentWillReceiveProps(nextProps) {
         <Route path={`${match.url}/login`} component={PublicLoginContainer}/>
         <Route path={`${match.url}/recover-password`} component={PublicRecoverPassword}/>
         <Route path={`${match.url}/register/verification/:token`} component={PublicLoginContainer}/>
+        <Route path={`${match.url}/recover/verification/:token`} component={PublicRecoverPassword}/>
         {(this.state.user) && <PrivateRoute path={`${match.url}/`} component={UserArea}/>}
       </div>
     );
