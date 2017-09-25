@@ -37,14 +37,17 @@
           color: @user-area-link-color;
           text-decoration: none !important;
           padding: 0 10px 15px;
-          font-weight:300 ;
+          font-weight: 300;
+          border-bottom: 2px solid transparent ;
+          transition: border 0.2s ease-In !important;
 
           &:hover{
             color:@primary-color;
           }
-          &.active{
-            color:@primary-color;
-            border-bottom:2px solid @primary-color;
+          &.active {
+            color: @primary-color;
+            border-bottom: 2px solid @primary-color;
+            transition: border 0.2s ease-In !important;
           }
         }
       }

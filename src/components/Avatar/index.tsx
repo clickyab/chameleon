@@ -25,12 +25,6 @@ interface IState {
   cx: number;
 }
 
-function mapStateToProps(state: RootState) {
-  return {
-    progress: state.app.profileProgress,
-  };
-}
-@connect(mapStateToProps)
 export default class Avatar extends React.Component<IProps, IState> {
   /**
    * @constructor
@@ -111,11 +105,11 @@ export default class Avatar extends React.Component<IProps, IState> {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.size.radius) {
+    if (!nextProps.radius) {
       this.handleProgressSize(nextProps.size);
     }
     else {
-      this.setState({cx: nextProps.size});
+      this.setState({cx: nextProps.radius});
     }
   }
 
@@ -131,7 +125,7 @@ export default class Avatar extends React.Component<IProps, IState> {
   render() {
     return (
       <div className={(this.props.className) ? (this.props.className + " avatar") : "avatar"}>
-        {this.props.progress &&
+        {(this.props.progress) &&
       <svg className="profile-progress" width={this.state.cx * 2} height={this.state.cx * 2}>
         <circle className="progress-border inactive" cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
                 strokeWidth="1" fill="transparent"
@@ -143,12 +137,13 @@ export default class Avatar extends React.Component<IProps, IState> {
                 style={{transform: this.handleProgressPosition(this.props.radius, this.props.size)}}/>
       </svg>}
         {this.props.user.avatar &&
-        <AntAvatar src={BASE_PATH.replace("/api", "") + "/uploads/avatar/" + this.props.user.avatar}
+        <AntAvatar src={BASE_PATH.replace("/api", "") + "/uploads/" + this.props.user.avatar}
                    size={this.props.size}
                    style={(this.props.radius) ? {height: this.state.cx * 2 , width: this.state.cx * 2} : null }
         />}
         {!this.props.user.avatar &&
-        <AntAvatar src={this.handleGravatar(this.props.user.email, 100)} size={this.props.size}/>}
+        <AntAvatar src={this.handleGravatar(this.props.user.email, 100)} size={this.props.size}
+                   style={(this.props.radius) ? {height: this.state.cx * 2 , width: this.state.cx * 2} : null}/>}
       </div>
     );
   }
