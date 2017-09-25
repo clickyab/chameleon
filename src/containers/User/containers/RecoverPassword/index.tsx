@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Card, Form, message, Row} from "antd";
+import {Card, Form, message, Row, notification} from "antd";
 import {RaisedButton, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -56,11 +56,11 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       token: null
     };
 
-    //bind form function in constructor
+    // bind form function in constructor
     this.submitForm = this.submitForm.bind(this);
   }
 
-  //translation
+  // translation
   private i18n = I18n.getInstance();
 
   private aaa = AAA.getInstance();
@@ -77,12 +77,13 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
     verifyApi.userPasswordVerifyTokenGet({
       token: this.props.match.params["token"]
     }).then(data => {
-      this.setState({token: data.token, step: STEPS.NEWPASSWORD})
+      this.setState({token: data.token, step: STEPS.NEWPASSWORD});
     }).catch(err => {
       this.props.history.push("/");
-      message.error(err.error.text)
-    })
+      message.error(err.error.text);
+    });
   }
+
   /**
    * Check email for recovery password
    *
@@ -122,8 +123,11 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
     }).then(data => {
       this.setState({token: data.token, step: STEPS.NEWPASSWORD});
     }).catch(err => {
-      message.error(err.code.text);
-    })
+      notification.error({
+        message: "Email Verification!",
+        description: err.status === 403 ? this.i18n._t("Your code is invalid!").toString() : this.i18n._t("Please check all fields and try again!").toString(),
+      });
+    });
   }
 
   /**
@@ -142,7 +146,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
         new_password: confirm
       }
     }).then((data) => {
-      //set token too cookie
+      // set token too cookie
       this.aaa.setToken(data.token);
 
       this.props.setUser(data.account);
@@ -152,7 +156,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
 
     }).catch(err => {
       message.error(err.error.text);
-    })
+    });
 
   }
 
@@ -181,7 +185,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       }
 
       if (values.password && values.confirm) {
-        this.changePassword(values.password, values.confirm)
+        this.changePassword(values.password, values.confirm);
       }
     });
   }
@@ -195,7 +199,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
    * @param value
    * @param callback
    */
-  private checkConfirm = (rule, value, callback) => {
+  private checkConfirm(rule, value, callback) {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
       form.validateFields(["confirm"], {force: true}, callback);
@@ -203,7 +207,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
     callback();
   }
 
-  private checkPassword = (rule, value, callback) => {
+  private checkPassword(rule, value, callback) {
     const form = this.props.form;
     if (value && value !== form.getFieldValue("password")) {
       callback(this.i18n._t("Two passwords that you enter is inconsistent!"));
@@ -267,7 +271,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     rules: [{
                       required: true, message: "Please input your password!"
                     }, {
-                      validator: this.checkConfirm,
+                      validator: this.checkConfirm.bind(this),
                     }],
                   })(
                     <PasswordStrength
@@ -283,7 +287,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     rules: [{
                       required: true, message: "Please confirm your password!"
                     }, {
-                      validator: this.checkPassword,
+                      validator: this.checkPassword.bind(this),
                     }],
                   })(
                     <TextField
