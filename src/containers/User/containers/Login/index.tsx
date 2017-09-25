@@ -1,3 +1,4 @@
+///<reference path="../../../../../node_modules/@types/react-router/index.d.ts"/>
 import * as React from "react";
 import {RouteComponentProps, withRouter} from "react-router";
 import {Link} from "react-router-dom";
@@ -46,6 +47,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
     };
+    this.props.setIsLogin();
   }
 
   public componentDidMount() {

@@ -12,6 +12,7 @@ import Translate from "../../../../components/i18n/Translate/index";
 import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
 import PersianDatePicker from "../../../../components/datePicker/index";
+import Tooltip from "../../../../components/Tooltip/index";
 
 const FormItem = Form.Item;
 
@@ -104,6 +105,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <Row type="flex" align="middle">
             <Col span={4}>
+              <Tooltip/>
               <label>Status</label>
             </Col>
             <Col span={20} className="form-select-column">
@@ -120,6 +122,7 @@ class NamingComponent extends React.Component <IProps, IState> {
               </FormItem>
             </Col>
             <Col span={4}>
+              <Tooltip/>
               <label>Show Ad"s Days</label>
             </Col>
             <Col span={15} offset={5}>
@@ -134,7 +137,10 @@ class NamingComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
             </Col>
-            <Col span={4}><label>Campaign Date</label></Col>
+            <Col span={4}>
+              <Tooltip/>
+              <label>Campaign Date</label>
+            </Col>
             <Col span={20}>
               <FormItem>
                 {getFieldDecorator("days", {
@@ -176,7 +182,10 @@ class NamingComponent extends React.Component <IProps, IState> {
               </Row>
               }
             </Col>
-            <Col span={4}><label>Campaign Time</label></Col>
+            <Col span={4}>
+              <Tooltip/>
+              <label>Campaign Time</label>
+            </Col>
             <Col span={20}>
               <FormItem>
                 {getFieldDecorator("time", {

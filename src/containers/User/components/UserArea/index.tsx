@@ -13,6 +13,10 @@ import I18n from "../../../../services/i18n/index";
 import {setUser} from "../../../../redux/app/actions/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
+import "./style.less";
+import classNames = require("classnames");
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
 
 
 /**
@@ -107,49 +111,54 @@ class UserArea extends React.Component<IProps, IState> {
         });
       });
   }
-
   render() {
     const {match} = this.props;
     return (
-      <div dir={CONFIG.DIR}>
-        <div onClick={() => {
-          document.getElementById("uploadAvatar").click();
-        }}>
-          {this.state.user && <Avatar user={this.state.user} size={"large"}/>}
+      <div dir={CONFIG.DIR} className="user-area">
+        <div className="avatar-wrapper" >
+          {this.state.user && <div className="avatar-click" onClick={ () => {document.getElementById("uploadAvatar").click(); console.log("clicked"); } } >
+          <Avatar user={this.state.user} className="user-area-avatar" radius={32}  />
+          </div>}
           <input style={{display: "none"}} id="uploadAvatar" type="file"
                  onChange={(e) => this.uploadAvatar(e.target.files[0])} ref="avatar"
                  accept="image/*"/>
+          <h2>{this.state.user.first_name} {this.state.user.last_name}</h2>
         </div>
-        <h2>{this.state.user.first_name} {this.state.user.last_name}</h2>
+        <div className="ul-wrapper">
         <ul>
           <li>
-            <Link to={`${match.url}/profile`}>
+            <Link className={ (this.props.history.location.pathname === match.url + "/profile") ? "active" : ""}
+                  to={`${match.url}/profile`}>
               <Translate value="Profile"/>
             </Link>
           </li>
           <li>
-            <Link to={`${match.url}/transaction-history`}>
+            <Link className={ (this.props.history.location.pathname === match.url + "/transaction-history") ? "active" : ""}
+                  to={`${match.url}/transaction-history`}>
               <Translate value="Transaction History"/>
             </Link>
           </li>
           <li>
-            <Link to={`${match.url}/charge-account`}>
+            <Link className={ (this.props.history.location.pathname === match.url + "/charge-account") ? "active" : ""}
+                  to={`${match.url}/charge-account`}>
               <Translate value="Charge Account"/>
             </Link>
           </li>
           <li>
-            <Link to={`${match.url}/logout`}>
+            <Link className={ (this.props.history.location.pathname === match.url + "/logout") ? "active" : ""}
+                  to={`${match.url}/logout`}>
               <Translate value="Logout"/>
             </Link>
           </li>
-      </ul>
-    <Switch>
-      <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
-      {/*<Redirect to="/dashboard"/>*/}
-    </Switch>
-  </div>
-  )
-    ;
+        </ul>
+        </div>
+        <Switch>
+          <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
+          {/*<Redirect to="/dashboard"/>*/}
+        </Switch>
+      </div>
+    )
+      ;
   }
 }
 
