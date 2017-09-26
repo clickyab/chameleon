@@ -287,7 +287,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               <Translate value="Do you Forgot your password?"/>
             </p>
             <h5>
-              <Link to={`./recover-password`}>
+              <Link to={`/user/recover-password`}>
                 <Translate value="Recover"/>
               </Link>
             </h5>

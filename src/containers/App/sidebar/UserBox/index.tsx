@@ -4,7 +4,7 @@ import {Badge, Icon, notification} from "antd";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {RootState} from "../../../../redux/reducers/index";
-import {UserResponseLoginOKAccount} from "../../../../api/api";
+import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import Avatar from "../../../../components/Avatar/index";
 import {Link} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
@@ -78,7 +78,7 @@ class UserBox extends React.Component<IProps, IState> {
       case "userManagement":
         return this.props.history.push("/");
       case "logout":
-        return this.props.history.push("/logout");
+        return this.props.history.push("/user/logout");
     }
   }
 
