@@ -291,7 +291,7 @@ export interface PermissionColumn {
     "visible"?: boolean;
 }
 
-export interface PubPubType {
+export interface PubPType {
 }
 
 export interface PubPublisher {
@@ -352,6 +352,11 @@ export interface UserCheckMailResponseDomains {
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
+}
+
+export interface UserForgetCodePayload {
+    "code"?: string;
+    "email"?: string;
 }
 
 export interface UserForgetPayload {
@@ -440,9 +445,9 @@ export interface UserUserResponse {
     "ssn"?: string;
 }
 
-export interface UserVerifyIdResponse {
-    "account"?: UserResponseLoginOKAccount;
-    "token"?: string;
+export interface UserVerifyEmailCodePayload {
+    "code"?: string;
+    "email"?: string;
 }
 
 export interface UserVerifyResendPayload {
@@ -686,13 +691,13 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * publisherListGet
      * @param token the security token, get it from login route param
-     * @param status  param
-     * @param domain  search the domain field param
      * @param c  count per page param
      * @param p  page number param
      * @param pubType  param
+     * @param status  param
+     * @param domain  search the domain field param
      */
-    publisherListGet(params: {  token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string; }, options: any = {}): FetchArgs {
+    publisherListGet(params: {  token?: string; c?: string; p?: string; pubType?: string; status?: string; domain?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -700,12 +705,6 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/publisher/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
         }
@@ -714,6 +713,12 @@ export const ControllersApiFetchParamCreator = {
         }
         if (params["pubType"] !== undefined) {
             urlObj.query["pub_type"] = params["pubType"];
+        }
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -984,13 +989,13 @@ export const ControllersApiFp = {
     /**
      * publisherListGet
      * @param token the security token, get it from login route (def)
-     * @param status  (def)
-     * @param domain  search the domain field (def)
      * @param c  count per page (def)
      * @param p  page number (def)
      * @param pubType  (def)
+     * @param status  (def)
+     * @param domain  search the domain field (def)
      */
-    publisherListGet(params: { token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
+    publisherListGet(params: { token?: string; c?: string; p?: string; pubType?: string; status?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
         const fetchArgs = ControllersApiFetchParamCreator.publisherListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1109,13 +1114,13 @@ export class ControllersApi extends BaseAPI {
     /**
      * publisherListGet
      * @param token the security token, get it from login route (def)
-     * @param status  (def)
-     * @param domain  search the domain field (def)
      * @param c  count per page (def)
      * @param p  page number (def)
      * @param pubType  (def)
+     * @param status  (def)
+     * @param domain  search the domain field (def)
      */
-    publisherListGet(params: {  token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string; }, options: any = {}) {
+    publisherListGet(params: {  token?: string; c?: string; p?: string; pubType?: string; status?: string; domain?: string; }, options: any = {}) {
         return ControllersApiFp.publisherListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -1201,13 +1206,13 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * publisherListGet
          * @param token the security token, get it from login route (def)
-         * @param status  (def)
-         * @param domain  search the domain field (def)
          * @param c  count per page (def)
          * @param p  page number (def)
          * @param pubType  (def)
+         * @param status  (def)
+         * @param domain  search the domain field (def)
          */
-        publisherListGet(params: {  token?: string; status?: string; domain?: string; c?: string; p?: string; pubType?: string; }, options: any = {}) {
+        publisherListGet(params: {  token?: string; c?: string; p?: string; pubType?: string; status?: string; domain?: string; }, options: any = {}) {
             return ControllersApiFp.publisherListGet(params, options)(fetch, basePath);
         },
         /**
@@ -1433,6 +1438,30 @@ export const LocationApiFactory = function (fetch?: FetchAPI, basePath?: string)
  * UserApi - fetch parameter creator
  */
 export const UserApiFetchParamCreator = {
+    /**
+     * @func
+     * userEmailVerifyPost
+     * @param payloadData  param
+     */
+    userEmailVerifyPost(params: {  payloadData?: UserVerifyEmailCodePayload; }, options: any = {}): FetchArgs {
+        const baseUrl = `/user/email/verify`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        if (contentTypeHeader) {
+            fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
+        }
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
     /**
      * @func
      * userEmailVerifyResendPost
@@ -1663,6 +1692,30 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
+     * userPasswordVerifyPost
+     * @param payloadData  param
+     */
+    userPasswordVerifyPost(params: {  payloadData?: UserForgetCodePayload; }, options: any = {}): FetchArgs {
+        const baseUrl = `/user/password/verify/`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        if (contentTypeHeader) {
+            fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
+        }
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * userPasswordVerifyTokenGet
      * @param token  param
      */
@@ -1770,6 +1823,30 @@ export const UserApiFetchParamCreator = {
  */
 export const UserApiFp = {
     /**
+     * userEmailVerifyPost
+     * @param payloadData  (def)
+     */
+    userEmailVerifyPost(params: { payloadData?: UserVerifyEmailCodePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        const fetchArgs = UserApiFetchParamCreator.userEmailVerifyPost(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * userEmailVerifyResendPost
      * @param payloadData  (def)
      */
@@ -1797,7 +1874,7 @@ export const UserApiFp = {
      * userEmailVerifyTokenGet
      * @param token  (def)
      */
-    userEmailVerifyTokenGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserVerifyIdResponse> {
+    userEmailVerifyTokenGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
         const fetchArgs = UserApiFetchParamCreator.userEmailVerifyTokenGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1988,6 +2065,30 @@ export const UserApiFp = {
         };
     },
     /**
+     * userPasswordVerifyPost
+     * @param payloadData  (def)
+     */
+    userPasswordVerifyPost(params: { payloadData?: UserForgetCodePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        const fetchArgs = UserApiFetchParamCreator.userPasswordVerifyPost(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * userPasswordVerifyTokenGet
      * @param token  (def)
      */
@@ -2091,6 +2192,13 @@ export const UserApiFp = {
  */
 export class UserApi extends BaseAPI {
     /**
+     * userEmailVerifyPost
+     * @param payloadData  (def)
+     */
+    userEmailVerifyPost(params: {  payloadData?: UserVerifyEmailCodePayload; }, options: any = {}) {
+        return UserApiFp.userEmailVerifyPost(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * userEmailVerifyResendPost
      * @param payloadData  (def)
      */
@@ -2156,6 +2264,13 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userPasswordForgetPost(params, options)(this.fetch, this.basePath);
     }
     /**
+     * userPasswordVerifyPost
+     * @param payloadData  (def)
+     */
+    userPasswordVerifyPost(params: {  payloadData?: UserForgetCodePayload; }, options: any = {}) {
+        return UserApiFp.userPasswordVerifyPost(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * userPasswordVerifyTokenGet
      * @param token  (def)
      */
@@ -2191,6 +2306,13 @@ export class UserApi extends BaseAPI {
  */
 export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
     return {
+        /**
+         * userEmailVerifyPost
+         * @param payloadData  (def)
+         */
+        userEmailVerifyPost(params: {  payloadData?: UserVerifyEmailCodePayload; }, options: any = {}) {
+            return UserApiFp.userEmailVerifyPost(params, options)(fetch, basePath);
+        },
         /**
          * userEmailVerifyResendPost
          * @param payloadData  (def)
@@ -2255,6 +2377,13 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
          */
         userPasswordForgetPost(params: {  payloadData?: UserForgetPayload; }, options: any = {}) {
             return UserApiFp.userPasswordForgetPost(params, options)(fetch, basePath);
+        },
+        /**
+         * userPasswordVerifyPost
+         * @param payloadData  (def)
+         */
+        userPasswordVerifyPost(params: {  payloadData?: UserForgetCodePayload; }, options: any = {}) {
+            return UserApiFp.userPasswordVerifyPost(params, options)(fetch, basePath);
         },
         /**
          * userPasswordVerifyTokenGet
