@@ -200,7 +200,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
   }
 
   /**
-   * check the state of selected location is valid and call onChnage callback if it was set.
+   * check the state of selected location is valid and call onChange callback if it was set.
    */
   private handleOnChangeEvent() {
     if (this.props.onChange && !!this.state.country && !!this.state.province && this.state.city) {

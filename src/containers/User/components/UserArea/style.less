@@ -2,28 +2,31 @@
 
 .user-area {
   margin-top: 35px;
-  margin-right: 35px;
   .profile-progress {
-    width: 64px !important;
-    height: 64px !important;
+
     circle {
-      cx: 32px !important;
-      cy: 32px !important;
-      r: 34px !important;
-      transform: translate(0px, 64px) rotate(-90deg) !important;
+      r:(@user-area-avatar-size/2) + 3px !important;
+      stroke-width: 2px;
     }
+  }
+  .avatar-click{
+    cursor: pointer;
   }
   .avatar-wrapper{
     display: flex;
     align-items: center;
+    margin: 0 35px;
     h2{
-      margin: 15px;
+      margin-right: 15px;
+      margin-left: 15px;
     }
   }
   .ul-wrapper {
     display: flex;
     justify-content: center;
     clear: both;
+    border-bottom: 3px solid @layout-body-background;
+    padding-bottom: 13px;
     > ul {
       > li {
         float: right;
@@ -33,12 +36,18 @@
         a{
           color: @user-area-link-color;
           text-decoration: none !important;
+          padding: 0 10px 15px;
+          font-weight: 300;
+          border-bottom: 2px solid transparent ;
+          transition: border 0.2s ease-In !important;
+
           &:hover{
             color:@primary-color;
           }
-          &.active{
-            color:@primary-color;
-            border-bottom:2px solid @primary-color;
+          &.active {
+            color: @primary-color;
+            border-bottom: 2px solid @primary-color;
+            transition: border 0.2s ease-In !important;
           }
         }
       }
@@ -49,8 +58,6 @@
 
 .user-area-avatar {
   > span {
-    height: 64px !important;
-    width: 64px !important;
     border-radius: 50% !important;
   }
   &.avatar {

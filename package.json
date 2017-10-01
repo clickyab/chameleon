@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --debug --devtool cheap-module-source-map --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 3000",
+    "start": "webpack-dev-server --debug --devtool cheap-module-source-map --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 3000 --host 0.0.0.0",
     "build": "webpack -p --progress --colors",
     "i18n": "tsc ./bin/i18n-extractor.ts  && node ./bin/i18n-extractor.js --out=./dictionary --lang=ir-fa,en-US",
     "swagger": "./bin/api-codegen.sh"

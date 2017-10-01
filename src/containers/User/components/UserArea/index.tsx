@@ -15,6 +15,8 @@ import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import "./style.less";
 import classNames = require("classnames");
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
 
 
 /**
@@ -113,10 +115,10 @@ class UserArea extends React.Component<IProps, IState> {
     const {match} = this.props;
     return (
       <div dir={CONFIG.DIR} className="user-area">
-        <div className="avatar-wrapper" onClick={() => {
-          document.getElementById("uploadAvatar").click();
-        }}>
-          {this.state.user && <Avatar user={this.state.user} className="user-area-avatar" size={"large"} progress={65}/>}
+        <div className="avatar-wrapper" >
+          {this.state.user && <div className="avatar-click" onClick={ () => {document.getElementById("uploadAvatar").click(); console.log("clicked"); } } >
+          <Avatar user={this.state.user} className="user-area-avatar" radius={32} progress={75}  />
+          </div>}
           <input style={{display: "none"}} id="uploadAvatar" type="file"
                  onChange={(e) => this.uploadAvatar(e.target.files[0])} ref="avatar"
                  accept="image/*"/>

@@ -1,42 +1,50 @@
 import * as React from "react";
-import {Card, Form, message, Row} from "antd";
+import {Card, Form, message, Row, notification} from "antd";
 import {RaisedButton, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import Icon from "../../../../components/Icon/index";
-import {UserApi} from "../../../../api/api";
-import {FormComponentProps} from "antd/es/form/Form";
+import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
+import {WrappedFormUtils} from "antd/es/form/Form";
 import PasswordStrength from "../../../../components/PasswordStrength/index";
 import Resend from "./Resend/index";
+import {connect} from "react-redux";
+import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
+import {RouteComponentProps, withRouter} from "react-router";
+import AAA from "../../../../services/AAA/index";
 
 const FormItem = Form.Item;
 
-interface IProp extends FormComponentProps {
+interface IProp extends RouteComponentProps<any> {
+  setUser: (user: UserResponseLoginOKAccount) => {};
+  setIsLogin: () => {};
+  form: WrappedFormUtils;
 }
 
 /**
  *
- * State
+ * @interface State
  *
  */
 interface IState {
   step: STEPS;
   email: string | null;
   confirmDirty: boolean;
+  token: string | null;
 }
 
 /**
- * Steps
+ * @interface Steps
  *
  */
 enum STEPS {RECOVERY, VERIFY, NEWPASSWORD}
 
-
-/**
- * Password recovery
- *
- * @class
- */
+@connect(mapStateToProps, mapDispatchToProps)
+  /**
+   * Password recovery
+   *
+   * @class
+   */
 class PublicRecoverPassword extends React.Component<IProp, IState> {
   constructor(props: IProp) {
     super(props);
@@ -44,15 +52,37 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
     this.state = {
       step: STEPS.RECOVERY,
       email: null,
-      confirmDirty: false
+      confirmDirty: false,
+      token: null
     };
 
-    //bind form function in constructor
+    // bind form function in constructor
     this.submitForm = this.submitForm.bind(this);
   }
 
-  //translation
+  // translation
   private i18n = I18n.getInstance();
+
+  private aaa = AAA.getInstance();
+
+
+  public componentDidMount() {
+    if (this.props.match.params["token"]) {
+      this.submitVerificationFromUrl();
+    }
+  }
+
+  private submitVerificationFromUrl() {
+    const verifyApi = new UserApi();
+    verifyApi.userPasswordVerifyTokenGet({
+      token: this.props.match.params["token"]
+    }).then(data => {
+      this.setState({token: data.token, step: STEPS.NEWPASSWORD});
+    }).catch(err => {
+      this.props.history.push("/");
+      message.error(err.error.text);
+    });
+  }
 
   /**
    * Check email for recovery password
@@ -69,7 +99,6 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
           email: this.state.email
         }
       }).then(data => {
-        console.log("then", data);
         this.setState({step: STEPS.VERIFY});
       }).catch(err => {
         message.error(err.error.text);
@@ -85,13 +114,20 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
    * @param code
    */
   private verifyCode(code) {
-    const numberExample = "123456789";
-    if (code === numberExample) {
-      this.setState({step: STEPS.NEWPASSWORD});
-    } else {
-      message.error("Wrong verify code");
-    }
-    console.log("verify", code);
+    const verifyPassApi = new UserApi();
+    verifyPassApi.userPasswordVerifyPost({
+      payloadData: {
+        code: code,
+        email: this.state.email
+      }
+    }).then(data => {
+      this.setState({token: data.token, step: STEPS.NEWPASSWORD});
+    }).catch(err => {
+      notification.error({
+        message: "Email Verification!",
+        description: err.status === 403 ? this.i18n._t("Your code is invalid!").toString() : this.i18n._t("Please check all fields and try again!").toString(),
+      });
+    });
   }
 
   /**
@@ -103,7 +139,25 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
    * @param confirm
    */
   private changePassword(pass, confirm) {
-    console.log("send change password", pass, confirm);
+    const changePassApi = new UserApi();
+    changePassApi.userPasswordChangeTokenPut({
+      token: this.state.token,
+      payloadData: {
+        new_password: confirm
+      }
+    }).then((data) => {
+      // set token too cookie
+      this.aaa.setToken(data.token);
+
+      this.props.setUser(data.account);
+      this.props.setIsLogin();
+      this.props.history.push("/");
+      message.success("You are successfully login");
+
+    }).catch(err => {
+      message.error(err.error.text);
+    });
+
   }
 
   /**
@@ -131,7 +185,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       }
 
       if (values.password && values.confirm) {
-        this.changePassword(values.password, values.confirm)
+        this.changePassword(values.password, values.confirm);
       }
     });
   }
@@ -145,7 +199,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
    * @param value
    * @param callback
    */
-  private checkConfirm = (rule, value, callback) => {
+  private checkConfirm(rule, value, callback) {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
       form.validateFields(["confirm"], {force: true}, callback);
@@ -153,7 +207,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
     callback();
   }
 
-  private checkPassword = (rule, value, callback) => {
+  private checkPassword(rule, value, callback) {
     const form = this.props.form;
     if (value && value !== form.getFieldValue("password")) {
       callback(this.i18n._t("Two passwords that you enter is inconsistent!"));
@@ -217,7 +271,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     rules: [{
                       required: true, message: "Please input your password!"
                     }, {
-                      validator: this.checkConfirm,
+                      validator: this.checkConfirm.bind(this),
                     }],
                   })(
                     <PasswordStrength
@@ -233,7 +287,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     rules: [{
                       required: true, message: "Please confirm your password!"
                     }, {
-                      validator: this.checkPassword,
+                      validator: this.checkPassword.bind(this),
                     }],
                   })(
                     <TextField
@@ -285,4 +339,19 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
   }
 }
 
-export default Form.create()(PublicRecoverPassword as any);
+function mapStateToProps(state) {
+  return {
+    //   isLogin: state.app.isLogin,
+    //   user: state.app.user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
+    setIsLogin: () => dispatch(setIsLogin()),
+  };
+}
+
+
+export default withRouter<any>(Form.create()(PublicRecoverPassword as any));

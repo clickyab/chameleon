@@ -8,7 +8,7 @@ import AAA from "../../../services/AAA/index";
 const initialState: AppStoreState = {
   isLogin: !!AAA.getInstance().getToken(),
   user: null,
-  breadcrumb: ""
+  breadcrumb: "",
 };
 
 

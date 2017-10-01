@@ -32,6 +32,7 @@ export interface IState {
   isCorporation: boolean;
   user: UserResponseLoginOKAccount;
   showPasswordModal: boolean;
+  buttonDisable: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -49,6 +50,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
       isDisable: true,
       isCorporation: this.props.user && this.props.user.legal_name ? true : false,
       user: this.props.user,
+      buttonDisable: true
     };
   }
 
@@ -64,18 +66,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
     // TODO:: store country and province
     this.setState(() => {
-      if (this.state.isCorporation) {
-        return {
-          ...this.state,
-          user: {
-            ...this.state.user,
-            corporation: {
-              ...this.state.user,
-              city_id: city,
-            }
-          }
-        };
-      } else {
         return {
           ...this.state,
           user: {
@@ -86,10 +76,14 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             }
           }
         };
-      }
     });
+    if (this.state.user.city_id !== city) {
+      this.setState({buttonDisable: false});
+    }
   }
-
+ private handleButton() {
+  this.setState({buttonDisable: false});
+}
   private handleSubmit(e) {
     if (e) e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -101,7 +95,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
         });
         return;
       }
-
       const userApi = new UserApi();
 
       userApi.userUpdatePut({
@@ -174,6 +167,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Name")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -186,6 +180,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Last name")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -201,6 +196,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Corporation Name")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -213,6 +209,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Register Code")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -225,6 +222,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Economic code")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -261,6 +259,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       this.setState({
                         showPasswordModal: true,
                       });
+                      this.handleButton();
                     }}><Translate value="Click here"/></a>
                   </p>
                 </Col>
@@ -273,7 +272,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       initialValue: this.state.user.gender,
                       rules: [{required: true, message: this.i18n._t("Please select your Gender!")}],
                     })(
-                      <Gender/>
+                      <Gender onChange={() => this.handleButton()} />
                     )}
                   </FormItem>
                 </Col>
@@ -289,6 +288,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("National ID")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -312,6 +312,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Mobile")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -324,6 +325,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Postal Code")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -338,6 +340,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Phone")}
+                        onChange={() => this.handleButton()}
                       />)}
                   </FormItem>
                 </Col>
@@ -350,6 +353,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       <TextField
                         fullWidth={true}
                         floatingLabelText={this.i18n._t("Address")}
+                        onChange={() => this.handleButton()}
                       />
                     )}
                   </FormItem>
@@ -360,8 +364,9 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   <RaisedButton
                     type="submit"
                     label={<Translate value="Save Changes"/>}
-                    className="btn-save-change"
+                    className={(!this.state.buttonDisable) ? "btn-save-change" : ""}
                     style={{color: "green"}}
+                    disabled={this.state.buttonDisable}
                   />
                 </Col>
               </Row>

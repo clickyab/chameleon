@@ -47,6 +47,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
     };
+    // this.props.setIsLogin();
   }
 
   public componentDidMount() {
@@ -286,7 +287,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               <Translate value="Do you Forgot your password?"/>
             </p>
             <h5>
-              <Link to={`./recover-password`}>
+              <Link to={`/user/recover-password`}>
                 <Translate value="Recover"/>
               </Link>
             </h5>
@@ -394,32 +395,31 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const api = new UserApi();
-        api.userActivePatch({
+        api.userEmailVerifyPost({
           payloadData: {
             email: this.state.email,
-            number: parseInt(values.number),
-          }
+            code: values.number,
+          },
+        }).then((data) => {
+
+          // store account data in store
+          this.props.setUser(data.account);
+          this.props.setIsLogin();
+
+
+          const aaa = AAA.getInstance();
+          aaa.setToken(data.token, true);
+
+
+          // redirect to dashboard
+          this.props.history.push("/dashboard");
+
+          // show notification
+          notification.success({
+            message: "Registration",
+            description: this.i18n._t("Your account created successfully.").toString(),
+          });
         })
-          .then((data) => {
-
-            // store account data in store
-            this.props.setUser(data.account);
-            this.props.setIsLogin();
-
-
-            const aaa = AAA.getInstance();
-            aaa.setToken(data.token, true);
-
-
-            // redirect to dashboard
-            this.props.history.push("/dashboard");
-
-            // show notification
-            notification.success({
-              message: "Registration",
-              description: this.i18n._t("Your account created successfully.").toString(),
-            });
-          })
           .catch((error) => {
             notification.error({
               message: "Verification Failed",
@@ -433,11 +433,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
   private submitVerificationFromUrl() {
     // fixme :: change api call to specific method for verification by hash code
     const api = new UserApi();
-    api.userActivePatch({
-      payloadData: {
-        email: this.state.email,
-        number: parseInt(this.props.match.params["token"]),
-      }
+    api.userEmailVerifyTokenGet({
+      token: this.props.match.params["token"],
     })
       .then((data) => {
 
@@ -469,9 +466,10 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
   private resendVerificationCode() {
     const api = new UserApi();
-    api.userActivePost({
+    api.userEmailVerifyResendPost({
+      // todo : modify after fix "email_string" with backend guys
       payloadData: {
-        email: this.state.email,
+        email_string: this.state.email,
       }
     }).then(() => {
       notification.success({
