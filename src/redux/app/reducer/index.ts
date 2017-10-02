@@ -9,7 +9,6 @@ const initialState: AppStoreState = {
   isLogin: !!AAA.getInstance().getToken(),
   user: null,
   breadcrumb: "",
-  profileProgress: 95
 };
 
 

@@ -149,7 +149,7 @@ class UserBox extends React.Component<IProps, IState> {
         </svg>
         </div>
         <div className="mini-close" onClick={this.handleContainerClick}>
-          <Avatar user={this.props.user}/>
+          <Avatar user={this.props.user} progress={65}/>
           <div className="mini-info">
             {(this.props.user.first_name + " " + this.props.user.last_name)}
             <br/>
