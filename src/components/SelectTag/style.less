@@ -1,0 +1,52 @@
+@import "../../../src/containers/App/theme";
+@import "../../../src/containers/App/color";
+@import "../../components/LocationSelect/style";
+
+.hidden {
+  display: none !important;
+  &-tag {
+    display: none !important;
+  }
+}
+
+.show-tag {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  font-size: 14px;
+  line-height: 14px;
+  color: @tag-color;
+  background-color: @tag-bg-color;
+  border: 1px solid @tag-border-color;
+  border-radius: 2px;
+  .close {
+    margin-right: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
+
+//Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
+.select-tag-rtl {
+  .location-select-rtl() ;
+  > div {
+    bottom: auto !important;
+    padding-right: 5px;
+  }
+  color:@select-placeholder-color;
+  font-size: 13px !important;
+}
+
+span[role="menuitem"] {
+  text-align: center;
+  > div {
+    > div {
+      padding: 0px !important;
+      > div {
+        font-size: 14px !important;
+        width: auto !important;
+      }
+    }
+  }
+}
+

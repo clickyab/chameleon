@@ -47,7 +47,6 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
     };
-    // this.props.setIsLogin();
   }
 
   public componentDidMount() {
@@ -97,6 +96,15 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               </FormItem>
             </form>
           </Card>
+          }
+          {this.state.step === STEPS.LOGIN &&
+          <a onClick={() => {
+            this.setState({
+              step: STEPS.CHECK_MAIL,
+            });
+          }}>
+            <h6 className="back-button">{this.i18n._t("Back")}</h6>
+          </a>
           }
           {this.state.step === STEPS.LOGIN &&
           <Card className="login-box" noHovering>
