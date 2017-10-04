@@ -2,6 +2,7 @@ import * as React from "react";
 import {Row, Col} from "antd";
 import {Checkbox, RaisedButton} from "material-ui";
 import Translate from "../i18n/Translate/index";
+import I18n from "../../services/i18n/index";
 import "./style.less";
 
 interface IProps {
@@ -18,7 +19,7 @@ interface IState {
   lockLeft?: boolean ;
 }
 
-export default class SelectBox extends React.Component<IProps, IState> {
+export default class SelectList extends React.Component<IProps, IState> {
   /**
    * @constructor
    * @desc set initial state
@@ -45,7 +46,7 @@ export default class SelectBox extends React.Component<IProps, IState> {
   /**
    * @function showSelectedLeft
    *
-   * @desc creates and shows selected items on left side select box
+   * @desc creates and shows selected items on left side select List
    *
    * @return {JSX.Element} Checkboxes returned
    */
@@ -54,7 +55,7 @@ export default class SelectBox extends React.Component<IProps, IState> {
       if (this.state.selectedItemsLeft.indexOf(data.id) > -1) {
         return <Checkbox key={data.id}
                          label={data.title}
-                         className="select-box-checkbox"
+                         className={((this.state.selectedLeftTemp.indexOf(data.id)) > -1) ? "select-list-checkbox-selected" : "select-list-checkbox" }
                          onCheck={() => (this.checkLeft(data.id))}/>;
       }
     });
@@ -70,18 +71,19 @@ export default class SelectBox extends React.Component<IProps, IState> {
   private createItem(): JSX.Element {
     let Data = this.props.data;
     return Data.map((data) => {
+      if (!(this.state.selectedItemsLeft.indexOf(data.id) > -1)) {
       return <Checkbox key={data.id}
                        label={data.title}
-                       className={(this.state.selectedItemsLeft.indexOf(data.id) > -1) ? "hide" : "select-box-checkbox"}
+                       className={((this.state.selectedRightTemp.indexOf(data.id) > -1 ) ? "select-list-checkbox-selected" : "select-list-checkbox")}
                        checked={this.state.selectedRightTemp.indexOf(data.id) > -1}
                        onCheck={() => this.check(data.id)}/>;
-    });
+    }});
   }
 
   /**
    * @func check
    *
-   * @desc Check the right side of selectBox and hold them on temporary variable
+   * @desc Check the right side of selectList and hold them on temporary variable
    *
    * @param {string} Id
    *
@@ -105,7 +107,7 @@ export default class SelectBox extends React.Component<IProps, IState> {
   /**
    * @func checkLeft
    *
-   * @desc Check the left side of selectBox and hold them on temporary variable
+   * @desc Check the left side of selectList and hold them on temporary variable
    *
    * @param {string} Id
    *
@@ -129,7 +131,7 @@ export default class SelectBox extends React.Component<IProps, IState> {
   /**
    * @func checkAll
    *
-   * @desc Check the All item in right side of select box
+   * @desc Check the All item in right side of select List
    *
    * @return {void}
    */
@@ -195,31 +197,47 @@ export default class SelectBox extends React.Component<IProps, IState> {
   }
 
   render() {
+    const i18n = I18n.getInstance();
     return (
-      <Row type="flex">
-        <Col span={12} className="select-box-right">
-          <Checkbox className="all-selector"
+      <Row type="flex" gutter={40}>
+        <Col span={12} className="select-list">
+          <div className="select-list-header">
+            <Translate value="Brands List"/>
+            <span className="count">{this.props.data.length}</span>
+          </div>
+          <Checkbox className={(this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length) ? "all-selector-select" : "all-selector"}
                     label={"all"}
                     checked={this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length}
                     onCheck={() => this.checkAll()}
                     onSelect={() => this.checkAll()}
           />
-          {this.createItem()}
+          <div className="select-list-right">
+            {this.createItem()}
+          </div>
           <RaisedButton
             label={<Translate value="Move chosen items"/>}
             primary={false}
-            className="button-back-step"
+            className="btn-select-list"
+            fullWidth={true}
             onClick={this.handleSubmitRight}
           />
         </Col>
-        <Col span={12} className="select-box-left">
+        <Col span={12} className="select-list select-list-left-container">
+          <div className="select-list-header">
+            <Translate value="Your final List"/>
+            <span className="count">{this.state.selectedItemsLeft.length}</span>
+          </div>
+          <div className="select-list-left">
           {this.state.selectedItemsLeft.length !== 0 &&
           this.showSelectedLeft()
           }
+            {this.state.selectedItemsLeft.length === 0 && <span className="select-list-empty">{i18n._t("Please select your items from right box, then click on move button")}</span>}
+          </div>
           <RaisedButton
             label={<Translate value="Remove chosen items"/>}
             primary={false}
-            className="button-back-step"
+            className="btn-select-list-left"
+            fullWidth={true}
             onClick={this.handleSubmitLeft}
           />
         </Col>

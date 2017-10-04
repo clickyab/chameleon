@@ -1,7 +1,7 @@
 import * as React from "react";
 import SelectTag from "../../../../components/SelectTag/index";
 import {Col, Row, Form} from "antd";
-import SelectBox from "../../../../components/SelectBox/index";
+import SelectList from "../../../../components/SelectList/index";
 
 const FormItem = Form.Item;
 
@@ -58,7 +58,7 @@ export default class TargetingComponent extends React.Component <IProps, IState>
           </Col>
           <Col span={12}>
             <FormItem>
-             <SelectBox data={persons2.data} />
+             <SelectList data={persons2.data} />
             </FormItem>
           </Col>
         </Row>

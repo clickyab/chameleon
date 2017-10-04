@@ -1,14 +1,140 @@
+@import "../../containers/App/theme";
+
 .hide {
   display: none !important;
 }
 
-.select-box-right , .select-box-left {
-  height: 300px;
-  width: 300px;
-  overflow-y: scroll ;
+.select-list{
+  width: 340px !important;
+  padding-right: 20px;
+  padding-left: 20px;
+  // customized Scrollbar Works only on webkit support browsers
+  *::-webkit-scrollbar {
+    width: .4em;
+  }
 
-  .select-box-checkbox {
-    height: 30px;
-    line-height: 30px;
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+    border-radius:10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color:#D8D8D8;
+    border-radius:10px;
+    outline: 1px solid white;
+  }
+
+  .select-list-header{
+    width: 300px;
+    .count {
+    float:left
+    }
   }
 }
+.select-list-right {
+  max-height: 200px;
+  min-height: 200px;
+  overflow-y: auto ;
+  border-left : solid 1px #DBDDE1 ;
+  border-right : solid 1px #DBDDE1 ;
+  border-bottom : solid 1px #DBDDE1 ;
+  > div {
+    &:nth-child(even) {
+      background: #EEEFF0;
+    }
+    > div > div:first-child {
+      fill:#DBDDE1 !important;
+  }
+  }
+
+}
+
+.select-list-checkbox-selected{
+  height: 28px !important;
+  line-height: 28px;
+  margin-top: 2px;
+}
+
+.select-list-left{
+  max-height: 230px;
+  min-height: 230px;
+  overflow-y: auto ;
+  border : solid 1px #DBDDE1 ;
+  > div {
+    &[class="select-list-checkbox"]:nth-child(even) {
+      background: #EEEFF0;
+    }
+    > div > div:first-child {
+      fill:#DBDDE1 !important;
+    }
+  }
+
+}
+
+.select-list-checkbox {
+  height: 28px !important;
+  line-height: 28px;
+  margin-top: 2px;
+  div > div > div> svg {
+    fill:#DBDDE1 !important;
+  }
+}
+.all-selector{
+  height: 28px !important;
+  margin-top: 2px;
+  line-height: 28px;
+  border : solid 1px #DBDDE1 ;
+  div > div > div > svg {
+    fill:#DBDDE1 !important;
+  }
+  &-select{
+    height: 28px !important;
+    margin-top: 2px;
+    line-height: 28px;
+    border : solid 1px #DBDDE1 ;
+  }
+}
+
+.select-list-left-container{
+  width: 240px !important;
+  .select-list-header{
+    width: 200px !important;
+  }
+}
+.btn-select-list , .btn-select-list-left {
+  margin-top: 10px;
+  height: 30px ;
+  width: 220px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+  background: #B6BBC2;
+  button{
+    height: @campaign-button-height !important;
+    line-height: @campaign-button-height !important;
+    div {
+      > div{
+        span{
+          color:white;
+        }
+        &:hover{
+          background: #5E6670 !important;
+        }
+        background: #B6BBC2;
+        height: @campaign-button-height !important;
+      }
+    }
+  }
+}
+.btn-select-list-left{
+  button {
+    max-width: 200px !important;
+  }
+}
+.select-list-empty{
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  margin-top: 85px;
+  margin-right:15px;
+  margin-left:15px;
+}
+
