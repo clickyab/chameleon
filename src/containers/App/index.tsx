@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Redirect, Route} from "react-router";
+import {Redirect, Route, Switch} from "react-router";
 import PublicContainer from "../User/index";
 import LayoutSwitcher from "../../components/LayoutSwitcher";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -12,6 +12,7 @@ import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
 import CampaignContainer from "../Campaign/index";
+import PublicLoginForm from "../User/containers/Login/index";
 import {UserApi} from "../../api/api";
 
 
@@ -77,12 +78,12 @@ class App extends React.Component<IProps, IState> {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <LayoutSwitcher condition={this.state.isLogin}>
-          <Route exact path={`/`} render={(): JSX.Element => (
-            this.state.isLogin ? <Redirect to={`/dashboard`}/> : <Redirect to={`/user/login`}/>
-          )}/>
-          <Route path={`/user`} component={PublicContainer}/>
-          <PrivateRoute path={`/dashboard`} component={Dashboard}/>
-          <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
+          <Switch>
+            <Route path={`/user`} component={PublicContainer}/>
+            <PrivateRoute path={`/dashboard`} component={Dashboard}/>
+            <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
+            <Route exact path={`/`} component={this.state.isLogin ? Dashboard : PublicLoginForm} />
+          </Switch>
         </LayoutSwitcher>
       </MuiThemeProvider>
     );
