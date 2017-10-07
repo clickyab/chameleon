@@ -5,18 +5,24 @@ import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
 import "./style.less";
 
+export interface IData {
+  id: number;
+  title: string;
+}
+
 interface IProps {
-  data: any;
+  data: IData[];
   selectedItems?: string[];
+  value?: any[];
+  onChange?: (value: any[]) => void ;
 }
 
 interface IState {
-  values?: any;
-  selectedItemsRight: string[];
-  selectedRightTemp: string[];
-  selectedItemsLeft?: string[];
-  selectedLeftTemp?: string[];
-  lockLeft?: boolean ;
+  value?: any;
+  selectedItemsRight: (string|number)[];
+  selectedRightTemp: (string|number)[];
+  selectedItemsLeft?: (string|number)[];
+  selectedLeftTemp?: (string|number)[];
 }
 
 export default class SelectList extends React.Component<IProps, IState> {
@@ -31,7 +37,8 @@ export default class SelectList extends React.Component<IProps, IState> {
       selectedItemsRight: this.props.selectedItems ? this.props.selectedItems : [],
       selectedRightTemp: this.props.selectedItems ? this.props.selectedItems : [],
       selectedLeftTemp: [],
-      selectedItemsLeft: []
+      selectedItemsLeft: this.props.value ? this.props.value : [],
+      value: this.props.value ? this.props.value : []
     };
 
     /**
@@ -50,7 +57,7 @@ export default class SelectList extends React.Component<IProps, IState> {
    *
    * @return {JSX.Element} Checkboxes returned
    */
-  private showSelectedLeft(): JSX.Element {
+  private showSelectedLeft() {
     return this.props.data.map((data) => {
       if (this.state.selectedItemsLeft.indexOf(data.id) > -1) {
         return <Checkbox key={data.id}
@@ -68,7 +75,7 @@ export default class SelectList extends React.Component<IProps, IState> {
    *
    * @return {JSX.Element} Checkboxes returned
    */
-  private createItem(): JSX.Element {
+  private createItem() {
     let Data = this.props.data;
     return Data.map((data) => {
       if (!(this.state.selectedItemsLeft.indexOf(data.id) > -1)) {
@@ -89,7 +96,7 @@ export default class SelectList extends React.Component<IProps, IState> {
    *
    * @return {void}
    */
-  private check(Id: string): void {
+  private check(Id: string | number): void {
     const indexOfItem = this.state.selectedRightTemp.indexOf(Id);
     if (indexOfItem === -1) {
       this.setState({
@@ -114,7 +121,7 @@ export default class SelectList extends React.Component<IProps, IState> {
    * @return {void}
    */
 
-  private checkLeft(Id: string) {
+  private checkLeft(Id: string | number) {
     const indexOfItem = this.state.selectedLeftTemp.indexOf(Id);
     if (indexOfItem === -1) {
       this.setState({
@@ -166,13 +173,19 @@ export default class SelectList extends React.Component<IProps, IState> {
       for (let i = 0; i < temp.length; i++) {
         save = [...save, temp[i]];
       }
-      this.setState({selectedRightTemp: [], selectedItemsLeft: save});
+      this.setState({selectedRightTemp: [], selectedItemsLeft: save , value: save});
+      if (this.props.onChange) {
+        this.props.onChange(save);
+      }
     }
     else if (temp.length === 0) {
       return null;
     }
     else {
-      this.setState({selectedItemsLeft: temp, selectedRightTemp: []});
+      this.setState({selectedItemsLeft: temp , value: temp, selectedRightTemp: []});
+      if (this.props.onChange) {
+        this.props.onChange(temp);
+      }
     }
   }
 
@@ -190,7 +203,10 @@ export default class SelectList extends React.Component<IProps, IState> {
           RemoveTemp.splice(this.state.selectedItemsLeft.indexOf(this.state.selectedLeftTemp[i]), 1);
           temp[i] = this.state.selectedLeftTemp[i];
         }
-        this.setState({selectedItemsRight: temp, selectedItemsLeft: RemoveTemp, selectedLeftTemp: []});
+        this.setState({selectedItemsRight: temp, selectedItemsLeft: RemoveTemp, value: RemoveTemp, selectedLeftTemp: []});
+        if (this.props.onChange) {
+          this.props.onChange(RemoveTemp);
+        }
 
       }
     }
@@ -206,7 +222,7 @@ export default class SelectList extends React.Component<IProps, IState> {
             <span className="count">{this.props.data.length}</span>
           </div>
           <Checkbox className={(this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length) ? "all-selector-select" : "all-selector"}
-                    label={"all"}
+                    label={"Select all"}
                     checked={this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length}
                     onCheck={() => this.checkAll()}
                     onSelect={() => this.checkAll()}

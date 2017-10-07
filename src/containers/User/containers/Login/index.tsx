@@ -477,7 +477,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     api.userEmailVerifyResendPost({
       // todo : modify after fix "email_string" with backend guys
       payloadData: {
-        email_string: this.state.email,
+        email: this.state.email,
       }
     }).then(() => {
       notification.success({

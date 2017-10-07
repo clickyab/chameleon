@@ -5,8 +5,11 @@ import {Router, Route, Switch} from "react-router";
 import {createBrowserHistory} from "history";
 import {store} from "./redux/store";
 import App from "./containers/App";
+import {LocaleProvider} from "antd";
+import enUS from "antd/lib/locale-provider/en_US";
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
+
 injectTapEventPlugin();
 
 const history = createBrowserHistory();
@@ -14,11 +17,13 @@ const history = createBrowserHistory();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
-      <Switch>
-        <Route path="/" component={App}/>
-      </Switch>
-    </Router>
+    <LocaleProvider locale={enUS}>
+      <Router history={history}>
+        <Switch>
+          <Route path="/" component={App}/>
+        </Switch>
+      </Router>
+    </LocaleProvider>
   </Provider>,
   document.getElementById("root"),
 );
