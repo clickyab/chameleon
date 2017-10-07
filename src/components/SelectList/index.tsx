@@ -8,6 +8,8 @@ import "./style.less";
 interface IProps {
   data: any;
   selectedItems?: string[];
+  values?: any[];
+  onChange?: (values: any[]) => void ;
 }
 
 interface IState {
@@ -16,7 +18,6 @@ interface IState {
   selectedRightTemp: string[];
   selectedItemsLeft?: string[];
   selectedLeftTemp?: string[];
-  lockLeft?: boolean ;
 }
 
 export default class SelectList extends React.Component<IProps, IState> {
@@ -31,7 +32,8 @@ export default class SelectList extends React.Component<IProps, IState> {
       selectedItemsRight: this.props.selectedItems ? this.props.selectedItems : [],
       selectedRightTemp: this.props.selectedItems ? this.props.selectedItems : [],
       selectedLeftTemp: [],
-      selectedItemsLeft: []
+      selectedItemsLeft: this.props.values ? this.props.values : [],
+      values: this.props.values ? this.props.values : []
     };
 
     /**
@@ -166,13 +168,19 @@ export default class SelectList extends React.Component<IProps, IState> {
       for (let i = 0; i < temp.length; i++) {
         save = [...save, temp[i]];
       }
-      this.setState({selectedRightTemp: [], selectedItemsLeft: save});
+      this.setState({selectedRightTemp: [], selectedItemsLeft: save , values: save});
+      if (this.props.onChange) {
+        this.props.onChange(save);
+      }
     }
     else if (temp.length === 0) {
       return null;
     }
     else {
-      this.setState({selectedItemsLeft: temp, selectedRightTemp: []});
+      this.setState({selectedItemsLeft: temp , values: temp, selectedRightTemp: []});
+      if (this.props.onChange) {
+        this.props.onChange(temp);
+      }
     }
   }
 
@@ -190,7 +198,10 @@ export default class SelectList extends React.Component<IProps, IState> {
           RemoveTemp.splice(this.state.selectedItemsLeft.indexOf(this.state.selectedLeftTemp[i]), 1);
           temp[i] = this.state.selectedLeftTemp[i];
         }
-        this.setState({selectedItemsRight: temp, selectedItemsLeft: RemoveTemp, selectedLeftTemp: []});
+        this.setState({selectedItemsRight: temp, selectedItemsLeft: RemoveTemp, values: RemoveTemp, selectedLeftTemp: []});
+        if (this.props.onChange) {
+          this.props.onChange(RemoveTemp);
+        }
 
       }
     }
@@ -206,7 +217,7 @@ export default class SelectList extends React.Component<IProps, IState> {
             <span className="count">{this.props.data.length}</span>
           </div>
           <Checkbox className={(this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length) ? "all-selector-select" : "all-selector"}
-                    label={"all"}
+                    label={"Select all"}
                     checked={this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length}
                     onCheck={() => this.checkAll()}
                     onSelect={() => this.checkAll()}
