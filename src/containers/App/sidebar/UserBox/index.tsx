@@ -46,6 +46,12 @@ function mapStateToProps(state: RootState) {
 class UserBox extends React.Component<IProps, IState> {
 
   /**
+   *
+   * @type {I18n}
+   */
+  private i18n = I18n.getInstance();
+
+  /**
    * @constructor
    *
    * @param {IProps} props
@@ -59,11 +65,16 @@ class UserBox extends React.Component<IProps, IState> {
     this.handleContainerClick = this.handleContainerClick.bind(this);
   }
 
-  /**
-   *
-   * @type {I18n}
-   */
-  private i18n = I18n.getInstance();
+  public render() {
+
+    if (!this.props.user) {
+      return null;
+    }
+
+    return (
+      this.props.collapse ? this.closeMenuRender() : this.openMenuRender()
+    );
+  }
 
   private userBoxRouting(key) {
     switch (key) {
@@ -120,33 +131,33 @@ class UserBox extends React.Component<IProps, IState> {
     return (
       <div className="mini-container">
         <div className="svg-container">
-        <svg width="46px" height="16px" viewBox="0 0 46 16" onClick={this.handleContainerClick}>
-          <g id="Advertiser---User-Profile" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="XLarge-(Large-Desktop)" transform="translate(-1632.000000, -641.000000)">
-              <g id="mega-sidebar" transform="translate(1620.000000, 0.000000)">
-                <g id="open-menu">
-                  <g id="user-profile" transform="translate(0.000000, 641.000000)">
-                    <g id="open-menu">
-                      <g id="arrow-up" transform="translate(10.000000, 0.000000)">
-                        <path
-                          d="M24.5,13.5100098 L44.9111328,13.5100098 C31.3896484,13.5100098 31.4035594,0 24.5,0 C17.5964406,0 19.234375,13.5100098 5,13.5100098 C-9.234375,13.5100098 17.5964406,13.5100098 24.5,13.5100098 Z"
-                          id="Oval-2" fill="#234478"/>
-                        <path
-                          d="M24.5,15.0100098 C31.4035594,15.0100098 57.3754883,14.0078125 43.8540039,14.0078125 C30.3325195,14.0078125 31.4035594,1.5 24.5,1.5 C17.5964406,1.5 20.4726563,14.0078125 6.23828125,14.0078125 C-7.99609375,14.0078125 17.5964406,15.0100098 24.5,15.0100098 Z"
-                          id="Oval-2" fill="#113260"/>
-                        <path
-                          d="M26.375,12.4860248 L22.3726708,8.48369565 C22.3152174,8.42624224 22.2864907,8.36024845 22.2864907,8.28571429 C22.2864907,8.21195652 22.3152174,8.14596273 22.3726708,8.08850932 L26.375,4.08618012 C26.4324534,4.02872671 26.4984472,4 26.5729814,4 C26.6475155,4 26.7135093,4.02872671 26.7709627,4.08618012 L27.2003106,4.51552795 C27.257764,4.57298137 27.2864907,4.63897516 27.2864907,4.71350932 C27.2864907,4.78726708 27.257764,4.85326087 27.2003106,4.91071429 L23.8245342,8.28649068 L27.2003106,11.6622671 C27.257764,11.7197205 27.2864907,11.7857143 27.2864907,11.859472 C27.2864907,11.9340062 27.257764,12 27.2003106,12.0574534 L26.7709627,12.4868012 C26.7135093,12.5442547 26.6475155,12.5729814 26.5729814,12.5729814 C26.4984472,12.572205 26.4324534,12.5434783 26.375,12.4860248 Z"
-                          id="Path" fill="#A1C0EF"
-                          transform="translate(24.786491, 8.286491) rotate(90.000000) translate(-24.786491, -8.286491) "
-                          className={(this.state.open) ? "arrow-open" : "arrow-close" }/>
+          <svg width="46px" height="16px" viewBox="0 0 46 16" onClick={this.handleContainerClick}>
+            <g id="Advertiser---User-Profile" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+              <g id="XLarge-(Large-Desktop)" transform="translate(-1632.000000, -641.000000)">
+                <g id="mega-sidebar" transform="translate(1620.000000, 0.000000)">
+                  <g id="open-menu">
+                    <g id="user-profile" transform="translate(0.000000, 641.000000)">
+                      <g id="open-menu">
+                        <g id="arrow-up" transform="translate(10.000000, 0.000000)">
+                          <path
+                            d="M24.5,13.5100098 L44.9111328,13.5100098 C31.3896484,13.5100098 31.4035594,0 24.5,0 C17.5964406,0 19.234375,13.5100098 5,13.5100098 C-9.234375,13.5100098 17.5964406,13.5100098 24.5,13.5100098 Z"
+                            id="Oval-2" fill="#234478"/>
+                          <path
+                            d="M24.5,15.0100098 C31.4035594,15.0100098 57.3754883,14.0078125 43.8540039,14.0078125 C30.3325195,14.0078125 31.4035594,1.5 24.5,1.5 C17.5964406,1.5 20.4726563,14.0078125 6.23828125,14.0078125 C-7.99609375,14.0078125 17.5964406,15.0100098 24.5,15.0100098 Z"
+                            id="Oval-2" fill="#113260"/>
+                          <path
+                            d="M26.375,12.4860248 L22.3726708,8.48369565 C22.3152174,8.42624224 22.2864907,8.36024845 22.2864907,8.28571429 C22.2864907,8.21195652 22.3152174,8.14596273 22.3726708,8.08850932 L26.375,4.08618012 C26.4324534,4.02872671 26.4984472,4 26.5729814,4 C26.6475155,4 26.7135093,4.02872671 26.7709627,4.08618012 L27.2003106,4.51552795 C27.257764,4.57298137 27.2864907,4.63897516 27.2864907,4.71350932 C27.2864907,4.78726708 27.257764,4.85326087 27.2003106,4.91071429 L23.8245342,8.28649068 L27.2003106,11.6622671 C27.257764,11.7197205 27.2864907,11.7857143 27.2864907,11.859472 C27.2864907,11.9340062 27.257764,12 27.2003106,12.0574534 L26.7709627,12.4868012 C26.7135093,12.5442547 26.6475155,12.5729814 26.5729814,12.5729814 C26.4984472,12.572205 26.4324534,12.5434783 26.375,12.4860248 Z"
+                            id="Path" fill="#A1C0EF"
+                            transform="translate(24.786491, 8.286491) rotate(90.000000) translate(-24.786491, -8.286491) "
+                            className={(this.state.open) ? "arrow-open" : "arrow-close"}/>
+                        </g>
                       </g>
                     </g>
                   </g>
                 </g>
               </g>
             </g>
-          </g>
-        </svg>
+          </svg>
         </div>
         <div className="mini-close" onClick={this.handleContainerClick}>
           <Avatar user={this.props.user} progress={65}/>
@@ -204,12 +215,6 @@ class UserBox extends React.Component<IProps, IState> {
           <Avatar user={this.props.user}/>
         </div>
       </div>
-    );
-  }
-
-  public render() {
-    return (
-      this.props.collapse ? this.closeMenuRender() : this.openMenuRender()
     );
   }
 }

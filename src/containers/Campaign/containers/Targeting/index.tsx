@@ -1,7 +1,8 @@
 import * as React from "react";
+import DataTable from "../../../../components/DataTable/index";
+import {ControllersApi} from "../../../../api/api";
+import {Row, Col, Form} from "antd";
 import SelectTag from "../../../../components/SelectTag/index";
-import {Col, Row, Form} from "antd";
-
 const FormItem = Form.Item;
 
 interface IProps {
@@ -27,9 +28,18 @@ const persons = {
 
 export default class TargetingComponent extends React.Component <IProps, IState> {
   public render() {
+    const controllerApi = new ControllersApi();
     return (
       <div dir="rtl">
         <h1>Targeting</h1>
+        <Row>
+          <Col>
+            <DataTable
+              name="publisherList"
+              definitionFn={controllerApi.inventoryListDefinitionGet}
+              dataFn={controllerApi.inventoryListGet}/>
+          </Col>
+        </Row>
         <Row type="flex" align="middle">
           <Col>
             <FormItem>
