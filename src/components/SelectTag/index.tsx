@@ -5,16 +5,22 @@ import CONFIG from "../../constants/config";
 import "./style.less";
 import Translate from "../i18n/Translate/index";
 
+export interface IData {
+  value: number;
+  name: string;
+}
 
 interface IProps {
-  data: any;
+  value?: (string|number)[] ;
+  OnChange?: (value: (string|number)[] ) => void;
+  data: IData[];
   placeholder?: string | null;
   type?: string | null;
   allOption?: boolean | null;
 }
 
 interface IStates {
-  values?: any;
+  value?: (string|number)[] ;
   names?: string;
   selectAll?: boolean | null;
 }
@@ -35,23 +41,29 @@ export default class SelectTag extends React.Component<IProps, IStates> {
 
   constructor(props) {
     super(props);
-    this.state = {values: []};
+    this.state = {value: this.props.value ? this.props.value : []};
   }
 
   /**
    * @function handle change of selected values
-   * @param values
+   * @param value
    */
-  private handleChange(event, index, values) {
-      this.setState({values});
+  private handleChange(event, index, value) {
+      this.setState({value});
+    if (this.props.OnChange) {
+      this.props.OnChange(value);
+    }
   }
   private handleSelectAll() {
       let temp = [];
       for (let i = 0; i < this.props.data.length; i++) {
         temp.push(this.props.data[i].value);
       }
-      this.setState({values: temp});
+      this.setState({value: temp});
       this.setState({selectAll: true});
+      if (this.props.OnChange) {
+        this.props.OnChange(temp);
+      }
   }
 
   /**
@@ -60,13 +72,16 @@ export default class SelectTag extends React.Component<IProps, IStates> {
    */
 
   private handleRemove(dataValue) {
-    let temp = this.state.values;
+    let temp = this.state.value;
     temp.splice(temp.indexOf(dataValue), 1);
-    this.setState({values: temp});
+    this.setState({value: temp});
+    if (this.props.OnChange) {
+      this.props.OnChange(temp);
+    }
   }
 
   private handleReset() {
-    this.setState({values: [], selectAll: false});
+    this.setState({value: [], selectAll: false});
   }
 
   menuItems() {
@@ -74,9 +89,9 @@ export default class SelectTag extends React.Component<IProps, IStates> {
     return Data.map((data) => (
       <MenuItem
         key={data.value}
-        className={(this.state.values.indexOf(data.value) > -1) ? "hidden" : "show"}
+        className={(this.state.value.indexOf(data.value) > -1) ? "hidden" : "show"}
         insetChildren={true}
-        checked={this.state.values.indexOf(data.value) > -1}
+        checked={this.state.value.indexOf(data.value) > -1}
         value={data.value}
         primaryText={data.name}
       />
@@ -89,7 +104,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
    */
   private handleTags(data) {
     return data.map((data, i) => (
-      <div key={i} className={(this.state.values.indexOf(data.value) > -1) ? "show-tag" : "hidden-tag"}
+      <div key={i} className={(this.state.value.indexOf(data.value) > -1) ? "show-tag" : "hidden-tag"}
            data-value={data.value}>
         <span className="tag">{data.name}</span>
         <span className="close" onClick={() => {
@@ -100,22 +115,21 @@ export default class SelectTag extends React.Component<IProps, IStates> {
   }
 
 
-  selectionRenderer = (values) => {
-    switch (values.length) {
+  selectionRenderer = (value) => {
+    switch (value.length) {
       case 0:
         return "";
       case 1:
-        if (values[0] === -1) {
+        if (value[0] === -1) {
           return `${this.i18n._t("All ")} ${this.props.type} ${this.i18n._t("Selected")} `;
         }
         return this.props.data[0].name;
       case this.props.data.length:
          return `${this.i18n._t("All ")} ${this.props.type} ${this.i18n._t("Selected")} `;
       default:
-        return `${values.length} ${this.i18n._t("Selected")} ${this.props.type}`;
+        return `${value.length} ${this.i18n._t("Selected")} ${this.props.type}`;
     }
   }
-
   render() {
     return (
       <div className="select-tag">
@@ -123,7 +137,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
                      hintText={this.i18n._t(this.props.placeholder)}
                      selectionRenderer={this.selectionRenderer}
                      multiple={true}
-                     value={this.state.values}
+                     value={this.state.value}
                      onChange={this.handleChange.bind(this)}
         >
           {this.props.allOption &&
@@ -141,18 +155,20 @@ export default class SelectTag extends React.Component<IProps, IStates> {
         <div>
           {this.props.type &&
           <div>
-            <Translate value={"selected " + this.props.type}/>
+            <Translate value={"selected _{type}"}  params={{type: this.props.type}}/>
           </div>}
           {!this.state.selectAll && this.handleTags(this.props.data)}
           {this.state.selectAll &&
           <div className="show-tag">
-            <span className="tag">{this.i18n._t("All ") + this.props.type + this.i18n._t(" Has been selected")}</span>
+            <span className="tag">
+              <Translate value={"All _{type} Has been selected"} params={{type: this.props.type}} />
+            </span>
             <span className="close" onClick={() => {
               this.handleReset();
             }}>&#10005;</span>
           </div>
           }
-          {this.state.values.length === 0 && (this.i18n._t("No ") + this.props.type + this.i18n._t(" Has been selected"))}
+          {this.state.value.length === 0 && <Translate value={"No _{type} Has been selected"} params={{type: this.props.type}} />}
         </div>
       </div>
     );

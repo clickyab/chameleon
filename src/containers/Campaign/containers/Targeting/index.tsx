@@ -3,6 +3,10 @@ import DataTable from "../../../../components/DataTable/index";
 import {ControllersApi} from "../../../../api/api";
 import {Row, Col, Form} from "antd";
 import SelectTag from "../../../../components/SelectTag/index";
+
+import {Col, Row, Form} from "antd";
+import SelectList from "../../../../components/SelectList/index";
+
 const FormItem = Form.Item;
 
 interface IProps {
@@ -26,6 +30,21 @@ const persons = {
   ]
 };
 
+const persons2 = {
+  "data": [
+    {"id": 0, "title": "Leonardo sunches"},
+    {"id": 1, "title": "Van Henry"},
+    {"id": 2, "title": "April Tucker"},
+    {"id": 3, "title": "Ralph Hubbard"},
+    {"id": 4, "title": "Omar Alexander"},
+    {"id": 5, "title": "Carlos Abbott"},
+    {"id": 6, "title": "Miriam Wagner"},
+    {"id": 7, "title": "Bradley Wilkerson"},
+    {"id": 8, "title": "Virginia Andrews"},
+    {"id": 9, "title": "Kelly Snyder"}
+  ]
+};
+
 export default class TargetingComponent extends React.Component <IProps, IState> {
   public render() {
     const controllerApi = new ControllersApi();
@@ -41,13 +60,18 @@ export default class TargetingComponent extends React.Component <IProps, IState>
           </Col>
         </Row>
         <Row type="flex" align="middle">
-          <Col>
+          <Col span={12}>
             <FormItem>
               <SelectTag data={persons.data}
                          type="Operation System"
                          placeholder="Select Os"
                          allOption={true}
               />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem>
+             <SelectList data={persons2.data} />
             </FormItem>
           </Col>
         </Row>
