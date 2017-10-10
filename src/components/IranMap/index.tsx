@@ -128,7 +128,6 @@ export default class IranMap extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log(this.state.selectedItems);
     return (
       <Row type="flex">
         <Col className="city-selector">
