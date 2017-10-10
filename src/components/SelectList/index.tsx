@@ -46,6 +46,7 @@ export default class SelectList extends React.Component<IProps, IState> {
      */
     this.check = this.check.bind(this);
     this.checkAll = this.checkAll.bind(this);
+    this.checkAllLeft = this.checkAllLeft.bind(this);
     this.handleSubmitRight = this.handleSubmitRight.bind(this);
     this.handleSubmitLeft = this.handleSubmitLeft.bind(this);
   }
@@ -62,6 +63,7 @@ export default class SelectList extends React.Component<IProps, IState> {
       if (this.state.selectedItemsLeft.indexOf(data.id) > -1) {
         return <Checkbox key={data.id}
                          label={data.title}
+                         checked={this.state.selectedLeftTemp.length  === this.state.selectedItemsLeft.length || this.state.selectedLeftTemp.indexOf(data.id) > -1 }
                          className={((this.state.selectedLeftTemp.indexOf(data.id)) > -1) ? "select-list-checkbox-selected" : "select-list-checkbox" }
                          onCheck={() => (this.checkLeft(data.id))}/>;
       }
@@ -166,6 +168,31 @@ export default class SelectList extends React.Component<IProps, IState> {
     }
   }
 
+  checkAllLeft(): void {
+    console.log(this.state);
+    if (this.state.selectedLeftTemp.length  === this.state.selectedItemsLeft.length) {
+      this.setState({
+        selectedLeftTemp: [],
+      });
+    } else if (this.state.selectedLeftTemp.length === 0) {
+      let items = this.state.selectedItemsLeft.filter(c => true);
+      this.setState({
+        selectedLeftTemp: items,
+      });
+    }
+    else {
+      let items = [];
+      for (let i = 0; i < this.state.selectedItemsLeft.length; i++) {
+        if (!(this.state.selectedItemsRight.indexOf(this.state.selectedItemsLeft[i]) > -1)) {
+          items.push(this.state.selectedItemsLeft[i]);
+        }
+      }
+      this.setState({
+        selectedLeftTemp: items,
+      });
+    }
+  }
+
   private handleSubmitRight() {
     let temp = this.state.selectedRightTemp;
     let save = this.state.selectedItemsLeft;
@@ -194,6 +221,9 @@ export default class SelectList extends React.Component<IProps, IState> {
     if (this.state.selectedLeftTemp.length === 0) {
       let temp = this.state.selectedLeftTemp;
       this.setState({selectedItemsRight: temp, selectedLeftTemp: []});
+    }
+    else if (this.state.selectedItemsLeft.length === this.state.selectedLeftTemp.length) {
+      this.setState({selectedItemsRight: [], selectedLeftTemp: [] , selectedItemsLeft: [] });
     }
     else {
       let temp = [];
@@ -243,12 +273,23 @@ export default class SelectList extends React.Component<IProps, IState> {
             <Translate value="Your final List"/>
             <span className="count">{this.state.selectedItemsLeft.length}</span>
           </div>
-          <div className="select-list-left">
+
           {this.state.selectedItemsLeft.length !== 0 &&
-          this.showSelectedLeft()
+          <div>
+            <Checkbox
+              className={(this.state.selectedLeftTemp.length === this.state.selectedItemsLeft.length) ? "all-selector-select" : "all-selector"}
+              label={"Select all"}
+              checked={(this.state.selectedLeftTemp.length === this.state.selectedItemsLeft.length)}
+              onCheck={() => this.checkAllLeft()}
+              onSelect={() => this.checkAllLeft()}
+            />
+            <div className="select-list-left">
+              {this.showSelectedLeft()}
+              {console.log(this.state)}
+            </div>
+          </div>
           }
             {this.state.selectedItemsLeft.length === 0 && <span className="select-list-empty">{i18n._t("Please select your items from right box, then click on move button")}</span>}
-          </div>
           <RaisedButton
             label={<Translate value="Remove chosen items"/>}
             primary={false}
