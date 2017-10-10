@@ -249,7 +249,7 @@ export default class SelectList extends React.Component<IProps, IState> {
         <Col span={12} className="select-list">
           <div className="select-list-header">
             <Translate value="Brands List"/>
-            <span className="count">{this.props.data.length}</span>
+            <span className="count">{this.props.data.length - this.state.selectedItemsLeft.length}</span>
           </div>
           <Checkbox className={(this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length  === this.props.data.length) ? "all-selector-select" : "all-selector"}
                     label={"Select all"}

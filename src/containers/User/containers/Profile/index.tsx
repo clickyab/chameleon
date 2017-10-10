@@ -87,7 +87,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   private handleSubmit(e) {
     if (e) e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log(values);
       if (err) {
         notification.error({
           message: "Update profile failed!",
@@ -128,29 +127,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
     });
   }
 
-  uploadAvatar(file) {
-    const uploader = new Upload(UPLOAD_MODULES.AVATAR, file);
-    uploader.upload((state) => {
-      // todo:: show progress
-      console.log(state);
-    })
-      .then((res) => {
-        notification.success({
-          message: this.i18n._t("Upload Avatar"),
-          description: this.i18n._t("Your avatar changed successfully.").toString(),
-        });
-      })
-      .catch((error) => {
-        notification.error({
-          message: this.i18n._t("Upload Avatar"),
-          description: this.i18n._t("Error in change avatar.").toString(),
-        });
-      });
-
-  }
-
   render() {
-    console.log(this.state);
     const {getFieldDecorator} = this.props.form;
     return (
       <div className={( CONFIG.DIR === "rtl" ) ? "profile-container-rtl" : "profile-container"}>

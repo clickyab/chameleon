@@ -6,7 +6,7 @@ import PublicProfileContainer from "../../containers/Profile/index";
 import Avatar from "../../../../components/Avatar/index";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
-import {UserApi, UserResponseLoginOKAccount, UserUserPayload} from "../../../../api/api";
+import {UserApi, UserAvatarPayload, UserResponseLoginOKAccount, UserUserPayload} from "../../../../api/api";
 import {default as Upload, UPLOAD_MODULES} from "../../../../services/Upload/index";
 import {notification} from "antd/lib";
 import I18n from "../../../../services/i18n/index";
@@ -67,27 +67,13 @@ class UserArea extends React.Component<IProps, IState> {
       });
     })
       .then((res) => {
-        console.log(res);
         const userApi = new UserApi();
-        let userPayload: UserUserPayload = {
-          address: this.state.user.address,
+        let userAvatarPayload: UserAvatarPayload = {
           avatar: res.url,
-          cell_phone: this.state.user.cellphone,
-          city_id: this.state.user.city_id,
-          economic_code: this.state.user.economic_code,
-          email: this.state.user.email,
-          first_name: this.state.user.first_name,
-          gender: this.state.user.gender,
-          land_line: this.state.user.land_line,
-          last_name: this.state.user.last_name,
-          legal_name: this.state.user.legal_name,
-          legal_register: this.state.user.legal_register,
-          postal_code: this.state.user.postal_code,
-          ssn: this.state.user.ssn,
         };
 
-        userApi.userUpdatePut({
-          payloadData: userPayload,
+        userApi.userAvatarPut({
+          payloadData: userAvatarPayload,
         }).then((data) => {
           notification.success({
             message: this.i18n._t("Upload Avatar"),

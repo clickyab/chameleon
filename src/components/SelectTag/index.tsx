@@ -121,13 +121,13 @@ export default class SelectTag extends React.Component<IProps, IStates> {
         return "";
       case 1:
         if (value[0] === -1) {
-          return `${this.i18n._t("All ")} ${this.props.type} ${this.i18n._t("Selected")} `;
+          return <Translate value={"All _{type} selected"} params={{type: this.props.type}}/>;
         }
         return this.props.data[0].name;
       case this.props.data.length:
-         return `${this.i18n._t("All ")} ${this.props.type} ${this.i18n._t("Selected")} `;
+         return <Translate value={"All _{type} selected"} params={{type: this.props.type}}/>;
       default:
-        return `${value.length} ${this.i18n._t("Selected")} ${this.props.type}`;
+        return <Translate value={"_{length} selected _{type}"} params={{type: this.props.type , length: value.length}}/>;
     }
   }
   render() {
