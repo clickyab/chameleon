@@ -98,7 +98,6 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    */
   public componentDidMount() {
     // check has initial location
-    console.log(this.props);
     if (!!this.props.countryId) {
       this.loadCountries()
         .then(() => {
@@ -143,7 +142,6 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @returns {Promise<LocationProvinces>}
    */
   private setCountry(event, index: number, countryId: number, selectFirstItem?: boolean) {
-    console.log(countryId);
     const country = this.state.countries.find((c) => (c.id === countryId));
     return this.api.locationProvincesCountryIdGet({countryId: country.id.toString()})
       .then((provinces) => {
@@ -173,7 +171,6 @@ export default class LocationSelect extends React.Component<IProps, IState> {
     const province = this.state.provinces.find((c) => (c.id === provinceId));
     return this.api.locationCitiesProvincesIdGet({provincesId: province.id.toString()})
       .then((cities) => {
-        console.log(cities);
         this.setState({
           province,
           cities,
