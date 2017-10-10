@@ -85,7 +85,6 @@ export interface ControllersBrowserResponse extends Array<ControllersBrowserResp
 export interface ControllersBrowserResponseInner {
     "active"?: boolean;
     "created_at"?: string;
-    "id"?: number;
     "name"?: string;
     "updated_at"?: string;
 }
@@ -104,7 +103,6 @@ export interface ControllersCatResponse extends Array<ControllersCatResponseInne
 export interface ControllersCatResponseInner {
     "active"?: boolean;
     "description"?: string;
-    "id"?: number;
     "name"?: string;
 }
 
@@ -145,7 +143,15 @@ export interface ControllersCreateCampaignPayloadSchedule {
     "h23"?: boolean;
 }
 
-export interface ControllersIspResponse extends Array<ControllersBrowserResponseInner> {
+export interface ControllersIspResponse extends Array<ControllersIspResponseInner> {
+}
+
+export interface ControllersIspResponseInner {
+    "active"?: boolean;
+    "created_at"?: string;
+    "id"?: number;
+    "name"?: string;
+    "updated_at"?: string;
 }
 
 export interface ControllersListInventoryDefResponse {
@@ -352,7 +358,6 @@ export interface OrmBase {
 export interface OrmBrowser {
     "active"?: boolean;
     "created_at"?: string;
-    "id"?: number;
     "name"?: string;
     "updated_at"?: string;
 }
@@ -421,7 +426,6 @@ export interface OrmCampaignType {
 export interface OrmCategory {
     "active"?: boolean;
     "description"?: string;
-    "id"?: number;
     "name"?: string;
 }
 
@@ -473,7 +477,6 @@ export interface OrmManufacturer {
 export interface OrmOS {
     "active"?: boolean;
     "created_at"?: string;
-    "id"?: number;
     "name"?: string;
     "updated_at"?: string;
 }
@@ -1151,14 +1154,14 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryListGet
      * @param token the security token, get it from login route param
-     * @param sort  param
-     * @param kind  param
      * @param name  search the name field param
+     * @param domain  search the domain field param
      * @param c  count per page param
      * @param p  page number param
-     * @param domain  search the domain field param
+     * @param kind  param
+     * @param sort  param
      */
-    inventoryListGet(params: {  token?: string; sort?: string; kind?: string; name?: string; c?: string; p?: string; domain?: string; }, options: any = {}): FetchArgs {
+    inventoryListGet(params: {  token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -1166,14 +1169,11 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
-        if (params["kind"] !== undefined) {
-            urlObj.query["kind"] = params["kind"];
-        }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
+        }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
         }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
@@ -1181,8 +1181,11 @@ export const ControllersApiFetchParamCreator = {
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
         }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
+        }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -1760,14 +1763,14 @@ export const ControllersApiFp = {
     /**
      * inventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param sort  (def)
-     * @param kind  (def)
      * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
      * @param c  count per page (def)
      * @param p  page number (def)
-     * @param domain  search the domain field (def)
+     * @param kind  (def)
+     * @param sort  (def)
      */
-    inventoryListGet(params: { token?: string; sort?: string; kind?: string; name?: string; c?: string; p?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
+    inventoryListGet(params: { token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
         const fetchArgs = ControllersApiFetchParamCreator.inventoryListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -2066,14 +2069,14 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param sort  (def)
-     * @param kind  (def)
      * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
      * @param c  count per page (def)
      * @param p  page number (def)
-     * @param domain  search the domain field (def)
+     * @param kind  (def)
+     * @param sort  (def)
      */
-    inventoryListGet(params: {  token?: string; sort?: string; kind?: string; name?: string; c?: string; p?: string; domain?: string; }, options: any = {}) {
+    inventoryListGet(params: {  token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -2254,14 +2257,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryListGet
          * @param token the security token, get it from login route (def)
-         * @param sort  (def)
-         * @param kind  (def)
          * @param name  search the name field (def)
+         * @param domain  search the domain field (def)
          * @param c  count per page (def)
          * @param p  page number (def)
-         * @param domain  search the domain field (def)
+         * @param kind  (def)
+         * @param sort  (def)
          */
-        inventoryListGet(params: {  token?: string; sort?: string; kind?: string; name?: string; c?: string; p?: string; domain?: string; }, options: any = {}) {
+        inventoryListGet(params: {  token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryListGet(params, options)(fetch, basePath);
         },
         /**
