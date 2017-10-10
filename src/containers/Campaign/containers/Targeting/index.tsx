@@ -122,6 +122,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   componentDidMount() {
+    // load initial values
     this.collectionApi.assetManufacturersGet({})
       .then((brands) => {
         this.brands = brands;
