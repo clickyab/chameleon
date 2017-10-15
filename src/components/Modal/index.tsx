@@ -8,6 +8,7 @@ import "./style.less";
 interface IProps extends ModalProps {
   children?: JSX.Element ;
 }
+
 /**
  * Modal
  *
@@ -27,20 +28,27 @@ export default class Modal extends React.Component<IProps, {}> {
    *
    * @return {void}
    */
-  private handleBlur(visible: boolean , id = "root"): void {
+  private handleBlur(visible: boolean, id = "root"): void {
     if (visible) {
-      document.getElementById(id).classList.add("blur") ;
+      document.getElementById(id).classList.add("blur");
     }
     else {
-      document.getElementById(id).classList.remove("blur") ;
+      document.getElementById(id).classList.remove("blur");
     }
   }
+
   componentWillMount() {
     this.handleBlur(this.props.visible);
   }
+
   componentWillReceiveProps(nextProps) {
     this.handleBlur(nextProps.visible);
   }
+
+  componentWillUnmount() {
+    this.handleBlur(false);
+  }
+
   public render() {
     return (
       <AntModal wrapClassName="vertical-center-modal" {...this.props} className="modal-wrapper">

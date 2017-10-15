@@ -18,6 +18,7 @@ import AAA from "../AAA/index";
  */
 export const UPLOAD_MODULES = {
   AVATAR: "avatar",
+  BANNER : "banner"
 };
 
 /**
