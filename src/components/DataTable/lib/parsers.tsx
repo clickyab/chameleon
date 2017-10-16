@@ -93,7 +93,7 @@ export class DataTableDataParser {
     // TODO: handle all types
     switch (source.type) {
       case "date":
-        // column.render = ((t) => new Date(t).toDateString());
+        column.render = ((t) => new Date(t).toDateString());
         break;
     }
 
