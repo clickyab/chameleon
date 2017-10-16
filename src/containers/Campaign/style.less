@@ -5,6 +5,7 @@
   margin-right: @campaign-side-distance;
   margin-left: @campaign-side-distance;
     label{
+      width: auto !important;
       font-size: @campaign-label-font;
     }
   .form-select-column{
@@ -34,6 +35,9 @@
 
 .campaign-title {
   margin-bottom: 50px;
+  p {
+    margin-top: 5px;
+  }
 }
 
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
@@ -138,14 +142,18 @@ span[role="menuitem"] {
   > div {
     label {
       line-height:@radio-button-height !important;
-      font-size:12px;
+      font-size:@radio-button-label;
     }
     > div {
       height: @radio-button-height !important;
       > div {
-        svg {
+        svg:first-child {
           height: @radio-button-height !important;
-          fill: @campaign-form-symbol-color !important;
+          fill: @select-border-color !important;
+        }
+        svg:nth-child(2) {
+          height: @radio-button-height !important;
+          fill: @radio-button-color !important;
         }
       }
     }

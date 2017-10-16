@@ -11,16 +11,16 @@ export interface IData {
 }
 
 interface IProps {
-  value?: (string|number)[] ;
-  OnChange?: (value: (string|number)[] ) => void;
+  value?: (string | number)[] ;
+  OnChange?: (value: (string | number)[]) => void;
   data: IData[];
   placeholder?: string | null;
-  type?: string | null;
+  type: string | null;
   allOption?: boolean | null;
 }
 
 interface IStates {
-  value?: (string|number)[] ;
+  value?: (string | number)[] ;
   names?: string;
   selectAll?: boolean | null;
 }
@@ -49,21 +49,22 @@ export default class SelectTag extends React.Component<IProps, IStates> {
    * @param value
    */
   private handleChange(event, index, value) {
-      this.setState({value});
+    this.setState({value});
     if (this.props.OnChange) {
       this.props.OnChange(value);
     }
   }
+
   private handleSelectAll() {
-      let temp = [];
-      for (let i = 0; i < this.props.data.length; i++) {
-        temp.push(this.props.data[i].value);
-      }
-      this.setState({value: temp});
-      this.setState({selectAll: true});
-      if (this.props.OnChange) {
-        this.props.OnChange(temp);
-      }
+    let temp = [];
+    for (let i = 0; i < this.props.data.length; i++) {
+      temp.push(this.props.data[i].value);
+    }
+    this.setState({value: temp});
+    this.setState({selectAll: true});
+    if (this.props.OnChange) {
+      this.props.OnChange(temp);
+    }
   }
 
   /**
@@ -125,50 +126,58 @@ export default class SelectTag extends React.Component<IProps, IStates> {
         }
         return this.props.data[0].name;
       case this.props.data.length:
-         return <Translate value={"All _{type} selected"} params={{type: this.props.type}}/>;
+        return <Translate value={"All _{type} selected"} params={{type: this.props.type}}/>;
       default:
-        return <Translate value={"_{length} selected _{type}"} params={{type: this.props.type , length: value.length}}/>;
+        return <Translate value={"_{length} selected _{type}"} params={{type: this.props.type, length: value.length}}/>;
     }
   }
+
   render() {
     return (
-      <div className="select-tag">
-        <SelectField className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
-                     hintText={this.i18n._t(this.props.placeholder)}
-                     selectionRenderer={this.selectionRenderer}
-                     multiple={true}
-                     value={this.state.value}
-                     onChange={this.handleChange.bind(this)}
-        >
-          {this.props.allOption &&
-          <MenuItem
-            key={-1}
-            className="show"
-            insetChildren={true}
-            value={-1}
-            primaryText={"Select everything"}
-            checked={this.state.selectAll}
-            onClick={this.handleSelectAll.bind(this)}
-          />}
-          {this.menuItems()}
-        </SelectField>
-        <div>
-          {this.props.type &&
+      <div>
+        {this.props.type &&
+        <div className="select-label">
+          <Translate value={"select _{type}"} params={{type: this.props.type}}/>
+        </div>}
+        <div className="select-tag">
+          <SelectField className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
+                       hintText={this.i18n._t(this.props.placeholder)}
+                       selectionRenderer={this.selectionRenderer}
+                       multiple={true}
+                       value={this.state.value}
+                       onChange={this.handleChange.bind(this)}
+          >
+            {this.props.allOption &&
+            <MenuItem
+              key={-1}
+              className="show"
+              insetChildren={true}
+              value={-1}
+              primaryText={"Select everything"}
+              checked={this.state.selectAll}
+              onClick={this.handleSelectAll.bind(this)}
+            />}
+            {this.menuItems()}
+          </SelectField>
           <div>
-            <Translate value={"selected _{type}"}  params={{type: this.props.type}}/>
-          </div>}
-          {!this.state.selectAll && this.handleTags(this.props.data)}
-          {this.state.selectAll &&
-          <div className="show-tag">
+            {this.props.type &&
+            <div className="select-title">
+              <Translate value={"selected _{type}"} params={{type: this.props.type}}/>
+            </div>}
+            {!this.state.selectAll && this.handleTags(this.props.data)}
+            {this.state.selectAll &&
+            <div className="show-tag">
             <span className="tag">
-              <Translate value={"All _{type} Has been selected"} params={{type: this.props.type}} />
+              <Translate value={"All _{type} Has been selected"} params={{type: this.props.type}}/>
             </span>
-            <span className="close" onClick={() => {
-              this.handleReset();
-            }}>&#10005;</span>
+              <span className="close" onClick={() => {
+                this.handleReset();
+              }}>&#10005;</span>
+            </div>
+            }
+            {this.state.value.length === 0 &&
+            <Translate value={"No _{type} Has been selected"} params={{type: this.props.type}}/>}
           </div>
-          }
-          {this.state.value.length === 0 && <Translate value={"No _{type} Has been selected"} params={{type: this.props.type}} />}
         </div>
       </div>
     );

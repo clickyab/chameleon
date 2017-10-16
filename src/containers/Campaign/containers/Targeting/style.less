@@ -1,0 +1,106 @@
+@import "../../../App/theme";
+
+.targeting, .targeting-rtl {
+  margin-top: 40px;
+
+  .component-wraper {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  // Align tooltip and title
+  .title-target {
+    margin-top: 10px;
+  }
+  .targeting-row {
+    margin-top: 5px;
+  }
+  .network-select {
+    margin-top: 10px;
+    &-label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: -10px;
+    }
+  }
+  .select-label {
+    margin-top: 20px;
+  }
+}
+
+.Select-IAB {
+  .ant-select-selection {
+    border: 1px solid transparent !important;
+    border-bottom: 1px solid #DBDDE1 !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0) !important;
+  }
+
+  &:before {
+    content: '\25BE';
+    left: 0;
+    position: absolute;
+    font-size: 13px;
+  }
+  &:after {
+    content: "";
+    height: 1px;
+    background: @primary-color;
+    // border: 1px solid @primary-color;
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: scale(0);
+    transition: all ease-In 0.2s;
+  }
+  &.ant-select-focused:after {
+    transform: scale(1);
+    transition: all ease-In 0.2s;
+  }
+  &:active:after {
+    transform: scale(1);
+    transition: all ease-In 0.2s;
+  }
+  // Change float for rtl support
+  .ant-select-selection__rendered > ul > li {
+    color: @tag-color;
+    background-color: @tag-bg-color;
+    border: 1px solid @tag-border-color;
+    border-radius: 2px;
+    margin: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    line-height: 14px;
+    height: 25px;
+    float: right;
+  }
+
+  .ant-select-search--inline {
+    color: @tag-color;
+    background-color: transparent !important;
+    border: none !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    margin-top: 5px !important;
+  }
+  .ant-select-selection__choice__remove {
+    font-size: 18px !important;
+    margin-left: 10px;
+  }
+  .ant-select-selection__choice__content {
+    padding-right: 8px;
+  }
+}
+.ant-select-dropdown{
+  ::-webkit-scrollbar {
+    width: 3px !important;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: @map-border-color !important;
+  }
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  }
+
+}

@@ -8,7 +8,7 @@ export default class PublicLayout extends React.Component {
   public render() {
     return (
       <div>
-        public {this.props.children}
+        {this.props.children}
       </div>
     );
   }

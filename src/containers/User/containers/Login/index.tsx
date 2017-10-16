@@ -7,7 +7,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Card, Col, Form, message, notification, Row} from "antd";
+import {Card, Col, Form, message, notification, Row , Switch} from "antd";
 import {Checkbox, FontIcon, RaisedButton, TextField, Toggle} from "material-ui";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
@@ -16,6 +16,7 @@ import PasswordStrength from "../../../../components/PasswordStrength/index";
 
 import "./style.less";
 import PhoneInput from "../../../../components/PhoneInput/index";
+import CONFIG from "../../../../constants/config";
 
 const FormItem = Form.Item;
 
@@ -85,7 +86,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   />
                 )}
               </FormItem>
-              <FormItem>
+              <FormItem className="button-login-wrapper">
                 <RaisedButton
                   type="submit"
                   label={<Translate value="Next Step"/>}
@@ -213,19 +214,9 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 )}
               </FormItem>
               <FormItem>
-                {getFieldDecorator("corporation", {
-                  initialValue: false,
-                  rules: [{required: true, message: "Please input your phone!"}],
-                })(
-                  <Toggle
-                    label={this.i18n._t("Is Company?").toString()}
-                    defaultToggled={this.state.isCorporation}
-                    onToggle={(e) => {
-                      console.log(e);
-                      this.setState({isCorporation: !this.state.isCorporation});
-                    }}
-                  />
-                )}
+                <Translate value={"Is corporation?"}/>
+                <Switch className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
+                          onChange ={(e) => (this.setState({isCorporation: !this.state.isCorporation}))} />
               </FormItem>
               {this.state.isCorporation &&
               <FormItem>

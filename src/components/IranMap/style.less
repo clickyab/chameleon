@@ -1,5 +1,10 @@
 @import "../../containers/App/theme";
 
+.checkbox-size {
+  width: @checkbox-width !important;
+  height:@checkbox-height !important;
+  top:@checkbox-top-margin;
+}
 .land {
   fill: #CCCCCC;
   fill-opacity: 1;
@@ -16,6 +21,17 @@
   border: 1px solid @map-border-color;
   border-left: transparent;
   font-size: @map-font-size;
+.checkbox {
+  div > div > div > svg {
+    .checkbox-size();
+    fill: #DBDDE1 !important;
+  }
+  &-checked {
+    div > div > div > svg {
+      .checkbox-size();
+    }
+  }
+}
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -39,8 +55,17 @@
   transform: translate(20px, 80px) scale(1.2)   //It should be handled by javascript
 }
 
-.all-city-selector{
-  border : 1px solid @map-border-color ;
+.all-city-selector {
+  border: 1px solid @map-border-color;
   border-top: transparent;
-  border-left:transparent;
+  border-left: transparent;
+    div > div > div > svg {
+      .checkbox-size();
+      fill: #DBDDE1 !important;
+    }
+    &-checked {
+      div > div > div > svg {
+        .checkbox-size();
+      }
+    }
 }

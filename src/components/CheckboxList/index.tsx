@@ -5,6 +5,7 @@
 import * as React from "react";
 import {Row, Col} from "antd";
 import {Checkbox} from "material-ui";
+import "./style.less";
 
 /**
  * @interface ICheckboxItem
@@ -92,6 +93,7 @@ export default class CheckBoxList extends React.Component<IProps, IState> {
             <Checkbox
               label={item.title}
               value={item.value}
+              className={(this.state.value.indexOf(item.value) > -1) ? "checkbox-list-checked" : "checkbox-list" }
               checked={this.state.value.indexOf(item.value) > -1}
               onCheck={(p, c) => {
                 this.update(item, c);
