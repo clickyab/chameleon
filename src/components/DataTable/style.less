@@ -1,0 +1,86 @@
+@import "../../containers/App/theme";
+
+.ant-checkbox-inner {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  &:after {
+    width: 7px !important;
+    height: 9px !important;
+  }
+}
+
+&.ant-checkbox-indeterminate {
+  .ant-checkbox-inner {
+    &:after {
+      left: 4px !important;
+      top: 6px !important;
+      height: 2px !important;
+    }
+  }
+}
+
+.ant-table-tbody > {
+  tr:hover > td {
+    background: #F6F9F7;
+  }
+}
+
+.ant-table-thead {
+  tr {
+    box-shadow: -4px 4px 5px 0 rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    > th {
+      background: white;
+    }
+  }
+}
+
+// Set Selected sorted header color to white
+.ant-table-thead > tr > th.ant-table-column-sort {
+  > span {
+    color: @primary-color;
+  }
+  background: white !important;
+}
+.custom-filter-dropdown{
+  background: white;
+  border: solid 1px #E7E9EC;
+  border-radius: 5px;
+  padding-left:10px;
+  padding-right: 10px;
+}
+.campaign-data-table{
+  .ant-table-header{
+    overflow: auto !important;
+  }
+
+  .ant-table-header:before {
+    content: " ";
+    box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.1);
+    height: 4px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 32px;
+    z-index: 999;
+  }
+  .ant-table-tbody{
+    box-shadow: 4px 4px 5px 0 rgba(0, 0, 0, 0.1);
+  }
+  // customized Scrollbar Works only on webkit support browsers
+  *::-webkit-scrollbar {
+    width: .4em;
+  }
+
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+    border-radius:10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color:#D8D8D8;
+    border-radius:10px;
+    outline: 1px solid white;
+  }
+}

@@ -1,11 +1,11 @@
 import * as React from "react";
 import DataTable from "../../../../components/DataTable/index";
 import {ControllersApi} from "../../../../api/api";
-import {Row, Col, Form} from "antd";
+import {Row, Col, Form, Select} from "antd";
 import SelectTag from "../../../../components/SelectTag/index";
 import Translate from "../../../../components/i18n/Translate/index";
-import Tooltip from "antd/lib/tooltip";
-import {RadioButtonGroup, RadioButton, MenuItem, SelectField} from "material-ui";
+import Tooltip from "../../../../components/Tooltip/index";
+import {RadioButtonGroup, RadioButton, MenuItem, SelectField , RaisedButton} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import STEPS from "../../steps";
 import CONFIG from "../../../../constants/config";
@@ -15,6 +15,8 @@ import {withRouter} from "react-router";
 import CheckBoxList, {ICheckboxItem} from "../../../../components/CheckboxList/index";
 import IranMap from "../../../../components/IranMap/index";
 import SelectList from "../../../../components/SelectList/index";
+import "./style.less";
+import Icon from "../../../../components/Icon/index";
 
 const FormItem = Form.Item;
 
@@ -120,6 +122,9 @@ class TargetingComponent extends React.Component <IProps, IState> {
       devices: selectedDevices,
     });
   }
+  private handleBack() {
+    console.log("back");
+  }
 
   componentDidMount() {
     // load initial values
@@ -154,17 +159,20 @@ class TargetingComponent extends React.Component <IProps, IState> {
     const {getFieldDecorator} = this.props.form;
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <h2><Translate value="Targeting"/></h2>
-        <p><Translate value="Targeting description"/></p>
-        <Row>
+        <div className="campaign-title">
+          <h2><Translate value="Targeting"/></h2>
+          <p><Translate value="Targeting description"/></p>
+        </div>
+        <div className={(CONFIG.DIR === "ltr" ) ? "targeting" : "targeting-rtl"}>
           <Form onSubmit={this.handleSubmit.bind(this)}>
-            <Row type="flex">
-              <Col span={4}>
-                <label>Device Type</label>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("Device Type")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
-                  <RadioButtonGroup className="campaign-radio-group" name="days"
+                  <RadioButtonGroup className="campaign-radio-group" name="devices" defaultSelected={true}
                                     onChange={(a, checked) => {
                                       if (checked) {
                                         this.setState({
@@ -188,22 +196,26 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherDevices &&
-                  <CheckBoxList
-                    items={devices}
-                    value={this.state.devices}
-                    onChange={this.updateDevices.bind(this)}
-                  />
+                  <div className="component-wraper">
+                    <CheckBoxList
+                      items={devices}
+                      value={this.state.devices}
+                      onChange={this.updateDevices.bind(this)}
+                    />
+                  </div>
                   }
                 </FormItem>
               </Col>
-
-              <Col span={4}>
-                <label>Manufactures Brand</label>
+            </Row>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("Manufactures Brand")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
-                    className="campaign-radio-group" name="days"
+                    className="campaign-radio-group" name="brands" defaultSelected={true}
                     onChange={(a, checked) => {
                       if (checked) {
                         this.setState({
@@ -227,18 +239,22 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherBrands &&
-                    <SelectList data={persons2.data} />
+                  <div className="component-wraper">
+                    <SelectList data={persons2.data}/>
+                  </div>
                   }
                 </FormItem>
               </Col>
-
-              <Col span={4}>
-                <label>Operation systems</label>
+            </Row>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("Operation systems")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
-                    className="campaign-radio-group" name="days"
+                    className="campaign-radio-group" name="os" defaultSelected={true}
                     onChange={(a, checked) => {
                       if (checked) {
                         this.setState({
@@ -262,23 +278,27 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherOS &&
-                  <SelectTag
-                    allOption={false}
-                    placeholder={this.i18n._t("Select OS").toString()}
-                    type={this.i18n._t("Operation system").toString()}
-                    data={this.OSs.map(os => ({value: os.id, name: os.name}))}
-                  />
+                  <div className="component-wraper">
+                    <SelectTag
+                      allOption={false}
+                      placeholder={this.i18n._t("Select OS").toString()}
+                      type={this.i18n._t("Operation system").toString()}
+                      data={this.OSs.map(os => ({value: os.id, name: os.name}))}
+                    />
+                  </div>
                   }
                 </FormItem>
               </Col>
-
-              <Col span={4}>
-                <label>Browsers</label>
+            </Row>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("Browsers")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
-                    className="campaign-radio-group" name="days"
+                    className="campaign-radio-group" name="browsers" defaultSelected={true}
                     onChange={(a, checked) => {
                       if (checked) {
                         this.setState({
@@ -302,23 +322,27 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherBrowser &&
-                  <SelectTag
-                    allOption={false}
-                    placeholder={this.i18n._t("Select Browsers").toString()}
-                    type={this.i18n._t("Browsers").toString()}
-                    data={this.Browsers.map(os => ({value: os.id, name: os.name}))}
-                  />
+                  <div className="component-wraper">
+                    <SelectTag
+                      allOption={false}
+                      placeholder={this.i18n._t("Select Browsers").toString()}
+                      type={this.i18n._t("Browsers").toString()}
+                      data={this.Browsers.map(os => ({value: os.id, name: os.name}))}
+                    />
+                  </div>
                   }
                 </FormItem>
               </Col>
-
-              <Col span={4}>
-                <label>IAB Categories</label>
+            </Row>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("IAB Categories")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
-                    className="campaign-radio-group" name="days"
+                    className="campaign-radio-group" name="iab" defaultSelected={true}
                     onChange={(a, checked) => {
                       if (checked) {
                         this.setState({
@@ -342,23 +366,30 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherIAB &&
-                  <SelectTag
-                    allOption={false}
-                    placeholder={this.i18n._t("Select Categories").toString()}
-                    type={this.i18n._t("Categories").toString()}
-                    data={this.categories.map(c => ({value: c.id, name: c.name}))}
-                  />
+                  <div className="component-wraper">
+                    <Select
+                      showSearch={false}
+                      mode="tags"
+                      filterOption={false}
+                      style={{width: "50%"}}
+                      placeholder="Tags Mode"
+                      className="Select-IAB"
+                    >
+                    </Select>
+                  </div>
                   }
                 </FormItem>
               </Col>
-
-              <Col span={4}>
-                <label>Geo location</label>
+            </Row>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("Geo location")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
-                    className="campaign-radio-group" name="days"
+                    className="campaign-radio-group" name="location" defaultSelected={true}
                     onChange={(a, value) => {
                       if (value === "foreign") {
                         this.setState({
@@ -391,18 +422,22 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherLocation &&
-                  <IranMap/>
+                  <div className="component-wraper">
+                    <IranMap/>
+                  </div>
                   }
                 </FormItem>
               </Col>
-
-              <Col span={4}>
-                <label>Internet Network</label>
+            </Row>
+            <Row type="flex" className="targeting-row">
+              <Col span={4} className="title-target">
+                <Tooltip/>
+                <label>{this.i18n._t("Internet Network")}</label>
               </Col>
               <Col span={15} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
-                    className="campaign-radio-group" name="days"
+                    className="campaign-radio-group" name="network" defaultSelected={true}
                     onChange={(a, value) => {
                       if (value) {
                         this.setState({
@@ -434,52 +469,58 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherNetwork &&
-                  <SelectField className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
-                               value={this.state.NetworkType}
-                               onChange={(event, index, value: INetworkType) => {
-                                 this.setState({NetworkType: value});
-                               }}
-                               hintText={this.i18n._t("Network Type")}>
-                    <MenuItem
-                      key={-1}
-                      className="show"
-                      insetChildren={true}
-                      value={INetworkType.ISP_Cell}
-                      primaryText={this.i18n._t("ISP and Cellular").toString()}
-                      onClick={() => {
-                        this.setState({
-                          showISP: true,
-                          showCellar: true,
-                        });
+                  <div className="network-select">
+                    <label className="network-select-label">
+                      <Translate value={"Connection type"}/>
+                    </label>
+                    <SelectField
+                      className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
+                      value={this.state.NetworkType}
+                      onChange={(event, index, value: INetworkType) => {
+                        this.setState({NetworkType: value});
                       }}
-                    />
-                    <MenuItem
-                      key={0}
-                      className="show"
-                      insetChildren={true}
-                      value={INetworkType.ISP}
-                      primaryText={this.i18n._t("ISP").toString()}
-                      onClick={() => {
-                        this.setState({
-                          showISP: true,
-                          showCellar: false,
-                        });
-                      }}
-                    />
-                    <MenuItem
-                      key={1}
-                      className="show"
-                      insetChildren={true}
-                      value={INetworkType.Cell}
-                      primaryText={this.i18n._t("Cellular").toString()}
-                      onClick={() => {
-                        this.setState({
-                          showISP: false,
-                          showCellar: true,
-                        });
-                      }}
-                    />
-                  </SelectField>
+                      hintText={this.i18n._t("Network Type")}>
+                      <MenuItem
+                        key={-1}
+                        className="show"
+                        insetChildren={true}
+                        value={INetworkType.ISP_Cell}
+                        primaryText={this.i18n._t("ISP and Cellular").toString()}
+                        onClick={() => {
+                          this.setState({
+                            showISP: true,
+                            showCellar: true,
+                          });
+                        }}
+                      />
+                      <MenuItem
+                        key={0}
+                        className="show"
+                        insetChildren={true}
+                        value={INetworkType.ISP}
+                        primaryText={this.i18n._t("ISP").toString()}
+                        onClick={() => {
+                          this.setState({
+                            showISP: true,
+                            showCellar: false,
+                          });
+                        }}
+                      />
+                      <MenuItem
+                        key={1}
+                        className="show"
+                        insetChildren={true}
+                        value={INetworkType.Cell}
+                        primaryText={this.i18n._t("Cellular").toString()}
+                        onClick={() => {
+                          this.setState({
+                            showISP: false,
+                            showCellar: true,
+                          });
+                        }}
+                      />
+                    </SelectField>
+                  </div>
                   }
                   {this.state.showISP && this.state.showOtherNetwork &&
                   <SelectTag
@@ -499,10 +540,26 @@ class TargetingComponent extends React.Component <IProps, IState> {
                   }
                 </FormItem>
               </Col>
-
+            </Row>
+            <Row type="flex" align="middle">
+              <RaisedButton
+                onClick={this.handleBack.bind(this)}
+                label={<Translate value="Back"/>}
+                primary={false}
+                className="button-back-step"
+                icon={<Icon name="arrow" color="black"/>}
+                disableTouchRipple={true}
+              />
+              <RaisedButton
+                onClick={this.handleSubmit.bind(this)}
+                label={<Translate value="Next Step"/>}
+                primary={true}
+                className="button-next-step"
+                icon={<Icon name="arrow" color="white"/>}
+              />
             </Row>
           </Form>
-        </Row>
+        </div>
 
       </div>
     );

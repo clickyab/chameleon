@@ -132,7 +132,7 @@ export default class IranMap extends React.Component<IProps, IState> {
       <Row type="flex">
         <Col className="city-selector">
           <div style={{overflowY: "auto", height: "500px"}} onMouseLeave={() => this.mouseLeave()}>
-            <Checkbox className="all-city-selector"
+            <Checkbox className={(this.state.selectedItems.length === map.g.path.length) ? "all-city-selector-checked" : "all-city-selector"}
               checked={this.state.selectedItems.length === map.g.path.length}
               onCheck={() => this.checkAll()}
               onMouseLeave={() => this.mouseLeave()}
@@ -140,13 +140,16 @@ export default class IranMap extends React.Component<IProps, IState> {
               label={"all"}/>
             {map.g.path.map((path) => {
               return <Checkbox
+                key={path.id}
                 checked={this.state.selectedItems.indexOf(path.id) > -1}
                 onCheck={() => this.check(path.id)}
                 style={{backgroundColor: this.state.hoverItem === path.id ? "#ccc" : ""}}
                 onSelect={() => this.check(path.id)}
                 onMouseLeave={() => this.mouseLeave()}
                 onMouseEnter={() => this.mouseEnter(path.id)}
-                label={path.title}/>;
+                label={path.title}
+                className={(this.state.selectedItems.indexOf(path.id) > -1) ? "checkbox-checked" : "checkbox"}
+              />;
             })}
           </div>
         </Col>
@@ -155,6 +158,7 @@ export default class IranMap extends React.Component<IProps, IState> {
             <g id="map-graphic">
               {map.g.path.map((path) => {
                 return <path
+                  key={path.id}
                   onMouseLeave={() => this.mouseLeave()}
                   onMouseEnter={() => this.mouseEnter(path.id)}
                   onClick={() => this.check(path.id)}

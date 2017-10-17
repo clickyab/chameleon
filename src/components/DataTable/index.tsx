@@ -15,6 +15,7 @@ import {Table} from "antd";
 import {DataTableDataParser} from "./lib/parsers";
 import {IData, IDefinition} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
+import "./style.less";
 
 
 /**
@@ -270,6 +271,7 @@ class DataTable extends React.Component<IProps, IState> {
 
     if (!this.parser) {
       this.parser = new DataTableDataParser(this.state.definition);
+      this.parser.bind(this);
       this.parser.onSearch(this.onSearch.bind(this));
     }
 
@@ -281,6 +283,7 @@ class DataTable extends React.Component<IProps, IState> {
         rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
         pagination={this.loadPaginationConfig()}
         onChange={this.handleTableChange.bind(this)}
+        className="campaign-data-table"
       />
     );
   }

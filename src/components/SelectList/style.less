@@ -1,10 +1,16 @@
 @import "../../containers/App/theme";
 
+.checkbox-size {
+  width: @checkbox-width !important;
+  height: @checkbox-height !important;
+  top: @checkbox-top-margin;
+}
+
 .hide {
   display: none !important;
 }
 
-.select-list{
+.select-list {
   width: 340px !important;
   padding-right: 20px;
   padding-left: 20px;
@@ -14,124 +20,143 @@
   }
 
   *::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
-    border-radius:10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    border-radius: 10px;
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color:#D8D8D8;
-    border-radius:10px;
+    background-color: #D8D8D8;
+    border-radius: 10px;
     outline: 1px solid white;
   }
 
-  &-header{
+  &-header {
     width: 300px;
     .count {
-    float:left
+      float: left
     }
   }
 
   &-right {
     max-height: 200px;
     min-height: 200px;
-    overflow-y: auto ;
-    border-left : solid 1px #DBDDE1 ;
-    border-right : solid 1px #DBDDE1 ;
-    border-bottom : solid 1px #DBDDE1 ;
+    overflow-y: auto;
+    border-left: solid 1px #DBDDE1;
+    border-right: solid 1px #DBDDE1;
+    border-bottom: solid 1px #DBDDE1;
     > div {
       &:nth-child(even) {
         background: #EEEFF0;
       }
       > div > div:first-child {
-        fill:#DBDDE1 !important;
+        fill: #DBDDE1 !important;
       }
     }
 
   }
 
-  &-left{
+  &-left {
     max-height: 200px;
     min-height: 200px;
-    overflow-y: auto ;
-    border : solid 1px #DBDDE1 ;
+    overflow-y: auto;
+    border: solid 1px #DBDDE1;
     > div {
       &:nth-child(even) {
         background: #EEEFF0;
       }
       > div > div:first-child {
-        fill:#DBDDE1 !important;
+        fill: #DBDDE1 !important;
       }
     }
 
-    &-container{
+    &-container {
       width: 240px !important;
-      .select-list-header{
+      .select-list-header {
         width: 200px !important;
       }
     }
   }
 
-  &-checkbox-selected{
+  &-checkbox-selected {
     height: 28px !important;
     line-height: 28px;
     margin-top: 2px;
+    div {
+      align-items: center;
+      > div > div > svg {
+        .checkbox-size()
+      }
+    }
   }
 
-  &-empty{
+  &-empty {
     display: block;
     text-align: center;
     font-size: 13px;
     padding-top: 85px;
-    padding-right:15px;
-    padding-left:15px;
+    padding-right: 15px;
+    padding-left: 15px;
     max-height: 230px;
     min-height: 230px;
-    border : solid 1px #DBDDE1 ;
+    border: solid 1px #DBDDE1;
   }
 
   &-checkbox {
     height: 28px !important;
     line-height: 28px;
     margin-top: 2px;
-    div > div > div> svg {
-      fill:#DBDDE1 !important;
+    div {
+      align-items: center;
+      > div > div > svg {
+        fill: #DBDDE1 !important;
+        .checkbox-size()
+      }
     }
   }
 
-  .all-selector{
+  .all-selector {
     height: 28px !important;
     margin-top: 2px;
     line-height: 28px;
-    border : solid 1px #DBDDE1 ;
-    div > div > div > svg {
-      fill:#DBDDE1 !important;
+    border: solid 1px #DBDDE1;
+    div {
+      align-items: center;
+      > div > div > svg {
+        fill: #DBDDE1 !important;
+        .checkbox-size();
+      }
     }
-    &-select{
+    &-select {
       height: 28px !important;
       margin-top: 2px;
       line-height: 28px;
-      border : solid 1px #DBDDE1 ;
+      border: solid 1px #DBDDE1;
+      div {
+        align-items: center;
+        > div > div > svg {
+          .checkbox-size();
+        }
+      }
     }
   }
 
 }
 
-
-.btn-select-list , .btn-select-list-left {
+.btn-select-list, .btn-select-list-left {
   margin-top: 10px;
-  height: 30px ;
+  height: 30px;
   width: 220px;
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
   background: #B6BBC2;
-  button{
+  button {
     height: @campaign-button-height !important;
     line-height: @campaign-button-height !important;
     div {
-      > div{
-        span{
-          color:white;
+      > div {
+        span {
+          color: white;
         }
-        &:hover{
+        &:hover {
           background: #5E6670 !important;
         }
         background: #B6BBC2;
@@ -140,7 +165,8 @@
     }
   }
 }
-.btn-select-list-left{
+
+.btn-select-list-left {
   button {
     max-width: 200px !important;
   }

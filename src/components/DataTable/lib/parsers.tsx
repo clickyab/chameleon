@@ -5,6 +5,8 @@ import {ColumnProps} from "antd/lib/table/Column";
 import {IColumn, IData, IDefinition} from "./interfaces";
 import {Input, Button} from "antd";
 import * as React from "react";
+import {TextField} from "material-ui";
+import Icon from "antd/es/icon";
 
 interface IFilterItem {
   text: string;
@@ -21,11 +23,15 @@ export class DataTableDataParser {
   data: IData;
   columns: ColumnProps<any>[];
   searchFn: (column: string, value: string) => void;
+  bindTable: any;
 
   constructor(definition: IDefinition) {
     this.definition = definition;
   }
 
+  bind(value) {
+    this.bindTable = value;
+  }
   /**
    * Parse columns to Ant column
    * @returns {ColumnProps<any>[]}
@@ -101,19 +107,27 @@ export class DataTableDataParser {
 
       column.filterDropdown = (
         <div className="custom-filter-dropdown">
-          <Input
+          <TextField name="search"
             onChange={(e) => {
-              searchValue = e.target.value;
+              searchValue = (e.target as HTMLTextAreaElement).value;
             }}
-            onPressEnter={(e) => {
-              this.searchFn(source.data, searchValue);
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                this.searchFn(source.data, searchValue);
+                column.filterDropdownVisible = false;
+                e.preventDefault();
+              }
             }}
           />
           <Button type="primary" onClick={() => {
             this.searchFn(source.data, searchValue);
+            column.filterDropdownVisible = false;
           }}>Search</Button>
         </div>
       );
+      column.filterIcon = (<Icon
+                            onClick={ () => {  this.bindTable.forceUpdate();  (column.filterDropdownVisible) ? column.filterDropdownVisible = false : column.filterDropdownVisible = true ; } }
+                            type="search" /> );
     } else if (source.filter) {
       column.filters = this.filtersMapToObjects(source.filter_valid_map);
     }

@@ -1,0 +1,25 @@
+@import "../../containers/App/theme";
+
+.checkbox-size {
+  width: @checkbox-width !important;
+  height:@checkbox-height !important;
+  top:@checkbox-top-margin;
+}
+.checkbox-list {
+  label {
+    font-size: 13px;
+  }
+  div > div > div > svg {
+    .checkbox-size();
+    fill:#DBDDE1 !important;
+  }
+  &-checked {
+    label {
+      font-size: 13px;
+    }
+    div > div > div > svg {
+      .checkbox-size();
+    }
+  }
+}
+

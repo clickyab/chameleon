@@ -31,6 +31,7 @@ const muiTheme = getMuiTheme({
     primary1Color: "#41b6e6",
     // primary2Color: green700,
     // primary3Color: green100,
+    shadowColor: "#FFF",
   },
 });
 
