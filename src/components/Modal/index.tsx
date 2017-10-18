@@ -7,6 +7,7 @@ import "./style.less";
  */
 interface IProps extends ModalProps {
   children?: JSX.Element ;
+  customClass?: any;
 }
 
 /**
@@ -51,7 +52,7 @@ export default class Modal extends React.Component<IProps, {}> {
 
   public render() {
     return (
-      <AntModal wrapClassName="vertical-center-modal" {...this.props} className="modal-wrapper">
+      <AntModal wrapClassName="vertical-center-modal" {...this.props} className={`modal-wrapper ${(this.props.customClass) ? this.props.customClass : "" }`}>
         {this.props.children}
       </AntModal>
     );
