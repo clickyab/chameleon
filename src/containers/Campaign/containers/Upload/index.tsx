@@ -3,18 +3,21 @@
  */
 import * as React from "react";
 import Image from "react-image-file";
-
+import {withRouter} from "react-router";
 import BannerSize from "./CONSTsize";
-import {Upload, Row, Col, notification, Card, Progress, Button} from "antd";
+import {Upload, Row, Col, notification, Card, Progress, Button, Form, Icon} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
 import {default as UploadService, UPLOAD_MODULES, UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import FileSizeConvertor from "../../../../services/Utils/FileSizeConvertor";
-import {RadioButton, RadioButtonGroup, TextField} from "material-ui";
+import {RadioButton, RadioButtonGroup, TextField, RaisedButton} from "material-ui";
 import UtmModal from "./UtmModal";
+import "./style.less";
+import Modal from "../../../../components/Modal/index";
 
 const Dragger = Upload.Dragger;
+const FormItem = Form.Item;
 
 /**
  * @interface IFileItem
@@ -26,6 +29,8 @@ export interface IFileItem {
   state?: UploadState;
   utm?: string;
   name: string;
+  width?: number;
+  height?: number;
 }
 
 interface IProps {
@@ -39,11 +44,13 @@ interface IState {
   files: IFileItem[];
   setLinkForAllBanners: boolean;
   openUtmModal: boolean;
+  openImageModal: boolean;
+  previewImage?: IFileItem;
   editFile?: IFileItem;
   globalUtm ?: string;
 }
 
-export default class UploadComponent extends React.Component <IProps, IState> {
+class UploadComponent extends React.Component <IProps, IState> {
   private i18n = I18n.getInstance();
 
   /**
@@ -57,6 +64,7 @@ export default class UploadComponent extends React.Component <IProps, IState> {
       openUtmModal: false,
       files: [],
       setLinkForAllBanners: false,
+      openImageModal: false,
     };
     this.changeFileProgressState = this.changeFileProgressState.bind(this);
   }
@@ -183,6 +191,19 @@ export default class UploadComponent extends React.Component <IProps, IState> {
     });
   }
 
+  private openImageModal(file?: IFileItem) {
+    this.setState({
+      openImageModal: true,
+      previewImage: file,
+    });
+  }
+
+  private handleBack() {
+    console.log("back");
+  }
+  private handleSubmit() {
+    console.log("S");
+  }
   /**
    * @func onUtmModalSubmit
    * @desc Handle params that receive from utm modal
@@ -215,106 +236,159 @@ export default class UploadComponent extends React.Component <IProps, IState> {
   public render() {
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <h2><Translate value="Select Publishers"/></h2>
-        <p><Translate value="Select Publishers description"/></p>
-        <Row type="flex">
-          <Col span={19}>
+        <div className="campaign-title">
+          <h2><Translate value="Uplaod banner"/></h2>
+          <p><Translate value="Upload banner description"/></p>
+        </div>
+        <Row type="flex" gutter={16} justify="center">
+          <Col span={17}>
             <Row>
-              <Row type="flex">
-                <Col span={5}>
-                  <label><Translate value="Link settings"/></label>
-                </Col>
-                <Col span={19}>
-                  <RadioButtonGroup className="campaign-radio-group" name="setAll"
-                                    defaultSelected={this.state.setLinkForAllBanners}
-                                    onChange={this.handleChangeLinkSettings.bind(this)}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("Set link for all banners")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("Set different config for each banner.")}
-                    />
-                  </RadioButtonGroup>
-                </Col>
-              </Row>
-              {!this.state.setLinkForAllBanners &&
-              <Row type="flex">
-                <Col span={5}>
-                  <label><Translate value="URL"/></label>
-                </Col>
-                <Col span={19}>
-                  <Row>
-                    <Col>
-                      <TextField
-                        value={this.state.globalUtm}
-                        onChange={(e, value) => {
-                          this.setState({
-                            globalUtm: value,
-                          });
-                        }}
-                        hintText={"https://example.com/search/?utm_source=...."}
-                      />
-                    </Col>
-                    <Col>
-                      <Button onClick={() => {
-                        this.openUtmModal();
-                      }}><Translate value="set utm parameters"/></Button>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              }
-              <Col span={24}>
-                <Row type="flex" gutter={5}>
-                  {this.state.files.map((file, index) => (
-                    <Col key={file.id} span={12}>
-                      <Card>
-                        <Image file={file.fileObject} alt={file.fileObject.name}
-                               height={100}/>
-                        <p>{file.name}</p>
-                        <small>
-                          <Translate value="File size:"/>
-                          {FileSizeConvertor(file.fileObject.size)}
-                        </small>
-                        <Progress type="circle" percent={file.state ? file.state.progress : 1} width={40}/>
-                        {this.state.setLinkForAllBanners &&
-                        <Button onClick={() => {
-                          this.openUtmModal(file);
-                        }}><Translate value="edit"/></Button>
-                        }
-                        <Button onClick={() => {
-                          this.removeFile(file.id);
-                        }}>X</Button>
-                      </Card>
-                    </Col>
-                  ))}
+              <Form>
+                <Row type="flex" align="middle">
+                  <Col span={5}>
+                    <label><Translate value="Link settings"/></label>
+                  </Col>
+                  <Col span={19}>
+                    <FormItem>
+                      <RadioButtonGroup className="campaign-radio-group" name="setAll"
+                                        defaultSelected={this.state.setLinkForAllBanners}
+                                        onChange={this.handleChangeLinkSettings.bind(this)}>
+                        <RadioButton className="campaign-radio-button"
+                                     value={false}
+                                     label={this.i18n._t("Set link for all banners")}
+                        />
+                        <RadioButton className="campaign-radio-button"
+                                     value={true}
+                                     label={this.i18n._t("Set different config for each banner.")}
+                        />
+                      </RadioButtonGroup>
+                    </FormItem>
+                  </Col>
                 </Row>
-                <Dragger
-                  beforeUpload={this.uploadFile.bind(this)}
-                >
-                  <h2>Drag Here</h2>
-                </Dragger>
-              </Col>
+                {!this.state.setLinkForAllBanners &&
+                <Row type="flex" align="middle">
+                  <Col span={5}>
+                    <label><Translate value="URL"/></label>
+                  </Col>
+                  <Col span={19}>
+                    <Row type="flex" align="middle" gutter={24}>
+                      <Col span={15}>
+                        <FormItem>
+                          <TextField
+                            className="upload-textfield"
+                            fullWidth={true}
+                            value={this.state.globalUtm}
+                            onChange={(e, value) => {
+                              this.setState({
+                                globalUtm: value,
+                              });
+                            }}
+                            hintText={"https://example.com/search/?utm_source=...."}
+                          />
+                        </FormItem>
+                      </Col>
+                      <Col span={3} offset={6}>
+                        <Button
+                          icon={"setting"}
+                          className="add-utm-btn"
+                          onClick={() => {
+                            this.openUtmModal();
+                          }}><Translate value="set utm parameters"/></Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                }
+                <Row type={"flex"}>
+                <Col span={24}>
+                  <Row type="flex" gutter={30}>
+                    {this.state.files.map((file, index) => (
+                      <Col key={file.id} span={12}>
+                        <Card className="upload-process-wrapper">
+                          <div className="image-wrapper">
+                            <div className="image-overlay" onClick={() => this.openImageModal(file)}>
+                              <Icon style={{fontSize: "18px"}} type={"eye-o"}/>
+                            </div>
+                            <Image file={file.fileObject} alt={file.fileObject.name}
+                                   type={"img"}
+                            />
+                          </div>
+                          <div className="upload-process-content">
+                            <p>{file.name}</p>
+                            <small>
+                              <Translate value="File size:"/>
+                              {FileSizeConvertor(file.fileObject.size)}
+                            </small>
+                          </div>
+                          <div className="upload-option">
+                            {file.state && file.state.progress !== 100 &&
+                          <Progress type="circle" percent={file.state ? file.state.progress : 1} width={35}/>
+                          }
+                            {this.state.setLinkForAllBanners && file.state && file.state.progress === 100 &&
+                            <Button onClick={() => {
+                              this.openUtmModal(file);
+                            }}
+                                    className="btn-edit"
+                                    icon="edit"/>
+                            }
+                            <Button onClick={() => {
+                              this.removeFile(file.id);
+                            }}
+                                    icon="close"
+                                    className="btn-cancel"
+                            />
+                          </div>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                  <Dragger
+                    beforeUpload={this.uploadFile.bind(this)}
+                  >
+                    <h2>Drag Here</h2>
+                    <RaisedButton
+                      label={<Translate value="Select and Uplaod"/>}
+                      primary={false}
+                      className="btn-dragger"
+                    />
+                  </Dragger>
+                </Col>
+                </Row>
+                <Row type="flex" align="middle">
+                  <RaisedButton
+                    onClick={this.handleBack.bind(this)}
+                    label={<Translate value="Back"/>}
+                    primary={false}
+                    className="button-back-step"
+                    disableTouchRipple={true}
+                  />
+                  <RaisedButton
+                    onClick={this.handleSubmit.bind(this)}
+                    label={<Translate value="Next Step"/>}
+                    primary={true}
+                    className="button-next-step"
+                  />
+                </Row>
+              </Form>
             </Row>
           </Col>
-          <Col span={5}>
-            <Row type="flex">
-              {BannerSize.map((size, index) => {
-                return (
-                  <span key={index}
-                        style={{
-                          padding: 2,
-                          margin: "2px 3px",
-                          backgroundColor: "#fff",
-                          color: "#999",
-                          boxShadow: "0 0 0 1px #d9d9d9 inset"
-                        }}>
+          <Col span={7}>
+            <Row type="flex" className="column-info-rtl">
+              <h6><Translate value={"You should know:"}/></h6>
+              <ul>
+                <li><Translate value={"Maximum file size: static banner 200KB / video 2MB"}/></li>
+                <li><Translate value={"Supported formats"}/></li>
+              </ul>
+              <div className="banner-size-wrapper">
+                {BannerSize.map((size, index) => {
+                  return (
+                    <span className={"banner-size-tag active"}
+                          key={index}>
                         {`${size.width}x${size.height}`}
                   </span>
-                );
-              })}
+                  );
+                })}
+              </div>
             </Row>
           </Col>
         </Row>
@@ -330,7 +404,23 @@ export default class UploadComponent extends React.Component <IProps, IState> {
           }}
         />
         }
+        {this.state.previewImage &&
+        <Modal title={this.i18n._t("Banner Preview").toString()}
+               footer={[]}
+               visible={this.state.openImageModal}
+               customClass="preview-banner-modal"
+               onCancel={() => {
+                 this.setState({openImageModal: false});
+               }}
+        >
+          <Image file={this.state.previewImage.fileObject}
+                 type={"img"}
+          />
+        </Modal>
+        }
       </div>
     );
   }
 }
+
+export default Form.create()(withRouter(UploadComponent as any));
