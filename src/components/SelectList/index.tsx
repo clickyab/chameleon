@@ -285,7 +285,6 @@ export default class SelectList extends React.Component<IProps, IState> {
             />
             <div className="select-list-left">
               {this.showSelectedLeft()}
-              {console.log(this.state)}
             </div>
           </div>
           }

@@ -1,0 +1,249 @@
+@import "../../../App/theme";
+
+.upload-textfield {
+  margin-right: 20px;
+  max-width: 480px;
+  direction: ltr;
+  font-size: 15px !important;
+  @media (max-width: 1390px) {
+    font-size: 12px !important;
+  }
+}
+
+.add-utm-btn {
+  border-radius: 2px;
+  margin-right: 10px;
+  i {
+    padding: 0 5px;
+  }
+}
+
+.ant-upload.ant-upload-drag {
+  border-radius: 0;
+  border: 3px dashed #E4E6E9;
+  height: 380px;
+}
+
+.ant-upload-list {
+  display: none;
+}
+
+.btn-dragger {
+  margin-top: 10px;
+  height: 30px;
+  width: 220px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+  background: #B6BBC2;
+  button {
+    height: @campaign-button-height !important;
+    line-height: @campaign-button-height !important;
+    div {
+      > div {
+        span {
+          color: white;
+        }
+        &:hover {
+          background: #5E6670 !important;
+        }
+        background: #B6BBC2;
+        height: @campaign-button-height !important;
+      }
+    }
+  }
+}
+
+.banner-size-tag {
+  height: 20px;
+  width: 70px;
+  border-radius: 2px;
+  text-align: center;
+  padding: 2px;
+  margin: 2px 3px;
+  background-color: #fff;
+  color: #88909B;
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
+}
+
+.banner-size-tag.active {
+  color: #66C395;
+  box-shadow: 0 0 0 1px #66C395 inset;
+}
+
+.column-info {
+  padding: 35px;
+  border-left: solid 2px @border-profile-content;
+  &-rtl {
+    direction: rtl;
+    padding: 35px;
+    padding-left: 10px;
+    border-right: solid 2px @border-profile-content;
+    border-left: transparent !important;
+    ul {
+      display: block;
+      li {
+        list-style: disc;
+        margin: 10px auto;
+        margin-right: 15px;
+      }
+    }
+  }
+}
+
+.banner-size-wrapper {
+  display: block;
+  span {
+    float: right;
+  }
+}
+
+.upload-process-wrapper {
+  margin-bottom: 30px;
+  .ant-card-body {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    .image-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      width: 80px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all ease-In .4s ;
+      background: rgba(255,255,255,0) ;
+      img {
+        display: inline-block;
+        max-width: 100%;
+        height: auto;
+      }
+      .image-overlay {
+        *{
+          display: none;
+        }
+      }
+      &:hover {
+        .image-overlay {
+          visibility: visible;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          height: 80px;
+          width: 80px;
+          background: rgba(255,255,255,.95) ;
+          transition: all ease-In .4s ;
+          *{
+            display:block;
+          }
+        }
+      }
+    }
+  }
+  .upload-process-content {
+    padding-right: 10px;
+  }
+  .upload-option {
+    margin-right: auto;
+    margin-left: 20px;
+  }
+  .btn-cancel , .btn-edit {
+    border: none;
+    font-size: 15px;
+    padding: 0px 5px !important;
+  }
+}
+
+.utm-img-column{
+  padding: 20px;
+  display: flex;
+  border-left:1px solid #E4E6E9;
+  img{
+    align-self: center;
+    width: 100%;
+  }
+}
+.ant-modal-body {
+  .utm-form-img-wrapper {
+    margin-top: -16px;
+    .switch-rtl, switch {
+      margin-bottom: -24px;
+    }
+    padding-bottom: 0 !important;
+  }
+  .utm-form-column {
+    padding: 20px;
+  }
+
+  .modal-ok-btn {
+    margin-top: 25px;
+    height: @modal-button-height;
+    min-width: 70px;
+    box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+    font-size: 13px !important;
+    margin-bottom: 10px;
+    button {
+      min-width: 70px;
+      height: @modal-button-height !important;
+      line-height: @modal-button-height !important;
+      div {
+        > div {
+          height: @modal-button-height !important;
+          padding: 0px 0px !important;
+        }
+      }
+    }
+  }
+
+  .modal-cancel-btn {
+    margin-top: 25px;
+    height: @modal-button-height;
+    min-width: 70px;
+    box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+    font-size: 13px !important;
+    margin-bottom: 10px;
+    button {
+      min-width: 70px;
+      height: @modal-button-height !important;
+      line-height: @modal-button-height !important;
+      background-color: transparent !important;
+      div {
+        height: @modal-button-height !important;
+        > div {
+          height: @modal-button-height !important;
+          padding: 0px 0px !important;
+          background-color: transparent !important; //Remove Hover
+        }
+      }
+    }
+  }
+}
+.modal-btn-row{
+  float: left;
+}
+.modal-switch-row {
+  margin-bottom: 15px;
+}
+  .utm-img-modal {
+    width: auto !important;
+    display: table;
+    .ant-modal-footer {
+      display: none;
+    }
+  }
+  .preview-banner-modal {
+    .ant-modal-footer {
+      display: none !important;
+    }
+    position: relative;
+    display: table; /* This is important */
+    overflow-y: auto;
+    overflow-x: auto;
+    width: auto !important;
+    min-width: 250px !important;
+    margin: auto;
+    .ant-modal-body {
+      padding: 20px;
+    }
+  }
+
