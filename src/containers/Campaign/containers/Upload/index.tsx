@@ -5,7 +5,7 @@ import * as React from "react";
 import Image from "react-image-file";
 import {withRouter} from "react-router";
 import BannerSize from "./CONSTsize";
-import {Upload, Row, Col, notification, Card, Progress, Button, Form, Icon} from "antd";
+import {Upload, Row, Col, notification, Card, Progress, Button, Form} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
 import {default as UploadService, UPLOAD_MODULES, UploadState} from "../../../../services/Upload/index";
@@ -15,6 +15,7 @@ import {RadioButton, RadioButtonGroup, TextField, RaisedButton} from "material-u
 import UtmModal from "./UtmModal";
 import "./style.less";
 import Modal from "../../../../components/Modal/index";
+import Icon from "../../../../components/Icon/index";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -201,9 +202,11 @@ class UploadComponent extends React.Component <IProps, IState> {
   private handleBack() {
     console.log("back");
   }
+
   private handleSubmit() {
     console.log("S");
   }
+
   /**
    * @func onUtmModalSubmit
    * @desc Handle params that receive from utm modal
@@ -289,70 +292,79 @@ class UploadComponent extends React.Component <IProps, IState> {
                       </Col>
                       <Col span={3} offset={6}>
                         <Button
-                          icon={"setting"}
                           className="add-utm-btn"
                           onClick={() => {
                             this.openUtmModal();
-                          }}><Translate value="set utm parameters"/></Button>
+                          }}>
+                          <Icon name={"cif-gear-outline"} className="utm-icon"/>
+                          <Translate value="set utm parameters"/>
+                        </Button>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
                 }
                 <Row type={"flex"}>
-                <Col span={24}>
-                  <Row type="flex" gutter={30}>
-                    {this.state.files.map((file, index) => (
-                      <Col key={file.id} span={12}>
-                        <Card className="upload-process-wrapper">
-                          <div className="image-wrapper">
-                            <div className="image-overlay" onClick={() => this.openImageModal(file)}>
-                              <Icon style={{fontSize: "18px"}} type={"eye-o"}/>
+                  <Col span={24}>
+                    <Row type="flex" gutter={30}>
+                      {this.state.files.map((file, index) => (
+                        <Col key={file.id} span={12}>
+                          <Card className="upload-process-wrapper">
+                            <div className="image-wrapper">
+                              <div className="image-overlay" onClick={() => this.openImageModal(file)}>
+                                <Icon name={"cif-eye"} fontsize={20}/>
+                              </div>
+                              <Image file={file.fileObject} alt={file.fileObject.name}
+                                     type={"img"}
+                              />
                             </div>
-                            <Image file={file.fileObject} alt={file.fileObject.name}
-                                   type={"img"}
-                            />
-                          </div>
-                          <div className="upload-process-content">
-                            <p>{file.name}</p>
-                            <small>
-                              <Translate value="File size:"/>
-                              {FileSizeConvertor(file.fileObject.size)}
-                            </small>
-                          </div>
-                          <div className="upload-option">
-                            {file.state && file.state.progress !== 100 &&
-                          <Progress type="circle" percent={file.state ? file.state.progress : 1} width={35}/>
-                          }
-                            {this.state.setLinkForAllBanners && file.state && file.state.progress === 100 &&
-                            <Button onClick={() => {
-                              this.openUtmModal(file);
-                            }}
-                                    className="btn-edit"
-                                    icon="edit"/>
-                            }
-                            <Button onClick={() => {
-                              this.removeFile(file.id);
-                            }}
-                                    icon="close"
-                                    className="btn-cancel"
-                            />
-                          </div>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                  <Dragger
-                    beforeUpload={this.uploadFile.bind(this)}
-                  >
-                    <h2>Drag Here</h2>
-                    <RaisedButton
-                      label={<Translate value="Select and Uplaod"/>}
-                      primary={false}
-                      className="btn-dragger"
-                    />
-                  </Dragger>
-                </Col>
+                            <div className="upload-process-content">
+                              <p>{file.name}</p>
+                              <small>
+                                <Translate value="File size:"/>
+                                {FileSizeConvertor(file.fileObject.size)}
+                              </small>
+                            </div>
+                            <div className="upload-option">
+                              {file.state && file.state.progress !== 100 &&
+                              <Progress type="circle" percent={file.state ? file.state.progress : 1} width={35}/>
+                              }
+                              {this.state.setLinkForAllBanners && file.state && file.state.progress === 100 &&
+                              <Button onClick={() => {
+                                this.openUtmModal(file);
+                              }}
+                                      className="btn-edit"
+                              >
+                                <Icon name={"cif-edit"}/>
+                              </Button>
+                              }
+                              <Button onClick={() => {
+                                this.removeFile(file.id);
+                              }}
+                                      className="btn-cancel"
+                              >
+                                <Icon name={"cif-closelong"}/>
+                              </Button>
+                            </div>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                    <Dragger
+                      beforeUpload={this.uploadFile.bind(this)}
+                    >
+                      <div className={"dragger-content"}>
+                        <Icon name={"cif-cloud-upload"} className={"upload-icon"}/>
+                        <h2>Drag & <b>Drop</b></h2>
+                        <Translate value={"Drag your file over here"}/>
+                        <RaisedButton
+                          label={<Translate value="Select and Uplaod"/>}
+                          primary={false}
+                          className="btn-dragger"
+                        />
+                      </div>
+                    </Dragger>
+                  </Col>
                 </Row>
                 <Row type="flex" align="middle">
                   <RaisedButton
@@ -360,13 +372,14 @@ class UploadComponent extends React.Component <IProps, IState> {
                     label={<Translate value="Back"/>}
                     primary={false}
                     className="button-back-step"
-                    disableTouchRipple={true}
+                    icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
                   />
                   <RaisedButton
                     onClick={this.handleSubmit.bind(this)}
                     label={<Translate value="Next Step"/>}
                     primary={true}
                     className="button-next-step"
+                    icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
                   />
                 </Row>
               </Form>

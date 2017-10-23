@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
 @import "~antd/dist/antd.less";
 @import "theme.less";
+@import "fonts.less";
 
 #root{
   transition: filter linear 0.3s;
@@ -8,7 +9,7 @@
 
 .full-screen {
   height: 100vh;
-  width: 100vm;
+  width: 100vw;
 }
 
 // Typography
@@ -81,3 +82,11 @@ p {
   outline: 1px solid slategrey;
 }
 
+// Set defualt direction for only english Elements
+input[type="email"]{
+  direction: ltr;
+}
+input[type="email"]:disabled{
+  direction: ltr;
+  text-align: right;
+}

@@ -110,13 +110,13 @@ class TypeComponent extends React.Component <IProps, IState> {
       title: this.i18n._t("Web").toString(),
       description: this.i18n._t("Show Advertising in Desktop, Mobile and tablet browsers.").toString(),
       value: DEVICE_TYPES.WEB,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>
     },
     {
       title: this.i18n._t("Application").toString(),
       description: this.i18n._t("Show Advertising in Android Mobile and tablet application.").toString(),
       value: DEVICE_TYPES.APPLICATION,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-mobile-campaign-outline" className={"campaign-icon"}/>
     }
   ];
 
@@ -128,17 +128,17 @@ class TypeComponent extends React.Component <IProps, IState> {
     {
       title: this.i18n._t("Banner").toString(),
       value: WEB_TYPES.BANNER,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>
     },
     {
       title: this.i18n._t("Content").toString(),
       value: WEB_TYPES.CONTENT,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-native-campaign-outline" className={"campaign-icon"}/>
     },
     {
       title: this.i18n._t("Video").toString(),
       value: WEB_TYPES.VIDEO,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-video-campaign-outline" className={"campaign-icon"}/>
     }
   ];
 
@@ -150,7 +150,7 @@ class TypeComponent extends React.Component <IProps, IState> {
     {
       title: this.i18n._t("Banner").toString(),
       value: APPLICATION_TYPES.BANNER,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>
     }
   ];
 
@@ -246,36 +246,37 @@ class TypeComponent extends React.Component <IProps, IState> {
   public render() {
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <Row>
-          <h3 className="text-center">Select Campaign Type</h3>
+        <Row className="campaign-title">
+          <h3 className="text-center"><Translate value={"Select Campaign Type"}/></h3>
           <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
         </Row>
-        <hr/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
         <Row className="campaign-device">
           <SelectBox span={8} items={this.deviceTypes} initialSelect={null}
+                     className={"center-select-box"}
                      onChange={this.handleChangeDevicesType.bind(this)}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
             disabled={this.state.buttonDisable}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
+            className="button-next-step type-btn"
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"} />}
           />
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
         <Row className="campaign-type">
           <SelectBox items={this.desktopTypes} initialSelect={null}
+                     className={"center-select-box"}
                      onChange={this.handleChangeWebType.bind(this)}/>
           <RaisedButton
             onClick={this.handleChangeWebType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
             disabled={this.state.buttonDisable}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
+            className="button-next-step type-btn"
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
           />
         </Row>
         }
@@ -283,14 +284,15 @@ class TypeComponent extends React.Component <IProps, IState> {
         <Row className="campaign-type">
           <SelectBox items={this.applicationTypes}
                      initialSelect={null}
+                     className={"center-select-box"}
                      onChange={this.handleChangeApplicationType.bind(this)}/>
           <RaisedButton
             onClick={this.handleChangeWebType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
             disabled={this.state.buttonDisable}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
+            className="button-next-step type-btn"
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
           />
         </Row>
         }

@@ -67,8 +67,10 @@ class PublicLoginForm extends React.Component<IProps, IState> {
 
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
-        <div>
-          <Row className="logo-img" align="middle" justify="center"/>
+        <div dir={CONFIG.DIR}>
+          <Row className="logo-wrapper" align="middle" justify="center">
+            <Icon className={"login-logo"} name={"cif-cylogo-without-typo"}/>
+          </Row>
           {this.state.step === STEPS.CHECK_MAIL &&
           <Card className="login-box" noHovering>
             <h5 className="text-center">
@@ -83,6 +85,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                     fullWidth={true}
                     hintText={mailPlaceHolder}
                     autoFocus={true}
+                    type={"email"}
                   />
                 )}
               </FormItem>
@@ -92,7 +95,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Next Step"/>}
                   primary={true}
                   className="button-full-width button-login-next-step"
-                  icon={<Icon name="arrow" color="white"/>}
+                  icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
+                              name="cif-arrowleft-4" />}
                 />
               </FormItem>
             </form>
@@ -104,7 +108,10 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               step: STEPS.CHECK_MAIL,
             });
           }}>
-            <h6 className="back-button">{this.i18n._t("Back")}</h6>
+            <div className={"back-text-wrapper"}>
+              <h6 className="back-button">{this.i18n._t("Back")}</h6>
+              <Icon name={"cif-arrowleft-4"} className={"back-arrow"} />
+            </div>
           </a>
           }
           {this.state.step === STEPS.LOGIN &&
@@ -128,9 +135,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 )}
               </FormItem>
               <FormItem>
+                <div className="custom-checkbox">
                 {getFieldDecorator("rememberMe")(
-                  <Checkbox label={this.i18n._t("Remember me")}/>
+                  <Checkbox  label={this.i18n._t("Remember me")}/>
                 )}
+                </div>
               </FormItem>
               <FormItem>
                 <RaisedButton
@@ -138,7 +147,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Enter"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<Icon name="arrow"/>}
+                  icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
+                              name={"cif-arrowleft-4"}/>}
                 />
               </FormItem>
             </form>
@@ -150,13 +160,16 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               step: STEPS.CHECK_MAIL,
             });
           }}>
+            <div className={"back-text-wrapper"}>
             <h6 className="back-button">{this.i18n._t("Back")}</h6>
+            <Icon name={"cif-arrowleft-4"} className={"back-arrow"} />
+            </div>
           </a>
           }
           {this.state.step === STEPS.REGISTER &&
           <Card className="login-box" noHovering>
             <form onSubmit={this.submitRegister.bind(this)}>
-              <Row gutter={16}>
+              <Row type="flex" gutter={16}>
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("firstName", {
@@ -192,6 +205,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                     fullWidth={true}
                     floatingLabelText={this.i18n._t("Email")}
                     disabled={true}
+                    type={"email"}
                   />
                 )}
               </FormItem>
@@ -233,10 +247,11 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               <FormItem>
                 <RaisedButton
                   type="submit"
-                  label={<Translate value="Enter"/>}
+                  label={<Translate value="Next Step"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<Icon name="arrow"/>}
+                  icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
+                              name={"cif-arrowleft-4"}/>}
                 />
               </FormItem>
             </form>

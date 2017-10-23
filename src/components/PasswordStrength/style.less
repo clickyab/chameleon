@@ -6,8 +6,12 @@
 
 .strength-meter {
   position: absolute;
-  right: 0;
-  top: 55%;
+  right: 3px;
+  top: 50%;
   font-size: @password-icon-size;
   color: @password-icon-color;
 }
+ div[dir="rtl"] .strength-meter {
+   left: 3px;
+   right: auto;
+ }

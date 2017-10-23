@@ -1,6 +1,7 @@
 import * as React from "react";
 import Translate from "../i18n/Translate/index";
 import "./style.less";
+import Icon from "../Icon/index";
 
 
 interface IProps {
@@ -43,12 +44,22 @@ componentWillReceiveProps(nextProps: IProps) {
           <div className={`gender-item ${this.state.value === "female" ? "active" : ""}`} onClick={() => {
             this.onClick("female");
           }}>
-            Female
+            {(this.state.value === "female") &&
+            <Icon name={"cif-womenhair-active"}/>
+            }
+            {(this.state.value !== "female") &&
+            <Icon name={"cif-womenhair-normal"}/>
+            }
           </div>
           <div className={`gender-item ${this.state.value === "male" ? "active" : ""}`} onClick={() => {
             this.onClick("male");
           }}>
-            Male
+            {(this.state.value === "male") &&
+            <Icon name={"cif-menhair-active"}/>
+            }
+            {(this.state.value !== "male") &&
+            <Icon name={"cif-menhair-normal"}/>
+            }
           </div>
         </div>
       </div>

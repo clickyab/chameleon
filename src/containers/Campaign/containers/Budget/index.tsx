@@ -257,14 +257,14 @@ class BudgetComponent extends React.Component <IProps, IState> {
               label={<Translate value="Back"/>}
               primary={false}
               className="button-back-step"
-              icon={<Icon name="arrow" color="white"/>}
+              icon={ <Icon name={"cif-arrowleft-4"} className={"back-arrow"} />}
             />
             <RaisedButton
               onClick={this.handleSubmit.bind(this)}
               label={<Translate value="Next Step"/>}
               primary={true}
               className="button-next-step"
-              icon={<Icon name="arrow" color="white"/>}
+              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
             />
           </Row>
         </Form>

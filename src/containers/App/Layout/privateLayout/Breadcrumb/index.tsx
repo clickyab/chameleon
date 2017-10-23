@@ -1,10 +1,11 @@
 import * as React from "react";
-import {Breadcrumb, Icon} from "antd";
+import {Breadcrumb} from "antd";
 import {RouteComponentProps, withRouter} from "react-router";
 import {Link} from "react-router-dom";
 import {BreadcrumbProps} from "antd/es/breadcrumb/Breadcrumb";
 import {connect} from "react-redux";
 import {RootState} from "../../../../../redux/reducers/index";
+import Icon from "../../../../../components/Icon/index";
 
 /**
  * Breadcrumb
@@ -52,7 +53,7 @@ class PrivateBreadcrumb extends React.Component<IProps> {
   public render() {
     return (
       <Breadcrumb separator=">" className="breadcrumb">
-        <Breadcrumb.Item><Link to="/dashboard"><Icon type="home"/></Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to="/dashboard"><Icon name="cif-home"/></Link></Breadcrumb.Item>
         {this.createBreadCrumb()}
       </Breadcrumb>
     );

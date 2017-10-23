@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./style.less";
-import {Badge, Icon, notification} from "antd";
+import {Badge, notification} from "antd";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {RootState} from "../../../../redux/reducers/index";
@@ -10,6 +10,7 @@ import {Link , NavLink} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
 import Menu from "antd/es/menu";
 import CONFIG from "../../../../constants/config";
+import Icon from "../../../../components/Icon/index";
 
 /**
  * @interface Props
@@ -184,7 +185,7 @@ componentDidMount() {
 
           <div className="mini-bell">
             <Badge dot className="profile-badge">
-              <Icon type="bell" className="bell-icon" style={{fontSize: 18}} onClick={this.handleBellClick}/>
+              <Icon name="cif-bell" className="bell-icon" onClick={this.handleBellClick}/>
             </Badge>
           </div>
         </div>
@@ -241,7 +242,7 @@ componentDidMount() {
               </div>
               <div className="mini-bell">
                 <Badge dot className="profile-badge">
-                  <Icon type="bell" className="bell-icon" style={{fontSize: 18}} onClick={this.handleBellClick}/>
+                  <Icon name="cif-bell" className="bell-icon"  onClick={this.handleBellClick}/>
                 </Badge>
               </div>
             </div>
