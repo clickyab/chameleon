@@ -10,11 +10,20 @@
   }
 }
 
+
 .add-utm-btn {
+  display: flex;
   border-radius: 2px;
   margin-right: 10px;
-  i {
-    padding: 0 5px;
+  padding: 0 10px;
+  .utm-icon{
+    font-size: 16px;
+    line-height:16px;
+    position: relative;
+    top:1px;
+  }
+  span{
+    margin:0 5px;
   }
 }
 
@@ -29,7 +38,7 @@
 }
 
 .btn-dragger {
-  margin-top: 10px;
+  margin-top: 50px;
   height: 30px;
   width: 220px;
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
@@ -146,11 +155,14 @@
   .upload-option {
     margin-right: auto;
     margin-left: 20px;
+    display: flex;
+    align-items: center;
   }
   .btn-cancel , .btn-edit {
     border: none;
-    font-size: 15px;
+    font-size: 13px;
     padding: 0px 5px !important;
+    color: #C9CCD1;
   }
 }
 
@@ -169,7 +181,7 @@
     .switch-rtl, switch {
       margin-bottom: -24px;
     }
-    padding-bottom: 0 !important;
+
   }
   .utm-form-column {
     padding: 20px;
@@ -230,6 +242,9 @@
     .ant-modal-footer {
       display: none;
     }
+    .ant-modal-body{
+      padding-bottom: 0 ;
+    }
   }
   .preview-banner-modal {
     .ant-modal-footer {
@@ -246,4 +261,19 @@
       padding: 20px;
     }
   }
-
+.upload-icon{
+  font-size: 55px;
+  line-height: 55px;
+  margin-bottom: -10px;
+  display: block;
+}
+.dragger-content{
+  color: #DBDDE1;
+  span{
+    display: block;
+    font-size: 14px;
+  }
+  h2{
+    color: #DBDDE1;
+  }
+}

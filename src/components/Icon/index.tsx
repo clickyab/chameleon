@@ -10,30 +10,30 @@ import Colors = __MaterialUI.Styles.Colors;
 /**
  * props interface
  */
-interface IconProps {
+interface IProps {
     name: string ;
     color?: string;
     className?: string ;
+    fontsize?: number;
+    onClick?: React.MouseEventHandler<any>;
 }
-
-let iconMap: string[] = [] ;
-iconMap["arrow"] = "arrow";
 /**
  * will map icons with source file
  * @param {string} get name
  */
 
 
-export default class Icon extends React.Component<IconProps, null> {
+export default class Icon extends React.Component<IProps, null> {
     /**
      * render span element with converted Icon
      * @returns {any}
      */
 
     public render() {
-        let IconConvert: string = iconMap[this.props.name] ? iconMap[this.props.name] : this.props.name;
         return (
-            <span className={`${(this.props.className) ? ( this.props.className ) : ""} ${iconMap}`} style={{ color: this.props.color }}>®</span>
+            <i onClick={this.props.onClick}
+               className={`${(this.props.className) ? ( this.props.className + " " ) : ""}${this.props.name}`}
+               style={{ color: this.props.color , fontSize: this.props.fontsize}}  />
         );
     }
 }

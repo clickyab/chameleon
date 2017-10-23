@@ -16,6 +16,10 @@
       direction: rtl;
     }
   }
+  .cif-home{
+    vertical-align: middle;
+    font-size: 13px;
+  }
 }
 .logo {
   height: 32px;
@@ -47,6 +51,39 @@
       margin-right: 0;
     }
   }
+  .sidbar-menu-icon{
+    font-size: 20px;
+    margin-left: 25px;
+    margin-top: 2px;
+    float: right;
+  }
+}
+.logo-sidebar{
+  font-size: 25px;
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  display: block;
+}
+// Align btn text with Icon
+.create-campaign-text{
+  position: relative;
+  top:-2px;
+}
+.ant-menu-inline-collapsed{
+  .create-campaign-text{
+    display: none;
+  }
+  .create-campaign-icon{
+    margin: 0;
+  }
+}
+.ant-tooltip-inner{
+  .sidbar-menu-icon , .create-campaign-icon {
+    display: none;
+  }
+
 }
 .menu-list {
   width: 85%;

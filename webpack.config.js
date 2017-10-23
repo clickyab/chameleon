@@ -63,6 +63,7 @@ module.exports = {
         test: /\.svg$/,
         loader: 'svg-inline-loader'
       },
+      { test: /\.(eot|ttf|woff)$/, loader: "file-loader" },
       {
         test: /\.less$/,
         use: [

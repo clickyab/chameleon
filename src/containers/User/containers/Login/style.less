@@ -19,22 +19,85 @@
   margin-bottom: 18px !important;
 }
 //Logo style placeholder
-.logo-img{
-  height: 56px !important;
-  width: 56px;
-  border-radius: 50%;
-  background: @primary-color;
-  margin:0 auto !important;
-  margin-bottom:25px !important;
-  color:white;
+.logo-wrapper{
+  text-align: center;
+}
+.login-logo{
+  font-size: 68px;
+  color: @primary-color;
 }
 //Back button on login class Can be Removed
 .back-button{
-  margin-bottom:10px;
+  display: block;
+  color: #88909B;
+  margin: 0;
 }
 .button-login-wrapper{
   margin-bottom: 15px !important;
 }
 .switch-rtl {
   float: right;
+}
+
+.flip-icon{
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  -ms-filter: "FlipH";
+}
+.btn-arrow-rtl{
+  color: white;
+  position: absolute;
+  left: 20px;
+  top:2px
+}
+.btn-arrow{
+  .flip-icon();
+  color: white;
+  position: absolute;
+  right:20px;
+  top: 2px;
+}
+.back-arrow{
+  color: #88909B;
+  margin-left: 3px;
+  font-size: 10px;
+  display: block;
+  float: left;
+  .flip-icon();
+}
+
+.back-text-wrapper {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  line-height:0px;
+  direction: ltr;
+}
+.checkbox-size {
+  width: @checkbox-width !important;
+  height:@checkbox-height !important;
+  top:@checkbox-top-margin;
+}
+.custom-checkbox {
+  margin-left: 0;
+  label {
+    font-size: 13px;
+  }
+  div > div > {
+    margin-right: 0 !important;
+    div > svg {
+      .checkbox-size();
+      fill: @primary-color !important;
+    }
+  }
+  &-checked {
+    label {
+      font-size: 13px;
+    }
+    div > div > div > svg {
+      .checkbox-size();
+    }
+  }
 }

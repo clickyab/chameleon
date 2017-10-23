@@ -1,37 +1,66 @@
 @import "../../../App/theme";
 
-.campaign-device{
-  .ant-row-flex-middle{
-    min-height:@campaign-selectbox-height !important;
+.campaign-device {
+  .ant-row-flex-middle {
+    min-height: @campaign-selectbox-height !important;
   }
 }
 
-.center-select-box{
+.center-select-box {
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height:@campaign-selectbox-height !important;
+  min-height: @campaign-selectbox-height !important;
+  margin: 0 20px;
+  .active {
+    color: @primary-color;
+    transition: all @animation-duration-fast ease-in;
+    h1, h2, h3, h4, h5, h6, i {
+      color: @primary-color;
+    }
+  }
 }
 
-.campaign-device , .campaign-type{
-  margin-top:@campaign-type-top;
+.campaign-device, .campaign-type {
+  margin-top: @campaign-type-top;
   text-align: center;
 }
 
-.button-next-step{
+.arrow-next-step {
+  color: white !important;
+  font-size: 9px;
+  margin-right: 10px;
+}
+
+.button-next-step {
   margin-top: 25px !important;
-  height: @campaign-button-height ;
+  height: @campaign-button-height;
   min-width: 105px;
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
   font-size: 14px !important;
   margin-bottom: 10px;
-  button{
+  button:disabled {
+    background: #B6BBC2 !important;
+    cursor: not-allowed !important;
+    span{
+      color:white ;
+    }
+    div {
+      height: @campaign-button-height !important;
+    }
+  }
+  button {
     min-width: 105px;
     height: @campaign-button-height !important;
     line-height: @campaign-button-height !important;
     div {
-      > div{
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      span {
+        padding: 0 !important;
+      }
+      > div {
         height: @campaign-button-height !important;
         padding: 0px 15px !important;
       }
@@ -39,14 +68,39 @@
   }
 }
 
-.button-back-step{
-.button-next-step ;
-  button{
+.button-back-step {
+  .button-next-step;
+  button {
     div {
       background-color: transparent !important;
-      > div{
-        background-color: transparent !important;        //Remove Hover
+      > div {
+        display: flex;
+        align-items: center;
+        span , i{
+          color:#88909B !important;
+        }
+        span{
+          order:1;
+        }
+        i{
+          margin-left: 5px;
+          font-size: 13px;
+        }
       }
     }
   }
+}
+
+.type-btn {
+  width: 220px;
+}
+.campaign-icon {
+  color: #B6BBC2;
+  font-size: 70px;
+}
+
+// Align back arrow for back-btn on campaigns
+.back-arrow{
+  position: relative;
+  top: 2px;
 }

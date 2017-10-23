@@ -166,11 +166,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
         <div className={(CONFIG.DIR === "ltr" ) ? "targeting" : "targeting-rtl"}>
           <Form onSubmit={this.handleSubmit.bind(this)}>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("Device Type")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup className="campaign-radio-group" name="devices" defaultSelected={true}
                                     onChange={(a, checked) => {
@@ -208,11 +208,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("Manufactures Brand")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="brands" defaultSelected={true}
@@ -247,11 +247,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("Operation systems")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="os" defaultSelected={true}
@@ -291,11 +291,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("Browsers")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="browsers" defaultSelected={true}
@@ -335,11 +335,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("IAB Categories")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="iab" defaultSelected={true}
@@ -382,11 +382,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("Geo location")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="location" defaultSelected={true}
@@ -430,11 +430,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
             <Row type="flex" className="targeting-row">
-              <Col span={4} className="title-target">
+              <Col span={5} className="title-target">
                 <Tooltip/>
                 <label>{this.i18n._t("Internet Network")}</label>
               </Col>
-              <Col span={15} offset={5}>
+              <Col span={14} offset={5}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="network" defaultSelected={true}
@@ -547,15 +547,14 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 label={<Translate value="Back"/>}
                 primary={false}
                 className="button-back-step"
-                icon={<Icon name="arrow" color="black"/>}
-                disableTouchRipple={true}
+                icon={ <Icon name={"cif-arrowleft-4"} className={"back-arrow"} />}
               />
               <RaisedButton
                 onClick={this.handleSubmit.bind(this)}
                 label={<Translate value="Next Step"/>}
                 primary={true}
                 className="button-next-step"
-                icon={<Icon name="arrow" color="white"/>}
+                icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
               />
             </Row>
           </Form>
