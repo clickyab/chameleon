@@ -13,7 +13,7 @@ import {isUndefined} from "util";
  * @desc selectBox item
  */
 export interface ISelectBoxItem {
-  value: number;
+  value: string;
   title: string;
   description?: string;
   icon?: JSX.Element;
@@ -25,8 +25,8 @@ export interface ISelectBoxItem {
  */
 interface IProps {
   items: ISelectBoxItem[];
-  onChange: (value: number) => {};
-  initialSelect?: number;
+  onChange: (value: string) => {};
+  initialSelect?: string;
   className?: string;
   span?: number;
   offset?: number;
@@ -46,7 +46,6 @@ export default class SelectBox extends React.Component<IProps, IState> {
   }
   componentWillMount() {
     const selectedItem = this.props.initialSelect !== null ? this.props.items.find((item) => (item.value === this.props.initialSelect)) : null;
-    console.log(111, selectedItem, this.props.items.find((item) => (item.value === this.props.initialSelect)));
     this.setState({selectedItem});
   }
 

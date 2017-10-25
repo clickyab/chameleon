@@ -97,6 +97,41 @@ export interface ControllersBudgetPayload {
     "notify_email"?: Array<string>;
 }
 
+export interface ControllersCampaignStatus {
+    "end_at"?: string;
+    "schedule"?: ControllersCampaignStatusSchedule;
+    "start_at"?: string;
+    "status"?: boolean;
+    "title"?: string;
+}
+
+export interface ControllersCampaignStatusSchedule {
+    "h00"?: string;
+    "h01"?: string;
+    "h02"?: string;
+    "h03"?: string;
+    "h04"?: string;
+    "h05"?: string;
+    "h06"?: string;
+    "h07"?: string;
+    "h08"?: string;
+    "h09"?: string;
+    "h10"?: string;
+    "h11"?: string;
+    "h12"?: string;
+    "h13"?: string;
+    "h14"?: string;
+    "h15"?: string;
+    "h16"?: string;
+    "h17"?: string;
+    "h18"?: string;
+    "h19"?: string;
+    "h20"?: string;
+    "h21"?: string;
+    "h22"?: string;
+    "h23"?: string;
+}
+
 export interface ControllersCatResponse extends Array<ControllersCatResponseInner> {
 }
 
@@ -109,38 +144,11 @@ export interface ControllersCatResponseInner {
 export interface ControllersCreateCampaignPayload {
     "end_at"?: string;
     "kind"?: string;
-    "schedule"?: ControllersCreateCampaignPayloadSchedule;
+    "schedule"?: ControllersCampaignStatusSchedule;
     "start_at"?: string;
     "status"?: boolean;
     "title"?: string;
     "type"?: string;
-}
-
-export interface ControllersCreateCampaignPayloadSchedule {
-    "h00"?: boolean;
-    "h01"?: boolean;
-    "h02"?: boolean;
-    "h03"?: boolean;
-    "h04"?: boolean;
-    "h05"?: boolean;
-    "h06"?: boolean;
-    "h07"?: boolean;
-    "h08"?: boolean;
-    "h09"?: boolean;
-    "h10"?: boolean;
-    "h11"?: boolean;
-    "h12"?: boolean;
-    "h13"?: boolean;
-    "h14"?: boolean;
-    "h15"?: boolean;
-    "h16"?: boolean;
-    "h17"?: boolean;
-    "h18"?: boolean;
-    "h19"?: boolean;
-    "h20"?: boolean;
-    "h21"?: boolean;
-    "h22"?: boolean;
-    "h23"?: boolean;
 }
 
 export interface ControllersIspResponse extends Array<ControllersIspResponseInner> {
@@ -149,7 +157,7 @@ export interface ControllersIspResponse extends Array<ControllersIspResponseInne
 export interface ControllersIspResponseInner {
     "active"?: boolean;
     "created_at"?: string;
-    "id"?: number;
+    "kind"?: string;
     "name"?: string;
     "updated_at"?: string;
 }
@@ -223,17 +231,13 @@ export interface ControllersListPublisherResponseData {
     "user_id"?: number;
 }
 
-export interface ControllersManufacturers extends Array<ControllersManufacturersInner> {
-}
-
-export interface ControllersManufacturersInner {
-    "active"?: boolean;
-    "brand"?: string;
-    "created_at"?: string;
-    "updated_at"?: string;
+export interface ControllersManufacturers extends Array<ControllersBrowserResponseInner> {
 }
 
 export interface ControllersOsResponse extends Array<ControllersBrowserResponseInner> {
+}
+
+export interface ControllersPlatformResponse extends Array<ControllersBrowserResponseInner> {
 }
 
 export interface ControllersRegionList extends Array<ControllersRegionListInner> {
@@ -245,14 +249,6 @@ export interface ControllersRegionListInner {
     "id"?: string;
     "name"?: string;
     "updated_at"?: string;
-}
-
-export interface ControllersUpdateCampaignPayload {
-    "end_at"?: string;
-    "schedule"?: ControllersCreateCampaignPayloadSchedule;
-    "start_at"?: string;
-    "status"?: boolean;
-    "title"?: string;
 }
 
 export interface ControllersWhiteBlackList {
@@ -375,7 +371,7 @@ export interface OrmCampaign {
     "kind"?: string;
     "max_bid"?: number;
     "notify_email"?: Array<string>;
-    "schedule"?: ControllersCreateCampaignPayloadSchedule;
+    "schedule"?: OrmCampaignSchedule;
     "start_at"?: string;
     "status"?: boolean;
     "title"?: string;
@@ -412,9 +408,36 @@ export interface OrmCampaignFinance {
 export interface OrmCampaignKind {
 }
 
+export interface OrmCampaignSchedule {
+    "h00"?: DmnDomainDescription;
+    "h01"?: DmnDomainDescription;
+    "h02"?: DmnDomainDescription;
+    "h03"?: DmnDomainDescription;
+    "h04"?: DmnDomainDescription;
+    "h05"?: DmnDomainDescription;
+    "h06"?: DmnDomainDescription;
+    "h07"?: DmnDomainDescription;
+    "h08"?: DmnDomainDescription;
+    "h09"?: DmnDomainDescription;
+    "h10"?: DmnDomainDescription;
+    "h11"?: DmnDomainDescription;
+    "h12"?: DmnDomainDescription;
+    "h13"?: DmnDomainDescription;
+    "h14"?: DmnDomainDescription;
+    "h15"?: DmnDomainDescription;
+    "h16"?: DmnDomainDescription;
+    "h17"?: DmnDomainDescription;
+    "h18"?: DmnDomainDescription;
+    "h19"?: DmnDomainDescription;
+    "h20"?: DmnDomainDescription;
+    "h21"?: DmnDomainDescription;
+    "h22"?: DmnDomainDescription;
+    "h23"?: DmnDomainDescription;
+}
+
 export interface OrmCampaignStatus {
     "end_at"?: string;
-    "schedule"?: ControllersCreateCampaignPayloadSchedule;
+    "schedule"?: OrmCampaignSchedule;
     "start_at"?: string;
     "status"?: boolean;
     "title"?: string;
@@ -435,9 +458,12 @@ export interface OrmCostType {
 export interface OrmISP {
     "active"?: boolean;
     "created_at"?: string;
-    "id"?: number;
+    "kind"?: string;
     "name"?: string;
     "updated_at"?: string;
+}
+
+export interface OrmISPKind {
 }
 
 export interface OrmInventory {
@@ -469,12 +495,19 @@ export interface OrmInventoryDataTable {
 
 export interface OrmManufacturer {
     "active"?: boolean;
-    "brand"?: string;
     "created_at"?: string;
+    "name"?: string;
     "updated_at"?: string;
 }
 
 export interface OrmOS {
+    "active"?: boolean;
+    "created_at"?: string;
+    "name"?: string;
+    "updated_at"?: string;
+}
+
+export interface OrmPlatform {
     "active"?: boolean;
     "created_at"?: string;
     "name"?: string;
@@ -493,30 +526,30 @@ export interface OrmRegion {
 }
 
 export interface OrmScheduleSheet {
-    "h00"?: boolean;
-    "h01"?: boolean;
-    "h02"?: boolean;
-    "h03"?: boolean;
-    "h04"?: boolean;
-    "h05"?: boolean;
-    "h06"?: boolean;
-    "h07"?: boolean;
-    "h08"?: boolean;
-    "h09"?: boolean;
-    "h10"?: boolean;
-    "h11"?: boolean;
-    "h12"?: boolean;
-    "h13"?: boolean;
-    "h14"?: boolean;
-    "h15"?: boolean;
-    "h16"?: boolean;
-    "h17"?: boolean;
-    "h18"?: boolean;
-    "h19"?: boolean;
-    "h20"?: boolean;
-    "h21"?: boolean;
-    "h22"?: boolean;
-    "h23"?: boolean;
+    "h00"?: DmnDomainDescription;
+    "h01"?: DmnDomainDescription;
+    "h02"?: DmnDomainDescription;
+    "h03"?: DmnDomainDescription;
+    "h04"?: DmnDomainDescription;
+    "h05"?: DmnDomainDescription;
+    "h06"?: DmnDomainDescription;
+    "h07"?: DmnDomainDescription;
+    "h08"?: DmnDomainDescription;
+    "h09"?: DmnDomainDescription;
+    "h10"?: DmnDomainDescription;
+    "h11"?: DmnDomainDescription;
+    "h12"?: DmnDomainDescription;
+    "h13"?: DmnDomainDescription;
+    "h14"?: DmnDomainDescription;
+    "h15"?: DmnDomainDescription;
+    "h16"?: DmnDomainDescription;
+    "h17"?: DmnDomainDescription;
+    "h18"?: DmnDomainDescription;
+    "h19"?: DmnDomainDescription;
+    "h20"?: DmnDomainDescription;
+    "h21"?: DmnDomainDescription;
+    "h22"?: DmnDomainDescription;
+    "h23"?: DmnDomainDescription;
 }
 
 export interface OrmStatus {
@@ -803,15 +836,21 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
-     * assetIspGet
+     * assetIspKindGet
+     * @param kind  param
      * @param token the security token, get it from login route param
      */
-    assetIspGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+    assetIspKindGet(params: {  kind: string; token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "kind" is set
+        if (params["kind"] == null) {
+            throw new Error("Missing required parameter kind when calling assetIspKindGet");
+        }
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
         }
-        const baseUrl = `/asset/isp`;
+        const baseUrl = `/asset/isp/{kind}`
+            .replace(`{${"kind"}}`, `${ params["kind"] }`);
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -860,6 +899,30 @@ export const ControllersApiFetchParamCreator = {
             params["token"] = AAA.getInstance().getToken();
         }
         const baseUrl = `/asset/os`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * assetPlatformGet
+     * @param token the security token, get it from login route param
+     */
+    assetPlatformGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/asset/platform`;
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -939,7 +1002,7 @@ export const ControllersApiFetchParamCreator = {
      * @param token the security token, get it from login route param
      * @param payloadData  param
      */
-    campaignBaseIdPut(params: {  id: string; token?: string; payloadData?: ControllersUpdateCampaignPayload; }, options: any = {}): FetchArgs {
+    campaignBaseIdPut(params: {  id: string; token?: string; payloadData?: ControllersCampaignStatus; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling campaignBaseIdPut");
@@ -1063,6 +1126,36 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
+     * campaignIdGet
+     * @param id  param
+     * @param token the security token, get it from login route param
+     */
+    campaignIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling campaignIdGet");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/campaign/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * campaignWbIdPut
      * @param id  param
      * @param token the security token, get it from login route param
@@ -1154,14 +1247,14 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryListGet
      * @param token the security token, get it from login route param
-     * @param name  search the name field param
-     * @param domain  search the domain field param
      * @param c  count per page param
      * @param p  page number param
-     * @param kind  param
      * @param sort  param
+     * @param kind  param
+     * @param name  search the name field param
+     * @param domain  search the domain field param
      */
-    inventoryListGet(params: {  token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string; }, options: any = {}): FetchArgs {
+    inventoryListGet(params: {  token?: string; c?: string; p?: string; sort?: string; kind?: string; name?: string; domain?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -1169,23 +1262,23 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["name"] !== undefined) {
-            urlObj.query["name"] = params["name"];
-        }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
         }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
         if (params["kind"] !== undefined) {
             urlObj.query["kind"] = params["kind"];
         }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
+        if (params["name"] !== undefined) {
+            urlObj.query["name"] = params["name"];
+        }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -1462,11 +1555,12 @@ export const ControllersApiFp = {
         };
     },
     /**
-     * assetIspGet
+     * assetIspKindGet
+     * @param kind  (def)
      * @param token the security token, get it from login route (def)
      */
-    assetIspGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersIspResponse> {
-        const fetchArgs = ControllersApiFetchParamCreator.assetIspGet(params, options);
+    assetIspKindGet(params: { kind: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersIspResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.assetIspKindGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1515,6 +1609,30 @@ export const ControllersApiFp = {
      */
     assetOsGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersOsResponse> {
         const fetchArgs = ControllersApiFetchParamCreator.assetOsGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * assetPlatformGet
+     * @param token the security token, get it from login route (def)
+     */
+    assetPlatformGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersPlatformResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.assetPlatformGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1589,7 +1707,7 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
-    campaignBaseIdPut(params: { id: string; token?: string; payloadData?: ControllersUpdateCampaignPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
+    campaignBaseIdPut(params: { id: string; token?: string; payloadData?: ControllersCampaignStatus;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
         const fetchArgs = ControllersApiFetchParamCreator.campaignBaseIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1686,6 +1804,31 @@ export const ControllersApiFp = {
         };
     },
     /**
+     * campaignIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    campaignIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
+        const fetchArgs = ControllersApiFetchParamCreator.campaignIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * campaignWbIdPut
      * @param id  (def)
      * @param token the security token, get it from login route (def)
@@ -1716,12 +1859,12 @@ export const ControllersApiFp = {
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      */
-    campaignWblistIdDelete(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
+    campaignWblistIdDelete(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
         const fetchArgs = ControllersApiFetchParamCreator.campaignWblistIdDelete(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
-                    return response;
+                    return response.json();
                 } else {
                   return response.json()
                   .then(res => {
@@ -1763,14 +1906,14 @@ export const ControllersApiFp = {
     /**
      * inventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param name  search the name field (def)
-     * @param domain  search the domain field (def)
      * @param c  count per page (def)
      * @param p  page number (def)
-     * @param kind  (def)
      * @param sort  (def)
+     * @param kind  (def)
+     * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
      */
-    inventoryListGet(params: { token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
+    inventoryListGet(params: { token?: string; c?: string; p?: string; sort?: string; kind?: string; name?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
         const fetchArgs = ControllersApiFetchParamCreator.inventoryListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -1972,11 +2115,12 @@ export class ControllersApi extends BaseAPI {
         return ControllersApiFp.assetCategoryGet(params, options)(this.fetch, this.basePath);
     }
     /**
-     * assetIspGet
+     * assetIspKindGet
+     * @param kind  (def)
      * @param token the security token, get it from login route (def)
      */
-    assetIspGet(params: {  token?: string; }, options: any = {}) {
-        return ControllersApiFp.assetIspGet(params, options)(this.fetch, this.basePath);
+    assetIspKindGet(params: {  kind: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.assetIspKindGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * assetManufacturersGet
@@ -1991,6 +2135,13 @@ export class ControllersApi extends BaseAPI {
      */
     assetOsGet(params: {  token?: string; }, options: any = {}) {
         return ControllersApiFp.assetOsGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * assetPlatformGet
+     * @param token the security token, get it from login route (def)
+     */
+    assetPlatformGet(params: {  token?: string; }, options: any = {}) {
+        return ControllersApiFp.assetPlatformGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * assetRegionGet
@@ -2014,7 +2165,7 @@ export class ControllersApi extends BaseAPI {
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
-    campaignBaseIdPut(params: {  id: string; token?: string; payloadData?: ControllersUpdateCampaignPayload; }, options: any = {}) {
+    campaignBaseIdPut(params: {  id: string; token?: string; payloadData?: ControllersCampaignStatus; }, options: any = {}) {
         return ControllersApiFp.campaignBaseIdPut(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -2043,6 +2194,14 @@ export class ControllersApi extends BaseAPI {
         return ControllersApiFp.campaignFinalizeIdPut(params, options)(this.fetch, this.basePath);
     }
     /**
+     * campaignIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    campaignIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * campaignWbIdPut
      * @param id  (def)
      * @param token the security token, get it from login route (def)
@@ -2069,14 +2228,14 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param name  search the name field (def)
-     * @param domain  search the domain field (def)
      * @param c  count per page (def)
      * @param p  page number (def)
-     * @param kind  (def)
      * @param sort  (def)
+     * @param kind  (def)
+     * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
      */
-    inventoryListGet(params: {  token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string; }, options: any = {}) {
+    inventoryListGet(params: {  token?: string; c?: string; p?: string; sort?: string; kind?: string; name?: string; domain?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -2160,11 +2319,12 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
             return ControllersApiFp.assetCategoryGet(params, options)(fetch, basePath);
         },
         /**
-         * assetIspGet
+         * assetIspKindGet
+         * @param kind  (def)
          * @param token the security token, get it from login route (def)
          */
-        assetIspGet(params: {  token?: string; }, options: any = {}) {
-            return ControllersApiFp.assetIspGet(params, options)(fetch, basePath);
+        assetIspKindGet(params: {  kind: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.assetIspKindGet(params, options)(fetch, basePath);
         },
         /**
          * assetManufacturersGet
@@ -2179,6 +2339,13 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          */
         assetOsGet(params: {  token?: string; }, options: any = {}) {
             return ControllersApiFp.assetOsGet(params, options)(fetch, basePath);
+        },
+        /**
+         * assetPlatformGet
+         * @param token the security token, get it from login route (def)
+         */
+        assetPlatformGet(params: {  token?: string; }, options: any = {}) {
+            return ControllersApiFp.assetPlatformGet(params, options)(fetch, basePath);
         },
         /**
          * assetRegionGet
@@ -2202,7 +2369,7 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * @param token the security token, get it from login route (def)
          * @param payloadData  (def)
          */
-        campaignBaseIdPut(params: {  id: string; token?: string; payloadData?: ControllersUpdateCampaignPayload; }, options: any = {}) {
+        campaignBaseIdPut(params: {  id: string; token?: string; payloadData?: ControllersCampaignStatus; }, options: any = {}) {
             return ControllersApiFp.campaignBaseIdPut(params, options)(fetch, basePath);
         },
         /**
@@ -2231,6 +2398,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
             return ControllersApiFp.campaignFinalizeIdPut(params, options)(fetch, basePath);
         },
         /**
+         * campaignIdGet
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         */
+        campaignIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignIdGet(params, options)(fetch, basePath);
+        },
+        /**
          * campaignWbIdPut
          * @param id  (def)
          * @param token the security token, get it from login route (def)
@@ -2257,14 +2432,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryListGet
          * @param token the security token, get it from login route (def)
-         * @param name  search the name field (def)
-         * @param domain  search the domain field (def)
          * @param c  count per page (def)
          * @param p  page number (def)
-         * @param kind  (def)
          * @param sort  (def)
+         * @param kind  (def)
+         * @param name  search the name field (def)
+         * @param domain  search the domain field (def)
          */
-        inventoryListGet(params: {  token?: string; name?: string; domain?: string; c?: string; p?: string; kind?: string; sort?: string; }, options: any = {}) {
+        inventoryListGet(params: {  token?: string; c?: string; p?: string; sort?: string; kind?: string; name?: string; domain?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryListGet(params, options)(fetch, basePath);
         },
         /**
