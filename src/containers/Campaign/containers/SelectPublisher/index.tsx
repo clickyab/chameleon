@@ -188,73 +188,79 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             </Col>
             }
             {this.state.showPublisherTable &&
-            <Row>
-              <Col span={24}>
-                <DataTable
-                  name="publisherList"
-                  onSelectRow={this.onSelectRow.bind(this)}
-                  definitionFn={controllerApi.inventoryListDefinitionGet}
-                  dataFn={controllerApi.inventoryListGet}/>
-                <RaisedButton
-                  onClick={this.addPublisherToList.bind(this)}
-                  label={<Translate value="Add Selected items to final list"/>}
-                  primary={true}
-                  className="button-back-step"
-                  icon={<Icon name="plus" color="white"/>}
-                />
-              </Col>
-              <Col>
-                <p><Translate value="List of selected publisher"/></p>
-                <Table dataSource={this.state.selectedWebSites} columns={this.columns}/>
-                <Button onClick={() => {
-                  this.setState({
-                    selectedWebSites: [],
-                  });
-                }}>
-                  <Icon name="remove"/>
-                  <Translate value="Remove all items"/>
-                </Button>
-              </Col>
-              <Col span={4}>
-                <label>
-                  List Name
-                </label>
-              </Col>
-              <Col span={15} offset={5}>
-                <Row type="flex">
-                  <Col>
-                    <TextField
-                      defaultValue={this.i18n._t("List Name").toString()}
-                    />
-                    <SelectField
-                      onChange={(a, b, value) => {
-                        this.setState({
-                          whiteList: value,
-                        });
-                      }}
-                      value={this.state.whiteList}>
-                      <MenuItem value={true} primaryText={this.i18n._t("Whitelist")}/>
-                      <MenuItem value={false} primaryText={this.i18n._t("Blacklist")}/>
-                    </SelectField>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <div>
+              <Row>
+                <Col span={24}>
+                  <DataTable
+                    name="publisherList"
+                    onSelectRow={this.onSelectRow.bind(this)}
+                    definitionFn={controllerApi.inventoryListDefinitionGet}
+                    dataFn={controllerApi.inventoryListGet}/>
+                  <RaisedButton
+                    onClick={this.addPublisherToList.bind(this)}
+                    label={<Translate value="Add Selected items to final list"/>}
+                    primary={true}
+                    className="btn-add-list"
+                    icon={<Icon name="cif-plusregular plus-icon "/>}
+                  />
+                </Col>
+              </Row>
+              <Row className={"mt-2"}>
+                <Col>
+                  <p><Translate value="List of selected publisher"/></p>
+                  <Table dataSource={this.state.selectedWebSites} columns={this.columns} className={"campaign-data-table"}/>
+                  <Button onClick={() => {
+                    this.setState({
+                      selectedWebSites: [],
+                    });
+                  }}>
+                    <Icon name="remove"/>
+                    <Translate value="Remove all items"/>
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={4}>
+                  <label>
+                    List Name
+                  </label>
+                </Col>
+                <Col span={15} offset={5}>
+                  <Row type="flex">
+                    <Col>
+                      <TextField
+                        defaultValue={this.i18n._t("List Name").toString()}
+                      />
+                      <SelectField
+                        onChange={(a, b, value) => {
+                          this.setState({
+                            whiteList: value,
+                          });
+                        }}
+                        value={this.state.whiteList}>
+                        <MenuItem value={true} primaryText={this.i18n._t("Whitelist")}/>
+                        <MenuItem value={false} primaryText={this.i18n._t("Blacklist")}/>
+                      </SelectField>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </div>
             }
-            <Row type="flex" align="middle">
+            <Row  align="middle">
               <RaisedButton
                 onClick={this.handleBack.bind(this)}
                 label={<Translate value="Back"/>}
                 primary={false}
                 className="button-back-step"
-                icon={<Icon name="arrow" color="white"/>}
+                icon={ <Icon name={"cif-arrowleft-4"} className={"back-arrow"} />}
               />
               <RaisedButton
                 onClick={this.handleSubmit.bind(this)}
                 label={<Translate value="Next Step"/>}
                 primary={true}
                 className="button-next-step"
-                icon={<Icon name="arrow" color="white"/>}
+                icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
               />
             </Row>
           </Form>

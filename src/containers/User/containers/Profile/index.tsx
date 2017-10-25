@@ -350,7 +350,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             </Col>
             <Col span={6}>
               <Col className="profile-notice">
-                <h6><Icon name="arrow"/>You Should know</h6>
+                <h6><Icon name="cif-lightbulb"/><Translate value={"You should know:"}/></h6>
                 <ul>
                   <li>Filling bullet fields are required</li>
                   <li>You can't change your password to any of your former passwords for security

@@ -16,6 +16,7 @@ import UtmModal from "./UtmModal";
 import "./style.less";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
+import {updateLocale} from "moment";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -355,7 +356,7 @@ class UploadComponent extends React.Component <IProps, IState> {
                     >
                       <div className={"dragger-content"}>
                         <Icon name={"cif-cloud-upload"} className={"upload-icon"}/>
-                        <h2>Drag & <b>Drop</b></h2>
+                        <h2>Drag &amp; <b>Drop</b></h2>
                         <Translate value={"Drag your file over here"}/>
                         <RaisedButton
                           label={<Translate value="Select and Uplaod"/>}
@@ -387,11 +388,15 @@ class UploadComponent extends React.Component <IProps, IState> {
           </Col>
           <Col span={7}>
             <Row type="flex" className="column-info-rtl">
-              <h6><Translate value={"You should know:"}/></h6>
+              <h6><Icon name="cif-lightbulb"/><Translate value={"You should know:"}/></h6>
               <ul>
                 <li><Translate value={"Maximum file size: static banner 200KB / video 2MB"}/></li>
                 <li><Translate value={"Supported formats"}/></li>
-              </ul>
+                <Icon className="extensions-icon" name={"cif-extensions-jpg"}/>
+                <Icon className="extensions-icon" name={"cif-extensions-png"}/>
+                <Icon className="extensions-icon" name={"cif-extensions-gif"}/>
+                <Icon className="extensions-icon" name={"cif-extensions-mp4"}/>
+                <li><Translate value={"Supported dimension Sizes"}/></li>
               <div className="banner-size-wrapper">
                 {BannerSize.map((size, index) => {
                   return (
@@ -402,6 +407,7 @@ class UploadComponent extends React.Component <IProps, IState> {
                   );
                 })}
               </div>
+              </ul>
             </Row>
           </Col>
         </Row>

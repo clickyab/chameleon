@@ -278,26 +278,26 @@ class TypeComponent extends React.Component <IProps, IState> {
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-        <Row className="campaign-type">
-          <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
-                     className={"center-select-box"}
-                     onChange={this.handleChangeWebType.bind(this)}/>
-          <RaisedButton
-            onClick={this.handleSelectWebType.bind(this)}
-            label={<Translate value="Next Step"/>}
-            primary={true}
-            disabled={!this.state.selectedWebType}
-            className="button-next-step type-btn"
-            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-          />
+          <Row className="campaign-type">
+            <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
+                       className={"center-select-box"}
+                       onChange={this.handleChangeWebType.bind(this)}/>
 
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
-          />
-        </Row>
+            <RaisedButton
+              onClick={this.handleBack.bind(this)}
+              label={<Translate value="Back"/>}
+              className="button-back-step type-btn"
+              icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
+            />
+            <RaisedButton
+              onClick={this.handleSelectWebType.bind(this)}
+              label={<Translate value="Next Step"/>}
+              primary={true}
+              disabled={!this.state.selectedWebType}
+              className="button-next-step type-btn"
+              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+            />
+          </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
         <Row className="campaign-type">
@@ -306,18 +306,18 @@ class TypeComponent extends React.Component <IProps, IState> {
                      className={"center-select-box"}
                      onChange={this.handleChangeApplicationType.bind(this)}/>
           <RaisedButton
+            onClick={this.handleBack.bind(this)}
+            label={<Translate value="Back"/>}
+            className="button-back-step type-btn"
+            icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
+          />
+          <RaisedButton
             onClick={this.handleSelectApplicationType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
             disabled={!this.state.selectedApplicationType}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
-          />
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
+            className="button-next-step type-btn"
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
           />
         </Row>
         }

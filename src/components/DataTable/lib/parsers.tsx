@@ -6,7 +6,7 @@ import {IColumn, IData, IDefinition} from "./interfaces";
 import {Input, Button} from "antd";
 import * as React from "react";
 import {TextField} from "material-ui";
-import Icon from "antd/es/icon";
+import Icon from "../../Icon/index";
 
 interface IFilterItem {
   text: string;
@@ -126,12 +126,12 @@ export class DataTableDataParser {
         </div>
       );
       column.filterIcon = (<Icon
-                            onClick={ () => {  this.bindTable.forceUpdate();  (column.filterDropdownVisible) ? column.filterDropdownVisible = false : column.filterDropdownVisible = true ; } }
-                            type="search" /> );
+                            name="cif-magnifier table-icon"
+      /> );
     } else if (source.filter) {
       column.filters = this.filtersMapToObjects(source.filter_valid_map);
+      column.filterIcon = (<Icon name="cif-filter table-icon" />);
     }
-
 
     return column;
 

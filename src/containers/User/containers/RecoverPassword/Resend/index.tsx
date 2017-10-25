@@ -6,7 +6,9 @@ import I18n from "../../../../../services/i18n/index";
  */
 interface IProps {
   seconds: number;
-  email: string;
+  email?: string;
+  className?: string;
+  onClick?: () => void;
 }
 
 /**
@@ -16,6 +18,7 @@ interface IState {
   time: any;
   seconds: number;
   end: boolean;
+  onClick?: () => void;
 }
 
 /**
@@ -31,7 +34,7 @@ export default class Resend extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {time: {}, seconds: this.props.seconds, end: false};
+    this.state = {time: {}, seconds: this.props.seconds, end: false , onClick: (this.props.onClick) ? (this.props.onClick) : this.resendVerify };
 
     this.timer = 0;
 
@@ -110,7 +113,7 @@ export default class Resend extends React.Component<IProps, IState> {
       );
     } else {
       return (
-        <div><a onClick={this.resendVerify}>{this.i18n._t("Resend code")}</a></div>
+        <div><a className={this.props.className} onClick={this.state.onClick}>{this.i18n._t("Resend verification code")}</a></div>
       );
     }
   }

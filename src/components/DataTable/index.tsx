@@ -16,6 +16,8 @@ import {DataTableDataParser} from "./lib/parsers";
 import {IData, IDefinition} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
 import "./style.less";
+import Icon from "../Icon/index";
+import {ReactNode} from "react";
 
 
 /**
@@ -205,10 +207,22 @@ class DataTable extends React.Component<IProps, IState> {
    * Generate table pagination config
    * @returns {PaginationProps}
    */
+
+  itemRender(current, type, originalElement): ReactNode {
+    if (type === "prev") {
+      return <a><Icon name={"cif-arrow-left"} className="pagination-icon"/></a>;
+    } else if (type === "next") {
+      return <a><Icon name={"cif-arrow-right"} className="pagination-icon"/></a>;
+    }
+    return originalElement;
+  }
   loadPaginationConfig(): PaginationProps {
     const pagination: PaginationProps = {
       current: this.state.page,
       total: this.state.data.total,
+      size: "small",
+      showSizeChanger: true,
+      itemRender: this.itemRender as any,
       showTotal: (total, range) => {
         return <div>{total}</div>;
       },
