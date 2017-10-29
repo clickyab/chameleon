@@ -50,11 +50,11 @@ export default class CampaignContainer extends React.Component <IProps, IState> 
         <Row>
           <PrivateRoute path={`${match.url}/type/:id?`} component={TypeComponent}/>
           <PrivateRoute path={`${match.url}/naming/:id?`} component={NamingComponent}/>
-          <PrivateRoute path={`${match.url}/budget/:id?`} component={BudgetComponent}/>
-          <PrivateRoute path={`${match.url}/targeting/:id?`} component={TargetingComponent}/>
-          <PrivateRoute path={`${match.url}/select-publisher/:id?`} component={SelectPublisherComponent}/>
-          <PrivateRoute path={`${match.url}/upload/:id?`} component={UploadComponent}/>
-          <PrivateRoute path={`${match.url}/check-publish/:id?`} component={CheckPublishComponent}/>
+          <PrivateRoute path={`${match.url}/budget/:id`} component={BudgetComponent}/>
+          <PrivateRoute path={`${match.url}/targeting/:id`} component={TargetingComponent}/>
+          <PrivateRoute path={`${match.url}/select-publisher/:id`} component={SelectPublisherComponent}/>
+          <PrivateRoute path={`${match.url}/upload/:id`} component={UploadComponent}/>
+          <PrivateRoute path={`${match.url}/check-publish/:id`} component={CheckPublishComponent}/>
         </Row>
       </div>
     );

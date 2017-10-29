@@ -7,7 +7,7 @@ import Translate from "../i18n/Translate/index";
 import Icon from "../Icon/index";
 
 export interface IData {
-  value: number;
+  value: any;
   name: string;
 }
 
@@ -50,6 +50,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
    * @param value
    */
   private handleChange(event, index, value) {
+    console.log(value);
     this.setState({value});
     if (this.props.OnChange) {
       this.props.OnChange(value);
