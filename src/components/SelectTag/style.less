@@ -26,8 +26,11 @@
   border-radius: 2px;
   .close {
     margin-right: 5px;
-    margin-left: 5px;
     cursor: pointer;
+    float:left;
+    font-size: 9px;
+    position: relative;
+    top:2px;
   }
 }
 
@@ -35,7 +38,7 @@
   margin-bottom: -15px;
 }
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
-.select-tag-rtl {
+.select-tag-rtl , .select-list-rtl {
   .location-select-rtl() ;
   > div {
     bottom: auto !important;

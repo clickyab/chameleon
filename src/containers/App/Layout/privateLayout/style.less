@@ -36,6 +36,21 @@
   margin: 0 16px;
   background: #fff;
 }
+.sidebar-wrapper{
+  overflow: inherit;
+  height: 100vh;
+  position: fixed !important;
+  right: 0 !important;
+  z-index: 999;
+}
+.layout-open{
+  margin-right: @sidebar-open-width;
+  transition: all @animation-duration-fast;
+}
+.layout-collapsed{
+  margin-right: @sidebar-close-width;
+  transition: all @animation-duration-fast;
+}
 .sidebar {
   direction: rtl;
   .ant-menu-item-selected {

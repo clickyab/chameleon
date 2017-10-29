@@ -59,10 +59,11 @@ module.exports = {
         loader: "react-hot-loader!awesome-typescript-loader",
         test: /\.tsx?$/,
       },
-      {
-        test: /\.svg$/,
-        loader: 'svg-inline-loader'
-      },
+      {test: /\.svg$/, use: "file-loader"},
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'svg-inline-loader'
+      // },
       { test: /\.(eot|ttf|woff)$/, loader: "file-loader" },
       {
         test: /\.less$/,
