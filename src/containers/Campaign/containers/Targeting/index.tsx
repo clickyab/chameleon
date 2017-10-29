@@ -291,7 +291,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <Tooltip/>
                 <label>{this.i18n._t("Device Type")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <FormItem>
                   <RadioButtonGroup className="campaign-radio-group" name="devices"
                                     valueSelected={this.state.showOtherDevices}
@@ -330,7 +330,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <Tooltip/>
                 <label>{this.i18n._t("Manufactures Brand")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="brands"
@@ -377,7 +377,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <Tooltip/>
                 <label>{this.i18n._t("Operation systems")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="os"
@@ -425,7 +425,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <Tooltip/>
                 <label>{this.i18n._t("Browsers")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="browsers"
@@ -475,7 +475,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <Tooltip/>
                 <label>{this.i18n._t("IAB Categories")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <FormItem>
                   <RadioButtonGroup
                     className="campaign-radio-group" name="iab"
@@ -531,7 +531,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <Tooltip/>
                 <label>{this.i18n._t("Geo location")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <FormItem>
                   {regionState}
                   <RadioButtonGroup
