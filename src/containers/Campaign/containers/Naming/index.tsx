@@ -12,6 +12,7 @@ import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
 import PersianDatePicker from "../../../../components/datePicker/index";
 import Tooltip from "../../../../components/Tooltip/index";
+import "./style.less";
 import {
   ControllersApi,
   OrmCampaign,
@@ -238,7 +239,7 @@ class NamingComponent extends React.Component <IProps, IState> {
     const {getFieldDecorator} = this.props.form;
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <Row className="campaign-title">
+        <Row  className="campaign-title">
           <Col>
             <h2><Translate value="Campaign Naming"/></h2>
             <p>Set configuration for ad name, period of time to show ad and ad"s status:</p>
@@ -252,7 +253,7 @@ class NamingComponent extends React.Component <IProps, IState> {
             </Col>
             <Col span={20} className="form-select-column">
               <FormItem>
-                <SelectField className={(CONFIG.DIR === "rtl") ? "form-select-rtl" : "form-select"}
+                <SelectField className={(CONFIG.DIR === "rtl") ? "select-list-rtl" : "select-list"}
                              value={this.state.currentCampaign.status}
                              onChange={this.handleChangeStatus.bind(this)}>
                   <MenuItem key={`n_active`} value={true} primaryText={this.i18n._t("Active")}/>
@@ -260,6 +261,8 @@ class NamingComponent extends React.Component <IProps, IState> {
                 </SelectField>
               </FormItem>
             </Col>
+          </Row>
+          <Row type="flex" align="middle">
             <Col span={4}>
               <Tooltip/>
               <label>Show Ad"s Days</label>
@@ -277,7 +280,9 @@ class NamingComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
             </Col>
-            <Col span={4}>
+          </Row>
+          <Row type="flex">
+            <Col span={4} className="title-with-radio">
               <Tooltip/>
               <label>Campaign Date</label>
             </Col>
@@ -300,15 +305,15 @@ class NamingComponent extends React.Component <IProps, IState> {
                   </RadioButtonGroup>
                 )}
               </FormItem>
-              <Row gutter={16}>
+              <Row type="flex" gutter={16} align="top" >
                 {!this.state.allDay &&
-                <Col span={9} offset={6}>
+                <Col span={9} >
                   <FormItem>
                     {getFieldDecorator("end_at", {
                       initialValue: this.state.currentCampaign.end_at,
                       rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
                     })(
-                      <PersianDatePicker/>
+                      <PersianDatePicker />
                     )}
                   </FormItem>
                 </Col>
@@ -326,7 +331,9 @@ class NamingComponent extends React.Component <IProps, IState> {
 
               </Row>
             </Col>
-            <Col span={4}>
+          </Row>
+          <Row type="flex">
+            <Col span={4} className="title-with-radio">
               <Tooltip/>
               <label>Campaign Time</label>
             </Col>
@@ -351,26 +358,26 @@ class NamingComponent extends React.Component <IProps, IState> {
               </FormItem>
               {!this.state.allTime &&
               this.state.timePeriods.map((p, index) => (
-                <Row key={index} gutter={16}>
-                  <Col span={2} offset={12}>
-                    {index > 0 &&
-                    <RaisedButton onClick={(e) => {
-                      e.preventDefault();
-                      this.removePeriod(index);
-                    }}>X</RaisedButton>
-                    }
-                  </Col>
-                  <Col span={10}>
+                <Row type="flex" className="time-period-row"  key={index} align={"middle"}>
+                  <Col span={5}>
                     <TimePeriod from={p.from} to={p.to} onChange={(from, to) => {
                       this.onTimePeriodChange(index, from, to);
                     }}/>
                   </Col>
+                  <Col span={5}>
+                    {index > 0 &&
+                    <Icon name={"cif-close time-close-icon"} onClick={(e) => {
+                      e.preventDefault();
+                      this.removePeriod(index);
+                    }} />
+                    }
+                  </Col>
                 </Row>
               ))
               }
-            </Col>
-            <Col>
-              <button onClick={this.addPeriod.bind(this)}><Translate value="Add new period"/></button>
+              {!this.state.allTime &&
+              <a onClick={this.addPeriod.bind(this)}><Translate value="Add new period"/>+</a>
+              }
             </Col>
           </Row>
           <Row type="flex" align="middle">

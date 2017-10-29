@@ -53,7 +53,8 @@ export default class PersianDatePicker extends React.Component<IProps, IState> {
       <div className="persian-datepicker">
         <DatePicker2 value={this.state.value ? moment(this.state.value) : null} isGregorian={false} timePicker={false}
                      onChange={this.onChange.bind(this)}
-                     inputFormat="jYYYY/jMM/jDD"/>
+                     inputFormat="jYYYY/jMM/jDD"
+        />
       </div>
     );
   }

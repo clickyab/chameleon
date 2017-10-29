@@ -36,11 +36,14 @@
 .ant-upload-list {
   display: none;
 }
-
-.btn-dragger {
+.plus-icon{
+  position: relative;
+  top:1px;
+}
+.btn-dragger , .btn-add-list {
   margin-top: 50px;
   height: 30px;
-  width: 220px;
+  min-width: 220px;
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
   background: #B6BBC2;
   button {
@@ -48,7 +51,10 @@
     line-height: @campaign-button-height !important;
     div {
       > div {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
         span {
+          padding: 0 2px !important;
           color: white;
         }
         &:hover {
@@ -124,7 +130,7 @@
       img {
         display: inline-block;
         max-width: 100%;
-        height: auto;
+        max-height: 100%;
       }
       .image-overlay {
         *{
@@ -239,6 +245,7 @@
   .utm-img-modal {
     width: auto !important;
     display: table;
+    min-width: 450px;
     .ant-modal-footer {
       display: none;
     }
@@ -276,4 +283,10 @@
   h2{
     color: #DBDDE1;
   }
+}
+
+.extensions-icon{
+  font-size: 34px;
+  margin-left: 5px;
+  margin-right: 5px;
 }

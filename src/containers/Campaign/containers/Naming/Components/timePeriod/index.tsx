@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Row, Col, Select, Button} from "antd";
+import "./style.less";
 
 const Option = Select.Option;
 
@@ -67,14 +68,14 @@ export default class TimePeriod extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <Row>
-        <Col span={12}>
-          <Select value={this.state.from.toString()} onChange={this.handleChangeFrom.bind(this)}>
+      <Row type="flex">
+        <Col span={12} className="time-period">
+          <Select dropdownClassName={"time-period-dropdown"} value={this.state.from.toString()} onChange={this.handleChangeFrom.bind(this)}>
             {this.renderOptions(false)}
           </Select>
         </Col>
-        <Col span={12}>
-          <Select value={this.state.to.toString()} onChange={this.handleChangeTo.bind(this)}>
+        <Col span={12} className="time-period">
+          <Select  dropdownClassName={"time-period-dropdown"} value={this.state.to.toString()} onChange={this.handleChangeTo.bind(this)}>
             {this.renderOptions(true)}
           </Select>
         </Col>

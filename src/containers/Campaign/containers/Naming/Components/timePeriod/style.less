@@ -1,0 +1,28 @@
+@import "../../../../../../containers/App/theme";
+
+.time-period {
+  margin-right: 20px;
+  width: @time-period-width;
+  .ant-select{
+    width: @time-period-width;
+    .ant-select-selection{
+      height: 25px;
+      .ant-select-arrow{
+        position: absolute;
+        right: 50px;
+        top: 12px;
+        &:before{
+          content: "\e04b";
+          font-family: clickyabdashboard !important;
+          font-size: 12px;
+        }
+      }
+      .ant-select-selection__rendered{
+        float: right;
+        .ant-select-selection-selected-value{
+          padding: 0 5px;
+        }
+      }
+    }
+  }
+}

@@ -17,6 +17,7 @@ import PasswordStrength from "../../../../components/PasswordStrength/index";
 import "./style.less";
 import PhoneInput from "../../../../components/PhoneInput/index";
 import CONFIG from "../../../../constants/config";
+import Resend from "../RecoverPassword/Resend/index";
 
 const FormItem = Form.Item;
 
@@ -32,6 +33,8 @@ interface IState {
   email: string;
   isCorporation: boolean;
   step: STEPS;
+  disableLoginBtn: boolean;
+  disablePassBtn: boolean;
 }
 
 enum STEPS { CHECK_MAIL, LOGIN, REGISTER, VERIFICATION}
@@ -47,6 +50,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
       email: "",
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.CHECK_MAIL,
       isCorporation: false,
+      disableLoginBtn: true,
+      disablePassBtn: true,
     };
   }
 
@@ -58,6 +63,15 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     if (this.props.match.params["token"]) {
       this.submitVerificationFromUrl();
     }
+  }
+
+  public handleBtn() {
+    this.props.form.validateFields((err, values) => {
+      (err) ? this.setState({disableLoginBtn: true}) : this.setState({disableLoginBtn: false});
+    });
+  }
+  public handlePassBtn(value) {
+    (value.length > 7 ) ? this.setState({disablePassBtn: false}) : this.setState({disablePassBtn: true});
   }
 
   public render() {
@@ -86,6 +100,9 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                     hintText={mailPlaceHolder}
                     autoFocus={true}
                     type={"email"}
+                    onChange={ () => this.handleBtn()}
+                    onKeyUp={ () => this.handleBtn()}
+                    autoComplete="off"
                   />
                 )}
               </FormItem>
@@ -95,6 +112,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   label={<Translate value="Next Step"/>}
                   primary={true}
                   className="button-full-width button-login-next-step"
+                  disabled={this.state.disableLoginBtn}
                   icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
                               name="cif-arrowleft-4" />}
                 />
@@ -131,6 +149,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                     type="password"
                     hintText={passwordPlaceHolder}
                     autoFocus={true}
+                    onChange={(event , val) => { this.handlePassBtn(val); }}
                   />
                 )}
               </FormItem>
@@ -149,6 +168,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   className="button-full-width"
                   icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
                               name={"cif-arrowleft-4"}/>}
+                  disabled={this.state.disablePassBtn}
                 />
               </FormItem>
             </form>
@@ -262,9 +282,9 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             <h5 className="text-center">
               {this.state.email}
             </h5>
-            <p>
-              {this.i18n._t("Check your email for verification code that has been sent to your email.").toString()}
-            </p>
+            <div className="text-center mb-3">
+            <Translate value={"Check your email for verification code that has been sent to your email."}/>
+            </div>
             <form onSubmit={this.submitVerification.bind(this)}>
               <FormItem>
                 {getFieldDecorator("number", {
@@ -275,27 +295,28 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                     type="number"
                     hintText={this.i18n._t("verification code")}
                     autoFocus={true}
+                    className="spin-btn-hide placeholder-center"
                   />
                 )}
               </FormItem>
+              <Row className="text-center mb-3">
+                <Resend seconds={120}
+                        onClick={this.resendVerificationCode.bind(this)}
+                        className={"verify-link"}
+                />
+              </Row>
               <FormItem>
                 <RaisedButton
                   type="submit"
                   label={<Translate value="verify"/>}
                   primary={true}
                   className="button-full-width"
-                  icon={<Icon name="arrow"/>}
                 />
               </FormItem>
-              <Row className="text-center">
-                <a onClick={this.resendVerificationCode.bind(this)}>
-                  <Translate value="Resend Verification Code"/>
-                </a>
-              </Row>
             </form>
           </Card>
           }
-          {this.state.step !== STEPS.REGISTER && this.state.step !== STEPS.LOGIN &&
+          {this.state.step !== STEPS.REGISTER && this.state.step !== STEPS.LOGIN && this.state.step !== STEPS.VERIFICATION &&
           <Row className="text-center forgot-password">
             <p>
               <Translate value="Do you Forgot your password?"/>

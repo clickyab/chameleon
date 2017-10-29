@@ -143,7 +143,9 @@ export default class PhoneInput extends React.Component<IProps, IState> {
             defaultValue={this.state.phone}
             type="number"
             onChange={this.handleChangePhone.bind(this)}
-            fullWidth={true}/>
+            fullWidth={true}
+            className={"spin-btn-hide"}
+          />
         </div>
       </div>
     );

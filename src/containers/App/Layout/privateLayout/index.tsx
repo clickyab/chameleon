@@ -36,7 +36,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
   public render() {
     return (
       <Layout style={{ minHeight: "100vh" }}>
-        <Layout>
+        <Layout className={(this.state.collapsed) ? "layout-collapsed" : "layout-open"}>
           <Header className="header">
             <PrivateBreadcrumb/>
             <Icon
@@ -55,6 +55,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
           collapsible
           collapsed={this.state.collapsed}
           width="300"
+          className="sidebar-wrapper"
         >
           <SidebarMenu collapsed={this.state.collapsed}/>
         </Sider>
