@@ -71,7 +71,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
     });
   }
   public handlePassBtn(value) {
-    (value.length > 7 ) ? this.setState({disablePassBtn: false}) : this.setState({disablePassBtn: true});
+    (value.length > 5 ) ? this.setState({disablePassBtn: false}) : this.setState({disablePassBtn: true});
   }
 
   public render() {

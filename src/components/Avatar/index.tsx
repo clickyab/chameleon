@@ -125,13 +125,13 @@ export default class Avatar extends React.Component<IProps, IState> {
   render() {
     return (
       <div className={(this.props.className) ? (this.props.className + " avatar") : "avatar"}>
-        {(this.props.progress) &&
+        {((this.props.progress) || (this.props.progress === 0)) &&
       <svg className="profile-progress" width={this.state.cx * 2} height={this.state.cx * 2}>
         <circle className="progress-border inactive" cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
                 strokeWidth="1" fill="transparent"
                 style={{transform: this.handleProgressPosition(this.props.radius, this.props.size)}}/>
         <circle className="progress-border active"
-                strokeDashoffset={1000 - ( Math.PI * (2 * (this.state.cx + 2))) * this.props.progress / 100}
+                strokeDashoffset={1000 - ( Math.PI * (2 * (this.state.cx + 3))) * this.props.progress / 100}
                 cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
                 strokeWidth="1" fill="transparent"
                 style={{transform: this.handleProgressPosition(this.props.radius, this.props.size)}}/>

@@ -110,6 +110,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
           description: "",
         });
         this.props.history.push(`/campaign/targeting/${data.id}`);
+        this.props.setCurrentStep(STEPS.TARGETING);
       }).catch((error) => {
         notification.error({
           message: this.i18n._t("Submit Budget failed!"),
@@ -121,7 +122,8 @@ class BudgetComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    console.log("back");
+    this.props.setCurrentStep(STEPS.NAMING);
+    this.props.history.push(`/campaign/naming/${this.props.match.params.id}`);
   }
 
   private handleSubscribersChange(value) {

@@ -221,7 +221,8 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    console.log("back");
+    this.props.setCurrentStep(STEPS.BUDGET);
+    this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
   }
 
   private handleSubmit(e) {
@@ -257,7 +258,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
         description: error.message,
       });
     });
-    ;
   }
 
   public render() {
@@ -533,7 +533,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={19}>
                 <FormItem>
-                  {regionState}
                   <RadioButtonGroup
                     className="campaign-radio-group" name="location" valueSelected={regionState}
                     onChange={(a, value) => {
@@ -569,6 +568,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                                  label={this.i18n._t("Outside of Iran")}
                     />
                   </RadioButtonGroup>
+                  {regionState}
                 </FormItem>
                 {showOtherLocation &&
                 <div className="component-wraper">
@@ -591,12 +591,12 @@ class TargetingComponent extends React.Component <IProps, IState> {
             </Row>
 
             {/* Networks */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
+            <Row type="flex" className="mt-2" align="top">
+              <Col span={5} >
                 <Tooltip/>
                 <label>{this.i18n._t("Internet Network")}</label>
               </Col>
-              <Col span={14} offset={5}>
+              <Col span={19}>
                 <RadioButtonGroup
                   className="campaign-radio-group" name="network"
                   defaultSelected={this.state.showOtherNetwork}
