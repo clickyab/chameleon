@@ -252,7 +252,7 @@ class TypeComponent extends React.Component <IProps, IState> {
     campaign.type = this.state.selectedType === DEVICE_TYPES.APPLICATION ? this.state.selectedApplicationType : this.state.selectedWebType;
     this.props.setCurrentCampaign(campaign);
     this.props.history.push("/campaign/naming");
-
+    this.props.setCurrentStep(STEPS.NAMING);
   }
 
   public render() {

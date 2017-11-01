@@ -220,6 +220,7 @@ class NamingComponent extends React.Component <IProps, IState> {
           this.props.setSelectedCampaignId(data.id);
           this.props.setCurrentCampaign(data as OrmCampaign);
           this.props.history.push(`budget/${data.id}`);
+          this.props.setCurrentStep(STEPS.BUDGET);
         }).catch((error) => {
           notification.error({
             message: this.i18n._t("Create campaign failed!"),
@@ -232,9 +233,16 @@ class NamingComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    console.log("back");
+    this.props.setCurrentStep(STEPS.TYPE);
+    if (this.props.match.params.id) {
+      this.props.history.push(`/campaign/type/${this.props.match.params.id}`);
+    }
+    else {
+      this.props.history.push("/campaign/type");
+    }
   }
-
+public checkUrlId() {
+}
   public render() {
     const {getFieldDecorator} = this.props.form;
     return (
@@ -249,7 +257,7 @@ class NamingComponent extends React.Component <IProps, IState> {
           <Row type="flex" align="middle">
             <Col span={4}>
               <Tooltip/>
-              <label>Status</label>
+              <label><Translate value={"Status"}/></label>
             </Col>
             <Col span={20} className="form-select-column">
               <FormItem>
@@ -265,7 +273,7 @@ class NamingComponent extends React.Component <IProps, IState> {
           <Row type="flex" align="middle">
             <Col span={4}>
               <Tooltip/>
-              <label>Show Ad"s Days</label>
+              <label><Translate value={"Campaign Name"}/></label>
             </Col>
             <Col span={15} offset={5}>
               <FormItem>
@@ -284,7 +292,7 @@ class NamingComponent extends React.Component <IProps, IState> {
           <Row type="flex">
             <Col span={4} className="title-with-radio">
               <Tooltip/>
-              <label>Campaign Date</label>
+              <label><Translate value={"Campaign Date"}/></label>
             </Col>
             <Col span={20}>
               <FormItem>
@@ -335,7 +343,7 @@ class NamingComponent extends React.Component <IProps, IState> {
           <Row type="flex">
             <Col span={4} className="title-with-radio">
               <Tooltip/>
-              <label>Campaign Time</label>
+              <label><Translate value={"Campaign Time"}/></label>
             </Col>
             <Col span={20}>
               <FormItem>

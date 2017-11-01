@@ -75,6 +75,9 @@ class ProgressBar extends React.Component<IProps, IState> {
     }
   }
 
+  public componentWillReceiveProps(nextProps) {
+    this.setState({stepIndex: nextProps.currentStep});
+  }
   private checkStateClass(step: STEPS, type: STEPS) {
     if (step === type) {
       return "active-step";

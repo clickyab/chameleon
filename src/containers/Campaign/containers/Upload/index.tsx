@@ -2,6 +2,7 @@
  * @file Upload banner step
  */
 import * as React from "react";
+import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import Image from "react-image-file";
 import {withRouter} from "react-router";
 import BannerSize from "./CONSTsize";
@@ -16,8 +17,12 @@ import UtmModal from "./UtmModal";
 import "./style.less";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
+import {connect} from "react-redux";
 import {updateLocale} from "moment";
-
+import {RootState} from "../../../../redux/reducers/index";
+import STEPS from "../../steps";
+import "../../../../redux/campaign/actions/index";
+import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
 
@@ -35,7 +40,15 @@ export interface IFileItem {
   height?: number;
 }
 
+interface IOwnProps {
+  match ?: any;
+  history?: any;
+}
+
 interface IProps {
+  setCurrentStep: (step: STEPS) => {};
+  match ?: any;
+  history?: any;
 }
 
 /**
@@ -51,7 +64,7 @@ interface IState {
   editFile?: IFileItem;
   globalUtm ?: string;
 }
-
+@connect(mapStateToProps, mapDispatchToProps)
 class UploadComponent extends React.Component <IProps, IState> {
   private i18n = I18n.getInstance();
 
@@ -201,7 +214,8 @@ class UploadComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    console.log("back");
+    this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
+    this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
   }
 
   private handleSubmit() {
@@ -441,5 +455,24 @@ class UploadComponent extends React.Component <IProps, IState> {
     );
   }
 }
+
+function mapStateToProps(state: RootState, ownProps: IOwnProps) {
+  return {
+    currentStep: state.campaign.currentStep,
+    currentCampaign: state.campaign.currentCampaign,
+    selectedCampaignId: state.campaign.selectedCampaignId,
+    match: ownProps.match,
+    history: ownProps.history,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
+    setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
+    setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+  };
+}
+
 
 export default Form.create()(withRouter(UploadComponent as any));

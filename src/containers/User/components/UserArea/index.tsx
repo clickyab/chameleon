@@ -103,7 +103,7 @@ class UserArea extends React.Component<IProps, IState> {
       <div dir={CONFIG.DIR} className="user-area">
         <div className="avatar-wrapper" >
           {this.state.user && <div className="avatar-click" onClick={ () => {document.getElementById("uploadAvatar").click(); console.log("clicked"); } } >
-          <Avatar user={this.state.user} className="user-area-avatar" radius={32} progress={75}  />
+          <Avatar user={this.state.user} className="user-area-avatar" radius={32} progress={0}  />
           </div>}
           <input style={{display: "none"}} id="uploadAvatar" type="file"
                  onChange={(e) => this.uploadAvatar(e.target.files[0])} ref="avatar"

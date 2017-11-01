@@ -1,16 +1,17 @@
 import * as React from "react";
 import DataTable from "../../../../components/DataTable/index";
-import {ControllersApi} from "../../../../api/api";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import {Row, Form, Col, Table, Button} from "antd";
 import {withRouter} from "react-router";
+import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {MenuItem, RadioButton, RadioButtonGroup, SelectField, RaisedButton, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
+import {ControllersApi, OrmCampaign } from "../../../../api/api";
 
 const FormItem = Form.Item;
 
@@ -18,6 +19,15 @@ const FormItem = Form.Item;
  * @interface IProps
  */
 interface IProps {
+  setCurrentCampaign: (campaign: OrmCampaign) => void;
+  currentCampaign: OrmCampaign;
+  setCurrentStep: (step: STEPS) => {};
+  form: any;
+  setSelectedCampaignId: (id: number | null) => {};
+  currentStep: STEPS;
+  selectedCampaignId: number | null;
+  match: any;
+  history: any;
 }
 
 /**
@@ -29,6 +39,7 @@ interface IState {
   selectedWebSites: any[];
 }
 
+@connect(mapStateToProps, mapDispatchToProps)
 class SelectPublisherComponent extends React.Component <IProps, IState> {
 
   private i18n = I18n.getInstance();
@@ -117,7 +128,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
    * @desc handle back button
    */
   private handleBack() {
-    console.log("back");
+    this.props.setCurrentStep(STEPS.TARGETING);
+    this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`);
   }
 
   /**
