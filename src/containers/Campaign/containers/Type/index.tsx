@@ -220,7 +220,6 @@ class TypeComponent extends React.Component <IProps, IState> {
    * @param {WEB_TYPES} value
    */
   private handleChangeWebType(value: WEB_TYPES) {
-    console.log(value);
     this.setState({
       selectedWebType: value,
     });

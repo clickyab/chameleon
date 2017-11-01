@@ -20,6 +20,7 @@ import {
   ControllersCreateCampaignPayload, ControllersCampaignStatusSchedule, ControllersCampaignStatus,
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
+import {setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 
 const FormItem = Form.Item;
 
@@ -29,6 +30,8 @@ interface IOwnProps {
 }
 
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
+  unsetBreadcrumb: (name: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
@@ -66,6 +69,7 @@ class NamingComponent extends React.Component <IProps, IState> {
   }
 
   public componentDidMount() {
+    this.props.setBreadcrumb("naming", this.i18n._t("Naming").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
@@ -84,6 +88,11 @@ class NamingComponent extends React.Component <IProps, IState> {
       this.props.setSelectedCampaignId(null);
       this.setStateForTimePeriods();
     }
+  }
+
+
+  public componentWillUnmount() {
+    this.props.unsetBreadcrumb("naming");
   }
 
   private parseTimePeriodToState(schedule: OrmCampaignSchedule) {
@@ -146,7 +155,6 @@ class NamingComponent extends React.Component <IProps, IState> {
   private removePeriod(index) {
     let periods = this.state.timePeriods;
     periods.splice(index, 1);
-    console.log(index);
     this.setState({
       timePeriods: periods,
     });
@@ -247,7 +255,7 @@ public checkUrlId() {
     const {getFieldDecorator} = this.props.form;
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <Row  className="campaign-title">
+        <Row className="campaign-title">
           <Col>
             <h2><Translate value="Campaign Naming"/></h2>
             <p>Set configuration for ad name, period of time to show ad and ad"s status:</p>
@@ -313,15 +321,15 @@ public checkUrlId() {
                   </RadioButtonGroup>
                 )}
               </FormItem>
-              <Row type="flex" gutter={16} align="top" >
+              <Row type="flex" gutter={16} align="top">
                 {!this.state.allDay &&
-                <Col span={9} >
+                <Col span={9}>
                   <FormItem>
                     {getFieldDecorator("end_at", {
                       initialValue: this.state.currentCampaign.end_at,
                       rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
                     })(
-                      <PersianDatePicker />
+                      <PersianDatePicker/>
                     )}
                   </FormItem>
                 </Col>
@@ -366,7 +374,7 @@ public checkUrlId() {
               </FormItem>
               {!this.state.allTime &&
               this.state.timePeriods.map((p, index) => (
-                <Row type="flex" className="time-period-row"  key={index} align={"middle"}>
+                <Row type="flex" className="time-period-row" key={index} align={"middle"}>
                   <Col span={5}>
                     <TimePeriod from={p.from} to={p.to} onChange={(from, to) => {
                       this.onTimePeriodChange(index, from, to);
@@ -377,7 +385,7 @@ public checkUrlId() {
                     <Icon name={"cif-close time-close-icon"} onClick={(e) => {
                       e.preventDefault();
                       this.removePeriod(index);
-                    }} />
+                    }}/>
                     }
                   </Col>
                 </Row>
@@ -427,6 +435,8 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
+    unsetBreadcrumb: (name: string) => dispatch(unsetBreadcrumb(name)),
   };
 }
 

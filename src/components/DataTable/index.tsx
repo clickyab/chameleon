@@ -243,7 +243,6 @@ class DataTable extends React.Component<IProps, IState> {
    * @param sorter
    */
   handleTableChange(pagination, filters, sorter) {
-    console.log(pagination, filters, sorter);
     let newState = {};
     if (sorter.columnKey !== this.state.sort) {
       newState["sort"] = sorter.columnKey;
