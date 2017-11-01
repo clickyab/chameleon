@@ -8,18 +8,38 @@ import {RootState} from "../../../../../redux/reducers/index";
 import Icon from "../../../../../components/Icon/index";
 
 /**
- * Breadcrumb
- * @desc This breadcrumb use for private layout
+ * @interface IProps
  *
- * @class
  *
  */
 interface IProps extends RouteComponentProps<BreadcrumbProps> {
-  breadcrumb: string;
+  breadcrumb: any[];
+}
+
+/**
+ * @interface IState
+ *
+ */
+interface IState {
+  breadcrumb: any[];
 }
 
 @connect(mapStateToProps)
-class PrivateBreadcrumb extends React.Component<IProps> {
+class PrivateBreadcrumb extends React.Component<IProps, IState> {
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      breadcrumb: props.breadcrumb,
+    };
+  }
+
+  public componentWillReceiveProps(newProps: IProps) {
+    this.setState({
+      breadcrumb: newProps.breadcrumb,
+    });
+  }
+
   /**
    * @func createBreadCrumb
    * @desc This function read location pathname object and create breadcrumb
@@ -29,21 +49,14 @@ class PrivateBreadcrumb extends React.Component<IProps> {
    * @return {JSX.Element[]}
    */
   private createBreadCrumb(): JSX.Element[] | null {
-    const locationPath: string[] = this.props.location.pathname.split("/");
-
-    // Replace last breadcrumb item with props [maybe use in campaign edit, replace id with name]
-    if (this.props.breadcrumb.length > 0) {
-      locationPath[locationPath.length - 1] = this.props.breadcrumb;
-    }
-
     return (
-      locationPath.map((items): JSX.Element |  null => {
+      this.state.breadcrumb.map((items): JSX.Element | null => {
         if (items === "dashboard") {
           return null;
         }
         return (
           <Breadcrumb.Item key={Math.random()}>
-            {items}
+            {items.title}
           </Breadcrumb.Item>
         );
       })

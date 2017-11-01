@@ -18,6 +18,8 @@ import {withRouter} from "react-router";
 import Step from "./stepComponent";
 
 import "./style.less";
+import {setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
+import I18n from "../../../../services/i18n/index";
 
 /**
  * @interface
@@ -33,7 +35,9 @@ interface IOwnProps {
  * @desc define component and redux acceptability props
  */
 interface IProps {
-  setCurrentStep: (step: STEPS) => {};
+  setCurrentStep: (step: STEPS) => void;
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
+  unsetBreadcrumb: (name: string) => void;
   setSelectedCampaignId: (id: number | null) => {};
   currentStep: STEPS;
   selectedCampaignId: number | null;
@@ -52,6 +56,9 @@ interface IState {
 @connect(mapStateToProps, mapDispatchToProps)
 class ProgressBar extends React.Component<IProps, IState> {
 
+
+  private i18n = I18n.getInstance();
+
   /**
    * @constructor
    * @desc set initial state
@@ -69,10 +76,11 @@ class ProgressBar extends React.Component<IProps, IState> {
    * @func
    * @desc check if route has id, set that in the store
    */
-  public componentWillMount() {
+  public componentDidMount() {
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
     }
+    this.props.setBreadcrumb("campaign", this.i18n._t("campaign").toString(), "home");
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -128,7 +136,7 @@ class ProgressBar extends React.Component<IProps, IState> {
         <Stepper linear={false}>
           <Step className={this.checkStateClass(stepIndex, STEPS.TYPE)} active={stepIndex === STEPS.TYPE}
                 completed={stepIndex > STEPS.TYPE}>
-            <StepButton  disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
               <Translate value="Campaign Type"/>
             </StepButton>
           </Step>
@@ -203,6 +211,8 @@ function mapDispatchToProps(dispatch) {
   return {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
+    unsetBreadcrumb: (name: string) => dispatch(unsetBreadcrumb(name)),
   };
 }
 

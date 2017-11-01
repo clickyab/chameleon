@@ -171,7 +171,6 @@ export default class SelectList extends React.Component<IProps, IState> {
   }
 
   checkAllLeft(): void {
-    console.log(this.state);
     if (this.state.selectedLeftTemp.length === this.state.selectedItemsLeft.length) {
       this.setState({
         selectedLeftTemp: [],

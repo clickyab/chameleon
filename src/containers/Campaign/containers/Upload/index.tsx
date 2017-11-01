@@ -2,8 +2,8 @@
  * @file Upload banner step
  */
 import * as React from "react";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import Image from "react-image-file";
+import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import BannerSize from "./CONSTsize";
 import {Upload, Row, Col, notification, Card, Progress, Button, Form} from "antd";
@@ -17,12 +17,12 @@ import UtmModal from "./UtmModal";
 import "./style.less";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
-import {connect} from "react-redux";
-import {updateLocale} from "moment";
-import {RootState} from "../../../../redux/reducers/index";
+import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
-import "../../../../redux/campaign/actions/index";
-import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
+import {RootState} from "../../../../redux/reducers/index";
+import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
+import {updateLocale} from "moment";
+
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
 
@@ -31,7 +31,7 @@ const FormItem = Form.Item;
  * @desc define single file object
  */
 export interface IFileItem {
-  id: number;
+  id?: number | string;
   fileObject: any;
   state?: UploadState;
   utm?: string;
@@ -40,15 +40,16 @@ export interface IFileItem {
   height?: number;
 }
 
-interface IOwnProps {
-  match ?: any;
-  history?: any;
-}
-
 interface IProps {
+  setCurrentCampaign: (campaign: OrmCampaign) => void;
+  currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
-  match ?: any;
-  history?: any;
+  form: any;
+  setSelectedCampaignId: (id: number | null) => {};
+  currentStep: STEPS;
+  selectedCampaignId: number | null;
+  match: any;
+  history: any;
 }
 
 /**
@@ -56,6 +57,7 @@ interface IProps {
  * @desc define state object
  */
 interface IState {
+  currentCampaign: OrmCampaign;
   files: IFileItem[];
   setLinkForAllBanners: boolean;
   openUtmModal: boolean;
@@ -64,9 +66,11 @@ interface IState {
   editFile?: IFileItem;
   globalUtm ?: string;
 }
+
 @connect(mapStateToProps, mapDispatchToProps)
 class UploadComponent extends React.Component <IProps, IState> {
   private i18n = I18n.getInstance();
+  private bannerSize = BannerSize;
 
   /**
    * @constructor
@@ -76,6 +80,7 @@ class UploadComponent extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
+      currentCampaign: props.currentCampaign,
       openUtmModal: false,
       files: [],
       setLinkForAllBanners: false,
@@ -84,13 +89,29 @@ class UploadComponent extends React.Component <IProps, IState> {
     this.changeFileProgressState = this.changeFileProgressState.bind(this);
   }
 
+  public componentDidMount() {
+    if (this.props.match.params.id) {
+      this.props.setSelectedCampaignId(this.props.match.params.id);
+      const api = new ControllersApi();
+      api.campaignIdGet({id: this.props.match.params.id})
+        .then((campaign) => {
+          this.props.setCurrentCampaign(campaign as OrmCampaign);
+        });
+    }
+
+    // const controllerApi = new ControllersApi();
+    // controllerApi.ba({
+    //
+    // });
+  }
+
   /**
    * @func
    * @desc handle change of file uploading progress
    * @param {number} id
    * @param {UploadState} state
    */
-  private changeFileProgressState(id: number, state: UploadState): void {
+  private changeFileProgressState(id: number | string, state: UploadState): void {
     let files: IFileItem[] = this.state.files;
     const indexOfFile = files.findIndex((f) => (f.id === id));
 
@@ -100,28 +121,53 @@ class UploadComponent extends React.Component <IProps, IState> {
     });
   }
 
+  private updateBannerSizeObject() {
+    let newObject = [];
+    BannerSize.map((size) => {
+      const validSizes = this.state.files.filter(file => {
+        return file.width === size.width && file.height === size.height;
+      });
+      newObject.push({
+        ...size,
+        active: validSizes.length > 0,
+      });
+    });
+    this.bannerSize = newObject;
+    this.forceUpdate();
+  }
+
   /**
    * @func
    * @desc Check Image size of file before upload
    * @param file
    * @returns {Promise<boolean>}
    */
-  private checkImageSize(file): Promise<boolean> {
+  private setImageSize(file: IFileItem): Promise<IFileItem> {
     return new Promise((res, rej) => {
       const img = document.createElement("img");
       img.onload = function () {
-        const hasThisBannerSize = BannerSize.findIndex((b) => {
-          return (b.height === img.height && b.width === img.width);
-        });
-        if (hasThisBannerSize >= 0) {
-          res(true);
-        } else {
-          rej();
-        }
+
+        file.width = img.width;
+        file.height = img.height;
+        res(file);
+
         img.remove();
       };
-      img.src = window.URL.createObjectURL(file);
+      img.src = window.URL.createObjectURL(file.fileObject);
     });
+  }
+
+  /**
+   * @func
+   * @desc Check Image size of file before upload
+   * @param file
+   * @returns {Promise<boolean>}
+   */
+  private checkImageSize(file: IFileItem): boolean {
+    const hasThisBannerSize = BannerSize.findIndex((b) => {
+      return (b.height === file.height && b.width === file.width);
+    });
+    return (hasThisBannerSize >= 0);
   }
 
   /**
@@ -129,13 +175,13 @@ class UploadComponent extends React.Component <IProps, IState> {
    * @desc remove file from state.files array
    * @param {number} id
    */
-  private removeFile(id: number): void {
+  private removeFile(id: number | string): void {
     let files: IFileItem[] = this.state.files;
     const indexOfFile = files.findIndex((f) => (f.id === id));
     files.splice(indexOfFile, 1);
     this.setState({
       files,
-    });
+    }, this.updateBannerSizeObject);
   }
 
   /**
@@ -145,39 +191,40 @@ class UploadComponent extends React.Component <IProps, IState> {
    * @returns {boolean}
    */
   private uploadFile(file) {
-    const id = Date.now();
+    const id = "tmp_" + Date.now();
+    let fileItem = {
+      id,
+      fileObject: file,
+      name: file.name,
+    };
     const uploader = new UploadService(UPLOAD_MODULES.BANNER, file);
-    this.checkImageSize(file)
-      .then(() => {
-        this.setState({
-          files: [...this.state.files,
-            {
-              id,
-              fileObject: file,
-              name: file.name,
-            }
-          ]
-        }, () => {
+    this.setImageSize(fileItem)
+      .then((fileItemObject) => {
+        if (this.checkImageSize(fileItemObject)) {
 
-          uploader.upload((state) => {
-            this.changeFileProgressState(id, state);
-          }).then((state) => {
-            this.changeFileProgressState(id, state);
-          }).catch((err) => {
-            console.log(err);
-            // fixme:: handle error
-            notification.error({
-              message: "Error",
-              description: "Error in upload progress!"
+          this.setState({
+            files: [...this.state.files, fileItemObject]
+          }, () => {
+            this.updateBannerSizeObject();
+            uploader.upload((state) => {
+              this.changeFileProgressState(id, state);
+            }).then((state) => {
+              this.changeFileProgressState(id, state);
+            }).catch((err) => {
+              console.log(err);
+              // fixme:: handle error
+              notification.error({
+                message: "Error",
+                description: "Error in upload progress!"
+              });
             });
           });
-        });
-      })
-      .catch(() => {
-        notification.error({
-          message: this.i18n._t("File Size").toString(),
-          description: this.i18n._t("This file size isn't acceptable!").toString(),
-        });
+        } else {
+          notification.error({
+            message: this.i18n._t("File Size").toString(),
+            description: this.i18n._t("This file size isn't acceptable!").toString(),
+          });
+        }
       });
     return false;
   }
@@ -214,12 +261,28 @@ class UploadComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
-    this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
+    console.log("back");
   }
 
   private handleSubmit() {
-    console.log("S");
+
+    let banners = [];
+    this.state.files.map((file) => {
+      banners.push({
+        utm: file.utm,
+        src: file.state.url,
+        id: file.id.toString().indexOf("tmp_") === 0 ? null : file.id,
+      });
+    });
+
+    const controllerApi = new ControllersApi();
+    controllerApi.adBannerIdPost({
+      id: this.state.currentCampaign.id.toString(),
+      payloadData: {
+        banners
+      }
+    });
+
   }
 
   /**
@@ -411,16 +474,16 @@ class UploadComponent extends React.Component <IProps, IState> {
                 <Icon className="extensions-icon" name={"cif-extensions-gif"}/>
                 <Icon className="extensions-icon" name={"cif-extensions-mp4"}/>
                 <li><Translate value={"Supported dimension Sizes"}/></li>
-              <div className="banner-size-wrapper">
-                {BannerSize.map((size, index) => {
-                  return (
-                    <span className={"banner-size-tag active"}
-                          key={index}>
+                <div className="banner-size-wrapper">
+                  {this.bannerSize.map((size, index) => {
+                    return (
+                      <span className={`banner-size-tag ${size["active"] ? "active" : "" }`}
+                            key={index}>
                         {`${size.width}x${size.height}`}
                   </span>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
               </ul>
             </Row>
           </Col>
@@ -454,6 +517,11 @@ class UploadComponent extends React.Component <IProps, IState> {
       </div>
     );
   }
+}
+
+interface IOwnProps {
+  match ?: any;
+  history?: any;
 }
 
 function mapStateToProps(state: RootState, ownProps: IOwnProps) {

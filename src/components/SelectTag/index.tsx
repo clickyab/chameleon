@@ -50,7 +50,6 @@ export default class SelectTag extends React.Component<IProps, IStates> {
    * @param value
    */
   private handleChange(event, index, value) {
-    console.log(value);
     this.setState({value});
     if (this.props.OnChange) {
       this.props.OnChange(value);

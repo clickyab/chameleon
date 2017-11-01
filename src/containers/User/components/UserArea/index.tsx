@@ -61,7 +61,6 @@ class UserArea extends React.Component<IProps, IState> {
     const uploader = new Upload(UPLOAD_MODULES.AVATAR, file);
     uploader.upload((state) => {
       // todo:: show progress
-      console.log(state);
       this.setState({
         uploadProgress: state.progress,
       });
