@@ -178,6 +178,7 @@ class TypeComponent extends React.Component <IProps, IState> {
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
     } else {
+      this.props.setCurrentCampaign(null);
       this.props.setSelectedCampaignId(null);
     }
   }
