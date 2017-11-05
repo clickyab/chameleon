@@ -82,7 +82,7 @@ class NamingComponent extends React.Component <IProps, IState> {
             allDay: !campaign.end_at,
             allTime: (timePeriods.length === 1 && timePeriods[0].from === 0 && timePeriods[0].to === 23),
             timePeriods,
-          });
+          }, this.setStateForTimePeriods);
         });
     } else {
       this.props.setSelectedCampaignId(null);
@@ -119,7 +119,7 @@ class NamingComponent extends React.Component <IProps, IState> {
   private setStateForTimePeriods() {
     let schedule: OrmCampaignSchedule = {};
     for (let i = 0; i < 23; i++) {
-      schedule[`h` + (`0` + i).slice(-2)] = false;
+      schedule[`h` + (`0` + i).slice(-2)] = "";
     }
 
     this.state.timePeriods.map((p, index) => {
@@ -193,8 +193,8 @@ class NamingComponent extends React.Component <IProps, IState> {
 
       let campaign: ControllersCreateCampaignPayload = this.state.currentCampaign as ControllersCreateCampaignPayload;
       campaign.title = values.name;
-      campaign.status = this.state.status;
       campaign.start_at = values.start_at;
+
       if (this.state.allDay) {
         campaign.end_at = null;
       } else {
@@ -249,8 +249,7 @@ class NamingComponent extends React.Component <IProps, IState> {
       this.props.history.push("/campaign/type");
     }
   }
-public checkUrlId() {
-}
+
   public render() {
     const {getFieldDecorator} = this.props.form;
     return (

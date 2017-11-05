@@ -19,6 +19,7 @@ import CONFIG from "../../../../constants/config" ;
 
 import "./style.less";
 import {OrmCampaign} from "../../../../api/api";
+import {isUndefined} from "util";
 
 /**
  * @interface IOwnProps
@@ -250,6 +251,14 @@ class TypeComponent extends React.Component <IProps, IState> {
     let campaign: OrmCampaign = {};
     campaign.kind = this.state.selectedType;
     campaign.type = this.state.selectedType === DEVICE_TYPES.APPLICATION ? this.state.selectedApplicationType : this.state.selectedWebType;
+
+    if (isUndefined(campaign.status)) {
+      const date = new Date();
+      campaign.status = true;
+      campaign.start_at = date.toDateString();
+    }
+
+    console.log(campaign);
     this.props.setCurrentCampaign(campaign);
     this.props.history.push("/campaign/naming");
     this.props.setCurrentStep(STEPS.NAMING);
@@ -273,31 +282,31 @@ class TypeComponent extends React.Component <IProps, IState> {
             primary={true}
             disabled={!this.state.selectedType}
             className="button-next-step type-btn"
-            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"} />}
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
           />
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-          <Row className="campaign-type">
-            <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
-                       className={"center-select-box"}
-                       onChange={this.handleChangeWebType.bind(this)}/>
+        <Row className="campaign-type">
+          <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
+                     className={"center-select-box"}
+                     onChange={this.handleChangeWebType.bind(this)}/>
 
-            <RaisedButton
-              onClick={this.handleBack.bind(this)}
-              label={<Translate value="Back"/>}
-              className="button-back-step type-btn"
-              icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-            />
-            <RaisedButton
-              onClick={this.handleSelectWebType.bind(this)}
-              label={<Translate value="Next Step"/>}
-              primary={true}
-              disabled={!this.state.selectedWebType}
-              className="button-next-step type-btn"
-              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-            />
-          </Row>
+          <RaisedButton
+            onClick={this.handleBack.bind(this)}
+            label={<Translate value="Back"/>}
+            className="button-back-step type-btn"
+            icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
+          />
+          <RaisedButton
+            onClick={this.handleSelectWebType.bind(this)}
+            label={<Translate value="Next Step"/>}
+            primary={true}
+            disabled={!this.state.selectedWebType}
+            className="button-next-step type-btn"
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+          />
+        </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
         <Row className="campaign-type">
