@@ -84,6 +84,10 @@ export default class LocationSelect extends React.Component<IProps, IState> {
   api = new LocationApi();
   private i18n = I18n.getInstance();
 
+  private country_id: number;
+  private province_id: number;
+  private city_id: number;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -91,6 +95,10 @@ export default class LocationSelect extends React.Component<IProps, IState> {
       provinces: [],
       cities: [],
     };
+    this.country_id = props.countryId || 1;
+    this.province_id = props.provinceId;
+    this.city_id = props.cityId;
+
   }
 
   /**
@@ -98,22 +106,41 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    */
   public componentDidMount() {
     // check has initial location
-    if (!!this.props.countryId) {
-      this.loadCountries()
-        .then(() => {
-          if (this.props.provinceId) {
-            this.setProvince(null, -1, this.props.provinceId)
-              .then(() => {
-                if (this.props.cityId) {
-                  this.setCity(null, -1, this.props.cityId);
-                }
-              });
-          }
-        });
-    } else {
-      this.loadCountries();
-    }
+    console.log(11111111111111, this.props.cityId);
+    this.loadCountries()
+      .then(() => {
+        if (!!this.props.cityId) {
+          this.setProvince(null, -1, this.props.provinceId)
+            .then(() => {
+              console.log(11111111111111, this.props.cityId);
+              if (this.props.cityId) {
+                this.setCity(null, -1, this.props.cityId);
+              }
+            });
+        }
+      });
   }
+
+  // public componentWillReceiveProps(newProps: IProps) {
+  //   console.log(newProps);
+  //   if (newProps.countryId !== this.country_id &&
+  //     newProps.provinceId !== this.province_id &&
+  //     newProps.cityId !== this.city_id) {
+  //     if (!!newProps.countryId) {
+  //       this.loadCountries()
+  //         .then(() => {
+  //           if (newProps.provinceId) {
+  //             this.setProvince(null, -1, this.props.provinceId)
+  //               .then(() => {
+  //                 if (newProps.cityId) {
+  //                   this.setCity(null, -1, this.props.cityId);
+  //                 }
+  //               });
+  //           }
+  //         });
+  //     }
+  //   }
+  // }
 
   /**
    * Load countries and check first item as default.
@@ -126,7 +153,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
         this.setState({
           countries,
         });
-        return this.setCountry(null, 0, !!this.props.countryId ? this.props.countryId : countries[0].id, true);
+        return this.setCountry(null, 0, !!this.props.countryId ? this.props.countryId : countries[0].id);
       });
   }
 
@@ -141,7 +168,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @param {boolean} selectFirstItem
    * @returns {Promise<LocationProvinces>}
    */
-  private setCountry(event, index: number, countryId: number, selectFirstItem?: boolean) {
+  private setCountry(event, index: number, countryId: number) {
     const country = this.state.countries.find((c) => (c.id === countryId));
     return this.api.locationProvincesCountryIdGet({countryId: country.id.toString()})
       .then((provinces) => {
@@ -150,10 +177,6 @@ export default class LocationSelect extends React.Component<IProps, IState> {
           province: provinces[0],
           country: country,
         });
-        if (selectFirstItem) {
-          this.setProvince(event, index, provinces[0].id, true);
-        }
-        this.handleOnChangeEvent();
       });
   }
 
@@ -175,10 +198,6 @@ export default class LocationSelect extends React.Component<IProps, IState> {
           province,
           cities,
         });
-        if (selectFirstItem) {
-          this.setCity(event, index, cities[0].id);
-        }
-        this.handleOnChangeEvent();
       });
   }
 
@@ -189,11 +208,13 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @param {number} cityId
    */
   private setCity(event, index: number, cityId: number) {
+    console.log(2222, cityId);
     const city = this.state.cities.find((c) => (c.id === cityId));
+    console.log(city);
     this.setState({
       city,
-    });
-    this.handleOnChangeEvent();
+    }, this.handleOnChangeEvent);
+
   }
 
   /**
@@ -221,12 +242,12 @@ export default class LocationSelect extends React.Component<IProps, IState> {
         {/*})}*/}
         {/*</SelectField>*/}
         {/*</Col>*/}
-        <Col span={12}  className="location-select-column" >
+        <Col span={12} className="location-select-column">
           <SelectField className={(CONFIG.DIR === "rtl") ? "location-select-rtl" : "location-select"}
-            floatingLabelText={this.i18n._t("Province")}
-            fullWidth={true}
-            value={this.state.province ? this.state.province.id : null}
-            onChange={this.setProvince.bind(this)}>
+                       floatingLabelText={this.i18n._t("Province")}
+                       fullWidth={true}
+                       value={this.state.province ? this.state.province.id : null}
+                       onChange={this.setProvince.bind(this)}>
             {this.state.provinces.map((province) => {
               return (
                 <MenuItem key={`p_${province.id}`} value={province.id} primaryText={province.name}/>);
@@ -235,10 +256,10 @@ export default class LocationSelect extends React.Component<IProps, IState> {
         </Col>
         <Col span={12} className="location-select-column">
           <SelectField className={(CONFIG.DIR === "rtl") ? "location-select-rtl" : "location-select"}
-            floatingLabelText={this.i18n._t("City")}
-            fullWidth={true}
-            onChange={this.setCity.bind(this)}
-            value={this.state.city ? this.state.city.id : null}>
+                       floatingLabelText={this.i18n._t("City")}
+                       fullWidth={true}
+                       onChange={this.setCity.bind(this)}
+                       value={this.state.city ? this.state.city.id : null}>
             {this.state.cities.map((city) => {
               return (<MenuItem key={`ci_${city.id}`} value={city.id} primaryText={city.name}/>);
             })}
