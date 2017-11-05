@@ -106,13 +106,11 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    */
   public componentDidMount() {
     // check has initial location
-    console.log(11111111111111, this.props.cityId);
     this.loadCountries()
       .then(() => {
         if (!!this.props.cityId) {
           this.setProvince(null, -1, this.props.provinceId)
             .then(() => {
-              console.log(11111111111111, this.props.cityId);
               if (this.props.cityId) {
                 this.setCity(null, -1, this.props.cityId);
               }
