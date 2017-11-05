@@ -26,11 +26,11 @@ class SidebarMenu extends React.Component<IProps, IState> {
   private sideBarRouting(key) {
     switch (key) {
       case "createCampaign":
-        return this.props.history.push("/Campaign/create");
+        return this.props.history.push("/Campaign/type");
       case "dashboard":
         return this.props.history.push("/");
       case "campaigns":
-        return this.props.history.push("/Campaign");
+        return this.props.history.push("/Campaign/type");
       case "media":
         return this.props.history.push("/media");
       case "explore":
