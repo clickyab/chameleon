@@ -58,6 +58,7 @@
   "dependencies": {
     "@types/material-ui": "^0.17.23",
     "babel-loader": "^7.1.1",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
     "cookies-js": "^1.2.3",
     "core-js": "^2.5.0",
@@ -73,6 +74,7 @@
     "react": "^15.6.1",
     "react-datepicker2": "^1.0.0-alpha1",
     "react-dom": "^15.6.1",
+    "react-google-maps": "^9.2.2",
     "react-image-file": "^0.1.0",
     "react-materialize": "^1.0.9",
     "react-redux": "^5.0.5",
