@@ -76,6 +76,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
         city_id: city,
       },
       buttonDisable: false,
+    }, () => {
+      // console.log(this.state);
     });
   }
 
@@ -98,7 +100,9 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
       userApi.userUpdatePut({
         payloadData: {
           ...values,
-          city_id: this.state.user.city_id.toString(),
+          city_id: this.state.user.city_id
+
+          ,
         }
       }).then((data) => {
         this.props.setUser(data.account as UserResponseLoginOKAccount);
@@ -271,12 +275,14 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   </FormItem>
                 </Col>
                 <Col span={12}>
+                  {this.state.user &&
                   <LocationSelect
                     onChange={this.handleChangeLocation.bind(this)}
                     countryId={1}
                     cityId={this.state.user.city_id}
                     provinceId={this.state.user.province_id}
                   />
+                  }
                 </Col>
               </Row>
 

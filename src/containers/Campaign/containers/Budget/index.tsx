@@ -277,7 +277,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
               <FormItem className="campaign-tag">
                 {getFieldDecorator("notify_email", {
                   initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email.toString().split(",") : [],
-                  rules: [{required: true, message: this.i18n._t("Subscribers!")}],
                 })(
                   <Select
                     showSearch={false}
