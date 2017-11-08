@@ -9,7 +9,7 @@ import BannerSize from "./CONSTsize";
 import {Upload, Row, Col, notification, Card, Progress, Button, Form} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {default as UploadService, UPLOAD_MODULES, UploadState} from "../../../../services/Upload/index";
+import {default as UploadService, UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import FileSizeConvertor from "../../../../services/Utils/FileSizeConvertor";
 import {RadioButton, RadioButtonGroup, TextField, RaisedButton} from "material-ui";
@@ -32,7 +32,7 @@ const FormItem = Form.Item;
  */
 export interface IFileItem {
   id?: number | string;
-  fileObject: any;
+  fileObject?: any;
   state?: UploadState;
   utm?: string;
   name: string;
@@ -96,13 +96,57 @@ class UploadComponent extends React.Component <IProps, IState> {
       api.campaignIdGet({id: this.props.match.params.id})
         .then((campaign) => {
           this.props.setCurrentCampaign(campaign as OrmCampaign);
+          this.loadBanners();
         });
     }
+  }
 
-    // const controllerApi = new ControllersApi();
-    // controllerApi.ba({
-    //
-    // });
+  checkAndSetUtm() {
+    let utms = {};
+    this.state.files.map(file => {
+      utms[file.utm] = file.utm;
+    });
+    if (Object.keys(utms).length === 1) {
+      this.setState({
+        globalUtm: utms[Object.keys(utms)[0]],
+        setLinkForAllBanners: false,
+      });
+    } else {
+      this.setState({
+        setLinkForAllBanners: true,
+      });
+    }
+  }
+
+  loadBanners() {
+    const controllerApi = new ControllersApi();
+    controllerApi.campaignIdAdGet({
+      id: this.state.currentCampaign.id.toString(),
+    }).then((list) => {
+      console.log(list);
+      let files: IFileItem[] = [];
+      list.map((item) => {
+        let file: IFileItem = {
+          id: item.id,
+          utm: item.target,
+          height: item.height,
+          width: item.width,
+          name: `${this.state.currentCampaign.title} ${item.width}x${item.width}`,
+          state: {
+            status: UPLOAD_STATUS.FINISHED,
+            progress: 100,
+            url: item.src,
+          }
+        };
+        files.push(file);
+      });
+      this.setState({
+        files
+      }, () => {
+        this.updateBannerSizeObject();
+        this.checkAndSetUtm();
+      });
+    });
   }
 
   /**
@@ -268,8 +312,9 @@ class UploadComponent extends React.Component <IProps, IState> {
 
     let banners = [];
     this.state.files.map((file) => {
+      console.log(this.state.setLinkForAllBanners, this.state.globalUtm, file.utm);
       banners.push({
-        utm: file.utm,
+        utm: !this.state.setLinkForAllBanners ? this.state.globalUtm : file.utm,
         src: file.state.url,
         id: file.id.toString().indexOf("tmp_") === 0 ? null : file.id,
       });
@@ -281,6 +326,8 @@ class UploadComponent extends React.Component <IProps, IState> {
       payloadData: {
         banners
       }
+    }).then(() => {
+      this.loadBanners();
     });
 
   }
@@ -392,16 +439,23 @@ class UploadComponent extends React.Component <IProps, IState> {
                               <div className="image-overlay" onClick={() => this.openImageModal(file)}>
                                 <Icon name={"cif-eye"} fontsize={20}/>
                               </div>
+                              {file.fileObject && (!file.state || !file.state.url) &&
                               <Image file={file.fileObject} alt={file.fileObject.name}
                                      type={"img"}
                               />
+                              }
+                              {file.state && file.state.url &&
+                              <img src={`http://staging.crab.clickyab.ae/uploads/` + file.state.url} alt={file.name}/>
+                              }
                             </div>
                             <div className="upload-process-content">
                               <p>{file.name}</p>
+                              {file.fileObject &&
                               <small>
                                 <Translate value="File size:"/>
                                 {FileSizeConvertor(file.fileObject.size)}
                               </small>
+                              }
                             </div>
                             <div className="upload-option">
                               {file.state && file.state.progress !== 100 &&
@@ -509,9 +563,16 @@ class UploadComponent extends React.Component <IProps, IState> {
                  this.setState({openImageModal: false});
                }}
         >
+          <span>
+          {this.state.previewImage.fileObject && (!this.state.previewImage.state || !this.state.previewImage.state.url) &&
           <Image file={this.state.previewImage.fileObject}
                  type={"img"}
           />
+          }
+          {this.state.previewImage.state && this.state.previewImage.state.url &&
+          <img src={`http://staging.crab.clickyab.ae/uploads/` + this.state.previewImage.state.url}/>
+          }
+          </span>
         </Modal>
         }
       </div>
