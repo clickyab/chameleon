@@ -208,9 +208,14 @@ class UtmModal extends React.Component<IProps, IState> {
             <Row type="flex">
               {this.props.file &&
               <Col span={10} className="utm-img-column">
+                {this.props.file.fileObject && (!this.props.file.state || !this.props.file.state.url) &&
                 <Image file={this.props.file.fileObject} alt={this.props.file.fileObject.name}
                        type={"img"}
                 />
+                }
+                {this.props.file.state &&
+                <img src={`http://staging.crab.clickyab.ae/uploads/` + this.props.file.state.url} alt={this.props.file.name}/>
+                }
               </Col>
               }
               <Col span={this.props.file ? 14 : 24} className="utm-form-column">
