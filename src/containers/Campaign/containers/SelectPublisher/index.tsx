@@ -179,17 +179,17 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={20} className={"publisher-column"}>
                 <SelectField className={"select-list-rtl select-publisher full-width"}
-                             onChange={(a, b, value) => {
-                               this.setState({
-                                 listType: value,
-                               });
-                             }}
-                             value={this.state.listType}>
-                  <MenuItem value={List.CLICKYAB} primaryText={this.i18n._t("All website of Clickyab network")}/>
-                  <MenuItem value={List.EXCHANGE}
-                            primaryText={this.i18n._t("All website of Clickyab network and exchange")}/>
-                  <MenuItem value={List.USER_CUSTOM} primaryText={this.i18n._t("Select from my own list")}/>
-                </SelectField>
+                                              onChange={(a, b, value) => {
+                                                this.setState({
+                                                  listType: value,
+                                                });
+                                              }}
+                                              value={this.state.listType}>
+                <MenuItem value={List.CLICKYAB} primaryText={this.i18n._t("All website of Clickyab network")}/>
+                <MenuItem value={List.EXCHANGE}
+                          primaryText={this.i18n._t("All website of Clickyab network and exchange")}/>
+                <MenuItem value={List.USER_CUSTOM} primaryText={this.i18n._t("Select from my own list")}/>
+              </SelectField>
                 {console.log(this.state.listType)}
                 {this.state.listType === List.USER_CUSTOM &&
                 <Row gutter={5} className="publisher-custom-list">

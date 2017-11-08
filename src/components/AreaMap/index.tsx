@@ -37,12 +37,12 @@ interface IState {
  * Props
  */
 interface IProps {
-  value: IMap;
+  value?: IMap;
   height?: string;
   width?: string;
   radius?: number;
   fillColor?: string;
-  onChange?: (mapInfo: IMap) => (void);
+  onChange?: (mapInfo: IMap) => void;
 }
 
 
@@ -56,6 +56,8 @@ export default class AreaMap extends React.Component<IProps, IState> {
       defaultZoom={9}
       defaultCenter={{lat: Number(this.state.coordinate.lat) , lng: Number(this.state.coordinate.lng) }}
       defaultOptions={{styles: Theme}}
+      onClick = {(e) => this.handleCirclePosition(e.latLng)}
+      onDoubleClick = {(e) => e.preventDefault()}
     >
       <Circle
         clickable
@@ -71,6 +73,7 @@ export default class AreaMap extends React.Component<IProps, IState> {
               icon={pinPoint}
               position={{lat: Number(this.state.coordinate.lat) , lng: Number(this.state.coordinate.lng) }}
               onDrag={(e) => this.handleCirclePosition(e.latLng)}
+              onDragEnd = {(e) => this.setCoordinate(e.latLng) }
       />
     </GoogleMap>
   ));
@@ -100,11 +103,14 @@ export default class AreaMap extends React.Component<IProps, IState> {
       coordinate: {lat: position.lat(), lng: position.lng()},
       value: mapObj,
     });
+  }
+
+  public setCoordinate(position) {
+    let mapObj = {coordinate: {lat: position.lat() , lng: position.lng()} , radius: this.state.radius };
     if (this.props.onChange) {
       this.props.onChange(mapObj);
     }
   }
-
   /**
    * @func handleLatInput
    *
@@ -179,7 +185,8 @@ export default class AreaMap extends React.Component<IProps, IState> {
   public render() {
     const CustomMap = this.CustomMap;
     return (
-      <div>
+      <div style={{height: `${this.props.height ? this.props.height : "500px" }` ,
+        width: `${this.props.width ? this.props.width : "540px"}`}}>
         <Row type="flex" className="map-form">
           <Col span={8}>
             <TextField value={this.state.coordinate.lat}
@@ -213,11 +220,8 @@ export default class AreaMap extends React.Component<IProps, IState> {
         <CustomMap
           googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9mv6-SxE5f0RwjParQ52uMNUIot-CpK0&v=3.exp&libraries=geometry,drawing,places"
           loadingElement={<div style={{height: `100%`}}/>}
-          containerElement={<div style={{
-            height: `${(this.props.height) ? this.props.height : "400px" }`,
-            width: `${(this.props.width) ? this.props.width : "auto" }`
-          }}/>}
-          mapElement={<div style={{height: `100%`}}/>}
+          containerElement={<div className="gm-map-container"  style={{height: `${this.props.height ? this.props.height : "500px" }` }}/>}
+          mapElement={<div style={{ height: "100%" }}/>}
         />
       </div>
     );

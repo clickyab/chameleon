@@ -66,6 +66,7 @@ class NamingComponent extends React.Component <IProps, IState> {
       currentCampaign: props.currentCampaign,
       timePeriods: [{from: 0, to: 23}],
     };
+    console.log(props.currentCampaign);
   }
 
   public componentDidMount() {
@@ -286,7 +287,7 @@ class NamingComponent extends React.Component <IProps, IState> {
               <FormItem>
                 {getFieldDecorator("name", {
                   initialValue: this.state.currentCampaign.title,
-                  rules: [{required: true, message: this.i18n._t("Please input your Campaign Name!")}],
+                  rules: [{required: true,  min: 8, message: this.i18n._t("Please input your Campaign Name!(should contain minimum character of 8 )")}],
                 })(
                   <TextField
                     hintText={this.i18n._t("Your Campaign Name")}
