@@ -19,12 +19,14 @@ import "./style.less";
 import Icon from "../../../../components/Icon/index";
 import {connect} from "react-redux";
 import {showWarningOnce} from "tslint/lib/error";
+import AreaMap from "../../../../components/AreaMap/index";
 
 const Option = Select.Option;
 
 const FormItem = Form.Item;
 
 enum INetworkType { "ISP_Cell", "ISP", "Cell" }
+enum ILocationType { "GM" , "IRAN_MAP" , "ALL" }
 
 
 interface IOwnProps {
@@ -61,6 +63,7 @@ interface IState {
   locations: string[];
   showOtherNetwork: boolean;
   NetworkType: INetworkType;
+  locationType: ILocationType;
   showISP: boolean;
   isps: string[];
   showCellar: boolean;
@@ -103,6 +106,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: false,
         showISP: false,
         NetworkType: INetworkType.ISP_Cell,
+        locationType: ILocationType.GM,
       };
     } else {
       const attr = props.currentCampaign.attributes;
@@ -127,6 +131,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: false,
         showISP: false,
         NetworkType: INetworkType.ISP_Cell,
+        locationType: ILocationType.GM,
       };
     }
   }
@@ -533,45 +538,22 @@ class TargetingComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={19}>
                 <FormItem>
-                  <RadioButtonGroup
-                    className="campaign-radio-group" name="location" valueSelected={regionState}
-                    onChange={(a, value) => {
-                      console.log(a, value);
-                      if (value === "foreign") {
-                        this.setState({
-                          locations: ["foreign"],
-                          showOtherLocation: false,
-                        }, () => {
-                        });
-                      } else if (value) {
-                        this.setState({
-                          locations: [],
-                          showOtherLocation: false,
-                        });
-                      } else {
-                        this.setState({
-                          locations: [],
-                          showOtherLocation: true,
-                        });
-                      }
-                    }}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("All Iran Locations")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("Select From Iran Locations")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={"foreign"}
-                                 label={this.i18n._t("Outside of Iran")}
-                    />
-                  </RadioButtonGroup>
+                    <SelectField className={"select-list-rtl select-geolocation"}
+                                 onChange={(a, b, value) => {
+                                   this.setState({
+                                     locationType: value,
+                                   });
+                                 }}
+                                 value={this.state.locationType}>
+                      <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
+                      <MenuItem value={ILocationType.IRAN_MAP}
+                                primaryText={this.i18n._t("Select specific area in iran")}/>
+                      <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
+                    </SelectField>
                   {regionState}
                 </FormItem>
-                {showOtherLocation &&
-                <div className="component-wraper">
+                {this.state.locationType === ILocationType.IRAN_MAP &&
+                <div className="component-wrapper">
                   <FormItem>
                     {getFieldDecorator("locations", {
                       initialValue: this.state.locations,
@@ -585,6 +567,20 @@ class TargetingComponent extends React.Component <IProps, IState> {
                       />
                     )}
                   </FormItem>
+                </div>
+                }
+                {this.state.locationType === ILocationType.GM &&
+                <div className="component-wrapper area-map-wrapper">
+                <FormItem>
+                  {getFieldDecorator("regionArea", {
+                    initialValue: {coordinate: {lat: -34 , lng: 150} , radius: 10000 },
+                    rules: [{required: true, message: this.i18n._t("Please select locations!")}],
+                  })(
+                      <AreaMap
+                        onChange={(coordinate) => {
+                        console.log(coordinate); } } />
+                  )}
+                </FormItem>
                 </div>
                 }
               </Col>
