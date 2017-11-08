@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="30px" viewBox="0 0 22 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Advertiser---Create-Campaign" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="XLarge-(Large-Desktop)" transform="translate(-1121.000000, -1563.000000)" fill-rule="nonzero" fill="#BF3D3D">
+            <g id="step-4---if-camp-type-=-app" transform="translate(15.000000, 92.000000)">
+                <g id="form-[expand-feature]" transform="translate(585.000000, 236.000000)">
+                    <g id="geolocation" transform="translate(262.000000, 926.000000)">
+                        <g id="map" transform="translate(0.000000, 45.000000)">
+                            <g id="bg">
+                                <path d="M269.782544,264 C263.84289,264 259.026582,268.999981 259.026582,274.769231 C258.642505,280.153846 262.492005,283.615385 265.948851,287.076923 C268.336582,289.999231 269.462736,293.999962 269.782544,294 C270.098698,294 271.912428,289.755154 274.012813,286.692308 C277.469659,282.846154 280.538544,280.923077 280.538467,274.769231 C280.538467,268.821535 275.722159,264 269.782544,264 Z M269.770621,271.692308 C271.885428,271.692308 273.616313,273.4234 273.616313,275.538462 C273.616313,277.653519 271.885428,279.384615 269.770621,279.384615 C267.655813,279.384615 265.924928,277.653519 265.924928,275.538462 C265.924928,273.4234 267.655813,271.692308 269.770621,271.692308 Z" id="Shape"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -23,7 +23,7 @@ module.exports = {
     },
   },
   entry: {
-    main: "./index.tsx",
+    main: ["babel-polyfill", "./index.tsx"],
     vendor: [
       "react",
       "react-dom",
