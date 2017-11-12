@@ -139,7 +139,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
   componentDidMount() {
     // load initial values
-
+    this.props.setCurrentStep(STEPS.TARGETING);
     this.collectionApi.campaignIdGet({
       id: this.props.match.params.id,
     }).then(campaign => {
@@ -230,7 +230,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    this.props.setCurrentStep(STEPS.BUDGET);
     this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
   }
 

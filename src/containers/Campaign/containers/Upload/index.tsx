@@ -90,6 +90,7 @@ class UploadComponent extends React.Component <IProps, IState> {
   }
 
   public componentDidMount() {
+    this.props.setCurrentStep(STEPS.UPLOAD);
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
@@ -315,7 +316,6 @@ class UploadComponent extends React.Component <IProps, IState> {
 
     let banners = [];
     this.state.files.map((file) => {
-      console.log(this.state.setLinkForAllBanners, this.state.globalUtm, file.utm);
       banners.push({
         utm: !this.state.setLinkForAllBanners ? this.state.globalUtm : file.utm,
         src: file.state.url,
@@ -331,6 +331,7 @@ class UploadComponent extends React.Component <IProps, IState> {
       }
     }).then(() => {
       this.loadBanners();
+      this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
     });
 
   }

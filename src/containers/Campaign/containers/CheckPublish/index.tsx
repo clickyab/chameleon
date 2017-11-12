@@ -118,11 +118,11 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
    * @return {void}
    */
   private handleBack() {
-    this.props.setCurrentStep(STEPS.UPLOAD);
     this.props.history.push(`/campaign/upload/${this.props.match.params.id}`);
   }
 
   public componentDidMount() {
+    this.props.setCurrentStep(STEPS.CHECK_PUBLISH);
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();

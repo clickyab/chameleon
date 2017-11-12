@@ -69,6 +69,7 @@ class NamingComponent extends React.Component <IProps, IState> {
   }
 
   public componentDidMount() {
+    this.props.setCurrentStep(STEPS.NAMING);
     this.props.setBreadcrumb("naming", this.i18n._t("Naming").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
@@ -230,7 +231,6 @@ class NamingComponent extends React.Component <IProps, IState> {
           this.props.setSelectedCampaignId(data.id);
           this.props.setCurrentCampaign(data as OrmCampaign);
           this.props.history.push(`budget/${data.id}`);
-          this.props.setCurrentStep(STEPS.BUDGET);
         }).catch((error) => {
           notification.error({
             message: this.i18n._t("Create campaign failed!"),
