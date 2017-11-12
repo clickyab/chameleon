@@ -75,37 +75,37 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
       listType: List.CLICKYAB,
       typeModal: false,
       customizeModal: false,
-      listName: this.i18n._t("_{campaignName} Publishers", {params: {campaignName: props.currentCampaign.title}}).toString(),
+      listName: "",
     };
   }
 
   public componentDidMount() {
 
-    let listType: List;
-    if (this.props.currentCampaign.white_black_id !== 0) {
-      listType = List.USER_CUSTOM;
-    } else if (!this.props.currentCampaign.exchange && this.props.currentCampaign.white_black_id === 0) {
-      listType = List.CLICKYAB;
-    } else {
-      listType = List.EXCHANGE;
-    }
     const collectionApi = new ControllersApi();
     collectionApi.campaignIdGet({
       id: this.props.match.params.id,
     }).then(campaign => {
+      let listType: List;
+      if (campaign.white_black_id !== 0) {
+        listType = List.USER_CUSTOM;
+      } else if (!campaign.exchange && campaign.white_black_id === 0) {
+        listType = List.CLICKYAB;
+      } else {
+        listType = List.EXCHANGE;
+      }
+      this.controllerApi.inventoryPresetsGet({})
+        .then(data => {
+          this.setState({
+            listOFList: data,
+            listType,
+          });
+        });
       this.setState({
         currentCampaign: campaign,
         listID: campaign.white_black_id,
+        listName: this.i18n._t("_{campaignName} Publishers", {params: {campaignName: campaign.title}}).toString(),
       });
     });
-
-    this.controllerApi.inventoryPresetsGet({})
-      .then(data => {
-        this.setState({
-          listOFList: data,
-          listType,
-        });
-      });
   }
 
   /**
@@ -138,8 +138,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         payloadData: {
           label: this.state.listName,
           domains: this.checkedItems.map(d => d.toString()),
-          publisher_type: this.props.currentCampaign.kind,
-
+          publisher_type: this.state.currentCampaign.kind,
         }
       }).then(data => {
         this.setState({
@@ -158,7 +157,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
     const controllerApi = new ControllersApi();
     let promise: Promise<any>;
     let params = {
-      id: this.props.currentCampaign.id.toString(),
+      id: this.state.currentCampaign.id.toString(),
       payloadData: {
         exchange: true,
         list_id: 0,
@@ -406,9 +405,10 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
           <div className="publisher-content">
             <Translate
               value={"If you want to use all of network potential instead of choosing website/app manually please select on of below options"}/>
-            {invertorySelect}
+            <div className="mt-2">{invertorySelect}</div>
           </div>
         </Modal>
+        {this.state.customizeModal &&
         <Modal title={this.i18n._t("Customize Table").toString()}
                visible={this.state.customizeModal}
                customClass="customize-table-modal modal-rtl"
@@ -444,6 +444,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             </Row>
           </div>
         </Modal>
+        }
       </div>
     );
   }
