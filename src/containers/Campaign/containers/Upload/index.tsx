@@ -6,7 +6,7 @@ import Image from "react-image-file";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import BannerSize from "./CONSTsize";
-import {Upload, Row, Col, notification, Card, Progress, Button, Form} from "antd";
+import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
 import {default as UploadService, UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
@@ -21,7 +21,7 @@ import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import {updateLocale} from "moment";
+
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -80,7 +80,7 @@ class UploadComponent extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      currentCampaign: props.currentCampaign,
+      currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
       openUtmModal: false,
       files: [],
       setLinkForAllBanners: false,
@@ -95,6 +95,9 @@ class UploadComponent extends React.Component <IProps, IState> {
       const api = new ControllersApi();
       api.campaignIdGet({id: this.props.match.params.id})
         .then((campaign) => {
+          this.setState({
+            currentCampaign: campaign,
+          });
           this.props.setCurrentCampaign(campaign as OrmCampaign);
           this.loadBanners();
         });
@@ -362,6 +365,11 @@ class UploadComponent extends React.Component <IProps, IState> {
    * @returns {any}
    */
   public render() {
+
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
+    }
+
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
         <div className="campaign-title">
@@ -569,9 +577,9 @@ class UploadComponent extends React.Component <IProps, IState> {
                  type={"img"}
           />
           }
-          {this.state.previewImage.state && this.state.previewImage.state.url &&
-          <img src={`http://staging.crab.clickyab.ae/uploads/` + this.state.previewImage.state.url}/>
-          }
+            {this.state.previewImage.state && this.state.previewImage.state.url &&
+            <img src={`http://staging.crab.clickyab.ae/uploads/` + this.state.previewImage.state.url}/>
+            }
           </span>
         </Modal>
         }

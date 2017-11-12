@@ -8,7 +8,7 @@ import {withRouter} from "react-router";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
-import {Row, Col} from "antd";
+import {Row, Col, Spin} from "antd";
 import SelectBox, {ISelectBoxItem} from "../Naming/Components/SelectBox/index";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
@@ -18,7 +18,7 @@ import CONFIG from "../../../../constants/config" ;
 
 
 import "./style.less";
-import {OrmCampaign} from "../../../../api/api";
+import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import {isUndefined} from "util";
 
 /**
@@ -50,6 +50,7 @@ interface IProps {
  * @desc Define component's States
  */
 interface IState {
+  currentCampaign?: OrmCampaign;
   internalStep: INTERNAL_STEPS;
   selectedType?: DEVICE_TYPES;
   selectedWebType?: WEB_TYPES;
@@ -169,6 +170,7 @@ class TypeComponent extends React.Component <IProps, IState> {
       selectedType: props.currentCampaign ? props.currentCampaign.kind as DEVICE_TYPES : null,
       selectedApplicationType: props.currentCampaign ? props.currentCampaign.type as APPLICATION_TYPES : null,
       selectedWebType: props.currentCampaign ? props.currentCampaign.type as WEB_TYPES : null,
+      currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
     };
   }
 
@@ -178,6 +180,13 @@ class TypeComponent extends React.Component <IProps, IState> {
   public componentWillMount() {
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
+      const controllerApi = new ControllersApi();
+      controllerApi.campaignIdGet({id: this.props.match.params.id})
+        .then(data => {
+          this.setState({
+            currentCampaign: data,
+          });
+        });
     } else {
       this.props.setCurrentCampaign(null);
       this.props.setSelectedCampaignId(null);
@@ -258,13 +267,17 @@ class TypeComponent extends React.Component <IProps, IState> {
       campaign.start_at = date.toDateString();
     }
 
-    console.log(campaign);
     this.props.setCurrentCampaign(campaign);
     this.props.history.push("/campaign/naming");
     this.props.setCurrentStep(STEPS.NAMING);
   }
 
   public render() {
+
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
+    }
+
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
         <Row className="campaign-title">

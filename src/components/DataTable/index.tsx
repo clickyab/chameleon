@@ -43,6 +43,8 @@ interface IProps {
    * @params name - callback function for on selected rows changed
    */
   onSelectRow?: (rows: string[], selectedRows: any[]) => void;
+
+  infinite?: boolean;
 }
 
 
@@ -59,14 +61,20 @@ interface IState {
   filters?: {};
   searches?: {};
   loading: boolean;
+  selectedRows: object[];
+  selectedKeys: string[];
 }
 
 class DataTable extends React.Component<IProps, IState> {
   parser;
+  infiniteLoader: boolean = false;
+
 
   constructor(props: IProps) {
     super(props);
     this.state = {
+      selectedRows: [],
+      selectedKeys: [],
       loading: true,
       page: 1,
       filters: {},
@@ -130,6 +138,27 @@ class DataTable extends React.Component<IProps, IState> {
     });
   }
 
+  addScrollListener() {
+    if (this.state.page === 1) {
+      setTimeout(() => {
+        const tableContent = document.querySelector(".ant-table-body");
+        tableContent.addEventListener("scroll", (event) => {
+          let maxScroll = event.target["scrollHeight"] - event.target["clientHeight"];
+          let currentScroll = event.target["scrollTop"];
+          if (currentScroll === maxScroll) {
+            // load more data
+            if (!this.infiniteLoader) {
+              this.infiniteLoader = true;
+              this.setState({
+                page: this.state.page + 1,
+              }, this.loadData);
+            }
+          }
+        });
+      }, 1000);
+    }
+  }
+
   /**
    * Try to load data from API Call and if data's hash response is different with definition's hash, try to load
    * new definition
@@ -158,6 +187,9 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     this.props.dataFn(config).then((data: IData) => {
+      if (this.state.data && this.props.infinite) {
+        data.data = [...this.state.data.data, ...data.data];
+      }
       let def = this.restoreDefinition();
       if (def && def.hash === data.hash) {
         this.setState({
@@ -165,6 +197,8 @@ class DataTable extends React.Component<IProps, IState> {
           definition: def,
           loading: false,
         });
+        this.addScrollListener();
+        this.infiniteLoader = false;
       } else {
         this.storeDefinition(null);
         this.loadDefinition()
@@ -174,6 +208,8 @@ class DataTable extends React.Component<IProps, IState> {
               data,
               definition: def,
             });
+            this.addScrollListener();
+            this.infiniteLoader = false;
           });
 
       }
@@ -185,7 +221,9 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {{onChange: ((selectedRowKeys, selectedRows) => any)}}
    */
   loadSelectionConfig() {
+    console.log(this.state.selectedKeys);
     const rowSelection = {
+      selectedRowKeys: this.state.selectedKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         if (this.props.onSelectRow) {
 
@@ -194,6 +232,11 @@ class DataTable extends React.Component<IProps, IState> {
           if (this.state.definition.key) {
             keys = selectedRows.map((r) => (r[this.state.definition.key]));
           }
+
+          this.setState({
+            selectedRows,
+            selectedKeys: keys
+          });
 
           this.props.onSelectRow(keys, selectedRows);
         }
@@ -216,6 +259,7 @@ class DataTable extends React.Component<IProps, IState> {
     }
     return originalElement;
   }
+
   loadPaginationConfig(): PaginationProps {
     const pagination: PaginationProps = {
       current: this.state.page,
@@ -253,6 +297,12 @@ class DataTable extends React.Component<IProps, IState> {
     if (filters) {
       newState["filters"] = filters;
     }
+
+    let data = this.state.data;
+    data.page = 1;
+    data.data = [];
+    newState["data"] = data;
+    console.log(data);
     this.setState(newState, () => this.loadData());
   }
 
@@ -263,6 +313,9 @@ class DataTable extends React.Component<IProps, IState> {
    */
   onSearch(column: string, value: string) {
     let searches = this.state.searches;
+    let data = this.state.data;
+    data.page = 1;
+    data.data = [];
     if (value) {
       searches[column] = value;
     } else {
@@ -270,6 +323,7 @@ class DataTable extends React.Component<IProps, IState> {
     }
     this.setState({
       searches: searches,
+      data,
     }, () => {
       this.loadData();
     });
@@ -290,11 +344,13 @@ class DataTable extends React.Component<IProps, IState> {
 
     return (
       <Table
+        rowKey={(record) => (record[this.state.definition.key])}
+        scroll={{y: 440}}
         loading={this.state.loading}
         columns={this.parser.parseColumns()}
         dataSource={this.parser.parsData(this.state.data.data)}
         rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
-        pagination={this.loadPaginationConfig()}
+        pagination={this.props.infinite ? false : this.loadPaginationConfig()}
         onChange={this.handleTableChange.bind(this)}
         className="campaign-data-table"
       />

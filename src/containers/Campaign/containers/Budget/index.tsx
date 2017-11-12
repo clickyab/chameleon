@@ -5,7 +5,7 @@ import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../.
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {Form} from "antd";
-import {Row, Col, notification} from "antd";
+import {Row, Col, notification, Spin} from "antd";
 import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedButton} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -61,7 +61,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
       pricing: IPricing.CPC,
       subscribers: [],
       subscriber: "",
-      currentCampaign: this.props.currentCampaign,
+      currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
     };
   }
 
@@ -71,6 +71,9 @@ class BudgetComponent extends React.Component <IProps, IState> {
       const api = new ControllersApi();
       api.campaignIdGet({id: this.props.match.params.id})
         .then((campaign) => {
+          this.setState({
+            currentCampaign: campaign,
+          });
           this.props.setCurrentCampaign(campaign as OrmCampaign);
         });
     }
@@ -135,6 +138,11 @@ class BudgetComponent extends React.Component <IProps, IState> {
   }
 
   public render() {
+
+    console.log(this.props.match.params.id, this.state.currentCampaign)
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
+    }
 
     const {getFieldDecorator} = this.props.form;
     return (

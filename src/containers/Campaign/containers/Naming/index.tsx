@@ -4,7 +4,7 @@ import {withRouter} from "react-router";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
-import {Col, Form, notification, Row} from "antd";
+import {Col, Form, notification, Row, Spin} from "antd";
 import {MenuItem, RadioButton, RadioButtonGroup, RaisedButton, SelectField, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -63,10 +63,9 @@ class NamingComponent extends React.Component <IProps, IState> {
       allDay: true,
       allTime: true,
       status: false,
-      currentCampaign: props.currentCampaign,
+      currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
       timePeriods: [{from: 0, to: 23}],
     };
-    console.log(props.currentCampaign);
   }
 
   public componentDidMount() {
@@ -252,6 +251,11 @@ class NamingComponent extends React.Component <IProps, IState> {
   }
 
   public render() {
+
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
+    }
+
     const {getFieldDecorator} = this.props.form;
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
@@ -287,7 +291,11 @@ class NamingComponent extends React.Component <IProps, IState> {
               <FormItem>
                 {getFieldDecorator("name", {
                   initialValue: this.state.currentCampaign.title,
-                  rules: [{required: true,  min: 8, message: this.i18n._t("Please input your Campaign Name!(should contain minimum character of 8 )")}],
+                  rules: [{
+                    required: true,
+                    min: 8,
+                    message: this.i18n._t("Please input your Campaign Name!(should contain minimum character of 8 )")
+                  }],
                 })(
                   <TextField
                     hintText={this.i18n._t("Your Campaign Name")}
