@@ -1,7 +1,7 @@
 ///<reference path="../../../../api/api.ts"/>
 import * as React from "react";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
-import {Col, Form, Row, Select, notification} from "antd";
+import {Col, Form, Row, Select, notification, Spin} from "antd";
 import SelectTag from "../../../../components/SelectTag/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import Tooltip from "../../../../components/Tooltip/index";
@@ -26,7 +26,8 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 
 enum INetworkType { "ISP_Cell", "ISP", "Cell" }
-enum ILocationType { "GM" , "IRAN_MAP" , "ALL" }
+
+enum ILocationType { "GM", "IRAN_MAP", "ALL" }
 
 
 interface IOwnProps {
@@ -84,9 +85,9 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    if (!props.currentCampaign.attributes) {
+    if (!props.currentCampaign.attributes || props.currentCampaign.id !== this.props.match.params.id) {
       this.state = {
-        currentCampaign: props.currentCampaign,
+        currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
         devices: [],
         browsers: [],
         brands: [],
@@ -112,14 +113,14 @@ class TargetingComponent extends React.Component <IProps, IState> {
       const attr = props.currentCampaign.attributes;
       this.state = {
         currentCampaign: props.currentCampaign,
-        devices: attr.device,
-        browsers: attr.browser,
-        brands: attr.manufacturer,
-        oss: attr.os,
-        iabs: attr.iab,
-        locations: attr.region,
-        isps: attr.isp,
-        cellulars: attr.cellular,
+        devices: attr.device || [],
+        browsers: attr.browser || [],
+        brands: attr.manufacturer || [],
+        oss: attr.os || [],
+        iabs: attr.iab || [],
+        locations: attr.region || [],
+        isps: attr.isp || [],
+        cellulars: attr.cellular || [],
         checked: false,
         showOtherDevices: false,
         showOtherBrands: false,
@@ -142,10 +143,13 @@ class TargetingComponent extends React.Component <IProps, IState> {
     this.collectionApi.campaignIdGet({
       id: this.props.match.params.id,
     }).then(campaign => {
-      const attr = campaign.attributes;
+      const attr = campaign.attributes || {};
 
       let networkType: INetworkType;
       let showOtherNetwork: boolean = true;
+      attr.isp = attr.isp || [];
+      attr.cellular = attr.cellular || [];
+
       if (attr.isp.length > 0 && attr.cellular.length > 0) {
         networkType = INetworkType.ISP_Cell;
       } else if (attr.isp.length > 0) {
@@ -157,20 +161,20 @@ class TargetingComponent extends React.Component <IProps, IState> {
       }
       this.setState({
         currentCampaign: campaign,
-        devices: attr.device,
-        browsers: attr.browser,
-        brands: attr.manufacturer,
-        oss: attr.os,
-        iabs: attr.iab,
-        locations: attr.region,
-        isps: attr.isp,
-        cellulars: attr.cellular,
+        devices: attr.device || [],
+        browsers: attr.browser || [],
+        brands: attr.manufacturer || [],
+        oss: attr.os || [],
+        iabs: attr.iab || [],
+        locations: attr.region || [],
+        isps: attr.isp || [],
+        cellulars: attr.cellular || [],
         checked: false,
-        showOtherDevices: attr.device.length > 0,
-        showOtherBrands: attr.manufacturer.length > 0,
-        showOtherOS: attr.os.length > 0,
-        showOtherBrowser: attr.browser.length > 0,
-        showOtherIAB: attr.iab.length > 0,
+        showOtherDevices: attr.device ? attr.device.length > 0 : false,
+        showOtherBrands: attr.manufacturer ? attr.manufacturer.length > 0 : false,
+        showOtherOS: attr.os ? attr.os.length > 0 : false,
+        showOtherBrowser: attr.browser ? attr.browser.length > 0 : false,
+        showOtherIAB: attr.iab ? attr.iab.length > 0 : false,
         showOtherNetwork: showOtherNetwork,
         showCellar: attr.cellular.length > 0,
         showISP: attr.isp.length > 0,
@@ -266,20 +270,18 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   public render() {
-    const {getFieldDecorator} = this.props.form;
-    if (!this.state.currentCampaign) {
-      return null;
+
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
     }
 
+    const {getFieldDecorator} = this.props.form;
     let attr = this.state.currentCampaign.attributes || {};
-    let showOtherLocation = this.state.showOtherLocation;
     let regionState: any = true;
-    if (this.state.locations.length > 0 && this.state.locations[0] === "foreign") {
+    if (this.state.locations && this.state.locations.length > 0 && this.state.locations[0] === "foreign") {
       regionState = "foreign";
-      showOtherLocation = false;
-    } else if (this.state.locations.length > 0) {
+    } else if (this.state.locations && this.state.locations.length > 0) {
       regionState = false;
-      showOtherLocation = true;
     }
 
     return (
@@ -537,21 +539,21 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <label>{this.i18n._t("Geo location")}</label>
               </Col>
               <Col span={19}>
-                <FormItem>
-                    <SelectField className={"select-list-rtl select-geolocation"}
-                                 onChange={(a, b, value) => {
-                                   this.setState({
-                                     locationType: value,
-                                   });
-                                 }}
-                                 value={this.state.locationType}>
-                      <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
-                      <MenuItem value={ILocationType.IRAN_MAP}
-                                primaryText={this.i18n._t("Select specific area in iran")}/>
-                      <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
-                    </SelectField>
+                <div>
+                  <SelectField className={"select-list-rtl select-geolocation"}
+                               onChange={(a, b, value) => {
+                                 this.setState({
+                                   locationType: value,
+                                 });
+                               }}
+                               value={this.state.locationType}>
+                    <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
+                    <MenuItem value={ILocationType.IRAN_MAP}
+                              primaryText={this.i18n._t("Select specific area in iran")}/>
+                    <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
+                  </SelectField>
                   {regionState}
-                </FormItem>
+                </div>
                 {this.state.locationType === ILocationType.IRAN_MAP &&
                 <div className="component-wrapper">
                   <FormItem>
@@ -571,16 +573,17 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 }
                 {this.state.locationType === ILocationType.GM &&
                 <div className="component-wrapper area-map-wrapper">
-                <FormItem>
-                  {getFieldDecorator("regionArea", {
-                    initialValue: {coordinate: {lat: -34 , lng: 150} , radius: 10000 },
-                    rules: [{required: true, message: this.i18n._t("Please select locations!")}],
-                  })(
+                  <FormItem>
+                    {getFieldDecorator("regionArea", {
+                      initialValue: {coordinate: {lat: -34, lng: 150}, radius: 10000},
+                      rules: [{required: true, message: this.i18n._t("Please select locations!")}],
+                    })(
                       <AreaMap
                         onChange={(coordinate) => {
-                        console.log(coordinate); } } />
-                  )}
-                </FormItem>
+                          console.log(coordinate);
+                        }}/>
+                    )}
+                  </FormItem>
                 </div>
                 }
               </Col>
@@ -588,7 +591,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
             {/* Networks */}
             <Row type="flex" className="mt-2" align="top">
-              <Col span={5} >
+              <Col span={5}>
                 <Tooltip/>
                 <label>{this.i18n._t("Internet Network")}</label>
               </Col>

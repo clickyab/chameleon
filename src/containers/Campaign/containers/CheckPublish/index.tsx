@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Row, Col, Button} from "antd";
+import {Row, Col, Button, Spin} from "antd";
 import {RaisedButton} from "material-ui";
 import {ControllersApi, OrmCampaign, OrmWhiteBlackList} from "../../../../api/api";
 import CONFIG from "../../../../constants/config";
@@ -11,6 +11,8 @@ import "./style.less";
 import {withRouter} from "react-router";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
+import map from "../../../../components/IranMap/map";
+import I18n from "../../../../services/i18n/index";
 
 // campaign status
 enum STATUS {ACTIVE, DEACTIVE, ARCHIVE}
@@ -49,7 +51,7 @@ interface IState {
   iabs: string[];
   listLabel: string | null;
   listType: boolean | null;
-  websitesList: Array<string> | null;
+  websitesList: any[] | null;
   currentCampaign: OrmCampaign;
 }
 
@@ -85,28 +87,30 @@ enum APPLICATION_TYPES {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class CheckPublishComponent extends React.Component <IProps, IState> {
+  private i18n = I18n.getInstance();
+
   constructor(props: IProps) {
     super(props);
-      this.state = {
-        status: props.currentCampaign ? props.currentCampaign.status : null,
-        type: props.currentCampaign ? props.currentCampaign.kind as DEVICE_TYPES : null,
-        applicationType: props.currentCampaign ? props.currentCampaign.type as APPLICATION_TYPES : null,
-        webType: props.currentCampaign ? props.currentCampaign.type as WEB_TYPES : null,
-        title: props.currentCampaign ? props.currentCampaign.title : null,
-        startDate: props.currentCampaign ? props.currentCampaign.start_at : null,
-        endDate: props.currentCampaign ? props.currentCampaign.end_at : null,
-        totalBudget: props.currentCampaign ? props.currentCampaign.budget : null,
-        dailyLimit: props.currentCampaign ? props.currentCampaign.daily_limit : null,
-        costType: props.currentCampaign ? props.currentCampaign.cost_type : null,
-        locations: [],
-        devices: [],
-        iabs: [],
-        listType: null,
-        listLabel: null,
-        websitesList: null,
-        currentCampaign: props.currentCampaign,
-      };
-   }
+    this.state = {
+      status: props.currentCampaign ? props.currentCampaign.status : null,
+      type: props.currentCampaign ? props.currentCampaign.kind as DEVICE_TYPES : null,
+      applicationType: props.currentCampaign ? props.currentCampaign.type as APPLICATION_TYPES : null,
+      webType: props.currentCampaign ? props.currentCampaign.type as WEB_TYPES : null,
+      title: props.currentCampaign ? props.currentCampaign.title : null,
+      startDate: props.currentCampaign ? props.currentCampaign.start_at : null,
+      endDate: props.currentCampaign ? props.currentCampaign.end_at : null,
+      totalBudget: props.currentCampaign ? props.currentCampaign.budget : null,
+      dailyLimit: props.currentCampaign ? props.currentCampaign.daily_limit : null,
+      costType: props.currentCampaign ? props.currentCampaign.cost_type : null,
+      locations: [],
+      devices: [],
+      iabs: [],
+      listType: null,
+      listLabel: null,
+      websitesList: null,
+      currentCampaign: props.currentCampaign,
+    };
+  }
 
   /**
    * @func handleBack
@@ -144,10 +148,10 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           if (campaign.white_black_id) {
             api.inventoryPresetIdGet({id: campaign.white_black_id.toString()})
               .then((list) => {
+                console.log(list);
                 this.setState({
-                  listType: list.kind,
                   listLabel: list.label,
-                  websitesList: list.domains,
+                  // websitesList: list.domains,
                 });
               });
           }
@@ -159,6 +163,11 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
   }
 
   public render() {
+
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
+    }
+
     return (
       <div dir={CONFIG.DIR} className="campaign-content check-publish">
         <Row className="campaign-title">
@@ -172,7 +181,9 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           <Col span={12}>
             <div className="check-title">
               <Button className="edit-btn"
-              onClick={() => {this.props.history.push(`/campaign/naming/${this.props.match.params.id}`); } } >
+                      onClick={() => {
+                        this.props.history.push(`/campaign/naming/${this.props.match.params.id}`);
+                      }}>
                 <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
                 <Translate value="Edit"/>
               </Button>
@@ -214,7 +225,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.startDate}
+                {this.i18n._d(this.state.startDate, "LL")}
               </Col>
               <Col span={8}>
                 <label><Translate value={"Campaign start date"}/></label>
@@ -222,7 +233,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.endDate}
+                {this.state.endDate && this.i18n._d(this.state.endDate, "LL")}
                 {!this.state.endDate &&
                 <Translate value={"No End date Provided"}/>}
               </Col>
@@ -232,7 +243,9 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <div className="check-title">
               <Button className="edit-btn"
-                      onClick={() => {this.props.history.push(`/campaign/budget/${this.props.match.params.id}`); } }>
+                      onClick={() => {
+                        this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
+                      }}>
                 <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
                 <Translate value="Edit"/>
               </Button>
@@ -248,7 +261,8 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <Translate value={"_{totalBudget} Currency_Name"} params={{totalBudget: this.state.totalBudget}}/>
+                <b>{this.state.totalBudget}</b>
+                <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>
                 <label><Translate value={"campaign total budget"}/></label>
@@ -256,7 +270,8 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <Translate value={"_{dailyLimit} Currency_Name"} params={{dailyLimit : this.state.dailyLimit}} />
+                <b>{this.state.dailyLimit}</b>
+                <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>
                 <label><Translate value={"Campaign daily budget"}/></label>
@@ -266,7 +281,9 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           <Col span={12}>
             <div className="check-title">
               <Button className="edit-btn"
-                      onClick={() => {this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`); } }>
+                      onClick={() => {
+                        this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`);
+                      }}>
                 <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
                 <Translate value="Edit"/>
               </Button>
@@ -274,9 +291,18 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </div>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.locations.map((region) => {
-                  return `${region} `;
-                })}
+                {this.state.locations.length === 0 &&
+                <Translate value={"All Iran Area"}/>
+                }
+                {this.state.locations && this.state.locations.length > 0 && this.state.locations[0] === "foreign" &&
+                <Translate value={"Foreign of Iran"}/>
+                }
+                {this.state.locations && this.state.locations.length > 0 && this.state.locations[0] !== "foreign" &&
+                <span>{this.state.locations.map(location => {
+                  const area = map.g.path.find((item) => (item.id === location));
+                  return area ? area.title : "-";
+                }).join(" / ")}</span>
+                }
               </Col>
               <Col span={8}>
                 <label><Translate value={"View regions"}/></label>
@@ -284,9 +310,10 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.devices.map((device) => {
-                  return `${device} `;
-                })}
+                {this.state.devices.length === 0 &&
+                <Translate value={"All devices"}/>
+                }
+                {this.state.devices.join(" / ")}
               </Col>
               <Col span={8}>
                 <label><Translate value={"Device Type"}/></label>
@@ -294,9 +321,10 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.iabs.map((iab) => {
-                  return `${iab} `;
-                })}
+                {this.state.iabs.length === 0 &&
+                <Translate value={"All categories"}/>
+                }
+                {this.state.iabs.join(" / ")}
               </Col>
               <Col span={8}>
                 <label><Translate value={"IAB Catagories"}/></label>
@@ -304,7 +332,9 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <div className="check-title">
               <Button className="edit-btn"
-                      onClick={() => {this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`); } }>
+                      onClick={() => {
+                        this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
+                      }}>
                 <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
                 <Translate value="Edit"/>
               </Button>
@@ -312,7 +342,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </div>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                best_website_select_2
+                {this.state.listLabel}
               </Col>
               <Col span={8}>
                 <label><Translate value={"Selected List"}/></label>
@@ -320,7 +350,13 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                BlackList
+                {this.state.currentCampaign.white_black_type &&
+                <Translate value={"White List"}/>
+                }
+                {!this.state.currentCampaign.white_black_type &&
+                <Translate value={"Black List"}/>
+                }
+
               </Col>
               <Col span={8}>
                 <label><Translate value={"List Type"}/></label>
