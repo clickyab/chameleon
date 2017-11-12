@@ -211,6 +211,8 @@ class NamingComponent extends React.Component <IProps, IState> {
           payloadData: campaign as ControllersCampaignStatus,
         }).then(data => {
           this.props.setCurrentCampaign(data as OrmCampaign);
+          this.props.history.push(`/campaign/budget/${data.id}`);
+          this.props.setCurrentStep(STEPS.BUDGET);
           notification.success({
             message: this.i18n._t("Campaign updated successfully"),
             description: "",

@@ -319,7 +319,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherDevices &&
-                  <div className="component-wraper">
+                  <div className="component-wrapper">
                     <CheckBoxList
                       items={this.devices}
                       value={this.state.devices}
@@ -359,7 +359,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherBrands &&
-                  <div className="component-wraper">
+                  <div className="component-wrapper">
                     <FormItem>
                       {getFieldDecorator("brands", {
                         initialValue: attr.manufacturer,
@@ -406,7 +406,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherOS &&
-                  <div className="component-wraper">
+                  <div className="component-wrapper">
                     <FormItem>
                       {getFieldDecorator("os", {
                         initialValue: this.state.oss,
@@ -454,7 +454,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherBrowser &&
-                  <div className="component-wraper">
+                  <div className="component-wrapper">
                     <FormItem>
                       {getFieldDecorator("browsers", {
                         initialValue: attr.browser,
@@ -504,7 +504,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherIAB &&
-                  <div className="component-wraper">
+                  <div className="component-wrapper">
                     <FormItem>
                       {getFieldDecorator("iabs", {
                         initialValue: this.state.iabs,
@@ -539,7 +539,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 <label>{this.i18n._t("Geo location")}</label>
               </Col>
               <Col span={19}>
-                <div>
+                <div className="mt-1">
                   <SelectField className={"select-list-rtl select-geolocation"}
                                onChange={(a, b, value) => {
                                  this.setState({
