@@ -80,7 +80,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
   }
 
   public componentDidMount() {
-  this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
+    this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
     const collectionApi = new ControllersApi();
     collectionApi.campaignIdGet({
       id: this.props.match.params.id,
