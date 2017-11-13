@@ -177,7 +177,8 @@ class TypeComponent extends React.Component <IProps, IState> {
   /**
    * check for edit mode by `id` and set selected campaign in Redux store
    */
-  public componentWillMount() {
+  public componentDidMount() {
+    this.props.setCurrentStep(STEPS.TYPE);
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const controllerApi = new ControllersApi();

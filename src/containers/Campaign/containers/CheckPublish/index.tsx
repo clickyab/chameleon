@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Row, Col, Button, Spin} from "antd";
+import {Row, Col, Button, Spin, notification} from "antd";
 import {RaisedButton} from "material-ui";
 import {ControllersApi, OrmCampaign, OrmWhiteBlackList} from "../../../../api/api";
 import CONFIG from "../../../../constants/config";
@@ -112,17 +112,9 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
     };
   }
 
-  /**
-   * @func handleBack
-   * @desc Redirect to previous step
-   * @return {void}
-   */
-  private handleBack() {
-    this.props.setCurrentStep(STEPS.UPLOAD);
-    this.props.history.push(`/campaign/upload/${this.props.match.params.id}`);
-  }
 
   public componentDidMount() {
+    this.props.setCurrentStep(STEPS.CHECK_PUBLISH);
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
@@ -160,6 +152,34 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
     } else {
       this.props.setSelectedCampaignId(null);
     }
+  }
+
+
+  /**
+   * @func handleBack
+   * @desc Redirect to previous step
+   * @return {void}
+   */
+  private handleBack() {
+    this.props.history.push(`/campaign/upload/${this.props.match.params.id}`);
+  }
+
+
+  private handleSubmit() {
+    const controllApi = new ControllersApi();
+    controllApi.campaignFinalizeIdPut({
+      id: this.state.currentCampaign.id.toString(),
+    }).then(() => {
+      notification.success({
+        message: this.i18n._t("Your campaign finalized!"),
+        description: ""
+      });
+    }).catch(error => {
+      notification.error({
+        message: this.i18n._t("Some treble things happened on campaign finalization!"),
+        description: ""
+      });
+    });
   }
 
   public render() {
@@ -381,6 +401,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
           />
           <RaisedButton
+            onClick={this.handleSubmit.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
             className="button-next-step btn-save"

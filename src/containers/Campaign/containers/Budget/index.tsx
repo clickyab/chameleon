@@ -66,6 +66,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
   }
 
   public componentDidMount() {
+    this.props.setCurrentStep(STEPS.BUDGET);
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
@@ -113,7 +114,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
           description: "",
         });
         this.props.history.push(`/campaign/targeting/${data.id}`);
-        this.props.setCurrentStep(STEPS.TARGETING);
       }).catch((error) => {
         notification.error({
           message: this.i18n._t("Submit Budget failed!"),
@@ -125,7 +125,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    this.props.setCurrentStep(STEPS.NAMING);
     this.props.history.push(`/campaign/naming/${this.props.match.params.id}`);
   }
 
@@ -139,8 +138,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
   public render() {
 
-    console.log(this.props.match.params.id, this.state.currentCampaign)
-    if (this.props.match.params.id && !this.state.currentCampaign) {
+    if (!this.state.currentCampaign) {
       return <Spin/>;
     }
 
@@ -284,7 +282,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
             <Col span={20}>
               <FormItem className="campaign-tag">
                 {getFieldDecorator("notify_email", {
-                  initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email.toString().split(",") : [],
+                  initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email : [],
                 })(
                   <Select
                     showSearch={false}

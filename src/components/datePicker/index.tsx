@@ -38,11 +38,16 @@ export default class PersianDatePicker extends React.Component<IProps, IState> {
     };
   }
 
+  componentDidMount() {
+    let date = new Date(this.state.value);
+    this.props.onChange(date.toISOString());
+  }
+
   onChange(date: moment.Moment) {
     if (date.toISOString() !== moment(this.state.value).toISOString()) {
       this.props.onChange(date.toISOString());
       this.setState({
-        value : date.toISOString(),
+        value: date.toISOString(),
       });
     }
   }
