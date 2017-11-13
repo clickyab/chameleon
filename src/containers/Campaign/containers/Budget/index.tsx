@@ -285,7 +285,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
                   initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email : [],
                 })(
                   <Select
-                    key={2}
                     showSearch={false}
                     mode="tags"
                     filterOption={false}
