@@ -309,7 +309,8 @@ class UploadComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    console.log("back");
+    this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
+    this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
   }
 
   private handleSubmit() {
