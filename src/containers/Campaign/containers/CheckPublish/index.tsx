@@ -13,6 +13,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import map from "../../../../components/IranMap/map";
 import I18n from "../../../../services/i18n/index";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 // campaign status
 enum STATUS {ACTIVE, DEACTIVE, ARCHIVE}
@@ -24,6 +25,7 @@ interface IOwnProps {
 }
 
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
@@ -115,11 +117,13 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
 
   public componentDidMount() {
     this.props.setCurrentStep(STEPS.CHECK_PUBLISH);
+    this.props.setBreadcrumb("checkPublisher", this.i18n._t("Check Publisher").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
       api.campaignIdGet({id: this.props.match.params.id})
         .then((campaign) => {
+          this.props.setBreadcrumb("campaignTitle", campaign.title, "checkPublisher");
           this.props.setCurrentCampaign(campaign as OrmCampaign);
           this.setState({
             status: campaign.status,
@@ -426,6 +430,7 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 

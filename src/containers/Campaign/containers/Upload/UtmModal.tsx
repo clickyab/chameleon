@@ -11,7 +11,7 @@ import I18n from "../../../../services/i18n/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import Image from "react-image-file";
-import {IFileItem} from "./index";
+import {IFileItem} from "./BannerVideo";
 import "./style.less";
 
 const FormItem = Form.Item;
@@ -255,6 +255,7 @@ class UtmModal extends React.Component<IProps, IState> {
                     </FormItem>
                   </Col>
                 </Row>
+                {this.state.file &&
                 <Row type="flex" align="middle"  gutter={16} className="modal-switch-row">
                   <Col span={7}>
                     <label><Translate value={"UTM Setting"}/></label>
@@ -266,8 +267,9 @@ class UtmModal extends React.Component<IProps, IState> {
                     </FormItem>
                   </Col>
                 </Row>
-                {this.state.utm_setting &&
-                <div>
+                }
+                {(this.state.utm_setting || !this.state.file) &&
+                <Row>
                   <Row type="flex" align="middle" gutter={16}>
                     <Col span={7}>
                       <label>utm_source</label>
@@ -336,7 +338,7 @@ class UtmModal extends React.Component<IProps, IState> {
                       </FormItem>
                     </Col>
                   </Row>
-                </div>
+                </Row>
                 }
                 <Row type="flex" align="middle" className="modal-btn-row">
                   <RaisedButton

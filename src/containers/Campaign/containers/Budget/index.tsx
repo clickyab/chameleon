@@ -14,6 +14,7 @@ import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
 import Tooltip from "../../../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 const Option = Select.Option;
 
@@ -26,6 +27,7 @@ interface IOwnProps {
 }
 
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
@@ -67,11 +69,13 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
   public componentDidMount() {
     this.props.setCurrentStep(STEPS.BUDGET);
+    this.props.setBreadcrumb("budget", this.i18n._t("Budget").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
       api.campaignIdGet({id: this.props.match.params.id})
         .then((campaign) => {
+          this.props.setBreadcrumb("campaignTitle", campaign.title, "budget");
           this.setState({
             currentCampaign: campaign,
           });
@@ -219,7 +223,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </label>
             </Col>
             <Col span={10} offset={10}>
-              {this.state.currentCampaign.cost_type}
               <FormItem>
                 {getFieldDecorator("cost_type", {
                   initialValue: this.state.currentCampaign.cost_type,
@@ -335,6 +338,7 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 

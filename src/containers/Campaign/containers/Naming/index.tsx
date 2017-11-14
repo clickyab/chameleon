@@ -20,7 +20,7 @@ import {
   ControllersCreateCampaignPayload, ControllersCampaignStatusSchedule, ControllersCampaignStatus,
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
-import {setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 const FormItem = Form.Item;
 
@@ -31,7 +31,6 @@ interface IOwnProps {
 
 interface IProps {
   setBreadcrumb: (name: string, title: string, parent: string) => void;
-  unsetBreadcrumb: (name: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
@@ -78,6 +77,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         .then((campaign) => {
           this.props.setCurrentCampaign(campaign as OrmCampaign);
           let timePeriods = this.parseTimePeriodToState(campaign.schedule);
+          this.props.setBreadcrumb("campaignTitle", campaign.title, "naming");
           this.setState({
             currentCampaign: campaign,
             allDay: !campaign.end_at,
@@ -89,11 +89,6 @@ class NamingComponent extends React.Component <IProps, IState> {
       this.props.setSelectedCampaignId(null);
       this.setStateForTimePeriods();
     }
-  }
-
-
-  public componentWillUnmount() {
-    this.props.unsetBreadcrumb("naming");
   }
 
   private parseTimePeriodToState(schedule: OrmCampaignSchedule) {
@@ -446,7 +441,6 @@ function mapDispatchToProps(dispatch) {
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
     setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
-    unsetBreadcrumb: (name: string) => dispatch(unsetBreadcrumb(name)),
   };
 }
 

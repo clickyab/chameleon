@@ -14,6 +14,7 @@ import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import Tooltip from "../../../../components/Tooltip/index";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import "./style.less";
 
 const FormItem = Form.Item;
@@ -25,6 +26,7 @@ enum List {CLICKYAB, EXCHANGE, USER_CUSTOM}
  * @interface IProps
  */
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
@@ -81,6 +83,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
 
   public componentDidMount() {
     this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
+    this.props.setBreadcrumb("selectPublisher", this.i18n._t("Select Publisher").toString(), "campaign");
     const collectionApi = new ControllersApi();
     collectionApi.campaignIdGet({
       id: this.props.match.params.id,
@@ -100,6 +103,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             listType,
           });
         });
+      this.props.setBreadcrumb("campaignTitle", campaign.title, "selectPublisher");
       this.setState({
         currentCampaign: campaign,
         listID: campaign.white_black_id,
@@ -465,6 +469,7 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 
