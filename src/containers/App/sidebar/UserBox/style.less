@@ -142,6 +142,7 @@
   top: -285px;
   background: white;
   z-index: 99;
+  box-shadow: 0 1px 0 0 #D8DCE3;
   border-radius: 3px;
   &:after{
     position: absolute;
@@ -162,10 +163,18 @@
     flex-direction: row-reverse;
     height: 60px;
     border-bottom: 1px solid #E9E9EC;
-    color: #5E6670;
+    color: @dark-gray-color;
     padding: 10px 15px;
     font-size: 14px;
     font-weight:500;
+    .bell-icon{
+      color: #D8D8D8;
+    }
+    .profile-badge{
+      sup{
+        box-shadow: 0 0 0 1px #FFF !important;
+      }
+    }
   }
   .popover-list {
       padding: 5px;
@@ -178,7 +187,7 @@
       border:none;
     }
     a{
-      color: #5E6670;
+      color: @dark-gray-color;
       font-weight: 500;
       display: block;
     }

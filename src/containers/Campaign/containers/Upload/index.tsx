@@ -2,49 +2,24 @@
  * @file Upload banner step
  */
 import * as React from "react";
-import Image from "react-image-file";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import BannerSize from "./CONSTsize";
-import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
-import Translate from "../../../../components/i18n/Translate/index";
-import CONFIG from "../../../../constants/config";
-import {default as UploadService, UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
+import {Form} from "antd";
 import I18n from "../../../../services/i18n/index";
-import FileSizeConvertor from "../../../../services/Utils/FileSizeConvertor";
-import {RadioButton, RadioButtonGroup, TextField, RaisedButton} from "material-ui";
-import UtmModal from "./UtmModal";
 import "./style.less";
-import Modal from "../../../../components/Modal/index";
-import Icon from "../../../../components/Icon/index";
+import UplaodBannerVideo from "./BannerVideo";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
-
-const Dragger = Upload.Dragger;
-const FormItem = Form.Item;
-
-/**
- * @interface IFileItem
- * @desc define single file object
- */
-export interface IFileItem {
-  id?: number | string;
-  fileObject?: any;
-  state?: UploadState;
-  utm?: string;
-  name: string;
-  width?: number;
-  height?: number;
-}
 
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
-  form: any;
   setSelectedCampaignId: (id: number | null) => {};
   currentStep: STEPS;
   selectedCampaignId: number | null;
@@ -58,20 +33,11 @@ interface IProps {
  */
 interface IState {
   currentCampaign: OrmCampaign;
-  files: IFileItem[];
-  setLinkForAllBanners: boolean;
-  openUtmModal: boolean;
-  openImageModal: boolean;
-  previewImage?: IFileItem;
-  editFile?: IFileItem;
-  globalUtm ?: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 class UploadComponent extends React.Component <IProps, IState> {
   private i18n = I18n.getInstance();
-  private bannerSize = BannerSize;
-
   /**
    * @constructor
    * @desc Set initial state and binding
@@ -81,284 +47,26 @@ class UploadComponent extends React.Component <IProps, IState> {
     super(props);
     this.state = {
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
-      openUtmModal: false,
-      files: [],
-      setLinkForAllBanners: false,
-      openImageModal: false,
     };
-    this.changeFileProgressState = this.changeFileProgressState.bind(this);
   }
 
   public componentDidMount() {
     this.props.setCurrentStep(STEPS.UPLOAD);
+    this.props.setBreadcrumb("upload", this.i18n._t("Upload").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
       api.campaignIdGet({id: this.props.match.params.id})
         .then((campaign) => {
+          this.props.setBreadcrumb("campaignTitle", campaign.title, "upload");
           this.setState({
             currentCampaign: campaign,
           });
           this.props.setCurrentCampaign(campaign as OrmCampaign);
-          this.loadBanners();
         });
     }
   }
 
-  checkAndSetUtm() {
-    let utms = {};
-    this.state.files.map(file => {
-      utms[file.utm] = file.utm;
-    });
-    if (Object.keys(utms).length === 1) {
-      this.setState({
-        globalUtm: utms[Object.keys(utms)[0]],
-        setLinkForAllBanners: false,
-      });
-    } else {
-      this.setState({
-        setLinkForAllBanners: true,
-      });
-    }
-  }
-
-  loadBanners() {
-    const controllerApi = new ControllersApi();
-    controllerApi.campaignIdAdGet({
-      id: this.state.currentCampaign.id.toString(),
-    }).then((list) => {
-      console.log(list);
-      let files: IFileItem[] = [];
-      list.map((item) => {
-        let file: IFileItem = {
-          id: item.id,
-          utm: item.target,
-          height: item.height,
-          width: item.width,
-          name: `${this.state.currentCampaign.title} ${item.width}x${item.width}`,
-          state: {
-            status: UPLOAD_STATUS.FINISHED,
-            progress: 100,
-            url: item.src,
-          }
-        };
-        files.push(file);
-      });
-      this.setState({
-        files
-      }, () => {
-        this.updateBannerSizeObject();
-        this.checkAndSetUtm();
-      });
-    });
-  }
-
-  /**
-   * @func
-   * @desc handle change of file uploading progress
-   * @param {number} id
-   * @param {UploadState} state
-   */
-  private changeFileProgressState(id: number | string, state: UploadState): void {
-    let files: IFileItem[] = this.state.files;
-    const indexOfFile = files.findIndex((f) => (f.id === id));
-
-    files[indexOfFile].state = state;
-    this.setState({
-      files,
-    });
-  }
-
-  private updateBannerSizeObject() {
-    let newObject = [];
-    BannerSize.map((size) => {
-      const validSizes = this.state.files.filter(file => {
-        return file.width === size.width && file.height === size.height;
-      });
-      newObject.push({
-        ...size,
-        active: validSizes.length > 0,
-      });
-    });
-    this.bannerSize = newObject;
-    this.forceUpdate();
-  }
-
-  /**
-   * @func
-   * @desc Check Image size of file before upload
-   * @param file
-   * @returns {Promise<boolean>}
-   */
-  private setImageSize(file: IFileItem): Promise<IFileItem> {
-    return new Promise((res, rej) => {
-      const img = document.createElement("img");
-      img.onload = function () {
-
-        file.width = img.width;
-        file.height = img.height;
-        res(file);
-
-        img.remove();
-      };
-      img.src = window.URL.createObjectURL(file.fileObject);
-    });
-  }
-
-  /**
-   * @func
-   * @desc Check Image size of file before upload
-   * @param file
-   * @returns {Promise<boolean>}
-   */
-  private checkImageSize(file: IFileItem): boolean {
-    const hasThisBannerSize = BannerSize.findIndex((b) => {
-      return (b.height === file.height && b.width === file.width);
-    });
-    return (hasThisBannerSize >= 0);
-  }
-
-  /**
-   * @func removeFile
-   * @desc remove file from state.files array
-   * @param {number} id
-   */
-  private removeFile(id: number | string): void {
-    let files: IFileItem[] = this.state.files;
-    const indexOfFile = files.findIndex((f) => (f.id === id));
-    files.splice(indexOfFile, 1);
-    this.setState({
-      files,
-    }, this.updateBannerSizeObject);
-  }
-
-  /**
-   * @func uploadFile
-   * @desc check file size and upload file by upload service
-   * @param file
-   * @returns {boolean}
-   */
-  private uploadFile(file) {
-    const id = "tmp_" + Date.now();
-    let fileItem = {
-      id,
-      fileObject: file,
-      name: file.name,
-    };
-    const uploader = new UploadService(UPLOAD_MODULES.BANNER, file);
-    this.setImageSize(fileItem)
-      .then((fileItemObject) => {
-        if (this.checkImageSize(fileItemObject)) {
-
-          this.setState({
-            files: [...this.state.files, fileItemObject]
-          }, () => {
-            this.updateBannerSizeObject();
-            uploader.upload((state) => {
-              this.changeFileProgressState(id, state);
-            }).then((state) => {
-              this.changeFileProgressState(id, state);
-            }).catch((err) => {
-              console.log(err);
-              // fixme:: handle error
-              notification.error({
-                message: "Error",
-                description: "Error in upload progress!"
-              });
-            });
-          });
-        } else {
-          notification.error({
-            message: this.i18n._t("File Size").toString(),
-            description: this.i18n._t("This file size isn't acceptable!").toString(),
-          });
-        }
-      });
-    return false;
-  }
-
-  /**
-   * @func handleChangeLinkSettings
-   * @desc Set state for setting link for all banners or not
-   * @param e
-   * @param setAll
-   */
-  private handleChangeLinkSettings(e: any, setAll) {
-    this.setState({
-      setLinkForAllBanners: setAll,
-    });
-  }
-
-  /**
-   * @func openUtmModal
-   * @desc Set selected file for editing config and open utm modal
-   * @param {IFileItem} file
-   */
-  private openUtmModal(file?: IFileItem) {
-    this.setState({
-      openUtmModal: true,
-      editFile: file,
-    });
-  }
-
-  private openImageModal(file?: IFileItem) {
-    this.setState({
-      openImageModal: true,
-      previewImage: file,
-    });
-  }
-
-  private handleBack() {
-    console.log("back");
-  }
-
-  private handleSubmit() {
-
-    let banners = [];
-    this.state.files.map((file) => {
-      banners.push({
-        utm: !this.state.setLinkForAllBanners ? this.state.globalUtm : file.utm,
-        src: file.state.url,
-        id: file.id.toString().indexOf("tmp_") === 0 ? null : file.id,
-      });
-    });
-
-    const controllerApi = new ControllersApi();
-    controllerApi.adBannerIdPost({
-      id: this.state.currentCampaign.id.toString(),
-      payloadData: {
-        banners
-      }
-    }).then(() => {
-      this.loadBanners();
-      this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
-    });
-
-  }
-
-  /**
-   * @func onUtmModalSubmit
-   * @desc Handle params that receive from utm modal
-   * @param params
-   */
-  private onUtmModalSubmit(params) {
-
-    let files = this.state.files;
-    if (this.state.editFile) {
-      const indexOfFile = files.findIndex((f) => (f.id === this.state.editFile.id));
-      files[indexOfFile].name = params.name;
-      files[indexOfFile].utm = params.link;
-      this.setState({
-        files,
-        openUtmModal: false,
-      });
-    } else {
-      this.setState({
-        globalUtm: params.link,
-        openUtmModal: false,
-      });
-    }
-  }
 
   /**
    * @func render
@@ -366,223 +74,12 @@ class UploadComponent extends React.Component <IProps, IState> {
    * @returns {any}
    */
   public render() {
-
-    if (this.props.match.params.id && !this.state.currentCampaign) {
-      return <Spin/>;
-    }
-
-    return (
-      <div dir={CONFIG.DIR} className="campaign-content">
-        <div className="campaign-title">
-          <h2><Translate value="Uplaod banner"/></h2>
-          <p><Translate value="Upload banner description"/></p>
-        </div>
-        <Row type="flex" gutter={16} justify="center">
-          <Col span={17}>
-            <Row>
-              <Form>
-                <Row type="flex" align="middle">
-                  <Col span={5}>
-                    <label><Translate value="Link settings"/></label>
-                  </Col>
-                  <Col span={19}>
-                    <FormItem>
-                      <RadioButtonGroup className="campaign-radio-group" name="setAll"
-                                        defaultSelected={this.state.setLinkForAllBanners}
-                                        onChange={this.handleChangeLinkSettings.bind(this)}>
-                        <RadioButton className="campaign-radio-button"
-                                     value={false}
-                                     label={this.i18n._t("Set link for all banners")}
-                        />
-                        <RadioButton className="campaign-radio-button"
-                                     value={true}
-                                     label={this.i18n._t("Set different config for each banner.")}
-                        />
-                      </RadioButtonGroup>
-                    </FormItem>
-                  </Col>
-                </Row>
-                {!this.state.setLinkForAllBanners &&
-                <Row type="flex" align="middle">
-                  <Col span={5}>
-                    <label><Translate value="URL"/></label>
-                  </Col>
-                  <Col span={19}>
-                    <Row type="flex" align="middle" gutter={24}>
-                      <Col span={15}>
-                        <FormItem>
-                          <TextField
-                            className="upload-textfield"
-                            fullWidth={true}
-                            value={this.state.globalUtm}
-                            onChange={(e, value) => {
-                              this.setState({
-                                globalUtm: value,
-                              });
-                            }}
-                            hintText={"https://example.com/search/?utm_source=...."}
-                          />
-                        </FormItem>
-                      </Col>
-                      <Col span={3} offset={6}>
-                        <Button
-                          className="add-utm-btn"
-                          onClick={() => {
-                            this.openUtmModal();
-                          }}>
-                          <Icon name={"cif-gear-outline"} className="utm-icon"/>
-                          <Translate value="set utm parameters"/>
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                }
-                <Row type={"flex"}>
-                  <Col span={24}>
-                    <Row type="flex" gutter={30}>
-                      {this.state.files.map((file, index) => (
-                        <Col key={file.id} span={12}>
-                          <Card className="upload-process-wrapper">
-                            <div className="image-wrapper">
-                              <div className="image-overlay" onClick={() => this.openImageModal(file)}>
-                                <Icon name={"cif-eye"} fontsize={20}/>
-                              </div>
-                              {file.fileObject && (!file.state || !file.state.url) &&
-                              <Image file={file.fileObject} alt={file.fileObject.name}
-                                     type={"img"}
-                              />
-                              }
-                              {file.state && file.state.url &&
-                              <img src={`http://staging.crab.clickyab.ae/uploads/` + file.state.url} alt={file.name}/>
-                              }
-                            </div>
-                            <div className="upload-process-content">
-                              <p>{file.name}</p>
-                              {file.fileObject &&
-                              <small>
-                                <Translate value="File size:"/>
-                                {FileSizeConvertor(file.fileObject.size)}
-                              </small>
-                              }
-                            </div>
-                            <div className="upload-option">
-                              {file.state && file.state.progress !== 100 &&
-                              <Progress type="circle" percent={file.state ? file.state.progress : 1} width={35}/>
-                              }
-                              {this.state.setLinkForAllBanners && file.state && file.state.progress === 100 &&
-                              <Button onClick={() => {
-                                this.openUtmModal(file);
-                              }}
-                                      className="btn-edit"
-                              >
-                                <Icon name={"cif-edit"}/>
-                              </Button>
-                              }
-                              <Button onClick={() => {
-                                this.removeFile(file.id);
-                              }}
-                                      className="btn-cancel"
-                              >
-                                <Icon name={"cif-closelong"}/>
-                              </Button>
-                            </div>
-                          </Card>
-                        </Col>
-                      ))}
-                    </Row>
-                    <Dragger
-                      beforeUpload={this.uploadFile.bind(this)}
-                    >
-                      <div className={"dragger-content"}>
-                        <Icon name={"cif-cloud-upload"} className={"upload-icon"}/>
-                        <h2>Drag &amp; <b>Drop</b></h2>
-                        <Translate value={"Drag your file over here"}/>
-                        <RaisedButton
-                          label={<Translate value="Select and Uplaod"/>}
-                          primary={false}
-                          className="btn-dragger"
-                        />
-                      </div>
-                    </Dragger>
-                  </Col>
-                </Row>
-                <Row type="flex" align="middle">
-                  <RaisedButton
-                    onClick={this.handleBack.bind(this)}
-                    label={<Translate value="Back"/>}
-                    primary={false}
-                    className="button-back-step"
-                    icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-                  />
-                  <RaisedButton
-                    onClick={this.handleSubmit.bind(this)}
-                    label={<Translate value="Next Step"/>}
-                    primary={true}
-                    className="button-next-step"
-                    icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-                  />
-                </Row>
-              </Form>
-            </Row>
-          </Col>
-          <Col span={7}>
-            <Row type="flex" className="column-info-rtl">
-              <h6><Icon name="cif-lightbulb"/><Translate value={"You should know:"}/></h6>
-              <ul>
-                <li><Translate value={"Maximum file size: static banner 200KB / video 2MB"}/></li>
-                <li><Translate value={"Supported formats"}/></li>
-                <Icon className="extensions-icon" name={"cif-extensions-jpg"}/>
-                <Icon className="extensions-icon" name={"cif-extensions-png"}/>
-                <Icon className="extensions-icon" name={"cif-extensions-gif"}/>
-                <Icon className="extensions-icon" name={"cif-extensions-mp4"}/>
-                <li><Translate value={"Supported dimension Sizes"}/></li>
-                <div className="banner-size-wrapper">
-                  {this.bannerSize.map((size, index) => {
-                    return (
-                      <span className={`banner-size-tag ${size["active"] ? "active" : "" }`}
-                            key={index}>
-                        {`${size.width}x${size.height}`}
-                  </span>
-                    );
-                  })}
-                </div>
-              </ul>
-            </Row>
-          </Col>
-        </Row>
-        {this.state.openUtmModal &&
-        <UtmModal
-          link={!this.state.setLinkForAllBanners ? this.state.globalUtm : this.state.editFile.utm}
-          file={this.state.editFile}
-          onSubmit={this.onUtmModalSubmit.bind(this)}
-          onClose={() => {
-            this.setState({
-              openUtmModal: false,
-            });
-          }}
-        />
+    return (<div>
+        {this.state.currentCampaign && (this.state.currentCampaign.kind === "web" || this.state.currentCampaign.kind === "video") &&
+        <UplaodBannerVideo currentCampaign={this.state.currentCampaign}/>
         }
-        {this.state.previewImage &&
-        <Modal title={this.i18n._t("Banner Preview").toString()}
-               footer={[]}
-               visible={this.state.openImageModal}
-               customClass="preview-banner-modal"
-               onCancel={() => {
-                 this.setState({openImageModal: false});
-               }}
-        >
-          <span>
-          {this.state.previewImage.fileObject && (!this.state.previewImage.state || !this.state.previewImage.state.url) &&
-          <Image file={this.state.previewImage.fileObject}
-                 type={"img"}
-          />
-          }
-            {this.state.previewImage.state && this.state.previewImage.state.url &&
-            <img src={`http://staging.crab.clickyab.ae/uploads/` + this.state.previewImage.state.url}/>
-            }
-          </span>
-        </Modal>
+        {this.state.currentCampaign && (this.state.currentCampaign.kind === "native") &&
+        <p>render native</p>
         }
       </div>
     );
@@ -609,8 +106,9 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 
 
-export default Form.create()(withRouter(UploadComponent as any));
+export default UploadComponent;

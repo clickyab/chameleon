@@ -94,7 +94,12 @@ class ProgressBar extends React.Component<IProps, IState> {
       return "complete-step";
     }
   }
-
+private checkCurrentCampaign(): boolean {
+  if (this.props.selectedCampaignId) {
+      return false;
+  }
+  return true;
+}
   /**
    * @desc Handle click on wizard's steps and set current step in the store
    * @func
@@ -133,46 +138,46 @@ class ProgressBar extends React.Component<IProps, IState> {
     const {stepIndex} = this.state;
     return (
       <Row className="progress-bar">
-        <Stepper linear={false}>
+        <Stepper linear={false} >
           <Step className={this.checkStateClass(stepIndex, STEPS.TYPE)} active={stepIndex === STEPS.TYPE}
                 completed={stepIndex > STEPS.TYPE}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)} >
               <Translate value="Campaign Type"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.NAMING)} active={stepIndex === STEPS.NAMING}
                 completed={stepIndex > STEPS.NAMING}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.NAMING)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.NAMING)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Campaign Name"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET)} active={stepIndex === STEPS.BUDGET}
                 completed={stepIndex > STEPS.BUDGET}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Budget and Finance"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.TARGETING)} active={stepIndex === STEPS.TARGETING}
                 completed={stepIndex > STEPS.TARGETING}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TARGETING)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TARGETING)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Targeting"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER)}
                 active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Select Publisher"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.UPLOAD)} active={stepIndex === STEPS.UPLOAD}
                 completed={stepIndex > STEPS.UPLOAD}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.UPLOAD)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.UPLOAD)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH)}
                 active={stepIndex === STEPS.CHECK_PUBLISH}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Check and Publish"/>
             </StepButton>
           </Step>

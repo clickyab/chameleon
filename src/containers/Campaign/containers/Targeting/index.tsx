@@ -20,6 +20,7 @@ import Icon from "../../../../components/Icon/index";
 import {connect} from "react-redux";
 import {showWarningOnce} from "tslint/lib/error";
 import AreaMap from "../../../../components/AreaMap/index";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 const Option = Select.Option;
 
@@ -36,6 +37,7 @@ interface IOwnProps {
 }
 
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
   setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
@@ -140,6 +142,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
   componentDidMount() {
     // load initial values
     this.props.setCurrentStep(STEPS.TARGETING);
+    this.props.setBreadcrumb("targeting", this.i18n._t("Targeting").toString(), "campaign");
     this.collectionApi.campaignIdGet({
       id: this.props.match.params.id,
     }).then(campaign => {
@@ -159,6 +162,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
       } else {
         showOtherNetwork = false;
       }
+      this.props.setBreadcrumb("campaignTitle", campaign.title, "targeting");
       this.setState({
         currentCampaign: campaign,
         devices: attr.device || [],
@@ -747,6 +751,7 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 
