@@ -159,7 +159,9 @@ class BudgetComponent extends React.Component <IProps, IState> {
           <Row type="flex" align="middle">
             <Col span={4}>
               <Tooltip/>
-              <label>Max Budget</label>
+              <label>
+                <Translate value={"Max Budget"}/>
+              </label>
             </Col>
             <Col span={10} offset={10}>
               <Row type="flex" align="middle">
@@ -300,7 +302,8 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </FormItem>
             </Col>
           </Row>
-          <Row>
+          <Row type="flex" align="middle">
+            <Col span={4}>
             <RaisedButton
               onClick={this.handleBack.bind(this)}
               label={<Translate value="Back"/>}
@@ -308,6 +311,8 @@ class BudgetComponent extends React.Component <IProps, IState> {
               className="button-back-step"
               icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
             />
+            </Col>
+            <Col>
             <RaisedButton
               onClick={this.handleSubmit.bind(this)}
               label={<Translate value="Next Step"/>}
@@ -315,6 +320,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               className="button-next-step"
               icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
             />
+            </Col>
           </Row>
         </Form>
       </div>

@@ -20,6 +20,8 @@ import CONFIG from "../../../../constants/config" ;
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import {isUndefined} from "util";
+import {Link} from "react-router-dom";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 /**
  * @interface IOwnProps
@@ -35,6 +37,7 @@ interface IOwnProps {
  * @desc Define Component, store and action's Props
  */
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
   currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
   setSelectedCampaignId: (id: number | null) => void;
@@ -112,13 +115,15 @@ class TypeComponent extends React.Component <IProps, IState> {
       title: this.i18n._t("Web").toString(),
       description: this.i18n._t("Show Advertising in Desktop, Mobile and tablet browsers.").toString(),
       value: DEVICE_TYPES.WEB,
-      icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>
+      icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {
       title: this.i18n._t("Application").toString(),
       description: this.i18n._t("Show Advertising in Android Mobile and tablet application.").toString(),
       value: DEVICE_TYPES.APPLICATION,
-      icon: <Icon name="cif-mobile-campaign-outline" className={"campaign-icon"}/>
+      icon: <Icon name="cif-mobile-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     }
   ];
 
@@ -130,17 +135,20 @@ class TypeComponent extends React.Component <IProps, IState> {
     {
       title: this.i18n._t("Banner").toString(),
       value: WEB_TYPES.BANNER,
-      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>
+      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {
       title: this.i18n._t("Content").toString(),
       value: WEB_TYPES.CONTENT,
-      icon: <Icon name="cif-native-campaign-outline" className={"campaign-icon"}/>
+      icon: <Icon name="cif-native-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {
       title: this.i18n._t("Video").toString(),
       value: WEB_TYPES.VIDEO,
-      icon: <Icon name="cif-video-campaign-outline" className={"campaign-icon"}/>
+      icon: <Icon name="cif-video-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     }
   ];
 
@@ -152,7 +160,8 @@ class TypeComponent extends React.Component <IProps, IState> {
     {
       title: this.i18n._t("Banner").toString(),
       value: APPLICATION_TYPES.BANNER,
-      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>
+      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     }
   ];
 
@@ -179,13 +188,15 @@ class TypeComponent extends React.Component <IProps, IState> {
    */
   public componentDidMount() {
     this.props.setCurrentStep(STEPS.TYPE);
+    this.props.setBreadcrumb("type", this.i18n._t("Type").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const controllerApi = new ControllersApi();
       controllerApi.campaignIdGet({id: this.props.match.params.id})
-        .then(data => {
+        .then(campaign => {
+          this.props.setBreadcrumb("campaignTitle", campaign.title, "type");
           this.setState({
-            currentCampaign: data,
+            currentCampaign: campaign,
           });
         });
     } else {
@@ -283,13 +294,14 @@ class TypeComponent extends React.Component <IProps, IState> {
       <div dir={CONFIG.DIR} className="campaign-content">
         <Row className="campaign-title">
           <h3 className="text-center"><Translate value={"Select Campaign Type"}/></h3>
-          <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
+          <p className="text-center"><Translate value={"Set configuration for show advertise in Desktop or Mobile"}/>
+          </p>
         </Row>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
         <Row className="campaign-device">
           <SelectBox span={8} items={this.deviceTypes} initialSelect={this.state.selectedType}
                      onChange={this.handleChangeDevicesType.bind(this)}
-                     className={"center-select-box"}/>
+                     className={"center-select-box device-type"}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
@@ -301,48 +313,55 @@ class TypeComponent extends React.Component <IProps, IState> {
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-        <Row className="campaign-type">
-          <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
-                     className={"center-select-box"}
-                     onChange={this.handleChangeWebType.bind(this)}/>
-
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            className="button-back-step type-btn"
-            icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-          />
-          <RaisedButton
-            onClick={this.handleSelectWebType.bind(this)}
-            label={<Translate value="Next Step"/>}
-            primary={true}
-            disabled={!this.state.selectedWebType}
-            className="button-next-step type-btn"
-            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-          />
-        </Row>
+        <div>
+          <Row className="campaign-type">
+            <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
+                       className={"center-select-box desktop-type"}
+                       onChange={this.handleChangeWebType.bind(this)}/>
+          </Row>
+          <Row type="flex" justify="center">
+            <RaisedButton
+              onClick={this.handleSelectWebType.bind(this)}
+              label={<Translate value="Next Step"/>}
+              primary={true}
+              disabled={!this.state.selectedWebType}
+              className="button-next-step type-btn"
+              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+            />
+          </Row>
+          <Row type="flex" justify="center">
+           <span className="campain-back-link"
+                 onClick={this.handleBack.bind(this)}>
+            <Translate value={"Choosed wrong campaign type?"}/>
+          </span>
+          </Row>
+        </div>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
-        <Row className="campaign-type">
-          <SelectBox items={this.applicationTypes}
-                     initialSelect={this.state.selectedApplicationType}
-                     className={"center-select-box"}
-                     onChange={this.handleChangeApplicationType.bind(this)}/>
-          <RaisedButton
-            onClick={this.handleBack.bind(this)}
-            label={<Translate value="Back"/>}
-            className="button-back-step type-btn"
-            icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-          />
-          <RaisedButton
-            onClick={this.handleSelectApplicationType.bind(this)}
-            label={<Translate value="Next Step"/>}
-            primary={true}
-            disabled={!this.state.selectedApplicationType}
-            className="button-next-step type-btn"
-            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-          />
-        </Row>
+        <div>
+          <Row className="campaign-type">
+            <SelectBox items={this.applicationTypes}
+                       initialSelect={this.state.selectedApplicationType}
+                       className={"center-select-box app-type"}
+                       onChange={this.handleChangeApplicationType.bind(this)}/>
+          </Row>
+          <Row type="flex" justify="center">
+            <RaisedButton
+              onClick={this.handleSelectApplicationType.bind(this)}
+              label={<Translate value="Next Step"/>}
+              primary={true}
+              disabled={!this.state.selectedApplicationType}
+              className="button-next-step type-btn"
+              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+            />
+          </Row>
+          <Row type="flex" justify="center">
+            <span className="campain-back-link"
+                  onClick={this.handleBack.bind(this)}>
+            <Translate value={"Choosed wrong campaign type?"}/>
+          </span>
+          </Row>
+        </div>
         }
       </div>
     );
@@ -375,6 +394,7 @@ function mapDispatchToProps(dispatch) {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
     setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 

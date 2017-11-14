@@ -376,7 +376,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
               </Row>
             </div>
             }
-            <Row align="middle" className="mt-5">
+            <Row type="flex" align="middle" className="mt-5">
+              <Col span={4}>
               <RaisedButton
                 onClick={this.handleBack.bind(this)}
                 label={<Translate value="Back"/>}
@@ -384,6 +385,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                 className="button-back-step"
                 icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
               />
+              </Col>
+              <Col>
               <RaisedButton
                 onClick={this.handleSubmit.bind(this)}
                 label={<Translate value="Next Step"/>}
@@ -391,6 +394,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                 className="button-next-step"
                 icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
               />
+              </Col>
             </Row>
           </Form>
         </Row>
