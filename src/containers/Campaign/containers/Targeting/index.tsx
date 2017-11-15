@@ -21,6 +21,7 @@ import {connect} from "react-redux";
 import {showWarningOnce} from "tslint/lib/error";
 import AreaMap from "../../../../components/AreaMap/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
+import {DEVICE_TYPES , WEB_TYPES} from "../Type/index" ;
 
 const Option = Select.Option;
 
@@ -109,7 +110,9 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: false,
         showISP: false,
         NetworkType: INetworkType.ISP_Cell,
-        locationType: ILocationType.GM,
+        locationType: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
+          ((props.currentCampaign.type === DEVICE_TYPES.APPLICATION) ? ILocationType.GM : ILocationType.ALL)
+          : ILocationType.ALL,
       };
     } else {
       const attr = props.currentCampaign.attributes;
@@ -134,7 +137,9 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: false,
         showISP: false,
         NetworkType: INetworkType.ISP_Cell,
-        locationType: ILocationType.GM,
+        locationType: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
+          ((props.currentCampaign.type === DEVICE_TYPES.APPLICATION) ? ILocationType.GM : ILocationType.ALL)
+          : ILocationType.ALL,
       };
     }
   }
@@ -288,7 +293,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
     }
 
     return (
-      <div dir={CONFIG.DIR} className="campaign-content">
+      <Row>
+        <Col span={6}>
+        </Col>
+        <Col span={18}>
+       <div dir={CONFIG.DIR} className="campaign-content">
         <div className="campaign-title">
           <h2><Translate value="Targeting"/></h2>
           <p><Translate value="Targeting description"/></p>
@@ -521,7 +530,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                           showSearch={false}
                           filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                           placeholder="Tags Mode"
-                          className="Select-IAB"
+                          className="select-tag-ant"
                         >
                           {this.categories.map(cat => (
                             <Option key={cat.name} value={cat.name}>{cat.name}</Option>
@@ -550,10 +559,14 @@ class TargetingComponent extends React.Component <IProps, IState> {
                                  });
                                }}
                                value={this.state.locationType}>
-                    <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
+                    <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
+                    {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
+                      <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
+                    }
+                    {this.state.currentCampaign.kind !== DEVICE_TYPES.APPLICATION &&
                     <MenuItem value={ILocationType.IRAN_MAP}
                               primaryText={this.i18n._t("Select specific area in iran")}/>
-                    <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
+                    }
                   </SelectField>
                   {regionState}
                 </div>
@@ -733,8 +746,9 @@ class TargetingComponent extends React.Component <IProps, IState> {
             </Row>
           </Form>
         </div>
-
       </div>
+        </Col>
+      </Row>
     );
   }
 

@@ -175,43 +175,45 @@ class UserBox extends React.Component<IProps, IState> {
             </g>
           </svg>
         </div>
-        <div className="mini-close" onClick={this.handleContainerClick}>
-          <Avatar user={this.state.user} progress={65}/>
-          <div className="mini-info">
-            {(this.state.user.first_name + " " + this.state.user.last_name)}
-            <br/>
-            اعتبار : 15000
-          </div>
+        <div onMouseEnter={this.handleContainerClick} onMouseLeave={this.handleContainerClick}>
+          <div className="mini-close">
+            <Avatar user={this.state.user} progress={65}/>
+            <div className="mini-info">
+              {(this.state.user.first_name + " " + this.state.user.last_name)}
+              <br/>
+              اعتبار : 15000
+            </div>
 
-          <div className="mini-bell">
-            <Badge dot className="profile-badge">
-              <Icon name="cif-bell" className="bell-icon" onClick={this.handleBellClick}/>
-            </Badge>
+            <div className="mini-bell">
+              <Badge dot className="profile-badge">
+                <Icon name="cif-bell" className="bell-icon" onClick={this.handleBellClick}/>
+              </Badge>
+            </div>
           </div>
+          {this.state.open && <div className="mini-open">
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
+                  onClick={e => this.userBoxRouting(e.key)}>
+              <Menu.Item key="editProfile">
+                <span>{this.i18n._t("Edit profile")}</span>
+              </Menu.Item>
+              <Menu.Item key="transactions">
+                <span>{this.i18n._t("Transactions")}</span>
+              </Menu.Item>
+              <Menu.Item key="charge">
+                <span>{this.i18n._t("Charge")}</span>
+              </Menu.Item>
+              <Menu.Item key="withdraw">
+                <span>{this.i18n._t("Withdraw")}</span>
+              </Menu.Item>
+              <Menu.Item key="userManagement">
+                <span>{this.i18n._t("user management")}</span>
+              </Menu.Item>
+              <Menu.Item key="logout">
+                <span>{this.i18n._t("logout")}</span>
+              </Menu.Item>
+            </Menu>
+          </div>}
         </div>
-        {this.state.open && <div className="mini-open">
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
-                onClick={e => this.userBoxRouting(e.key)}>
-            <Menu.Item key="editProfile">
-              <span>{this.i18n._t("Edit profile")}</span>
-            </Menu.Item>
-            <Menu.Item key="transactions">
-              <span>{this.i18n._t("Transactions")}</span>
-            </Menu.Item>
-            <Menu.Item key="charge">
-              <span>{this.i18n._t("Charge")}</span>
-            </Menu.Item>
-            <Menu.Item key="withdraw">
-              <span>{this.i18n._t("Withdraw")}</span>
-            </Menu.Item>
-            <Menu.Item key="userManagement">
-              <span>{this.i18n._t("user management")}</span>
-            </Menu.Item>
-            <Menu.Item key="logout">
-              <span>{this.i18n._t("logout")}</span>
-            </Menu.Item>
-          </Menu>
-        </div>}
       </div>
     );
   }

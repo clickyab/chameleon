@@ -10,6 +10,7 @@
   cursor: pointer;
   color: @sidebar-link-color;
   border-top: 1px solid #234478;
+  z-index: 99;
   &.container-close {
     bottom: 0;
   }
@@ -30,6 +31,8 @@
     align-items: center;
     flex-direction: row-reverse;
     height: 65px;
+    padding-right: 20px;
+    padding-left: 20px;
   }
 
   .avatar {
@@ -49,12 +52,11 @@
 
   .mini-bell {
     margin-right: auto;
-    padding-left: 10%;
     font-size: 16px;
     .ant-badge-dot {
       position: absolute;
-      top: -2px;
-      right: -5px;
+      top: -1px;
+      right: -2px;
     }
   }
 
@@ -62,6 +64,8 @@
     display: block;
     width: 100%;
     direction: rtl;
+    padding-right: 30px;
+    padding-left: 30px;
     ul {
       li {
         border-bottom: 1px dotted #1B509A;
@@ -86,6 +90,8 @@
     }
   }
   .ant-menu-item {
+    padding-left: 0 !important;
+    padding-right:0 !important;
     @media screen and (max-height: 700px) {
       padding: 0px 20px;
       height: 30px !important;
@@ -124,9 +130,10 @@
 
   .profile-collapse-badge, .profile-badge {
     sup {
-      box-shadow: 0 0 0 1px @user-box-background-color !important;
+      box-shadow: 0 0 0 2px @user-box-background-color !important;
       background-color: @badge-dot-color;
       height: @badge-dot-size;
+      width: @badge-dot-size;
     }
   }
   .profile-collapse-badge {

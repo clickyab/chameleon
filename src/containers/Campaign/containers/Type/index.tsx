@@ -74,7 +74,7 @@ enum INTERNAL_STEPS {
  * @enum DEVICE_TYPES
  * @desc Device Types
  */
-enum DEVICE_TYPES {
+export enum DEVICE_TYPES {
   WEB = "web",
   APPLICATION = "app",
 }
@@ -83,7 +83,7 @@ enum DEVICE_TYPES {
  * @enum WEB_TYPES
  * @desc Web Types
  */
-enum WEB_TYPES {
+export enum WEB_TYPES {
   BANNER = "banner",
   CONTENT = "native",
   VIDEO = "vast",
@@ -194,9 +194,11 @@ class TypeComponent extends React.Component <IProps, IState> {
       const controllerApi = new ControllersApi();
       controllerApi.campaignIdGet({id: this.props.match.params.id})
         .then(campaign => {
+          console.log(campaign);
           this.props.setBreadcrumb("campaignTitle", campaign.title, "type");
           this.setState({
             currentCampaign: campaign,
+            selectedType: campaign ? campaign.kind as DEVICE_TYPES : null,
           });
         });
     } else {
@@ -332,7 +334,7 @@ class TypeComponent extends React.Component <IProps, IState> {
           <Row type="flex" justify="center">
            <span className="campain-back-link"
                  onClick={this.handleBack.bind(this)}>
-            <Translate value={"Choosed wrong campaign type?"}/>
+            <Translate value={"Choose wrong campaign type?"}/>
           </span>
           </Row>
         </div>
