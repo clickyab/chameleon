@@ -5,7 +5,9 @@ import * as React from "react";
 import Image from "react-image-file";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import BannerSize from "./CONSTsize";
+import BannerSize from "./size/CONSTsize";
+import AppSize from "./size/CONST_APPsize";
+import VideoSize from "./size/CONST_VIDEOsize";
 import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
@@ -21,7 +23,7 @@ import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-
+import {DEVICE_TYPES , WEB_TYPES} from "../Type";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -64,12 +66,12 @@ interface IState {
   previewImage?: IFileItem;
   editFile?: IFileItem;
   globalUtm ?: string;
+  adSize?: any;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 class UploadBannerVideo extends React.Component <IProps, IState> {
   private i18n = I18n.getInstance();
-  private bannerSize = BannerSize;
 
   /**
    * @constructor
@@ -84,6 +86,9 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
       files: [],
       setLinkForAllBanners: false,
       openImageModal: false,
+      adSize: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
+        ((this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION ) ? AppSize : BannerSize)
+        : BannerSize ,
     };
     this.changeFileProgressState = this.changeFileProgressState.bind(this);
   }
@@ -92,6 +97,8 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
     console.log(this.props.currentCampaign);
     this.setState({
       currentCampaign: this.props.currentCampaign,
+      adSize: (this.props.currentCampaign.kind === DEVICE_TYPES.APPLICATION ) ? AppSize :
+        ((this.props.currentCampaign.type === WEB_TYPES.VIDEO) ? VideoSize : BannerSize ),
     }, function () {
       this.loadBanners();
     });
@@ -163,7 +170,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
 
   private updateBannerSizeObject() {
     let newObject = [];
-    BannerSize.map((size) => {
+    this.state.adSize.map((size) => {
       const validSizes = this.state.files.filter(file => {
         return file.width === size.width && file.height === size.height;
       });
@@ -172,7 +179,9 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         active: validSizes.length > 0,
       });
     });
-    this.bannerSize = newObject;
+    this.setState({
+      adSize : newObject
+    });
     this.forceUpdate();
   }
 
@@ -204,7 +213,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
    * @returns {Promise<boolean>}
    */
   private checkImageSize(file: IFileItem): boolean {
-    const hasThisBannerSize = BannerSize.findIndex((b) => {
+    const hasThisBannerSize = this.state.adSize.findIndex((b) => {
       return (b.height === file.height && b.width === file.width);
     });
     return (hasThisBannerSize >= 0);
@@ -531,7 +540,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                 <Icon className="extensions-icon" name={"cif-extensions-mp4"}/>
                 <li><Translate value={"Supported dimension Sizes"}/></li>
                 <div className="banner-size-wrapper">
-                  {this.bannerSize.map((size, index) => {
+                  {this.state.adSize.map((size, index) => {
                     return (
                       <span className={`banner-size-tag ${size["active"] ? "active" : "" }`}
                             key={index}>

@@ -13,6 +13,7 @@ import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
+import {DEVICE_TYPES , WEB_TYPES} from "../Type";
 
 
 interface IProps {
@@ -75,10 +76,10 @@ class UploadComponent extends React.Component <IProps, IState> {
    */
   public render() {
     return (<div>
-        {this.state.currentCampaign && (this.state.currentCampaign.kind === "web" || this.state.currentCampaign.kind === "video") &&
+        {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.BANNER  || this.state.currentCampaign.type === WEB_TYPES.VIDEO) &&
         <UplaodBannerVideo currentCampaign={this.state.currentCampaign}/>
         }
-        {this.state.currentCampaign && (this.state.currentCampaign.kind === "native") &&
+        {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.CONTENT) &&
         <p>render native</p>
         }
       </div>
