@@ -307,7 +307,7 @@ class NamingComponent extends React.Component <IProps, IState> {
               <Tooltip/>
               <label><Translate value={"Campaign Date"}/></label>
             </Col>
-            <Col span={20}>
+            <Col span={10}>
               <FormItem>
                 {getFieldDecorator("days", {
                   initialValue: this.state.allDay,
@@ -397,11 +397,12 @@ class NamingComponent extends React.Component <IProps, IState> {
               ))
               }
               {!this.state.allTime &&
-              <a onClick={this.addPeriod.bind(this)}><Translate value="Add new period"/>+</a>
+              <a className={"mr-2"} onClick={this.addPeriod.bind(this)}><Translate value="Add new period"/>+</a>
               }
             </Col>
           </Row>
           <Row type="flex" align="middle">
+            <Col span={4}>
             <RaisedButton
               onClick={this.handleBack.bind(this)}
               label={<Translate value="Back"/>}
@@ -409,6 +410,8 @@ class NamingComponent extends React.Component <IProps, IState> {
               className="button-back-step"
               icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
             />
+            </Col>
+            <Col>
             <RaisedButton
               onClick={this.handleSubmit.bind(this)}
               label={<Translate value="Next Step"/>}
@@ -416,6 +419,7 @@ class NamingComponent extends React.Component <IProps, IState> {
               className="button-next-step"
               icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
             />
+            </Col>
           </Row>
         </Form>
       </div>

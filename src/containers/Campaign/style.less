@@ -41,6 +41,9 @@
   }
 }
 
+.progress-bar-wrapper{
+  border-bottom: 1px solid #E7E9EC;
+}
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
 // if we wrap selector with ant decorator
 .form-select-rtl {
@@ -158,6 +161,7 @@ span[role="menuitem"] {
       font-size: @radio-button-label;
     }
     > div {
+      margin-right: 0 !important;
       height: @radio-button-height !important;
       > div {
         svg:first-child {

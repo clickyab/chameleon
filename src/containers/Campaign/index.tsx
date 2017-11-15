@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
-import {Row} from "antd";
+import {Row, Col} from "antd";
 import ProgressBar from "./components/ProgressBar/index";
 import TypeComponent from "./containers/Type/index";
 import NamingComponent from "./containers/Naming/index";
@@ -44,8 +44,10 @@ export default class CampaignContainer extends React.Component <IProps, IState> 
     const {match} = this.props;
     return (
       <div dir={CONFIG.DIR}>
-        <Row>
+        <Row type="flex" align="middle" justify="center" className="progress-bar-wrapper">
+          <Col span={16}>
           <ProgressBar/>
+          </Col>
         </Row>
         <Row>
           <PrivateRoute path={`${match.url}/type/:id?`} component={TypeComponent}/>
