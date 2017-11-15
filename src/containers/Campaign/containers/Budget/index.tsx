@@ -50,6 +50,7 @@ export enum IPricing {
   CPC = "cpc",
   CPM = "cpm",
   CPA = "cpa",
+  CPV = "cpv",
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -60,7 +61,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      pricing: IPricing.CPC,
+      pricing: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ? props.currentCampaign.cost_type as IPricing : IPricing.CPC,
       subscribers: [],
       subscriber: "",
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
@@ -225,11 +226,12 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </label>
             </Col>
             <Col span={10} offset={10}>
+              {this.state.currentCampaign.type !== "vast" &&
               <FormItem>
                 {getFieldDecorator("cost_type", {
                   initialValue: this.state.currentCampaign.cost_type,
                 })(
-                  <RadioButtonGroup defaultSelected={this.state.currentCampaign.cost_type}
+                  <RadioButtonGroup defaultSelected={this.state.pricing}
                                     className="campaign-radio-group" name="pricing"
                                     onChange={this.handleChangePricing.bind(this)}>
                     <RadioButton className="campaign-radio-button"
@@ -247,6 +249,16 @@ class BudgetComponent extends React.Component <IProps, IState> {
                   </RadioButtonGroup>
                 )}
               </FormItem>
+              }
+              {this.state.currentCampaign.type === "vast" &&
+              <RadioButtonGroup defaultSelected={this.state.pricing}
+                                className="campaign-radio-group" name="pricing">
+                <RadioButton className="campaign-radio-button"
+                             value={IPricing.CPV}
+                             label={this.i18n._t("CPV (per click)")}
+                />
+              </RadioButtonGroup>
+              }
             </Col>
           </Row>
 
