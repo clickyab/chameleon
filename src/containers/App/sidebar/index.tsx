@@ -51,7 +51,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
           <Menu.Item key="createCampaign" className="campaignButton">
             <Button className="ghostButton" size="large" ghost>
               <span className="create-campaign-text">{this.i18n._t("Create Campaign")}</span>
-              <Icon className="create-campaign-icon" name="cif-plusregular"/>
+              <Icon className="create-campaign-icon" name="cif-plusbold"/>
             </Button>
           </Menu.Item>
           <Menu.Item key="dashboard">

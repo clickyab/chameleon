@@ -65,8 +65,8 @@ export default class AreaMap extends React.Component<IProps, IState> {
         center={{lat: Number(this.state.coordinate.lat) , lng: Number(this.state.coordinate.lng) }}
         radius={this.state.radius}
         options={{
-          fillColor: this.props.fillColor ? this.props.fillColor : "@tag-active-color",
-          strokeColor: this.props.fillColor ? this.props.fillColor : "@tag-active-color",
+          fillColor: this.props.fillColor ? this.props.fillColor : "#66C395",
+          strokeColor: this.props.fillColor ? this.props.fillColor : "#66C395",
         }}
       />
       <Marker draggable={true}
