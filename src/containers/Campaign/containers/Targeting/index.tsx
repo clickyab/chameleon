@@ -416,7 +416,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherOS &&
-                  <div className="component-wrapper">
+                  <div className="select-tag-component-wrapper">
                     <FormItem>
                       {getFieldDecorator("os", {
                         initialValue: this.state.oss,
@@ -464,7 +464,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherBrowser &&
-                  <div className="component-wrapper">
+                  <div className="select-tag-component-wrapper">
                     <FormItem>
                       {getFieldDecorator("browsers", {
                         initialValue: attr.browser,
@@ -514,7 +514,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherIAB &&
-                  <div className="component-wrapper">
+                  <div className="select-tag-component-wrapper">
                     <FormItem>
                       {getFieldDecorator("iabs", {
                         initialValue: this.state.iabs,
