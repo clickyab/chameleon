@@ -161,7 +161,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
             </Col>
           </Row>
           <Form onSubmit={this.handleSubmit.bind(this)}>
-            <Row type="flex" align="middle">
+            <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
                 <Tooltip/>
                 <label>
@@ -169,7 +169,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 </label>
               </Col>
               <Col span={10} offset={10}>
-                <Row type="flex" align="middle">
+                <Row type="flex" align="middle" gutter={16}>
                   <Col span={8}>
                     <FormItem>
                       {getFieldDecorator("budget", {
@@ -193,7 +193,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
 
-            <Row type="flex" align="middle">
+            <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
                 <Tooltip/>
                 <label><Translate value="Daily Budget"/></label>
@@ -222,7 +222,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </Col>
             </Row>
 
-            <Row type="flex" align="middle">
+            <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
                 <Tooltip/>
                 <label>
@@ -231,7 +231,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={10} offset={10}>
                 {this.state.currentCampaign.type !== WEB_TYPES.VIDEO &&
-                <FormItem>
+                <FormItem className="form-radio">
                   {getFieldDecorator("cost_type", {
                     initialValue: this.state.currentCampaign.cost_type,
                   })(
@@ -251,18 +251,20 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 </FormItem>
                 }
                 {this.state.currentCampaign.type === WEB_TYPES.VIDEO &&
+                <FormItem className="form-radio">
                 <RadioButtonGroup defaultSelected={this.state.pricing}
                                   className="campaign-radio-group" name="pricing">
                   <RadioButton className="campaign-radio-button"
                                value={IPricing.CPV}
-                               label={this.i18n._t("CPV (per click)")}
+                               label={this.i18n._t("CPV (per video view)")}
                   />
                 </RadioButtonGroup>
+                </FormItem>
                 }
               </Col>
             </Row>
 
-            <Row type="flex" align="middle">
+            <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
                 <Tooltip/>
                 <label><Translate value="Click price"/></label>
@@ -287,11 +289,12 @@ class BudgetComponent extends React.Component <IProps, IState> {
                   <Col span={16} className="currency">
                     {this.i18n._t("Currency_Name")}
                   </Col>
+                  <span className="per-click-description"><Translate value={"Minimum price per click is get-from-server"} /></span>
                 </Row>
               </Col>
             </Row>
 
-            <Row type="flex" align="middle">
+            <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
                 <Tooltip/>
                 <label><Translate value="Subscribers"/></label>
@@ -313,9 +316,10 @@ class BudgetComponent extends React.Component <IProps, IState> {
                     </Select>
                   )}
                 </FormItem>
+                <span className="subscriber-description"><Translate value={"Email of people that you want to notice in case of budget deficiency and recharge of account "} /></span>
               </Col>
             </Row>
-            <Row type="flex" align="middle">
+            <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
                 <RaisedButton
                   onClick={this.handleBack.bind(this)}

@@ -63,11 +63,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
       });
   }
 
-
-  public componentWillUnmount() {
-    this.props.unsetBreadcrumb("profile");
-  }
-
   private handleChangeLocation(country, province, city) {
     // TODO:: store country and province
     this.setState({

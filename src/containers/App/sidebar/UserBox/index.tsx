@@ -194,7 +194,7 @@ class UserBox extends React.Component<IProps, IState> {
           <Animate
             transitionName="slide"
           >
-          {this.state.open ? <div className="mini-open">
+          {this.state.open && <div className="mini-open">
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
                   onClick={e => this.userBoxRouting(e.key)}>
               <Menu.Item key="editProfile">
@@ -216,7 +216,7 @@ class UserBox extends React.Component<IProps, IState> {
                 <span>{this.i18n._t("logout")}</span>
               </Menu.Item>
             </Menu>
-          </div> : null}
+          </div>}
           </Animate>
         </div>
       </div>
