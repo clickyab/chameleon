@@ -294,9 +294,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
     return (
       <Row>
-        <Col span={6}>
-        </Col>
-        <Col span={18}>
+        <Col>
        <div dir={CONFIG.DIR} className="campaign-content">
         <div className="campaign-title">
           <h2><Translate value="Targeting"/></h2>

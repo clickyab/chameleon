@@ -11,6 +11,7 @@ import I18n from "../../../../services/i18n/index";
 import Menu from "antd/es/menu";
 import CONFIG from "../../../../constants/config";
 import Icon from "../../../../components/Icon/index";
+let Animate = require("rc-animate");
 
 /**
  * @interface Props
@@ -190,7 +191,10 @@ class UserBox extends React.Component<IProps, IState> {
               </Badge>
             </div>
           </div>
-          {this.state.open && <div className="mini-open">
+          <Animate
+            transitionName="slide"
+          >
+          {this.state.open ? <div className="mini-open">
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
                   onClick={e => this.userBoxRouting(e.key)}>
               <Menu.Item key="editProfile">
@@ -212,7 +216,8 @@ class UserBox extends React.Component<IProps, IState> {
                 <span>{this.i18n._t("logout")}</span>
               </Menu.Item>
             </Menu>
-          </div>}
+          </div> : null}
+          </Animate>
         </div>
       </div>
     );
