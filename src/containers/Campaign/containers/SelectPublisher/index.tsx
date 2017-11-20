@@ -48,7 +48,6 @@ interface IState {
   selectedWebSites: any[];
   listType: List;
   typeModal: boolean;
-  customizeModal: boolean;
   listName: string;
   listID?: number;
   listOFList?: any[];
@@ -76,7 +75,6 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
       selectedWebSites: [],
       listType: List.CLICKYAB,
       typeModal: false,
-      customizeModal: false,
       listName: "",
     };
   }
@@ -127,12 +125,6 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
       showPublisherTable: true,
       listType: List.USER_CUSTOM
     });
-  }
-
-  private openCustomizeModal() {
-    this.setState(
-      {customizeModal: true}
-    );
   }
 
   private createCustomList(): Promise<number> {
@@ -319,20 +311,16 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             <div>
               <Row>
                 <Col span={24}>
-                  <div className="pub-table-title">
-                    <Icon name={"cif-edit"}/><Translate value={"Create new list and show on your selected websites"}/>
-                    <a onClick={() => (this.handleTypeModal())} className="mx-1"><Icon name={"cif-edit"}/><Translate
-                      value={"Change inventory type"}/></a>
-                    <Button
-                      className="add-customize-btn"
-                      onClick={() => {
-                        this.openCustomizeModal();
-                      }}>
-                      <Icon name={"cif-gear-outline"} className="custom-icon"/>
-                      <Translate value="Customize table"/>
-                    </Button>
-                  </div>
                   <DataTable
+                    tableDescription={
+                      <div className="pub-table-title">
+                        <Icon name={"cif-edit"}/><Translate
+                        value={"Create new list and show on your selected websites"}/>
+                        <a onClick={() => (this.handleTypeModal())} className="mx-1"><Icon name={"cif-edit"}/>
+                          <Translate value={"Change inventory type"}/>
+                        </a>
+                      </div>
+                    }
                     infinite={true}
                     name="publisherList"
                     onSelectRow={this.onSelectRow.bind(this)}
@@ -376,7 +364,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
               </Row>
             </div>
             }
-            <Row align="middle" className="mt-5">
+            <Row type="flex" align="middle" className="mt-5">
+              <Col span={4}>
               <RaisedButton
                 onClick={this.handleBack.bind(this)}
                 label={<Translate value="Back"/>}
@@ -384,6 +373,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                 className="button-back-step"
                 icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
               />
+              </Col>
+              <Col>
               <RaisedButton
                 onClick={this.handleSubmit.bind(this)}
                 label={<Translate value="Next Step"/>}
@@ -391,6 +382,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                 className="button-next-step"
                 icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
               />
+              </Col>
             </Row>
           </Form>
         </Row>
@@ -411,43 +403,6 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             <div className="mt-2">{invertorySelect}</div>
           </div>
         </Modal>
-        {this.state.customizeModal &&
-        <Modal title={this.i18n._t("Customize Table").toString()}
-               visible={this.state.customizeModal}
-               customClass="customize-table-modal modal-rtl"
-               okText={this.i18n._t("save") as string}
-               cancelText={this.i18n._t("cancel") as string}
-               onCancel={() => {
-                 this.setState({customizeModal: false});
-               }}
-        >
-          <div>
-            <Row>
-              <div className="mb-2"><Translate value={"Choose your table column from below options"}/></div>
-              <CheckboxGroup className={`${(CONFIG.DIR === "rtl") ? "checkbox-rtl" : ""}`}>
-                <Col span={10}>
-                  <Checkbox value={"adType"}><Translate value={"Advertisment Type"}/></Checkbox>
-                  <Checkbox value={"adSize"}><Translate value={"Advertisment Size"}/></Checkbox>
-                </Col>
-                <Col span={14}>
-                  <Checkbox value={"websiteName"}><Translate value={"Website name"}/></Checkbox>
-                  <Checkbox value={"catagory"}><Translate value={"Catagory"}/></Checkbox>
-                  <Checkbox value={"dailyImp"}><Translate value={"Daily impression"}/></Checkbox>
-                  <Checkbox value={"avgCPM"}><Translate value={"Avg. CPM"}/></Checkbox>
-                  <Checkbox value={"exchange"}><Translate value={"Exchange"}/></Checkbox>
-                  <Checkbox value={"os"}><Translate value={"Operation System"}/></Checkbox>
-                </Col>
-              </CheckboxGroup>
-            </Row>
-            <Row>
-              <div className="pub-switch-wrapper">
-                <Switch/>
-                <Translate value={"only show last 30 days recent websites"}/>
-              </div>
-            </Row>
-          </div>
-        </Modal>
-        }
       </div>
     );
   }

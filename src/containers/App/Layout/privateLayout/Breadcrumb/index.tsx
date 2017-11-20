@@ -65,7 +65,7 @@ class PrivateBreadcrumb extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Breadcrumb separator=">" className="breadcrumb">
+      <Breadcrumb separator={<Icon name="cif-arrow-left"/>} className="breadcrumb">
         <Breadcrumb.Item><Link to="/dashboard"><Icon name="cif-home"/></Link></Breadcrumb.Item>
         {this.createBreadCrumb()}
       </Breadcrumb>

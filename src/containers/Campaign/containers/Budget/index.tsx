@@ -15,6 +15,7 @@ import CONFIG from "../../../../constants/config";
 import Tooltip from "../../../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
+import {DEVICE_TYPES, WEB_TYPES} from "../Type/index" ;
 
 const Option = Select.Option;
 
@@ -49,7 +50,7 @@ interface IState {
 export enum IPricing {
   CPC = "cpc",
   CPM = "cpm",
-  CPA = "cpa",
+  CPV = "cpv",
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -60,7 +61,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      pricing: IPricing.CPC,
+      pricing: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ? props.currentCampaign.cost_type as IPricing : IPricing.CPC,
       subscribers: [],
       subscriber: "",
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
@@ -149,174 +150,198 @@ class BudgetComponent extends React.Component <IProps, IState> {
     const {getFieldDecorator} = this.props.form;
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <Row className="campaign-title">
-          <Col>
-            <h2><Translate value="Budget And Finance"/></h2>
-            <p>Set configuration for campaign's budget and finance:</p>
+        <Row>
+          <Col span={6}>
+          </Col>
+          <Col span={18}>
+          <Row className="campaign-title">
+            <Col>
+              <h2><Translate value="Budget And Finance"/></h2>
+              <p><Translate value={"Set configuration for campaign's budget and finance"}/></p>
+            </Col>
+          </Row>
+          <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Row type="flex" align="middle" gutter={16}>
+              <Col span={4}>
+                <Tooltip/>
+                <label>
+                  <Translate value={"Max Budget"}/>
+                </label>
+              </Col>
+              <Col span={10} offset={10}>
+                <Row type="flex" align="middle" gutter={16}>
+                  <Col span={8}>
+                    <FormItem>
+                      {getFieldDecorator("budget", {
+                        initialValue: this.state.currentCampaign.budget,
+                        rules: [{required: true, message: this.i18n._t("Please input maximum campaign's budget!")}],
+                      })(
+                        <TextField
+                          className="campaign-textfield"
+                          hintText={this.i18n._t("Maximum Campaign's budget")}
+                          type="number"
+                          step={5}
+                          fullWidth={true}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={16} className="currency">
+                    {this.i18n._t("Currency_Name")}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+
+            <Row type="flex" align="middle" gutter={16}>
+              <Col span={4}>
+                <Tooltip/>
+                <label><Translate value="Daily Budget"/></label>
+              </Col>
+              <Col span={10} offset={10}>
+                <Row type="flex" align="middle">
+                  <Col span={8}>
+                    <FormItem>
+                      {getFieldDecorator("daily_limit", {
+                        initialValue: this.state.currentCampaign.daily_limit,
+                        rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
+                      })(
+                        <TextField
+                          className="campaign-textfield"
+                          hintText={this.i18n._t("Daily Campaign's budget")}
+                          type="number"
+                          fullWidth={true}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={16} className="currency">
+                    {this.i18n._t("Currency_Name")}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+
+            <Row type="flex" align="middle" gutter={16}>
+              <Col span={4}>
+                <Tooltip/>
+                <label>
+                  <Translate value="Pricing Strategy"/>
+                </label>
+              </Col>
+              <Col span={10} offset={10}>
+                {this.state.currentCampaign.type !== WEB_TYPES.VIDEO &&
+                <FormItem className="form-radio">
+                  {getFieldDecorator("cost_type", {
+                    initialValue: this.state.currentCampaign.cost_type,
+                  })(
+                    <RadioButtonGroup defaultSelected={this.state.pricing}
+                                      className="campaign-radio-group" name="pricing"
+                                      onChange={this.handleChangePricing.bind(this)}>
+                      <RadioButton className="campaign-radio-button"
+                                   value={IPricing.CPC}
+                                   label={this.i18n._t("CPC (per click)")}
+                      />
+                      <RadioButton className="campaign-radio-button"
+                                   value={IPricing.CPM}
+                                   label={this.i18n._t("CPM (per 10,000 views)")}
+                      />
+                    </RadioButtonGroup>
+                  )}
+                </FormItem>
+                }
+                {this.state.currentCampaign.type === WEB_TYPES.VIDEO &&
+                <FormItem className="form-radio">
+                <RadioButtonGroup defaultSelected={this.state.pricing}
+                                  className="campaign-radio-group" name="pricing">
+                  <RadioButton className="campaign-radio-button"
+                               value={IPricing.CPV}
+                               label={this.i18n._t("CPV (per video view)")}
+                  />
+                </RadioButtonGroup>
+                </FormItem>
+                }
+              </Col>
+            </Row>
+
+            <Row type="flex" align="middle" gutter={16}>
+              <Col span={4}>
+                <Tooltip/>
+                <label><Translate value="Click price"/></label>
+              </Col>
+              <Col span={10} offset={10}>
+                <Row type="flex" align="middle">
+                  <Col span={8}>
+                    <FormItem>
+                      {getFieldDecorator("max_bid", {
+                        initialValue: this.state.currentCampaign.max_bid,
+                        rules: [{required: true, message: this.i18n._t("Please input click's price!")}],
+                      })(
+                        <TextField
+                          className="campaign-textfield"
+                          hintText={this.i18n._t("click price")}
+                          type="number"
+                          fullWidth={true}
+                        />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={16} className="currency">
+                    {this.i18n._t("Currency_Name")}
+                  </Col>
+                  <span className="per-click-description"><Translate value={"Minimum price per click is get-from-server"} /></span>
+                </Row>
+              </Col>
+            </Row>
+
+            <Row type="flex" align="middle" gutter={16}>
+              <Col span={4}>
+                <Tooltip/>
+                <label><Translate value="Subscribers"/></label>
+              </Col>
+              <Col span={16}>
+                <FormItem className="campaign-tag">
+                  {getFieldDecorator("notify_email", {
+                    initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email : [],
+                  })(
+                    <Select
+                      showSearch={false}
+                      mode="tags"
+                      filterOption={false}
+                      style={{width: "100%"}}
+                      placeholder="Tags Mode"
+                      onChange={this.handleSubscribersChange.bind(this)}
+                      className="select-tag-ant"
+                    >
+                    </Select>
+                  )}
+                </FormItem>
+                <span className="subscriber-description"><Translate value={"Email of people that you want to notice in case of budget deficiency and recharge of account "} /></span>
+              </Col>
+            </Row>
+            <Row type="flex" align="middle" gutter={16}>
+              <Col span={4}>
+                <RaisedButton
+                  onClick={this.handleBack.bind(this)}
+                  label={<Translate value="Back"/>}
+                  primary={false}
+                  className="button-back-step"
+                  icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
+                />
+              </Col>
+              <Col>
+                <RaisedButton
+                  onClick={this.handleSubmit.bind(this)}
+                  label={<Translate value="Next Step"/>}
+                  primary={true}
+                  className="button-next-step"
+                  icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+                />
+              </Col>
+            </Row>
+          </Form>
           </Col>
         </Row>
-        <Form onSubmit={this.handleSubmit.bind(this)}>
-          <Row type="flex" align="middle">
-            <Col span={4}>
-              <Tooltip/>
-              <label>Max Budget</label>
-            </Col>
-            <Col span={10} offset={10}>
-              <Row type="flex" align="middle">
-                <Col span={8}>
-                  <FormItem>
-                    {getFieldDecorator("budget", {
-                      initialValue: this.state.currentCampaign.budget,
-                      rules: [{required: true, message: this.i18n._t("Please input maximum campaign's budget!")}],
-                    })(
-                      <TextField
-                        className="campaign-textfield"
-                        hintText={this.i18n._t("Maximum Campaign's budget")}
-                        type="number"
-                        step={5}
-                        fullWidth={true}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={16} className="currency">
-                  {this.i18n._t("Currency_Name")}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-
-          <Row type="flex" align="middle">
-            <Col span={4}>
-              <Tooltip/>
-              <label><Translate value="Daily Budget"/></label>
-            </Col>
-            <Col span={10} offset={10}>
-              <Row type="flex" align="middle">
-                <Col span={8}>
-                  <FormItem>
-                    {getFieldDecorator("daily_limit", {
-                      initialValue: this.state.currentCampaign.daily_limit,
-                      rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
-                    })(
-                      <TextField
-                        className="campaign-textfield"
-                        hintText={this.i18n._t("Daily Campaign's budget")}
-                        type="number"
-                        fullWidth={true}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={16} className="currency">
-                  {this.i18n._t("Currency_Name")}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-
-          <Row type="flex" align="middle">
-            <Col span={4}>
-              <Tooltip/>
-              <label>
-                <Translate value="Pricing Strategy"/>
-              </label>
-            </Col>
-            <Col span={10} offset={10}>
-              <FormItem>
-                {getFieldDecorator("cost_type", {
-                  initialValue: this.state.currentCampaign.cost_type,
-                })(
-                  <RadioButtonGroup defaultSelected={this.state.currentCampaign.cost_type}
-                                    className="campaign-radio-group" name="pricing"
-                                    onChange={this.handleChangePricing.bind(this)}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={IPricing.CPC}
-                                 label={this.i18n._t("CPC (per click)")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={IPricing.CPM}
-                                 label={this.i18n._t("CPM (per 10,000 views)")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={IPricing.CPA}
-                                 label={this.i18n._t("CPA (per action)")}
-                    />
-                  </RadioButtonGroup>
-                )}
-              </FormItem>
-            </Col>
-          </Row>
-
-          <Row type="flex" align="middle">
-            <Col span={4}>
-              <Tooltip/>
-              <label><Translate value="Click price"/></label>
-            </Col>
-            <Col span={10} offset={10}>
-              <Row type="flex" align="middle">
-                <Col span={8}>
-                  <FormItem>
-                    {getFieldDecorator("max_bid", {
-                      initialValue: this.state.currentCampaign.max_bid,
-                      rules: [{required: true, message: this.i18n._t("Please input click's price!")}],
-                    })(
-                      <TextField
-                        className="campaign-textfield"
-                        hintText={this.i18n._t("click price")}
-                        type="number"
-                        fullWidth={true}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-                <Col span={16} className="currency">
-                  {this.i18n._t("Currency_Name")}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-
-          <Row type="flex" align="middle">
-            <Col span={4}>
-              <Tooltip/>
-              <label><Translate value="Subscribers"/></label>
-            </Col>
-            <Col span={20}>
-              <FormItem className="campaign-tag">
-                {getFieldDecorator("notify_email", {
-                  initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email : [],
-                })(
-                  <Select
-                    showSearch={false}
-                    mode="tags"
-                    filterOption={false}
-                    style={{width: "50%"}}
-                    placeholder="Tags Mode"
-                    onChange={this.handleSubscribersChange.bind(this)}
-                  >
-                  </Select>
-                )}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <RaisedButton
-              onClick={this.handleBack.bind(this)}
-              label={<Translate value="Back"/>}
-              primary={false}
-              className="button-back-step"
-              icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-            />
-            <RaisedButton
-              onClick={this.handleSubmit.bind(this)}
-              label={<Translate value="Next Step"/>}
-              primary={true}
-              className="button-next-step"
-              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-            />
-          </Row>
-        </Form>
       </div>
     );
   }

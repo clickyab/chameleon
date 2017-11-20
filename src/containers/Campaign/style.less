@@ -41,6 +41,9 @@
   }
 }
 
+.progress-bar-wrapper{
+  border-bottom: 1px solid #E7E9EC;
+}
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
 // if we wrap selector with ant decorator
 .form-select-rtl {
@@ -137,6 +140,7 @@ span[role="menuitem"] {
   margin-top: 0;
   height: 30px !important;
   width: 200px !important;
+  z-index: 99;
 }
 
 // Radio Button styles (Inline)
@@ -144,7 +148,10 @@ span[role="menuitem"] {
   display: flex;
   height: @radio-button-height !important;
 }
-
+.form-radio{
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
 .campaign-radio-button {
   min-width: @radio-button-width !important;
   width: auto !important;
@@ -158,6 +165,7 @@ span[role="menuitem"] {
       font-size: @radio-button-label;
     }
     > div {
+      margin-right: 0 !important;
       height: @radio-button-height !important;
       > div {
         svg:first-child {
@@ -177,6 +185,14 @@ span[role="menuitem"] {
   }
 }
 
+.per-click-description{
+  margin-top: -20px;
+  display: block;
+}
+.subscriber-description{
+  margin-top: -10px;
+  display: block;
+}
 .currency {
   font-size: 14px;
   color: @dark-gray-color;

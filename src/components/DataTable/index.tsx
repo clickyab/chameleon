@@ -11,14 +11,19 @@
  *
  */
 import * as React from "react";
-import {Table} from "antd";
+import {Table, Row, Checkbox, Col, Switch, Button} from "antd";
 import {DataTableDataParser} from "./lib/parsers";
-import {IData, IDefinition} from "./lib/interfaces";
+import {IColumn, IData, IDefinition} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
 import "./style.less";
 import Icon from "../Icon/index";
 import {ReactNode} from "react";
+import Modal from "../../components/Modal/index";
+import Translate from "../i18n/Translate/index";
+import I18n from "../../services/i18n/index";
+import CONFIG from "../../constants/config";
 
+const CheckboxGroup = Checkbox.Group;
 
 /**
  * @interface IProps
@@ -45,6 +50,8 @@ interface IProps {
   onSelectRow?: (rows: string[], selectedRows: any[]) => void;
 
   infinite?: boolean;
+
+  tableDescription?: JSX.Element;
 }
 
 
@@ -63,22 +70,30 @@ interface IState {
   loading: boolean;
   selectedRows: object[];
   selectedKeys: string[];
+  customizeModal: boolean;
+  customField: object;
 }
 
 class DataTable extends React.Component<IProps, IState> {
   parser;
   infiniteLoader: boolean = false;
 
+  private i18n = I18n.getInstance();
 
   constructor(props: IProps) {
     super(props);
+    const customFieldsObject = localStorage.getItem(`TABLE_CUSTOM_${this.props.name}`);
+    let customField = customFieldsObject ? JSON.parse(customFieldsObject) : {};
+    console.log("custom field", customField);
     this.state = {
       selectedRows: [],
       selectedKeys: [],
       loading: true,
       page: 1,
       filters: {},
-      searches: {}
+      searches: {},
+      customizeModal: false,
+      customField: customField,
     };
   }
 
@@ -89,12 +104,19 @@ class DataTable extends React.Component<IProps, IState> {
     this.loadData();
   }
 
+  private openCustomizeModal() {
+    this.setState(
+      {customizeModal: true}
+    );
+  }
+
   /**
    * Store table definition in local storage
    * @param {IDefinition} definition
    */
   storeDefinition(definition: IDefinition) {
-    localStorage.setItem(`TABALE_DEFINITION_${this.props.name}`, JSON.stringify(definition));
+    localStorage.setItem(`TABLE_DEFINITION_${this.props.name}`, JSON.stringify(definition));
+    localStorage.setItem(`TABLE_CUSTOM_${this.props.name}`, JSON.stringify(definition));
   }
 
   /**
@@ -192,6 +214,14 @@ class DataTable extends React.Component<IProps, IState> {
       }
       let def = this.restoreDefinition();
       if (def && def.hash === data.hash) {
+
+        let customField = this.state.customField;
+        def.columns.map((c) => {
+          if (c.visible) {
+            console.log(customField[c.name]);
+            customField[c.name] = (customField[c.name] !== undefined) ? customField[c.name] : true;
+          }
+        });
         this.setState({
           data,
           definition: def,
@@ -203,9 +233,18 @@ class DataTable extends React.Component<IProps, IState> {
         this.storeDefinition(null);
         this.loadDefinition()
           .then((def) => {
+            let customField = this.state.customField;
+            def.columns.map((c) => {
+              if (c.visible) {
+                console.log(customField[c.name]);
+                customField[c.name] = (customField[c.name] !== undefined) ? customField[c.name] : true;
+              }
+            });
+
             this.setState({
-              loading: false,
               data,
+              customField,
+              loading: false,
               definition: def,
             });
             this.addScrollListener();
@@ -221,7 +260,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {{onChange: ((selectedRowKeys, selectedRows) => any)}}
    */
   loadSelectionConfig() {
-    console.log(this.state.selectedKeys);
+    // console.log(this.state.selectedKeys);
     const rowSelection = {
       selectedRowKeys: this.state.selectedKeys,
       onChange: (selectedRowKeys, selectedRows) => {
@@ -302,7 +341,7 @@ class DataTable extends React.Component<IProps, IState> {
     data.page = 1;
     data.data = [];
     newState["data"] = data;
-    console.log(data);
+    // console.log(data);
     this.setState(newState, () => this.loadData());
   }
 
@@ -329,6 +368,26 @@ class DataTable extends React.Component<IProps, IState> {
     });
   }
 
+  public setCustomField(keys) {
+    let customTemp = this.state.customField;
+    for (let i in customTemp) {
+      customTemp[i] = false;
+    }
+    keys.map((c) => {
+        customTemp[c] = true;
+      }
+    );
+    this.setState({
+      customField: customTemp,
+    });
+  }
+  public handleCustomLocal() {
+    localStorage.setItem(`TABLE_CUSTOM_${this.props.name}` , JSON.stringify(this.state.customField));
+    this.setState({
+      customizeModal: false,
+    });
+  }
+
   /**
    * create parser object and render table
    * @returns {any}
@@ -343,20 +402,78 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     return (
-      <Table
-        rowKey={(record) => (record[this.state.definition.key])}
-        scroll={{y: 440}}
-        loading={this.state.loading}
-        columns={this.parser.parseColumns()}
-        dataSource={this.parser.parsData(this.state.data.data)}
-        rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
-        pagination={this.props.infinite ? false : this.loadPaginationConfig()}
-        onChange={this.handleTableChange.bind(this)}
-        className="campaign-data-table"
-      />
-    );
-  }
+      <div className="data-table-wrapper">
+        <div className="data-table-description">
+          {this.props.tableDescription}
+        <Button
+          className="add-customize-btn"
+          onClick={() => {
+            this.openCustomizeModal();
+          }}>
+          <Icon name={"cif-gear-outline"} className="custom-icon"/>
+          <Translate value="Customize table"/>
+        </Button>
+        </div>
+        {this.state.customizeModal &&
+        <Modal title={this.i18n._t("Customize Table").toString()}
+               visible={this.state.customizeModal}
+               customClass="customize-table-modal modal-rtl"
+               okText={this.i18n._t("save") as string}
+               cancelText={this.i18n._t("cancel") as string}
+               onOk={() => this.handleCustomLocal()}
+               onCancel={() => {
+                 this.setState({customizeModal: false});
+               }}
+        >
+          <div>
+            <Row>
+              <div className="mb-2"><Translate value={"Choose your table column from below options"}/></div>
+              <CheckboxGroup
+                onChange={(e) => {
+                  this.setCustomField(e);
+                }}
+                defaultValue={(this.state.customField) ? Object.keys(this.state.customField).filter(c => this.state.customField[c]) : null}
+                className={`${(CONFIG.DIR === "rtl") ? "checkbox-rtl" : ""}`}>
+                {this.state.definition.columns.map((key, index) => {
+                  if (key.visible) {
+                    return (
+                      <Col key={index} span={12}>
+                        <Checkbox key={index} value={key.name}>{key.title}</Checkbox>
+                      </Col>
+                    );
+                  }
+                })
+                }
+              </CheckboxGroup>
+            </Row>
+            <Row>
+              <div className="pub-switch-wrapper">
+                <Switch/>
+                <Translate value={"only show last 30 days recent websites"}/>
+              </div>
+            </Row>
+          </div>
+        </Modal>
+                  }
+                <Table
+                  rowKey={(record) => (record[this.state.definition.key])}
+                  scroll={{y: 440}}
+                  loading={this.state.loading}
+                  columns={this.parser.parseColumns()}
+                  dataSource={this.parser.parsData(this.state.data.data)}
+                  rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
+                  pagination={this.props.infinite ? false : this.loadPaginationConfig()}
+                  onChange={this.handleTableChange.bind(this)}
+                  className="campaign-data-table"
+                />
+        <div className="table-total-number">
+          <Icon name={"cif-target"}/>
+          <Translate value={"_{totalResult} result"} params={{totalResult: this.state.data.total}}/>
+        </div>
+          </div>
+          );
+          }
 
-}
+        }
 
-export default DataTable;
+        export default DataTable;
