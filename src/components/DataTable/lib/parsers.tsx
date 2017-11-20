@@ -22,6 +22,7 @@ export class DataTableDataParser {
   definition: IDefinition;
   data: IData;
   columns: ColumnProps<any>[];
+  customColumns: string[];
   searchFn: (column: string, value: string) => void;
   bindTable: any;
 
@@ -32,14 +33,21 @@ export class DataTableDataParser {
   bind(value) {
     this.bindTable = value;
   }
+
   /**
    * Parse columns to Ant column
    * @returns {ColumnProps<any>[]}
    */
-  public parseColumns(): ColumnProps<any>[] {
-    if (!this.columns) {
-
+  public parseColumns(customColumns?: string[]): ColumnProps<any>[] {
+    if (!this.columns || customColumns !== this.customColumns) {
+      this.customColumns = customColumns;
       this.columns = this.definition.columns
+        .filter(c => {
+          if (customColumns) {
+            return customColumns.find(f => c.name === f);
+          }
+          return true;
+        })
         .map(c => this.definitionColumnToAntColumn(c))
         .filter(c => c !== null);
     }
@@ -108,16 +116,16 @@ export class DataTableDataParser {
       column.filterDropdown = (
         <div className="custom-filter-dropdown">
           <TextField name="search"
-            onChange={(e) => {
-              searchValue = (e.target as HTMLTextAreaElement).value;
-            }}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                this.searchFn(source.data, searchValue);
-                column.filterDropdownVisible = false;
-                e.preventDefault();
-              }
-            }}
+                     onChange={(e) => {
+                       searchValue = (e.target as HTMLTextAreaElement).value;
+                     }}
+                     onKeyPress={(e) => {
+                       if (e.key === "Enter") {
+                         this.searchFn(source.data, searchValue);
+                         column.filterDropdownVisible = false;
+                         e.preventDefault();
+                       }
+                     }}
           />
           <Button type="primary" onClick={() => {
             this.searchFn(source.data, searchValue);
@@ -126,11 +134,11 @@ export class DataTableDataParser {
         </div>
       );
       column.filterIcon = (<Icon
-                            name="cif-magnifier table-icon"
+        name="cif-magnifier table-icon"
       /> );
     } else if (source.filter) {
       column.filters = this.filtersMapToObjects(source.filter_valid_map);
-      column.filterIcon = (<Icon name="cif-filter table-icon" />);
+      column.filterIcon = (<Icon name="cif-filter table-icon"/>);
     }
 
     return column;
