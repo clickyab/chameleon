@@ -21,7 +21,7 @@ import {connect} from "react-redux";
 import {showWarningOnce} from "tslint/lib/error";
 import AreaMap from "../../../../components/AreaMap/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
-import {DEVICE_TYPES , WEB_TYPES} from "../Type/index" ;
+import {DEVICE_TYPES, WEB_TYPES} from "../Type/index" ;
 
 const Option = Select.Option;
 
@@ -29,7 +29,7 @@ const FormItem = Form.Item;
 
 enum INetworkType { "ISP_Cell", "ISP", "Cell" }
 
-enum ILocationType { "GM", "IRAN_MAP", "ALL" }
+enum ILocationType { "GM", "IRAN_MAP", "ALL", "FOREIGN" }
 
 
 interface IOwnProps {
@@ -86,11 +86,12 @@ class TargetingComponent extends React.Component <IProps, IState> {
   private categories = [];
   private devices = [];
 
+
   constructor(props: IProps) {
     super(props);
     if (!props.currentCampaign.attributes || props.currentCampaign.id !== this.props.match.params.id) {
       this.state = {
-        currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
+        currentCampaign: null,
         devices: [],
         browsers: [],
         brands: [],
@@ -110,9 +111,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: false,
         showISP: false,
         NetworkType: INetworkType.ISP_Cell,
-        locationType: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
-          ((props.currentCampaign.type === DEVICE_TYPES.APPLICATION) ? ILocationType.GM : ILocationType.ALL)
-          : ILocationType.ALL,
+        locationType: ILocationType.ALL,
       };
     } else {
       const attr = props.currentCampaign.attributes;
@@ -137,9 +136,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: false,
         showISP: false,
         NetworkType: INetworkType.ISP_Cell,
-        locationType: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
-          ((props.currentCampaign.type === DEVICE_TYPES.APPLICATION) ? ILocationType.GM : ILocationType.ALL)
-          : ILocationType.ALL,
+        locationType: this.getLocationType(props.currentCampaign.kind as DEVICE_TYPES, attr.region || [])
       };
     }
   }
@@ -188,6 +185,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         showCellar: attr.cellular.length > 0,
         showISP: attr.isp.length > 0,
         NetworkType: networkType,
+        locationType: this.getLocationType(campaign.kind.toUpperCase() as DEVICE_TYPES, attr.region || [])
       });
     });
 
@@ -231,6 +229,22 @@ class TargetingComponent extends React.Component <IProps, IState> {
       });
   }
 
+  private getLocationType(deviceType: DEVICE_TYPES, locations: string[]): ILocationType {
+
+    if (locations.length === 0) {
+      return ILocationType.ALL;
+    } else if (locations.length === 1 && locations[0] === "foreign") {
+      return ILocationType.FOREIGN;
+    } else {
+      if (deviceType === DEVICE_TYPES.APPLICATION) {
+        return ILocationType.GM;
+      } else {
+        return ILocationType.IRAN_MAP;
+      }
+    }
+
+  }
+
   private updateDevices(selectedDevices) {
     console.log(selectedDevices);
     this.setState({
@@ -260,7 +274,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         browser: this.state.browsers,
         manufacturer: this.state.brands,
         iab: this.state.iabs,
-        region: this.state.locations,
+        region: this.state.locationType === ILocationType.FOREIGN ? ["foreign"] : this.state.locations,
         cellular: this.state.cellulars,
         isp: this.state.isps,
         device: this.state.devices,
@@ -285,466 +299,461 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
     const {getFieldDecorator} = this.props.form;
     let attr = this.state.currentCampaign.attributes || {};
-    let regionState: any = true;
-    if (this.state.locations && this.state.locations.length > 0 && this.state.locations[0] === "foreign") {
-      regionState = "foreign";
-    } else if (this.state.locations && this.state.locations.length > 0) {
-      regionState = false;
-    }
 
     return (
       <Row>
         <Col>
-       <div dir={CONFIG.DIR} className="campaign-content">
-        <div className="campaign-title">
-          <h2><Translate value="Targeting"/></h2>
-          <p><Translate value="Targeting description"/></p>
-        </div>
-        <div className={(CONFIG.DIR === "ltr" ) ? "targeting" : "targeting-rtl"}>
-          <Form onSubmit={this.handleSubmit.bind(this)}>
-            {/* Devices */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
-                <Tooltip/>
-                <label>{this.i18n._t("Device Type")}</label>
-              </Col>
-              <Col span={19}>
-                <FormItem>
-                  <RadioButtonGroup className="campaign-radio-group" name="devices"
-                                    valueSelected={this.state.showOtherDevices}
-                                    defaultSelected={this.state.showOtherDevices}
-                                    onChange={(a, checked) => {
-                                      this.setState({
-                                        devices: [],
-                                        showOtherDevices: checked ? true : false,
-                                      });
-                                    }}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("All Devices")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("Select devices type")}
-                    />
-                  </RadioButtonGroup>
-                  {this.state.showOtherDevices &&
-                  <div className="component-wrapper">
-                    <CheckBoxList
-                      items={this.devices}
-                      value={this.state.devices}
-                      onChange={this.updateDevices.bind(this)}
-                    />
-                  </div>
-                  }
-                </FormItem>
-              </Col>
-            </Row>
-
-            {/* Manufactures */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
-                <Tooltip/>
-                <label>{this.i18n._t("Manufactures Brand")}</label>
-              </Col>
-              <Col span={19}>
-                <FormItem>
-                  <RadioButtonGroup
-                    className="campaign-radio-group" name="brands"
-                    defaultSelected={this.state.showOtherBrands}
-                    valueSelected={this.state.showOtherBrands}
-                    onChange={(a, checked) => {
-                      this.setState({
-                        brands: [],
-                        showOtherBrands: checked ? true : false,
-                      });
-                    }}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("All Brands")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("Select brands")}
-                    />
-                  </RadioButtonGroup>
-                  {this.state.showOtherBrands &&
-                  <div className="component-wrapper">
+          <div dir={CONFIG.DIR} className="campaign-content">
+            <div className="campaign-title">
+              <h2><Translate value="Targeting"/></h2>
+              <p><Translate value="Targeting description"/></p>
+            </div>
+            <div className={(CONFIG.DIR === "ltr" ) ? "targeting" : "targeting-rtl"}>
+              <Form onSubmit={this.handleSubmit.bind(this)}>
+                {/* Devices */}
+                <Row type="flex" className="targeting-row">
+                  <Col span={5} className="title-target">
+                    <Tooltip/>
+                    <label>{this.i18n._t("Device Type")}</label>
+                  </Col>
+                  <Col span={19}>
                     <FormItem>
-                      {getFieldDecorator("brands", {
-                        initialValue: attr.manufacturer,
-                        rules: [{required: true, message: this.i18n._t("Please select brands!")}],
-                      })(
-                        <SelectList
-                          data={this.brands}
-                          onChange={(brands) => {
-                            this.setState({brands});
-                          }}/>
-                      )}
+                      <RadioButtonGroup className="campaign-radio-group" name="devices"
+                                        valueSelected={this.state.showOtherDevices}
+                                        defaultSelected={this.state.showOtherDevices}
+                                        onChange={(a, checked) => {
+                                          this.setState({
+                                            devices: [],
+                                            showOtherDevices: checked ? true : false,
+                                          });
+                                        }}>
+                        <RadioButton className="campaign-radio-button"
+                                     value={false}
+                                     label={this.i18n._t("All Devices")}
+                        />
+                        <RadioButton className="campaign-radio-button"
+                                     value={true}
+                                     label={this.i18n._t("Select devices type")}
+                        />
+                      </RadioButtonGroup>
+                      {this.state.showOtherDevices &&
+                      <div className="component-wrapper">
+                        <CheckBoxList
+                          items={this.devices}
+                          value={this.state.devices}
+                          onChange={this.updateDevices.bind(this)}
+                        />
+                      </div>
+                      }
                     </FormItem>
-                  </div>
-                  }
-                </FormItem>
-              </Col>
-            </Row>
+                  </Col>
+                </Row>
 
-            {/* Operation systems */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
-                <Tooltip/>
-                <label>{this.i18n._t("Operation systems")}</label>
-              </Col>
-              <Col span={19}>
-                <FormItem>
-                  <RadioButtonGroup
-                    className="campaign-radio-group" name="os"
-                    defaultSelected={this.state.showOtherOS}
-                    valueSelected={this.state.showOtherOS}
-                    onChange={(a, checked) => {
-                      this.setState({
-                        oss: [],
-                        showOtherOS: checked ? true : false,
-                      });
-                    }}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("All Operation Systems")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("Select Operation Systems")}
-                    />
-                  </RadioButtonGroup>
-                  {this.state.showOtherOS &&
-                  <div className="select-tag-component-wrapper">
+                {/* Manufactures */}
+                <Row type="flex" className="targeting-row">
+                  <Col span={5} className="title-target">
+                    <Tooltip/>
+                    <label>{this.i18n._t("Manufactures Brand")}</label>
+                  </Col>
+                  <Col span={19}>
                     <FormItem>
-                      {getFieldDecorator("os", {
-                        initialValue: this.state.oss,
-                        rules: [{required: true, message: this.i18n._t("Please select operation systems!")}],
+                      <RadioButtonGroup
+                        className="campaign-radio-group" name="brands"
+                        defaultSelected={this.state.showOtherBrands}
+                        valueSelected={this.state.showOtherBrands}
+                        onChange={(a, checked) => {
+                          this.setState({
+                            brands: [],
+                            showOtherBrands: checked ? true : false,
+                          });
+                        }}>
+                        <RadioButton className="campaign-radio-button"
+                                     value={false}
+                                     label={this.i18n._t("All Brands")}
+                        />
+                        <RadioButton className="campaign-radio-button"
+                                     value={true}
+                                     label={this.i18n._t("Select brands")}
+                        />
+                      </RadioButtonGroup>
+                      {this.state.showOtherBrands &&
+                      <div className="component-wrapper">
+                        <FormItem>
+                          {getFieldDecorator("brands", {
+                            initialValue: attr.manufacturer,
+                            rules: [{required: true, message: this.i18n._t("Please select brands!")}],
+                          })(
+                            <SelectList
+                              data={this.brands}
+                              onChange={(brands) => {
+                                this.setState({brands});
+                              }}/>
+                          )}
+                        </FormItem>
+                      </div>
+                      }
+                    </FormItem>
+                  </Col>
+                </Row>
+
+                {/* Operation systems */}
+                <Row type="flex" className="targeting-row">
+                  <Col span={5} className="title-target">
+                    <Tooltip/>
+                    <label>{this.i18n._t("Operation systems")}</label>
+                  </Col>
+                  <Col span={19}>
+                    <FormItem>
+                      <RadioButtonGroup
+                        className="campaign-radio-group" name="os"
+                        defaultSelected={this.state.showOtherOS}
+                        valueSelected={this.state.showOtherOS}
+                        onChange={(a, checked) => {
+                          this.setState({
+                            oss: [],
+                            showOtherOS: checked ? true : false,
+                          });
+                        }}>
+                        <RadioButton className="campaign-radio-button"
+                                     value={false}
+                                     label={this.i18n._t("All Operation Systems")}
+                        />
+                        <RadioButton className="campaign-radio-button"
+                                     value={true}
+                                     label={this.i18n._t("Select Operation Systems")}
+                        />
+                      </RadioButtonGroup>
+                      {this.state.showOtherOS &&
+                      <div className="select-tag-component-wrapper">
+                        <FormItem>
+                          {getFieldDecorator("os", {
+                            initialValue: this.state.oss,
+                            rules: [{required: true, message: this.i18n._t("Please select operation systems!")}],
+                          })(
+                            <SelectTag
+                              OnChange={(oss: string[]) => (this.setState({oss}))}
+                              allOption={false}
+                              placeholder={this.i18n._t("Select OS").toString()}
+                              type={this.i18n._t("Operation system").toString()}
+                              data={this.OSs.map(os => ({value: os.name, name: os.name}))}
+                            />)}
+                        </FormItem>
+                      </div>
+                      }
+                    </FormItem>
+                  </Col>
+                </Row>
+
+                {/* Browsers */}
+                <Row type="flex" className="targeting-row">
+                  <Col span={5} className="title-target">
+                    <Tooltip/>
+                    <label>{this.i18n._t("Browsers")}</label>
+                  </Col>
+                  <Col span={19}>
+                    <FormItem>
+                      <RadioButtonGroup
+                        className="campaign-radio-group" name="browsers"
+                        defaultSelected={this.state.showOtherBrowser}
+                        valueSelected={this.state.showOtherBrowser}
+                        onChange={(a, checked) => {
+                          this.setState({
+                            browsers: [],
+                            showOtherBrowser: checked ? true : false,
+                          });
+                        }}>
+                        <RadioButton className="campaign-radio-button"
+                                     value={false}
+                                     label={this.i18n._t("All Browsers")}
+                        />
+                        <RadioButton className="campaign-radio-button"
+                                     value={true}
+                                     label={this.i18n._t("Select Browsers")}
+                        />
+                      </RadioButtonGroup>
+                      {this.state.showOtherBrowser &&
+                      <div className="select-tag-component-wrapper">
+                        <FormItem>
+                          {getFieldDecorator("browsers", {
+                            initialValue: attr.browser,
+                            rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
+                          })(
+                            <SelectTag
+                              OnChange={(browsers: string[]) => (this.setState({browsers}))}
+                              allOption={false}
+                              placeholder={this.i18n._t("Select Browsers").toString()}
+                              type={this.i18n._t("Browsers").toString()}
+                              data={this.browsers.map(b => ({value: b.name, name: b.name}))}
+                            />
+                          )}
+                        </FormItem>
+
+                      </div>
+                      }
+                    </FormItem>
+                  </Col>
+                </Row>
+
+                {/* IAB Categorie */}
+                <Row type="flex" className="targeting-row">
+                  <Col span={5} className="title-target">
+                    <Tooltip/>
+                    <label>{this.i18n._t("IAB Categories")}</label>
+                  </Col>
+                  <Col span={19}>
+                    <FormItem>
+                      <RadioButtonGroup
+                        className="campaign-radio-group" name="iab"
+                        defaultSelected={this.state.showOtherIAB}
+                        valueSelected={this.state.showOtherIAB}
+                        onChange={(a, checked) => {
+                          this.setState({
+                            iabs: [],
+                            showOtherIAB: checked ? true : false,
+                          });
+                        }}>
+                        <RadioButton className="campaign-radio-button"
+                                     value={false}
+                                     label={this.i18n._t("All Categories")}
+                        />
+                        <RadioButton className="campaign-radio-button"
+                                     value={true}
+                                     label={this.i18n._t("Select Categories")}
+                        />
+                      </RadioButtonGroup>
+                      {this.state.showOtherIAB &&
+                      <div className="select-tag-component-wrapper">
+                        <FormItem>
+                          {getFieldDecorator("iabs", {
+                            initialValue: this.state.iabs,
+                            rules: [{required: true, message: this.i18n._t("Please select categories!")}],
+                          })(
+                            <Select
+                              onChange={(value: string[]) => {
+                                this.setState({iabs: value});
+                              }}
+                              mode={"multiple"}
+                              showSearch={false}
+                              filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                              placeholder="Tags Mode"
+                              className="select-tag-ant"
+                            >
+                              {this.categories.map(cat => (
+                                <Option key={cat.name} value={cat.name}>{cat.name}</Option>
+                              ))}
+                            </Select>
+                          )}
+                        </FormItem>
+                      </div>
+                      }
+                    </FormItem>
+                  </Col>
+                </Row>
+
+                {/* Location */}
+                <Row type="flex" className="targeting-row">
+                  <Col span={5} className="title-target">
+                    <Tooltip/>
+                    <label>{this.i18n._t("Geo location")}</label>
+                  </Col>
+                  <Col span={19}>
+                    <div className="mt-1">
+                      <SelectField className={"select-list-rtl select-geolocation"}
+                                   onChange={(a, b, value) => {
+                                     this.setState({
+                                       locationType: value,
+                                     });
+                                   }}
+                                   value={this.state.locationType}>
+                        <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
+                        {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
+                        <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
+                        }
+                        {this.state.currentCampaign.kind === DEVICE_TYPES.WEB &&
+                        <MenuItem value={ILocationType.IRAN_MAP}
+                                  primaryText={this.i18n._t("Select specific area in iran")}/>
+                        }
+                        <MenuItem value={ILocationType.FOREIGN}
+                                  primaryText={this.i18n._t("All without Iran")}/>
+                      </SelectField>
+                    </div>
+                    {this.state.locationType === ILocationType.IRAN_MAP &&
+                    <div className="component-wrapper">
+                      <FormItem>
+                        {getFieldDecorator("locations", {
+                          initialValue: this.state.locations,
+                          rules: [{required: true, message: this.i18n._t("Please select locations!")}],
+                        })(
+                          <IranMap
+                            onChange={(locations) => {
+                              console.log(locations);
+                              this.setState({locations});
+                            }}
+                          />
+                        )}
+                      </FormItem>
+                    </div>
+                    }
+                    {this.state.locationType === ILocationType.GM &&
+                    <div className="component-wrapper area-map-wrapper">
+                      <FormItem>
+                        {getFieldDecorator("regionArea", {
+                          initialValue: {coordinate: {lat: -34, lng: 150}, radius: 10000},
+                          rules: [{required: true, message: this.i18n._t("Please select locations!")}],
+                        })(
+                          <AreaMap
+                            onChange={(coordinate) => {
+                              console.log(coordinate);
+                            }}/>
+                        )}
+                      </FormItem>
+                    </div>
+                    }
+                  </Col>
+                </Row>
+
+                {/* Networks */}
+                <Row type="flex" className="mt-2" align="top">
+                  <Col span={5}>
+                    <Tooltip/>
+                    <label>{this.i18n._t("Internet Network")}</label>
+                  </Col>
+                  <Col span={19}>
+                    <RadioButtonGroup
+                      className="campaign-radio-group" name="network"
+                      defaultSelected={this.state.showOtherNetwork}
+                      valueSelected={this.state.showOtherNetwork}
+                      onChange={(a, value) => {
+                        this.setState({
+                          isps: [],
+                          cellulars: [],
+                          showOtherNetwork: value ? true : false,
+                          NetworkType: INetworkType.ISP_Cell,
+                          showISP: true,
+                          showCellar: true,
+                        });
+                      }}>
+                      <RadioButton className="campaign-radio-button"
+                                   value={false}
+                                   label={this.i18n._t("All Network")}
+                      />
+                      <RadioButton className="campaign-radio-button"
+                                   value={true}
+                                   label={this.i18n._t("Select Networks")}
+                      />
+                    </RadioButtonGroup>
+                    {this.state.showOtherNetwork &&
+                    <div className="network-select">
+                      <label className="network-select-label">
+                        <Translate value={"Connection type"}/>
+                      </label>
+                      <SelectField
+                        className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
+                        value={this.state.NetworkType}
+                        onChange={(event, index, value: INetworkType) => {
+                          this.setState({NetworkType: value});
+                        }}
+                        hintText={this.i18n._t("Network Type")}>
+                        <MenuItem
+                          key={-1}
+                          className="show"
+                          insetChildren={true}
+                          value={INetworkType.ISP_Cell}
+                          primaryText={this.i18n._t("ISP and Cellular").toString()}
+                          onClick={() => {
+                            this.setState({
+                              showISP: true,
+                              showCellar: true,
+                            });
+                          }}
+                        />
+                        <MenuItem
+                          key={0}
+                          className="show"
+                          insetChildren={true}
+                          value={INetworkType.ISP}
+                          primaryText={this.i18n._t("ISP").toString()}
+                          onClick={() => {
+                            this.setState({
+                              showISP: true,
+                              showCellar: false,
+                            });
+                          }}
+                        />
+                        <MenuItem
+                          key={1}
+                          className="show"
+                          insetChildren={true}
+                          value={INetworkType.Cell}
+                          primaryText={this.i18n._t("Cellular").toString()}
+                          onClick={() => {
+                            this.setState({
+                              showISP: false,
+                              showCellar: true,
+                            });
+                          }}
+                        />
+                      </SelectField>
+                    </div>
+                    }
+                    {this.state.showISP && this.state.showOtherNetwork &&
+                    <FormItem>
+                      {getFieldDecorator("isps", {
+                        initialValue: attr.isp,
+                        rules: [{required: true, message: this.i18n._t("Please select ISP!")}],
                       })(
                         <SelectTag
-                          OnChange={(oss: string[]) => (this.setState({oss}))}
+                          OnChange={(isps: string[]) => (this.setState({isps}))}
                           allOption={false}
-                          placeholder={this.i18n._t("Select OS").toString()}
-                          type={this.i18n._t("Operation system").toString()}
-                          data={this.OSs.map(os => ({value: os.name, name: os.name}))}
-                        />)}
-                    </FormItem>
-                  </div>
-                  }
-                </FormItem>
-              </Col>
-            </Row>
-
-            {/* Browsers */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
-                <Tooltip/>
-                <label>{this.i18n._t("Browsers")}</label>
-              </Col>
-              <Col span={19}>
-                <FormItem>
-                  <RadioButtonGroup
-                    className="campaign-radio-group" name="browsers"
-                    defaultSelected={this.state.showOtherBrowser}
-                    valueSelected={this.state.showOtherBrowser}
-                    onChange={(a, checked) => {
-                      this.setState({
-                        browsers: [],
-                        showOtherBrowser: checked ? true : false,
-                      });
-                    }}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("All Browsers")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("Select Browsers")}
-                    />
-                  </RadioButtonGroup>
-                  {this.state.showOtherBrowser &&
-                  <div className="select-tag-component-wrapper">
-                    <FormItem>
-                      {getFieldDecorator("browsers", {
-                        initialValue: attr.browser,
-                        rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
-                      })(
-                        <SelectTag
-                          OnChange={(browsers: string[]) => (this.setState({browsers}))}
-                          allOption={false}
-                          placeholder={this.i18n._t("Select Browsers").toString()}
-                          type={this.i18n._t("Browsers").toString()}
-                          data={this.browsers.map(b => ({value: b.name, name: b.name}))}
+                          placeholder={this.i18n._t("Select ISPs").toString()}
+                          type={this.i18n._t("ISP").toString()}
+                          data={this.ISPs.map(c => ({value: c.name, name: c.name}))}
                         />
                       )}
                     </FormItem>
-
-                  </div>
-                  }
-                </FormItem>
-              </Col>
-            </Row>
-
-            {/* IAB Categorie */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
-                <Tooltip/>
-                <label>{this.i18n._t("IAB Categories")}</label>
-              </Col>
-              <Col span={19}>
-                <FormItem>
-                  <RadioButtonGroup
-                    className="campaign-radio-group" name="iab"
-                    defaultSelected={this.state.showOtherIAB}
-                    valueSelected={this.state.showOtherIAB}
-                    onChange={(a, checked) => {
-                      this.setState({
-                        iabs: [],
-                        showOtherIAB: checked ? true : false,
-                      });
-                    }}>
-                    <RadioButton className="campaign-radio-button"
-                                 value={false}
-                                 label={this.i18n._t("All Categories")}
-                    />
-                    <RadioButton className="campaign-radio-button"
-                                 value={true}
-                                 label={this.i18n._t("Select Categories")}
-                    />
-                  </RadioButtonGroup>
-                  {this.state.showOtherIAB &&
-                  <div className="select-tag-component-wrapper">
+                    }
+                    {this.state.showCellar && this.state.showOtherNetwork &&
                     <FormItem>
-                      {getFieldDecorator("iabs", {
-                        initialValue: this.state.iabs,
-                        rules: [{required: true, message: this.i18n._t("Please select categories!")}],
+                      {getFieldDecorator("cellular", {
+                        initialValue: attr.cellular,
+                        rules: [{required: true, message: this.i18n._t("Please select Cellular!")}],
                       })(
-                        <Select
-                          onChange={(value: string[]) => {
-                            this.setState({iabs: value});
-                          }}
-                          mode={"multiple"}
-                          showSearch={false}
-                          filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                          placeholder="Tags Mode"
-                          className="select-tag-ant"
-                        >
-                          {this.categories.map(cat => (
-                            <Option key={cat.name} value={cat.name}>{cat.name}</Option>
-                          ))}
-                        </Select>
+                        <SelectTag
+                          OnChange={(cellulars: string[]) => (this.setState({cellulars}))}
+                          allOption={false}
+                          placeholder={this.i18n._t("Select Cellular").toString()}
+                          type={this.i18n._t("Cellular").toString()}
+                          data={this.Cellular.map(c => ({value: c.name, name: c.name}))}
+                        />
                       )}
                     </FormItem>
-                  </div>
-                  }
-                </FormItem>
-              </Col>
-            </Row>
-
-            {/* Location */}
-            <Row type="flex" className="targeting-row">
-              <Col span={5} className="title-target">
-                <Tooltip/>
-                <label>{this.i18n._t("Geo location")}</label>
-              </Col>
-              <Col span={19}>
-                <div className="mt-1">
-                  <SelectField className={"select-list-rtl select-geolocation"}
-                               onChange={(a, b, value) => {
-                                 this.setState({
-                                   locationType: value,
-                                 });
-                               }}
-                               value={this.state.locationType}>
-                    <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
-                    {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
-                      <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
                     }
-                    {this.state.currentCampaign.kind !== DEVICE_TYPES.APPLICATION &&
-                    <MenuItem value={ILocationType.IRAN_MAP}
-                              primaryText={this.i18n._t("Select specific area in iran")}/>
-                    }
-                  </SelectField>
-                  {regionState}
-                </div>
-                {this.state.locationType === ILocationType.IRAN_MAP &&
-                <div className="component-wrapper">
-                  <FormItem>
-                    {getFieldDecorator("locations", {
-                      initialValue: this.state.locations,
-                      rules: [{required: true, message: this.i18n._t("Please select locations!")}],
-                    })(
-                      <IranMap
-                        onChange={(locations) => {
-                          console.log(locations);
-                          this.setState({locations});
-                        }}
-                      />
-                    )}
-                  </FormItem>
-                </div>
-                }
-                {this.state.locationType === ILocationType.GM &&
-                <div className="component-wrapper area-map-wrapper">
-                  <FormItem>
-                    {getFieldDecorator("regionArea", {
-                      initialValue: {coordinate: {lat: -34, lng: 150}, radius: 10000},
-                      rules: [{required: true, message: this.i18n._t("Please select locations!")}],
-                    })(
-                      <AreaMap
-                        onChange={(coordinate) => {
-                          console.log(coordinate);
-                        }}/>
-                    )}
-                  </FormItem>
-                </div>
-                }
-              </Col>
-            </Row>
+                  </Col>
+                </Row>
 
-            {/* Networks */}
-            <Row type="flex" className="mt-2" align="top">
-              <Col span={5}>
-                <Tooltip/>
-                <label>{this.i18n._t("Internet Network")}</label>
-              </Col>
-              <Col span={19}>
-                <RadioButtonGroup
-                  className="campaign-radio-group" name="network"
-                  defaultSelected={this.state.showOtherNetwork}
-                  valueSelected={this.state.showOtherNetwork}
-                  onChange={(a, value) => {
-                    this.setState({
-                      isps: [],
-                      cellulars: [],
-                      showOtherNetwork: value ? true : false,
-                      NetworkType: INetworkType.ISP_Cell,
-                      showISP: true,
-                      showCellar: true,
-                    });
-                  }}>
-                  <RadioButton className="campaign-radio-button"
-                               value={false}
-                               label={this.i18n._t("All Network")}
-                  />
-                  <RadioButton className="campaign-radio-button"
-                               value={true}
-                               label={this.i18n._t("Select Networks")}
-                  />
-                </RadioButtonGroup>
-                {this.state.showOtherNetwork &&
-                <div className="network-select">
-                  <label className="network-select-label">
-                    <Translate value={"Connection type"}/>
-                  </label>
-                  <SelectField
-                    className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
-                    value={this.state.NetworkType}
-                    onChange={(event, index, value: INetworkType) => {
-                      this.setState({NetworkType: value});
-                    }}
-                    hintText={this.i18n._t("Network Type")}>
-                    <MenuItem
-                      key={-1}
-                      className="show"
-                      insetChildren={true}
-                      value={INetworkType.ISP_Cell}
-                      primaryText={this.i18n._t("ISP and Cellular").toString()}
-                      onClick={() => {
-                        this.setState({
-                          showISP: true,
-                          showCellar: true,
-                        });
-                      }}
+                <Row type="flex" align="middle">
+                  <Col span={5}>
+                    <RaisedButton
+                      onClick={this.handleBack.bind(this)}
+                      label={<Translate value="Back"/>}
+                      primary={false}
+                      className="button-back-step"
+                      icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
                     />
-                    <MenuItem
-                      key={0}
-                      className="show"
-                      insetChildren={true}
-                      value={INetworkType.ISP}
-                      primaryText={this.i18n._t("ISP").toString()}
-                      onClick={() => {
-                        this.setState({
-                          showISP: true,
-                          showCellar: false,
-                        });
-                      }}
+                  </Col>
+                  <Col>
+                    <RaisedButton
+                      onClick={this.handleSubmit.bind(this)}
+                      label={<Translate value="Next Step"/>}
+                      primary={true}
+                      className="button-next-step"
+                      icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
                     />
-                    <MenuItem
-                      key={1}
-                      className="show"
-                      insetChildren={true}
-                      value={INetworkType.Cell}
-                      primaryText={this.i18n._t("Cellular").toString()}
-                      onClick={() => {
-                        this.setState({
-                          showISP: false,
-                          showCellar: true,
-                        });
-                      }}
-                    />
-                  </SelectField>
-                </div>
-                }
-                {this.state.showISP && this.state.showOtherNetwork &&
-                <FormItem>
-                  {getFieldDecorator("isps", {
-                    initialValue: attr.isp,
-                    rules: [{required: true, message: this.i18n._t("Please select ISP!")}],
-                  })(
-                    <SelectTag
-                      OnChange={(isps: string[]) => (this.setState({isps}))}
-                      allOption={false}
-                      placeholder={this.i18n._t("Select ISPs").toString()}
-                      type={this.i18n._t("ISP").toString()}
-                      data={this.ISPs.map(c => ({value: c.name, name: c.name}))}
-                    />
-                  )}
-                </FormItem>
-                }
-                {this.state.showCellar && this.state.showOtherNetwork &&
-                <FormItem>
-                  {getFieldDecorator("cellular", {
-                    initialValue: attr.cellular,
-                    rules: [{required: true, message: this.i18n._t("Please select Cellular!")}],
-                  })(
-                    <SelectTag
-                      OnChange={(cellulars: string[]) => (this.setState({cellulars}))}
-                      allOption={false}
-                      placeholder={this.i18n._t("Select Cellular").toString()}
-                      type={this.i18n._t("Cellular").toString()}
-                      data={this.Cellular.map(c => ({value: c.name, name: c.name}))}
-                    />
-                  )}
-                </FormItem>
-                }
-              </Col>
-            </Row>
-
-            <Row type="flex" align="middle">
-              <Col span={5}>
-              <RaisedButton
-                onClick={this.handleBack.bind(this)}
-                label={<Translate value="Back"/>}
-                primary={false}
-                className="button-back-step"
-                icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-              />
-              </Col>
-              <Col>
-              <RaisedButton
-                onClick={this.handleSubmit.bind(this)}
-                label={<Translate value="Next Step"/>}
-                primary={true}
-                className="button-next-step"
-                icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-              />
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      </div>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+          </div>
         </Col>
       </Row>
     );
