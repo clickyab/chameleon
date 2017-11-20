@@ -274,7 +274,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         browser: this.state.browsers,
         manufacturer: this.state.brands,
         iab: this.state.iabs,
-        region: this.state.locationType === ILocationType.FOREIGN ? ["foreign"] : this.state.locations,
+        region: this.state.locationType === ILocationType.FOREIGN ? ["foreign"] : this.state.locations.filter(l => l !== "foreign"),
         cellular: this.state.cellulars,
         isp: this.state.isps,
         device: this.state.devices,
