@@ -514,7 +514,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     />
                   </RadioButtonGroup>
                   {this.state.showOtherIAB &&
-                  <div className="select-tag-component-wrapper">
+                  <div className="select-tag-ant-component-wrapper">
                     <FormItem>
                       {getFieldDecorator("iabs", {
                         initialValue: this.state.iabs,

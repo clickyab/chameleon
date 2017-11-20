@@ -380,7 +380,7 @@ class NamingComponent extends React.Component <IProps, IState> {
               {!this.state.allTime &&
               this.state.timePeriods.map((p, index) => (
                 <Row type="flex" className="time-period-row" key={index} align={"middle"}>
-                  <Col span={5}>
+                  <Col span={8}>
                     <TimePeriod from={p.from} to={p.to} onChange={(from, to) => {
                       this.onTimePeriodChange(index, from, to);
                     }}/>

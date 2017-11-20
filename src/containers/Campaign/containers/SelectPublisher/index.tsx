@@ -328,7 +328,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                     dataFn={this.controllerApi.inventoryListGet}/>
                 </Col>
               </Row>
-              <Row type="flex" align="middle">
+              <Row type="flex" align="middle" >
                 <Col span={4}>
                   <label>
                     <Tooltip/>

@@ -141,7 +141,7 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
 
 
 .generate-space(5);
-.generate-space(@n, @i: -5) when (@i =< @n  ) {
+.generate-space(@n, @i: 0) when (@i =< @n  ) {
   .m {
     &t-@{i} {
       margin-top: (@i * @space);
