@@ -76,7 +76,7 @@ class UploadComponent extends React.Component <IProps, IState> {
    */
   public render() {
     return (<div>
-        {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.BANNER  || this.state.currentCampaign.kind === WEB_TYPES.VIDEO) &&
+        {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.BANNER  || this.state.currentCampaign.type === WEB_TYPES.VIDEO) &&
         <UplaodBannerVideo currentCampaign={this.state.currentCampaign}/>
         }
         {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.CONTENT) &&
