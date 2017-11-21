@@ -11,6 +11,7 @@ import I18n from "../../../../services/i18n/index";
 import Menu from "antd/es/menu";
 import CONFIG from "../../../../constants/config";
 import Icon from "../../../../components/Icon/index";
+
 let Animate = require("rc-animate");
 
 /**
@@ -194,29 +195,29 @@ class UserBox extends React.Component<IProps, IState> {
           <Animate
             transitionName="slide"
           >
-          {this.state.open && <div className="mini-open">
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
-                  onClick={e => this.userBoxRouting(e.key)}>
-              <Menu.Item key="editProfile">
-                <span>{this.i18n._t("Edit profile")}</span>
-              </Menu.Item>
-              <Menu.Item key="transactions">
-                <span>{this.i18n._t("Transactions")}</span>
-              </Menu.Item>
-              <Menu.Item key="charge">
-                <span>{this.i18n._t("Charge")}</span>
-              </Menu.Item>
-              <Menu.Item key="withdraw">
-                <span>{this.i18n._t("Withdraw")}</span>
-              </Menu.Item>
-              <Menu.Item key="userManagement">
-                <span>{this.i18n._t("user management")}</span>
-              </Menu.Item>
-              <Menu.Item key="logout">
-                <span>{this.i18n._t("logout")}</span>
-              </Menu.Item>
-            </Menu>
-          </div>}
+            {this.state.open && <div className="mini-open">
+              <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
+                    onClick={e => this.userBoxRouting(e.key)}>
+                <Menu.Item key="editProfile">
+                  <span>{this.i18n._t("Edit profile")}</span>
+                </Menu.Item>
+                <Menu.Item key="transactions">
+                  <span>{this.i18n._t("Transactions")}</span>
+                </Menu.Item>
+                <Menu.Item key="charge">
+                  <span>{this.i18n._t("Charge")}</span>
+                </Menu.Item>
+                <Menu.Item key="withdraw">
+                  <span>{this.i18n._t("Withdraw")}</span>
+                </Menu.Item>
+                <Menu.Item key="userManagement">
+                  <span>{this.i18n._t("user management")}</span>
+                </Menu.Item>
+                <Menu.Item key="logout">
+                  <span>{this.i18n._t("logout")}</span>
+                </Menu.Item>
+              </Menu>
+            </div>}
           </Animate>
         </div>
       </div>

@@ -12,8 +12,9 @@ import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
 import CampaignContainer from "../Campaign/index";
-import PublicLoginForm from "../User/containers/Login/index";
+import CheckMail from "../User/containers/CheckMail";
 import {UserApi} from "../../api/api";
+// import ExploreContainer from "../Explore/index";
 
 
 interface IProps {
@@ -83,7 +84,8 @@ class App extends React.Component<IProps, IState> {
             <Route path={`/user`} component={PublicContainer}/>
             <PrivateRoute path={`/dashboard`} component={Dashboard}/>
             <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
-            <Route exact path={`/`} component={this.state.isLogin ? Dashboard : PublicLoginForm} />
+            {/*<PrivateRoute path={`/explore`} component={ExploreContainer}/>*/}
+            <Route exact path={`/`} component={this.state.isLogin ? Dashboard : CheckMail} />
           </Switch>
         </LayoutSwitcher>
       </MuiThemeProvider>
