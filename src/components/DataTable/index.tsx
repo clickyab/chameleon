@@ -77,6 +77,7 @@ interface IState {
 class DataTable extends React.Component<IProps, IState> {
   parser;
   infiniteLoader: boolean = false;
+  customFieldTemp: object = {};
 
   private i18n = I18n.getInstance();
 
@@ -84,7 +85,6 @@ class DataTable extends React.Component<IProps, IState> {
     super(props);
     const customFieldsObject = localStorage.getItem(`TABLE_CUSTOM_${this.props.name}`);
     let customField = customFieldsObject ? JSON.parse(customFieldsObject) : {};
-    console.log("custom field", customField);
     this.state = {
       selectedRows: [],
       selectedKeys: [],
@@ -116,7 +116,10 @@ class DataTable extends React.Component<IProps, IState> {
    */
   storeDefinition(definition: IDefinition) {
     localStorage.setItem(`TABLE_DEFINITION_${this.props.name}`, JSON.stringify(definition));
-    localStorage.setItem(`TABLE_CUSTOM_${this.props.name}`, JSON.stringify(definition));
+  }
+
+  storeCustom(customField) {
+    localStorage.setItem(`TABLE_CUSTOM_${this.props.name}`, JSON.stringify(customField));
   }
 
   /**
@@ -218,7 +221,6 @@ class DataTable extends React.Component<IProps, IState> {
         let customField = this.state.customField;
         def.columns.map((c) => {
           if (c.visible) {
-            console.log(customField[c.name]);
             customField[c.name] = (customField[c.name] !== undefined) ? customField[c.name] : true;
           }
         });
@@ -236,14 +238,13 @@ class DataTable extends React.Component<IProps, IState> {
             let customField = this.state.customField;
             def.columns.map((c) => {
               if (c.visible) {
-                console.log(customField[c.name]);
                 customField[c.name] = (customField[c.name] !== undefined) ? customField[c.name] : true;
               }
             });
 
             this.setState({
               data,
-              customField,
+              // customField,
               loading: false,
               definition: def,
             });
@@ -260,7 +261,6 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {{onChange: ((selectedRowKeys, selectedRows) => any)}}
    */
   loadSelectionConfig() {
-    // console.log(this.state.selectedKeys);
     const rowSelection = {
       selectedRowKeys: this.state.selectedKeys,
       onChange: (selectedRowKeys, selectedRows) => {
@@ -369,21 +369,20 @@ class DataTable extends React.Component<IProps, IState> {
   }
 
   public setCustomField(keys) {
-    let customTemp = this.state.customField;
-    for (let i in customTemp) {
-      customTemp[i] = false;
-    }
+    this.customFieldTemp = {};
+    this.state.definition.columns.map(field => {
+      this.customFieldTemp[field.name] = false;
+    });
     keys.map((c) => {
-        customTemp[c] = true;
+        this.customFieldTemp[c] = true;
       }
     );
-    this.setState({
-      customField: customTemp,
-    });
   }
+
   public handleCustomLocal() {
-    localStorage.setItem(`TABLE_CUSTOM_${this.props.name}` , JSON.stringify(this.state.customField));
+    this.storeCustom(this.customFieldTemp);
     this.setState({
+      customField: this.customFieldTemp,
       customizeModal: false,
     });
   }
@@ -393,6 +392,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {any}
    */
   public render() {
+
     if (!this.state.definition || !this.state.data) return null;
 
     if (!this.parser) {
@@ -405,14 +405,14 @@ class DataTable extends React.Component<IProps, IState> {
       <div className="data-table-wrapper">
         <div className="data-table-description">
           {this.props.tableDescription}
-        <Button
-          className="add-customize-btn"
-          onClick={() => {
-            this.openCustomizeModal();
-          }}>
-          <Icon name={"cif-gear-outline"} className="custom-icon"/>
-          <Translate value="Customize table"/>
-        </Button>
+          <Button
+            className="add-customize-btn"
+            onClick={() => {
+              this.openCustomizeModal();
+            }}>
+            <Icon name={"cif-gear-outline"} className="custom-icon"/>
+            <Translate value="Customize table"/>
+          </Button>
         </div>
         {this.state.customizeModal &&
         <Modal title={this.i18n._t("Customize Table").toString()}
@@ -423,8 +423,7 @@ class DataTable extends React.Component<IProps, IState> {
                onOk={() => this.handleCustomLocal()}
                onCancel={() => {
                  this.setState({customizeModal: false});
-               }}
-        >
+               }}>
           <div>
             <Row>
               <div className="mb-2"><Translate value={"Choose your table column from below options"}/></div>
@@ -454,26 +453,26 @@ class DataTable extends React.Component<IProps, IState> {
             </Row>
           </div>
         </Modal>
-                  }
-                <Table
-                  rowKey={(record) => (record[this.state.definition.key])}
-                  scroll={{y: 440}}
-                  loading={this.state.loading}
-                  columns={this.parser.parseColumns()}
-                  dataSource={this.parser.parsData(this.state.data.data)}
-                  rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
-                  pagination={this.props.infinite ? false : this.loadPaginationConfig()}
-                  onChange={this.handleTableChange.bind(this)}
-                  className="campaign-data-table"
-                />
+        }
+        <Table
+          rowKey={(record) => (record[this.state.definition.key])}
+          scroll={{y: 440}}
+          loading={this.state.loading}
+          columns={this.parser.parseColumns(Object.keys(this.state.customField).filter(key => this.state.customField[key]))}
+          dataSource={this.parser.parsData(this.state.data.data)}
+          rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
+          pagination={this.props.infinite ? false : this.loadPaginationConfig()}
+          onChange={this.handleTableChange.bind(this)}
+          className="campaign-data-table"
+        />
         <div className="table-total-number">
           <Icon name={"cif-target"}/>
           <Translate value={"_{totalResult} result"} params={{totalResult: this.state.data.total}}/>
         </div>
-          </div>
-          );
-          }
+      </div>
+    );
+  }
 
-        }
+}
 
-        export default DataTable;
+export default DataTable;
