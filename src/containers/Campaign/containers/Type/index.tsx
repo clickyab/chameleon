@@ -106,6 +106,7 @@ class TypeComponent extends React.Component <IProps, IState> {
    */
   i18n = I18n.getInstance();
 
+  disable: boolean = false;
   /**
    * Device ad types items
    * @type {[{title: string; description: string; value: DEVICE_TYPES; icon: any} , {title: string; description: string; value: DEVICE_TYPES; icon: any}]}
@@ -190,6 +191,7 @@ class TypeComponent extends React.Component <IProps, IState> {
     this.props.setCurrentStep(STEPS.TYPE);
     this.props.setBreadcrumb("type", this.i18n._t("Type").toString(), "campaign");
     if (this.props.match.params.id) {
+      this.disable = true;
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const controllerApi = new ControllersApi();
       controllerApi.campaignIdGet({id: this.props.match.params.id})
@@ -199,6 +201,8 @@ class TypeComponent extends React.Component <IProps, IState> {
           this.setState({
             currentCampaign: campaign,
             selectedType: campaign ? campaign.kind as DEVICE_TYPES : null,
+            selectedApplicationType: campaign ? campaign.type as APPLICATION_TYPES : null,
+            selectedWebType: campaign ? campaign.type as WEB_TYPES : null,
           });
         });
     } else {
@@ -223,9 +227,11 @@ class TypeComponent extends React.Component <IProps, IState> {
    * @param {DEVICE_TYPES} value
    */
   private handleChangeDevicesType(value: DEVICE_TYPES) {
-    this.setState({
-      selectedType: value,
-    });
+    if (!this.disable) {
+      this.setState({
+        selectedType: value,
+      });
+    }
   }
 
   /**
@@ -245,9 +251,11 @@ class TypeComponent extends React.Component <IProps, IState> {
    * @param {WEB_TYPES} value
    */
   private handleChangeWebType(value: WEB_TYPES) {
-    this.setState({
-      selectedWebType: value,
-    });
+    if (!this.disable) {
+      this.setState({
+        selectedWebType: value,
+      });
+    }
   }
 
 
@@ -260,9 +268,11 @@ class TypeComponent extends React.Component <IProps, IState> {
    * @param {APPLICATION_TYPES} value
    */
   private handleChangeApplicationType(value: APPLICATION_TYPES) {
-    this.setState({
-      selectedApplicationType: value,
-    });
+    if (!this.disable) {
+      this.setState({
+        selectedApplicationType: value,
+      });
+    }
   }
 
 
@@ -303,7 +313,8 @@ class TypeComponent extends React.Component <IProps, IState> {
         <Row className="campaign-device">
           <SelectBox span={8} items={this.deviceTypes} initialSelect={this.state.selectedType}
                      onChange={this.handleChangeDevicesType.bind(this)}
-                     className={"center-select-box device-type"}/>
+                     disable={this.disable}
+                     className={`center-select-box device-type ${this.disable ? "select-box-disable" : ""}`}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
@@ -318,7 +329,8 @@ class TypeComponent extends React.Component <IProps, IState> {
         <div>
           <Row className="campaign-type">
             <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
-                       className={"center-select-box desktop-type"}
+                       className={`center-select-box desktop-type ${this.disable ? "select-box-disable" : ""}`}
+                       disable={this.disable}
                        onChange={this.handleChangeWebType.bind(this)}/>
           </Row>
           <Row type="flex" justify="center">
@@ -344,7 +356,8 @@ class TypeComponent extends React.Component <IProps, IState> {
           <Row className="campaign-type">
             <SelectBox items={this.applicationTypes}
                        initialSelect={this.state.selectedApplicationType}
-                       className={"center-select-box app-type"}
+                       disable={this.disable}
+                       className={`center-select-box app-type  ${this.disable ? "select-box-disable" : ""}`}
                        onChange={this.handleChangeApplicationType.bind(this)}/>
           </Row>
           <Row type="flex" justify="center">
