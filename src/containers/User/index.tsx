@@ -2,7 +2,9 @@ import * as React from "react";
 import {Switch, Route, RouteComponentProps} from "react-router";
 import {RootState} from "../../redux/reducers/index";
 import {connect} from "react-redux";
+import CheckMail from "./containers/CheckMail";
 import PublicLoginContainer from "./containers/Login";
+import RegisterForm from "./containers/Register";
 import LogoutContainer from "./containers/Logout";
 import {UserUserPayload} from "../../api/api";
 import UserArea from "./components/UserArea";
@@ -34,10 +36,12 @@ export default class PublicContainer extends React.Component<IProps, IState> {
     return (
       <div>
         <Switch>
+          <Route path={`${match.url}/auth`} component={CheckMail}/>
           <Route path={`${match.url}/login`} component={PublicLoginContainer}/>
+          <Route exact path={`${match.url}/register`} component={RegisterForm}/>
           <Route path={`${match.url}/logout`} component={LogoutContainer}/>
           <Route path={`${match.url}/recover-password`} component={PublicRecoverPassword}/>
-          <Route path={`${match.url}/register/verification/:token`} component={PublicLoginContainer}/>
+          <Route path={`${match.url}/register/verification/:token`} component={RegisterForm}/>
           <Route path={`${match.url}/recover/verification/:token`} component={PublicRecoverPassword}/>
           {(this.state.user) && <PrivateRoute path={`${match.url}/`} component={UserArea}/>}
         </Switch>
