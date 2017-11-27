@@ -8,16 +8,12 @@ import AAA from "../../../services/AAA/index";
 const initialState: AppStoreState = {
   isLogin: !!AAA.getInstance().getToken(),
   user: null,
-  breadcrumb: "",
+  breadcrumb: [],
 };
 
 
 export default handleActions<AppStoreState, any>({
   [Actions.SET_USER]: (state, action: IAction<UserResponseLoginOKAccount>) => {
-    console.log(action, {
-      ...state,
-      user: action.payload,
-    });
     return {
       ...state,
       user: action.payload,
@@ -46,15 +42,18 @@ export default handleActions<AppStoreState, any>({
   },
 
   [Actions.SET_BREADCRUMB]: (state, action) => {
+    if (action.payload.parent === null) {
+      return {
+        ...state,
+        breadcrumb: [action.payload]
+      };
+    }
+    let indexOfParent = state.breadcrumb.findIndex(b => (b.name === action.payload.parent));
+    let breadcrumbs = state.breadcrumb;
+    breadcrumbs.splice(indexOfParent + 1);
     return {
       ...state,
-      breadcrumb: action.payload
-    };
-  },
-  [Actions.UNSET_BREADCRUMB]: (state) => {
-    return {
-      ...state,
-      breadcrumb: ""
+      breadcrumb: [...breadcrumbs, action.payload],
     };
   },
 }, initialState);

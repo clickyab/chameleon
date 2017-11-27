@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import {RouteComponentProps, withRouter} from "react-router";
 import AAA from "../../../../services/AAA/index";
+import CONFIG from "../../../../constants/config";
 
 const FormItem = Form.Item;
 
@@ -220,8 +221,10 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
     const {getFieldDecorator} = this.props.form;
     return (
       <Row className="full-screen" type="flex" align="middle" justify="center">
-        <div>
-          <Row className="logo-img" align="middle" justify="center"/>
+        <div dir={CONFIG.DIR}>
+          <Row className="logo-wrapper" align="middle" justify="center">
+            <Icon className={"login-logo"} name={"cif-cylogo-without-typo"}/>
+          </Row>
           <Card className="login-box" noHovering>
             <h5 className="text-center">
               {this.state.step === STEPS.RECOVERY && this.i18n._t("Please enter your email address")}
@@ -240,6 +243,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     }],
                 })(
                   <TextField
+                    type={"email"}
                     fullWidth={true}
                     floatingLabelText="Email"
                     hintText={"example@example.com"}
@@ -311,14 +315,13 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                 }
                 {this.state.step === STEPS.VERIFY &&
                 <div>
+                  <Resend className={"verify-link"} seconds={120} email={this.state.email}/>
                   <RaisedButton
                     type="submit"
                     label={<Translate value="Verify your code"/>}
                     primary={true}
                     className="button-full-width"
-                    icon={<Icon name="arrow"/>}
                   />
-                  <Resend seconds={10} email={this.state.email}/>
                 </div>
                 }
                 {this.state.step === STEPS.NEWPASSWORD &&

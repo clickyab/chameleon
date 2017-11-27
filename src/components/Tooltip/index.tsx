@@ -1,7 +1,8 @@
 import * as React from "react";
-import {Tooltip as AntTooltip, Icon} from "antd";
+import {Tooltip as AntTooltip} from "antd";
 import {TooltipProps} from "antd/es/tooltip";
 import "./style.less";
+import Icon from "../Icon/index";
 
 
 /**
@@ -16,7 +17,7 @@ export default class Tooltip extends React.Component<IProps, {}> {
     return (
       <div className="tooltip">
         <AntTooltip {...this.props}>
-          <Icon type="question-circle-o"/>
+          <Icon name="cif-help-outline" className="tooltip-icon"/>
         </AntTooltip>
       </div>
     );

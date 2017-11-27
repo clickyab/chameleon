@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
 @import "~antd/dist/antd.less";
 @import "theme.less";
+@import "fonts.less";
+
 
 #root{
   transition: filter linear 0.3s;
@@ -8,7 +10,7 @@
 
 .full-screen {
   height: 100vh;
-  width: 100vm;
+  width: 100vw;
 }
 
 // Typography
@@ -65,6 +67,14 @@ p {
   width: 100%;
 }
 
+.full-width{
+  width: 100% !important;
+}
+/* Change the white to any color ;) */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
 // customized Scrollbar Works only on webkit support browsers
 *::-webkit-scrollbar {
   width: .8em;
@@ -81,3 +91,100 @@ p {
   outline: 1px solid slategrey;
 }
 
+// Set defualt direction for only english Elements
+input[type="email"]{
+  direction: ltr;
+}
+input[type="email"]:disabled{
+  direction: ltr;
+  text-align: right;
+}
+
+
+/* Spin Buttons modified */
+input[type="number"]:hover::-webkit-outer-spin-button ,
+input[type="number"]:hover::-webkit-inner-spin-button ,input[type="number"]:focus::-webkit-outer-spin-button ,
+input[type="number"]:focus::-webkit-inner-spin-button  {
+  -webkit-appearance: none;
+  background-color:white;
+  background: url(@spin-btn-background);
+  background-size:cover;
+  position: relative;
+  left:0;
+  top:1px;
+  cursor: pointer;
+  margin-top:20px;
+  margin-bottom:20px;
+  height: 15px;
+  width: 8px;
+}
+
+.spin-btn-hide {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]:hover::-webkit-outer-spin-button,
+  input[type="number"]:hover::-webkit-inner-spin-button,
+  input[type="number"]:focus::-webkit-outer-spin-button,
+  input[type="number"]:focus::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    background: white;
+    width:0;
+    height: 0;
+  }
+}
+.placeholder-center{
+  > div:first-child {
+    transform: translateX(-50%);
+    left: 50%;
+  }
+}
+
+
+.generate-space(5);
+.generate-space(@n, @i: 0) when (@i =< @n  ) {
+  .m {
+    &t-@{i} {
+      margin-top: (@i * @space);
+    }
+    &r-@{i} {
+      margin-right: (@i * @space);
+    }
+    &b-@{i} {
+      margin-bottom: (@i * @space);
+    }
+    &l-@{i} {
+      margin-left: (@i * @space);
+    }
+    &x-@{i} {
+      margin-left: (@i * @space);
+      margin-right: (@i * @space);
+    }
+    &y-@{i} {
+      margin-top: (@i * @space);
+      margin-bottom: (@i * @space);
+    }
+  }
+  .p {
+    &t-@{i} {
+      padding-top: (@i * @space);
+    }
+    &r-@{i} {
+      padding-right: (@i * @space);
+    }
+    &b-@{i} {
+      padding-bottom: (@i * @space);
+    }
+    &l-@{i} {
+      padding-left: (@i * @space);
+    }
+    &x-@{i} {
+     padding-left: (@i * @space);
+     padding-right: (@i * @space);
+    }
+    &y-@{i} {
+     padding-top: (@i * @space);
+     padding-bottom: (@i * @space);
+    }
+  }
+  .generate-space(@n, (@i + 1 ));
+}

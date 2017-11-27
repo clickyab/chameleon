@@ -27,14 +27,27 @@ interface ITranslateProps {
   html ?: boolean;
 }
 
-export default class Translate extends React.Component<ITranslateProps, null> {
+interface IState {
+  params: object ;
+}
+export default class Translate extends React.Component<ITranslateProps, IState> {
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({params: nextProps.params});
+  }
+
+  constructor(props: ITranslateProps) {
+    super(props);
+    this.state = {
+      params: (props.params) ? props.params : null,
+    };
+  }
   public render() {
     const i18n = I18n.getInstance();
     return (
       <span>
         {i18n._t(this.props.value,
-          {html : this.props.html || false , params : this.props.params || {}})}
+          {html : this.props.html || false , params : this.state.params || {}})}
       </span>
     );
   }

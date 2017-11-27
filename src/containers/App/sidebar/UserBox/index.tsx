@@ -1,15 +1,18 @@
 import * as React from "react";
 import "./style.less";
-import {Badge, Icon, notification} from "antd";
+import {Badge, notification} from "antd";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {RootState} from "../../../../redux/reducers/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import Avatar from "../../../../components/Avatar/index";
-import {Link , NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import I18n from "../../../../services/i18n/index";
 import Menu from "antd/es/menu";
 import CONFIG from "../../../../constants/config";
+import Icon from "../../../../components/Icon/index";
+
+let Animate = require("rc-animate");
 
 /**
  * @interface Props
@@ -27,6 +30,7 @@ interface IProps {
 interface IState {
   open: boolean;
   popoverOpen: boolean;
+  user: UserResponseLoginOKAccount;
 }
 
 /**
@@ -62,20 +66,10 @@ class UserBox extends React.Component<IProps, IState> {
 
     this.state = {
       open: false,
-      popoverOpen: false
+      popoverOpen: false,
+      user: props.user,
     };
     this.handleContainerClick = this.handleContainerClick.bind(this);
-  }
-
-  public render() {
-
-    if (!this.props.user) {
-      return null;
-    }
-
-    return (
-      this.props.collapse ? this.closeMenuRender() : this.openMenuRender()
-    );
   }
 
   private userBoxRouting(key) {
@@ -121,20 +115,29 @@ class UserBox extends React.Component<IProps, IState> {
       description: ":)"
     });
   }
-private handlePopover(e) {
+
+  private handlePopover(e) {
     if (!this.state.popoverOpen) {
       setTimeout(() => {
         this.setState({popoverOpen: true});
       }, 10);
     }
-}
-componentDidMount() {
-    document.addEventListener("click", () => {
-        if (this.state.popoverOpen) {
-          this.setState({popoverOpen: false});
-        }
+  }
+
+  public componentWillReceiveProps(props: IProps) {
+    this.setState({
+      user: props.user,
     });
-}
+  }
+
+  public componentDidMount() {
+    document.addEventListener("click", () => {
+      if (this.state.popoverOpen) {
+        this.setState({popoverOpen: false});
+      }
+    });
+  }
+
   /**
    * @desc render this function when menu unfolded
    *
@@ -174,43 +177,49 @@ componentDidMount() {
             </g>
           </svg>
         </div>
-        <div className="mini-close" onClick={this.handleContainerClick}>
-          <Avatar user={this.props.user} progress={65}/>
-          <div className="mini-info">
-            {(this.props.user.first_name + " " + this.props.user.last_name)}
-            <br/>
-            اعتبار : 15000
-          </div>
+        <div onMouseEnter={this.handleContainerClick} onMouseLeave={this.handleContainerClick}>
+          <div className="mini-close">
+            <Avatar user={this.state.user} progress={65}/>
+            <div className="mini-info">
+              {(this.state.user.first_name + " " + this.state.user.last_name)}
+              <br/>
+              اعتبار : 15000
+            </div>
 
-          <div className="mini-bell">
-            <Badge dot className="profile-badge">
-              <Icon type="bell" className="bell-icon" style={{fontSize: 18}} onClick={this.handleBellClick}/>
-            </Badge>
+            <div className="mini-bell">
+              <Badge dot className="profile-badge">
+                <Icon name="cif-bell" className="bell-icon" onClick={this.handleBellClick}/>
+              </Badge>
+            </div>
           </div>
+          <Animate
+            transitionName="slide"
+          >
+            {this.state.open && <div className="mini-open">
+              <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
+                    onClick={e => this.userBoxRouting(e.key)}>
+                <Menu.Item key="editProfile">
+                  <span>{this.i18n._t("Edit profile")}</span>
+                </Menu.Item>
+                <Menu.Item key="transactions">
+                  <span>{this.i18n._t("Transactions")}</span>
+                </Menu.Item>
+                <Menu.Item key="charge">
+                  <span>{this.i18n._t("Charge")}</span>
+                </Menu.Item>
+                <Menu.Item key="withdraw">
+                  <span>{this.i18n._t("Withdraw")}</span>
+                </Menu.Item>
+                <Menu.Item key="userManagement">
+                  <span>{this.i18n._t("user management")}</span>
+                </Menu.Item>
+                <Menu.Item key="logout">
+                  <span>{this.i18n._t("logout")}</span>
+                </Menu.Item>
+              </Menu>
+            </div>}
+          </Animate>
         </div>
-        {this.state.open && <div className="mini-open">
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}
-                onClick={e => this.userBoxRouting(e.key)}>
-            <Menu.Item key="editProfile">
-              <span>{this.i18n._t("Edit profile")}</span>
-            </Menu.Item>
-            <Menu.Item key="transactions">
-              <span>{this.i18n._t("Transactions")}</span>
-            </Menu.Item>
-            <Menu.Item key="charge">
-              <span>{this.i18n._t("Charge")}</span>
-            </Menu.Item>
-            <Menu.Item key="withdraw">
-              <span>{this.i18n._t("Withdraw")}</span>
-            </Menu.Item>
-            <Menu.Item key="userManagement">
-              <span>{this.i18n._t("user management")}</span>
-            </Menu.Item>
-            <Menu.Item key="logout">
-              <span>{this.i18n._t("logout")}</span>
-            </Menu.Item>
-          </Menu>
-        </div>}
       </div>
     );
   }
@@ -225,26 +234,26 @@ componentDidMount() {
   private closeMenuRender(): JSX.Element {
     return (
       <div>
-      <div className="mini-container container-close" onClick={(e) => this.handlePopover(e)}>
-        <div className="avatar-close-menu">
-          <Badge dot className="profile-collapse-badge"/>
-          <Avatar user={this.props.user}/>
-        </div>
-        { this.state.popoverOpen &&
+        <div className="mini-container container-close" onClick={(e) => this.handlePopover(e)}>
+          <div className="avatar-close-menu">
+            <Badge dot className="profile-collapse-badge"/>
+            <Avatar user={this.state.user}/>
+          </div>
+          {this.state.popoverOpen &&
           <div className="user-popover">
             <Link to={"/user/profile"}>
-            <div className="popover-header">
-              <div className="mini-info">
-                {(this.props.user.first_name + " " + this.props.user.last_name)}
-                <br/>
-                اعتبار : 15000
+              <div className="popover-header">
+                <div className="mini-info">
+                  {(this.state.user.first_name + " " + this.state.user.last_name)}
+                  <br/>
+                  اعتبار : 15000
+                </div>
+                <div className="mini-bell">
+                  <Badge dot className="profile-badge">
+                    <Icon name="cif-bell" className="bell-icon" onClick={this.handleBellClick}/>
+                  </Badge>
+                </div>
               </div>
-              <div className="mini-bell">
-                <Badge dot className="profile-badge">
-                  <Icon type="bell" className="bell-icon" style={{fontSize: 18}} onClick={this.handleBellClick}/>
-                </Badge>
-              </div>
-            </div>
             </Link>
             <ul className="popover-list" dir={CONFIG.DIR}>
               <li><NavLink activeClassName="active" to="/user/profile">Edit profile</NavLink></li>
@@ -255,9 +264,20 @@ componentDidMount() {
               <li><NavLink activeClassName="active" to="/user/logout">logout</NavLink></li>
             </ul>
           </div>
-        }
+          }
+        </div>
       </div>
-      </div>
+    );
+  }
+
+  public render() {
+
+    if (!this.state.user) {
+      return null;
+    }
+
+    return (
+      this.props.collapse ? this.closeMenuRender() : this.openMenuRender()
     );
   }
 }

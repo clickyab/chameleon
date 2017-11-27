@@ -4,9 +4,10 @@ import I18n from "../../services/i18n/index";
 import CONFIG from "../../constants/config";
 import "./style.less";
 import Translate from "../i18n/Translate/index";
+import Icon from "../Icon/index";
 
 export interface IData {
-  value: number;
+  value: any;
   name: string;
 }
 
@@ -110,7 +111,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
         <span className="tag">{data.name}</span>
         <span className="close" onClick={() => {
           this.handleRemove(data.value);
-        }}>&#10005;</span>
+        }}><Icon name={"cif-closelong"}/></span>
       </div>
     ));
   }
@@ -140,12 +141,13 @@ export default class SelectTag extends React.Component<IProps, IStates> {
           <Translate value={"select _{type}"} params={{type: this.props.type}}/>
         </div>}
         <div className="select-tag">
-          <SelectField className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
+          <SelectField className={`${(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}`}
                        hintText={this.i18n._t(this.props.placeholder)}
                        selectionRenderer={this.selectionRenderer}
                        multiple={true}
                        value={this.state.value}
                        onChange={this.handleChange.bind(this)}
+                       disabled={this.props.data.length === this.state.value.length}
           >
             {this.props.allOption &&
             <MenuItem
@@ -172,7 +174,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
             </span>
               <span className="close" onClick={() => {
                 this.handleReset();
-              }}>&#10005;</span>
+              }}><Icon name={"cif-closelong"}/></span>
             </div>
             }
             {this.state.value.length === 0 &&

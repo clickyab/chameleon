@@ -23,6 +23,7 @@ interface IProps {
  */
 interface IState {
   cx: number;
+  progress: number;
 }
 
 export default class Avatar extends React.Component<IProps, IState> {
@@ -35,6 +36,7 @@ export default class Avatar extends React.Component<IProps, IState> {
     super(props);
     this.state = ({
       cx: 16,
+      progress: 0,
     });
   }
 
@@ -59,7 +61,7 @@ export default class Avatar extends React.Component<IProps, IState> {
       }
     }
     else {
-      return ("translate(0," + radius * 2 + "px) rotate(-90deg)") ;
+      return ("translate(0," + radius * 2 + "px) rotate(-90deg)");
     }
   }
 
@@ -104,6 +106,22 @@ export default class Avatar extends React.Component<IProps, IState> {
     return url;
   }
 
+  calculateProgress(user) {
+    let countOfDataHasNoValue: number = 0;
+    let countOfData: number = 11;
+    Object.keys(user)
+      .map(key => {
+        if (!!user[key]) {
+          countOfDataHasNoValue++;
+        }
+      });
+
+    this.setState({
+      progress: 100 - ((countOfData - countOfDataHasNoValue) / countOfData) * 100,
+    });
+
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!nextProps.radius) {
       this.handleProgressSize(nextProps.size);
@@ -111,27 +129,30 @@ export default class Avatar extends React.Component<IProps, IState> {
     else {
       this.setState({cx: nextProps.radius});
     }
+    this.calculateProgress(nextProps.user);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.radius) {
       this.handleProgressSize(this.props.size);
     }
     else {
       this.setState({cx: this.props.radius});
     }
+
+    this.calculateProgress(this.props.user);
   }
 
   render() {
     return (
       <div className={(this.props.className) ? (this.props.className + " avatar") : "avatar"}>
-        {(this.props.progress) &&
+        {((this.state.progress) || (this.state.progress === 0)) &&
       <svg className="profile-progress" width={this.state.cx * 2} height={this.state.cx * 2}>
         <circle className="progress-border inactive" cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
                 strokeWidth="1" fill="transparent"
                 style={{transform: this.handleProgressPosition(this.props.radius, this.props.size)}}/>
         <circle className="progress-border active"
-                strokeDashoffset={1000 - ( Math.PI * (2 * (this.state.cx + 2))) * this.props.progress / 100}
+                strokeDashoffset={1000 - ( Math.PI * (2 * (this.state.cx + 3))) * this.state.progress / 100}
                 cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
                 strokeWidth="1" fill="transparent"
                 style={{transform: this.handleProgressPosition(this.props.radius, this.props.size)}}/>

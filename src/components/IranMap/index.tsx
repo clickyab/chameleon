@@ -19,7 +19,7 @@ interface IProps {
    * @desc selected items array
    * @param {string[]}
    */
-  selectedItems?: string[];
+  value?: string[];
   /**
    * @param {string[]}
    */
@@ -53,7 +53,7 @@ export default class IranMap extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       hoverItem: null,
-      selectedItems: this.props.selectedItems ? this.props.selectedItems : [],
+      selectedItems: this.props.value ? this.props.value : [],
     };
 
     /**
@@ -63,6 +63,12 @@ export default class IranMap extends React.Component<IProps, IState> {
     this.check = this.check.bind(this);
     this.mouseLeave = this.mouseLeave.bind(this);
     this.checkAll = this.checkAll.bind(this);
+  }
+
+  public componentWillReceiveProps(props) {
+    this.setState({
+      selectedItems: props.value ? props.value : [],
+    });
   }
 
   /**
@@ -98,15 +104,18 @@ export default class IranMap extends React.Component<IProps, IState> {
       this.setState({
         selectedItems: [...this.state.selectedItems, pathId],
       });
+      if (typeof this.props.onChange === "function") {
+        this.props.onChange([...this.state.selectedItems, pathId]);
+      }
     } else {
       let items = this.state.selectedItems;
       items.splice(indexOfItem, 1);
       this.setState({
         selectedItems: items,
       });
-    }
-    if (typeof this.props.onChange === "function") {
-      this.props.onChange(this.state.selectedItems);
+      if (typeof this.props.onChange === "function") {
+        this.props.onChange(items);
+      }
     }
   }
 
@@ -119,10 +128,15 @@ export default class IranMap extends React.Component<IProps, IState> {
       this.setState({
         selectedItems: [],
       });
+      this.props.onChange([]);
     } else {
       let items = map.g.path.map((p) => p.id);
       this.setState({
         selectedItems: items,
+      }, () => {
+        if (typeof this.props.onChange === "function") {
+          this.props.onChange(this.state.selectedItems);
+        }
       });
     }
   }
@@ -132,7 +146,8 @@ export default class IranMap extends React.Component<IProps, IState> {
       <Row type="flex">
         <Col className="city-selector">
           <div style={{overflowY: "auto", height: "500px"}} onMouseLeave={() => this.mouseLeave()}>
-            <Checkbox className={(this.state.selectedItems.length === map.g.path.length) ? "all-city-selector-checked" : "all-city-selector"}
+            <Checkbox
+              className={(this.state.selectedItems.length === map.g.path.length) ? "all-city-selector-checked" : "all-city-selector"}
               checked={this.state.selectedItems.length === map.g.path.length}
               onCheck={() => this.checkAll()}
               onMouseLeave={() => this.mouseLeave()}

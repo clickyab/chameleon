@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
-import {Row} from "antd";
+import {Row, Col} from "antd";
 import ProgressBar from "./components/ProgressBar/index";
 import TypeComponent from "./containers/Type/index";
 import NamingComponent from "./containers/Naming/index";
@@ -44,17 +44,19 @@ export default class CampaignContainer extends React.Component <IProps, IState> 
     const {match} = this.props;
     return (
       <div dir={CONFIG.DIR}>
-        <Row>
+        <Row type="flex" align="middle" justify="center" className="progress-bar-wrapper">
+          <Col span={16}>
           <ProgressBar/>
+          </Col>
         </Row>
         <Row>
           <PrivateRoute path={`${match.url}/type/:id?`} component={TypeComponent}/>
           <PrivateRoute path={`${match.url}/naming/:id?`} component={NamingComponent}/>
-          <PrivateRoute path={`${match.url}/budget/:id?`} component={BudgetComponent}/>
-          <PrivateRoute path={`${match.url}/targeting/:id?`} component={TargetingComponent}/>
-          <PrivateRoute path={`${match.url}/select-publisher/:id?`} component={SelectPublisherComponent}/>
-          <PrivateRoute path={`${match.url}/upload/:id?`} component={UploadComponent}/>
-          <PrivateRoute path={`${match.url}/check-publish/:id?`} component={CheckPublishComponent}/>
+          <PrivateRoute path={`${match.url}/budget/:id`} component={BudgetComponent}/>
+          <PrivateRoute path={`${match.url}/targeting/:id`} component={TargetingComponent}/>
+          <PrivateRoute path={`${match.url}/select-publisher/:id`} component={SelectPublisherComponent}/>
+          <PrivateRoute path={`${match.url}/upload/:id`} component={UploadComponent}/>
+          <PrivateRoute path={`${match.url}/check-publish/:id`} component={CheckPublishComponent}/>
         </Row>
       </div>
     );

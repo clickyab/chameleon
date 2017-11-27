@@ -1,9 +1,10 @@
 import * as React from "react";
-import {Icon, Layout} from "antd";
+import {Layout} from "antd";
 import SidebarMenu from "../../sidebar/index";
 import {PrivateFooter} from "./footer/index";
 import "./style.less";
 import PrivateBreadcrumb from "./Breadcrumb/index";
+import Icon from "../../../../components/Icon/index";
 
 const {Header, Sider, Content} = Layout;
 
@@ -35,12 +36,12 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
   public render() {
     return (
       <Layout style={{ minHeight: "100vh" }}>
-        <Layout>
+        <Layout className={(this.state.collapsed) ? "layout-collapsed" : "layout-open"}>
           <Header className="header">
             <PrivateBreadcrumb/>
             <Icon
               className="trigger"
-              type={this.state.collapsed ? "menu-fold" : "menu-unfold"}
+              name={this.state.collapsed ? "cif-opennav" : "cif-closenav"}
               onClick={this.toggle}
             />
           </Header>
@@ -54,6 +55,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
           collapsible
           collapsed={this.state.collapsed}
           width="300"
+          className="sidebar-wrapper"
         >
           <SidebarMenu collapsed={this.state.collapsed}/>
         </Sider>

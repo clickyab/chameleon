@@ -10,11 +10,20 @@
   }
 }
 
+
 .add-utm-btn {
+  display: flex;
   border-radius: 2px;
   margin-right: 10px;
-  i {
-    padding: 0 5px;
+  padding: 0 10px;
+  .utm-icon{
+    font-size: 16px;
+    line-height:16px;
+    position: relative;
+    top:1px;
+  }
+  span{
+    margin:0 5px;
   }
 }
 
@@ -27,11 +36,15 @@
 .ant-upload-list {
   display: none;
 }
+.plus-icon{
+  position: relative;
+  top:1px;
+}
 
-.btn-dragger {
-  margin-top: 10px;
+.btn-dragger , .btn-add-list , .btn-publisher {
+  margin-top: 50px;
   height: 30px;
-  width: 220px;
+  min-width: 220px;
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
   background: #B6BBC2;
   button {
@@ -39,11 +52,14 @@
     line-height: @campaign-button-height !important;
     div {
       > div {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
         span {
+          padding: 0 2px !important;
           color: white;
         }
         &:hover {
-          background: #5E6670 !important;
+          background: @dark-gray-color !important;
         }
         background: #B6BBC2;
         height: @campaign-button-height !important;
@@ -60,7 +76,7 @@
   padding: 2px;
   margin: 2px 3px;
   background-color: #fff;
-  color: #88909B;
+  color: @normal-gray-color;
   box-shadow: 0 0 0 1px #d9d9d9 inset;
 }
 
@@ -115,7 +131,7 @@
       img {
         display: inline-block;
         max-width: 100%;
-        height: auto;
+        max-height: 100%;
       }
       .image-overlay {
         *{
@@ -146,24 +162,133 @@
   .upload-option {
     margin-right: auto;
     margin-left: 20px;
+    display: flex;
+    align-items: center;
   }
-  .btn-cancel {
+  .btn-cancel , .btn-edit {
     border: none;
-    font-size: 15px;
+    font-size: 13px;
+    padding: 0px 5px !important;
+    color: #C9CCD1;
   }
 }
 
-.preview-banner-modal {
-  .ant-modal-footer {
-    display: none !important;
+.utm-img-column{
+  padding: 20px;
+  display: flex;
+  border-left:1px solid #E4E6E9;
+  img{
+    align-self: center;
+    width: 100%;
   }
-  position: relative;
-  display: table; /* This is important */
-  overflow-y: auto;
-  overflow-x: auto;
-  width: auto !important;
-  min-width: 300px !important;
-  .ant-modal-body {
+}
+.ant-modal-body {
+  .utm-form-img-wrapper {
+    margin-top: -16px;
+    .switch-rtl, switch {
+      margin-bottom: -24px;
+    }
+
+  }
+  .utm-form-column {
     padding: 20px;
   }
+
+  .modal-ok-btn {
+    margin-top: 25px;
+    height: @modal-button-height;
+    min-width: 70px;
+    box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+    font-size: 13px !important;
+    margin-bottom: 10px;
+    button {
+      min-width: 70px;
+      height: @modal-button-height !important;
+      line-height: @modal-button-height !important;
+      div {
+        > div {
+          height: @modal-button-height !important;
+          padding: 0px 0px !important;
+        }
+      }
+    }
+  }
+
+  .modal-cancel-btn {
+    margin-top: 25px;
+    height: @modal-button-height;
+    min-width: 70px;
+    box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+    font-size: 13px !important;
+    margin-bottom: 10px;
+    button {
+      min-width: 70px;
+      height: @modal-button-height !important;
+      line-height: @modal-button-height !important;
+      background-color: transparent !important;
+      div {
+        height: @modal-button-height !important;
+        > div {
+          height: @modal-button-height !important;
+          padding: 0px 0px !important;
+          background-color: transparent !important; //Remove Hover
+        }
+      }
+    }
+  }
+}
+.modal-btn-row{
+  display: block;
+  text-align: left;
+}
+.modal-switch-row {
+  margin-bottom: 15px;
+}
+  .utm-img-modal {
+    width: auto !important;
+    display: table;
+    min-width: 450px;
+    .ant-modal-footer {
+      display: none;
+    }
+    .ant-modal-body{
+      padding-bottom: 0 ;
+    }
+  }
+  .preview-banner-modal {
+    .ant-modal-footer {
+      display: none !important;
+    }
+    position: relative;
+    display: table; /* This is important */
+    overflow-y: auto;
+    overflow-x: auto;
+    width: auto !important;
+    min-width: 250px !important;
+    margin: auto;
+    .ant-modal-body {
+      padding: 20px;
+    }
+  }
+.upload-icon{
+  font-size: 55px;
+  line-height: 55px;
+  margin-bottom: -10px;
+  display: block;
+}
+.dragger-content{
+  color: #DBDDE1;
+  span{
+    display: block;
+    font-size: 14px;
+  }
+  h2{
+    color: #DBDDE1;
+  }
+}
+
+.extensions-icon{
+  font-size: 34px;
+  margin-left: 5px;
+  margin-right: 5px;
 }

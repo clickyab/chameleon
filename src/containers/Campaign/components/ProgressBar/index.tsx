@@ -18,6 +18,8 @@ import {withRouter} from "react-router";
 import Step from "./stepComponent";
 
 import "./style.less";
+import {setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
+import I18n from "../../../../services/i18n/index";
 
 /**
  * @interface
@@ -33,7 +35,9 @@ interface IOwnProps {
  * @desc define component and redux acceptability props
  */
 interface IProps {
-  setCurrentStep: (step: STEPS) => {};
+  setCurrentStep: (step: STEPS) => void;
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
+  unsetBreadcrumb: (name: string) => void;
   setSelectedCampaignId: (id: number | null) => {};
   currentStep: STEPS;
   selectedCampaignId: number | null;
@@ -52,6 +56,9 @@ interface IState {
 @connect(mapStateToProps, mapDispatchToProps)
 class ProgressBar extends React.Component<IProps, IState> {
 
+
+  private i18n = I18n.getInstance();
+
   /**
    * @constructor
    * @desc set initial state
@@ -69,12 +76,16 @@ class ProgressBar extends React.Component<IProps, IState> {
    * @func
    * @desc check if route has id, set that in the store
    */
-  public componentWillMount() {
+  public componentDidMount() {
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
     }
+    this.props.setBreadcrumb("campaign", this.i18n._t("campaign").toString(), "home");
   }
 
+  public componentWillReceiveProps(nextProps) {
+    this.setState({stepIndex: nextProps.currentStep});
+  }
   private checkStateClass(step: STEPS, type: STEPS) {
     if (step === type) {
       return "active-step";
@@ -83,7 +94,12 @@ class ProgressBar extends React.Component<IProps, IState> {
       return "complete-step";
     }
   }
-
+private checkCurrentCampaign(): boolean {
+  if (this.props.selectedCampaignId) {
+      return false;
+  }
+  return true;
+}
   /**
    * @desc Handle click on wizard's steps and set current step in the store
    * @func
@@ -122,46 +138,46 @@ class ProgressBar extends React.Component<IProps, IState> {
     const {stepIndex} = this.state;
     return (
       <Row className="progress-bar">
-        <Stepper linear={false}>
+        <Stepper linear={false} >
           <Step className={this.checkStateClass(stepIndex, STEPS.TYPE)} active={stepIndex === STEPS.TYPE}
                 completed={stepIndex > STEPS.TYPE}>
-            <StepButton  disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TYPE)} >
               <Translate value="Campaign Type"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.NAMING)} active={stepIndex === STEPS.NAMING}
                 completed={stepIndex > STEPS.NAMING}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.NAMING)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.NAMING)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Campaign Name"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET)} active={stepIndex === STEPS.BUDGET}
                 completed={stepIndex > STEPS.BUDGET}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Budget and Finance"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.TARGETING)} active={stepIndex === STEPS.TARGETING}
                 completed={stepIndex > STEPS.TARGETING}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TARGETING)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TARGETING)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Targeting"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER)}
                 active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Select Publisher"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.UPLOAD)} active={stepIndex === STEPS.UPLOAD}
                 completed={stepIndex > STEPS.UPLOAD}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.UPLOAD)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.UPLOAD)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH)}
                 active={stepIndex === STEPS.CHECK_PUBLISH}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Check and Publish"/>
             </StepButton>
           </Step>
@@ -200,6 +216,8 @@ function mapDispatchToProps(dispatch) {
   return {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
+    unsetBreadcrumb: (name: string) => dispatch(unsetBreadcrumb(name)),
   };
 }
 

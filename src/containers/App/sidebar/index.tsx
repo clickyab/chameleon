@@ -1,8 +1,10 @@
 import * as React from "react";
 import {withRouter} from "react-router";
-import {Badge, Button, Icon, Layout, Menu} from "antd";
+import {Badge, Button, Layout, Menu} from "antd";
 import I18n from "../../../services/i18n/index";
 import UserBox from "./UserBox/index";
+import Icon from "../../../components/Icon/index";
+
 
 const {Sider}: any = Layout;
 
@@ -24,11 +26,11 @@ class SidebarMenu extends React.Component<IProps, IState> {
   private sideBarRouting(key) {
     switch (key) {
       case "createCampaign":
-        return this.props.history.push("/Campaign/create");
+        return this.props.history.push("/Campaign/type");
       case "dashboard":
         return this.props.history.push("/");
       case "campaigns":
-        return this.props.history.push("/Campaign");
+        return this.props.history.push("/Campaign/type");
       case "media":
         return this.props.history.push("/media");
       case "explore":
@@ -43,37 +45,37 @@ class SidebarMenu extends React.Component<IProps, IState> {
   public render() {
     return (
       <div className={this.props.collapsed ? "" : "menu-list"}>
-        <div className="logo"/>
+        <Icon className="logo-sidebar" name={"cif-cylogo-without-typo"}/>
         <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]}
               onClick={e => this.sideBarRouting(e.key)}>
           <Menu.Item key="createCampaign" className="campaignButton">
             <Button className="ghostButton" size="large" ghost>
-              <Icon type="plus"/>
-              <span>{this.i18n._t("Create Campaign")}</span>
+              <span className="create-campaign-text">{this.i18n._t("Create Campaign")}</span>
+              <Icon className="create-campaign-icon" name="cif-plusbold"/>
             </Button>
           </Menu.Item>
           <Menu.Item key="dashboard">
-            <Icon type="user"/>
+            <Icon className="sidbar-menu-icon" name="cif-dashboard"/>
             <span>{this.i18n._t("Dashboard")}</span>
           </Menu.Item>
           <Menu.Item key="campaigns">
-            <Icon type="video-camera"/>
+            <Icon className="sidbar-menu-icon" name="cif-campaign"/>
             <span>{this.i18n._t("Campaigns")}</span>
           </Menu.Item>
           <Menu.Item key="media">
-            <Icon type="upload"/>
+            <Icon className="sidbar-menu-icon" name="cif-publishers"/>
             <span>{this.i18n._t("Media")}</span>
           </Menu.Item>
           <Menu.Item key="explore">
-            <Icon type="upload"/>
+            <Icon className="sidbar-menu-icon" name="cif-inventory"/>
             <span>{this.i18n._t("explore")}</span>
           </Menu.Item>
           <Menu.Item key="reports">
-            <Icon type="upload"/>
+            <Icon className="sidbar-menu-icon" name="cif-analytics"/>
             <span>{this.i18n._t("Reports")}</span>
           </Menu.Item>
           <Menu.Item key="support">
-            <Icon type="upload"/>
+            <Icon className="sidbar-menu-icon" name="cif-help"/>
             <span>{this.i18n._t("Support")}</span>
             {this.props.collapsed &&
             <Badge className="dot-badge" dot={true} count={14}/>}

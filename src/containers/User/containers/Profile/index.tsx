@@ -1,22 +1,19 @@
 import * as React from "react";
 import {RouteComponentProps} from "react-router";
-import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Form, Card, Row, message, Col, notification, Layout} from "antd";
-import {TextField, Checkbox, RaisedButton, FontIcon, Toggle, SelectField} from "material-ui";
-import {setUser, setIsLogin} from "../../../../redux/app/actions/index";
+import {Form, Row, Col, notification} from "antd";
+import {TextField, RaisedButton} from "material-ui";
+import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
 import CONFIG from "../../../../constants/config" ;
 
 import "./style.less";
 import LocationSelect from "../../../../components/LocationSelect/index";
 import Gender from "../../../../components/Gender/index";
-import Upload, {UPLOAD_MODULES} from "../../../../services/Upload/index";
-import {error} from "util";
 import ChangePassword from "./components/ChangePassword/index";
 
 const FormItem = Form.Item;
@@ -24,6 +21,9 @@ const FormItem = Form.Item;
 export interface IProps extends RouteComponentProps<void> {
   form: any;
   user: UserResponseLoginOKAccount;
+  setUser: (user: UserResponseLoginOKAccount) => void;
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
+  unsetBreadcrumb: (name: string) => void;
 }
 
 
@@ -55,6 +55,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
+    this.props.setBreadcrumb("profile", this.i18n._t("Profile").toString(), "home");
     const api = new UserApi();
     api.userPingGet({})
       .then((res) => {
@@ -63,27 +64,22 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
   }
 
   private handleChangeLocation(country, province, city) {
-
     // TODO:: store country and province
-    this.setState(() => {
-        return {
-          ...this.state,
-          user: {
-            ...this.state.user,
-            personal: {
-              ...this.state.user,
-              city_id: city,
-            }
-          }
-        };
+    this.setState({
+      user: {
+        ...this.state.user,
+        city_id: city,
+      },
+      buttonDisable: false,
+    }, () => {
+      // console.log(this.state);
     });
-    if (this.state.user.city_id !== city) {
-      this.setState({buttonDisable: false});
-    }
   }
- private handleButton() {
-  this.setState({buttonDisable: false});
-}
+
+  private handleButton() {
+    this.setState({buttonDisable: false});
+  }
+
   private handleSubmit(e) {
     if (e) e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -98,9 +94,13 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
       userApi.userUpdatePut({
         payloadData: {
-          ...values
+          ...values,
+          city_id: this.state.user.city_id
+
+          ,
         }
-      }).then(() => {
+      }).then((data) => {
+        this.props.setUser(data.account as UserResponseLoginOKAccount);
         notification.success({
           message: "Update Profile",
           description: this.i18n._t("Your corporation profile has been updated successfully.").toString(),
@@ -249,7 +249,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                       initialValue: this.state.user.gender,
                       rules: [{required: true, message: this.i18n._t("Please select your Gender!")}],
                     })(
-                      <Gender onChange={() => this.handleButton()} />
+                      <Gender onChange={() => this.handleButton()}/>
                     )}
                   </FormItem>
                 </Col>
@@ -270,12 +270,14 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   </FormItem>
                 </Col>
                 <Col span={12}>
+                  {this.state.user &&
                   <LocationSelect
                     onChange={this.handleChangeLocation.bind(this)}
                     countryId={1}
                     cityId={this.state.user.city_id}
                     provinceId={this.state.user.province_id}
                   />
+                  }
                 </Col>
               </Row>
 
@@ -325,7 +327,6 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                   <FormItem>
                     {getFieldDecorator("address", {
                       initialValue: this.state.user.address,
-                      rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
                     })(
                       <TextField
                         fullWidth={true}
@@ -350,7 +351,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             </Col>
             <Col span={6}>
               <Col className="profile-notice">
-                <h6><Icon name="arrow"/>You Should know</h6>
+                <h6><Icon name="cif-lightbulb"/><Translate value={"You should know:"}/></h6>
                 <ul>
                   <li>Filling bullet fields are required</li>
                   <li>You can't change your password to any of your former passwords for security
@@ -385,7 +386,9 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    /* empty */
+    setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
+    unsetBreadcrumb: (name: string) => dispatch(unsetBreadcrumb(name)),
   };
 }
 

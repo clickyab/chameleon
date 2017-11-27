@@ -4,31 +4,32 @@
   margin-top: @campaign-top-distance;
   margin-right: @campaign-side-distance;
   margin-left: @campaign-side-distance;
-    label{
-      width: auto !important;
-      font-size: @campaign-label-font;
-    }
-  .form-select-column{
-    > .ant-form-item{
-      margin:auto !important;
-      height: 25px !important;
+  label {
+    width: auto !important;
+    font-size: @campaign-label-font;
+  }
+  .form-select-column {
+    > .ant-form-item {
+      margin: auto !important;
     }
   }
-  .campaign-tag{
-    margin-bottom:0;
+  .campaign-tag {
+    margin-bottom: 0;
   }
-
-  .ant-form-item{
-    margin-top:15px !important;
-    margin-bottom:15px !important;
-    .ant-form-explain{
+  .title-with-radio {
+    margin-top: 10px !important;
+  }
+  .ant-form-item {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+    .ant-form-explain {
       margin-top: -10px !important;
     }
   }
 
-  .campaign-textfield{
-    > div{
-      font-size:13px;      //Resize text-field placeholder
+  .campaign-textfield {
+    > div {
+      font-size: 13px; //Resize text-field placeholder
     }
   }
 }
@@ -40,7 +41,11 @@
   }
 }
 
+.progress-bar-wrapper{
+  border-bottom: 1px solid #E7E9EC;
+}
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
+// if we wrap selector with ant decorator
 .form-select-rtl {
   height: @form-select-height !important;
   width: @form-select-width !important;
@@ -64,11 +69,11 @@
         padding: 0 !important;
         fill: @campaign-form-symbol-color !important;
         svg {
-          height:@form-select-height ;
+          height: @form-select-height;
           border: none !important;
           position: absolute;
-          top:0;
-          left:5px;
+          top: 0;
+          left: 5px;
         }
       }
     }
@@ -96,17 +101,17 @@
         width: @form-select-width !important;
         padding: auto !important;
         fill: @campaign-form-symbol-color !important;
-        > div{
+        > div {
           height: @form-select-height !important;
           //margin-left: @form-select-width/2 ;
           //margin-top: -((@form-select-height)/2);
         }
         svg {
-          height:@form-select-height !important; ;
+          height: @form-select-height !important;;
           border: none !important;
           position: absolute;
-          top:-2px;
-          right:5px;
+          top: -2px;
+          right: 5px;
         }
       }
     }
@@ -127,12 +132,26 @@ span[role="menuitem"] {
 
 // End Of Form-selector style
 
+.select-list-rtl {
+  height: @form-select-height !important;
+  width: @form-select-width !important;
+}
+.select-geolocation{
+  margin-top: 0;
+  height: 30px !important;
+  width: 200px !important;
+  z-index: 99;
+}
+
 // Radio Button styles (Inline)
 .campaign-radio-group {
   display: flex;
   height: @radio-button-height !important;
 }
-
+.form-radio{
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
 .campaign-radio-button {
   min-width: @radio-button-width !important;
   width: auto !important;
@@ -142,10 +161,11 @@ span[role="menuitem"] {
   }
   > div {
     label {
-      line-height:@radio-button-height !important;
-      font-size:@radio-button-label;
+      line-height: @radio-button-height !important;
+      font-size: @radio-button-label;
     }
     > div {
+      margin-right: 0 !important;
       height: @radio-button-height !important;
       > div {
         svg:first-child {
@@ -157,16 +177,85 @@ span[role="menuitem"] {
           fill: @radio-button-color !important;
         }
       }
+      // remove ripple
+      > div:nth-child(2) {
+        display: none;
+      }
     }
   }
 }
 
-.currency{
+.per-click-description{
+  margin-top: -20px;
+  display: block;
+}
+.subscriber-description{
+  margin-top: -10px;
+  display: block;
+}
+.currency {
   font-size: 14px;
-  color:#5E6670;
+  color: @dark-gray-color;
 }
 
 // Datepicker 2 style
-.tether-element{
+.tether-element {
   z-index: 5;
 }
+
+// Added here to render first
+.table-icon {
+  position: relative;
+  top: 2px;
+  font-size: 14px;
+  margin: 0 5px;
+}
+
+div[dir="rtl"] .table-icon {
+  .table-icon();
+  float: left;
+}
+
+.anticon.anticon-caret-up:before {
+  content: "\e04b";
+  font-family: "clickyabdashboard" !important;
+  display: block;
+  transform-origin: 50% 50%;
+  transform: rotate(180deg);
+  position: relative;
+  top: -1px;
+}
+
+.anticon.anticon-caret-down:before {
+  content: "\e04b";
+  font-family: "clickyabdashboard" !important;
+  display: block;
+  position: relative;
+  top: 1px;
+}
+
+.ant-checkboxform {
+  input[type="checkbox"] {
+    height: @checkbox-ant-width !important;
+    width: @checkbox-ant-width !important;
+  }
+}
+
+.ant-notification-notice-icon.ant-notification-notice-icon-error{
+  &:before {
+    content: "\e015" !important;
+    font-size: 40px;
+    font-family: clickyabdashboard !important;
+  }
+}
+.ant-notification-notice-icon.ant-notification-notice-icon-success{
+  &:before{
+    content: "\e013" !important;
+    font-size: 40px;
+    font-family: "clickyabdashboard" !important;
+  }
+}
+
+
+
+

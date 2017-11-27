@@ -50,9 +50,45 @@
   padding-left:10px;
   padding-right: 10px;
 }
+.table-total-number{
+  margin-top: 35px;
+  margin-bottom: -35px;
+  display: block;
+  text-align: left;
+  i{
+    position: relative;
+    top:3px;
+    font-size: 16px;
+    color:@normal-gray-color;
+    text-align: right;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+}
 .campaign-data-table{
   .ant-table-header{
     overflow: auto !important;
+  }
+  .ant-table-pagination{
+    float: left;
+    direction: ltr;
+  }
+  .pagination-icon{
+    font-size: 11px;
+    position: relative;
+    top:1px;
+  }
+  .ant-pagination-item{
+    padding:0 !important;
+    margin: 0 5px !important;
+  }
+  .ant-pagination-item-active{
+    background: white;
+    border-bottom: 1px solid @primary-color !important;
+    border-radius: 0px;
+    a{
+      color:@primary-color;
+    }
   }
 
   .ant-table-header:before {
@@ -68,6 +104,7 @@
   .ant-table-tbody{
     box-shadow: 4px 4px 5px 0 rgba(0, 0, 0, 0.1);
   }
+
   // customized Scrollbar Works only on webkit support browsers
   *::-webkit-scrollbar {
     width: .4em;

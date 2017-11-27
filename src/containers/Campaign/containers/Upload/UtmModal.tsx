@@ -5,13 +5,14 @@
 
 import * as React from "react";
 import Modal from "../../../../components/Modal/index";
-import {Form, Row, Col, notification} from "antd";
-import {TextField} from "material-ui";
+import {Form, Row, Col, notification, Switch} from "antd";
+import {RaisedButton, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import Image from "react-image-file";
-import {IFileItem} from "./index";
+import {IFileItem} from "./BannerVideo";
+import "./style.less";
 
 const FormItem = Form.Item;
 
@@ -47,6 +48,7 @@ interface IState {
   utm_content: string;
   file?: IFileItem;
   url: string;
+  utm_setting: boolean;
 }
 
 class UtmModal extends React.Component<IProps, IState> {
@@ -65,6 +67,7 @@ class UtmModal extends React.Component<IProps, IState> {
       utm_medium: "",
       utm_campaign: "",
       utm_content: "",
+      utm_setting: false,
     };
   }
 
@@ -198,28 +201,36 @@ class UtmModal extends React.Component<IProps, IState> {
         title={this.i18n._t("UTM Configuration")}
         visible={true}
         onOk={this.handleSubmit.bind(this)}
-        onCancel={this.props.onClose}>
-        <Form onSubmit={this.handleSubmit.bind(this)}>
+        onCancel={this.props.onClose}
+        customClass="utm-img-modal">
+        <Form onSubmit={this.handleSubmit.bind(this)} className="utm-form-img-wrapper">
           <div dir={CONFIG.DIR}>
             <Row type="flex">
               {this.props.file &&
-              <Col span={12}>
+              <Col span={10} className="utm-img-column">
+                {this.props.file.fileObject && (!this.props.file.state || !this.props.file.state.url) &&
                 <Image file={this.props.file.fileObject} alt={this.props.file.fileObject.name}
-                       height={100} width={190}/>
+                       type={"img"}
+                />
+                }
+                {this.props.file.state &&
+                <img src={`http://staging.crab.clickyab.ae/uploads/` + this.props.file.state.url} alt={this.props.file.name}/>
+                }
               </Col>
               }
-              <Col span={this.props.file ? 12 : 24}>
+              <Col span={this.props.file ? 14 : 24} className="utm-form-column">
                 {this.props.file &&
-                <Row type="flex">
-                  <Col span={5}>
+                <Row type="flex" align="middle"  gutter={16}>
+                  <Col span={7}>
                     <label><Translate value="Name"/></label>
                   </Col>
-                  <Col span={19}>
+                  <Col span={17}>
                     <FormItem>
                       {getFieldDecorator("name", {
                         initialValue: this.props.file.name,
                       })(
                         <TextField
+                          className="utm-input"
                           fullWidth={true}
                         />
                       )}
@@ -227,12 +238,11 @@ class UtmModal extends React.Component<IProps, IState> {
                   </Col>
                 </Row>
                 }
-                <Row type="flex">
-
-                  <Col span={5}>
+                <Row type="flex" align="middle"  gutter={16}>
+                  <Col span={7}>
                     <label><Translate value="url"/></label>
                   </Col>
-                  <Col span={19}>
+                  <Col span={17}>
                     <FormItem>
                       <TextField
                         value={this.state.url}
@@ -244,70 +254,106 @@ class UtmModal extends React.Component<IProps, IState> {
                       />
                     </FormItem>
                   </Col>
-
-                  <Col span={5}>
-                    <label>utm_source</label>
+                </Row>
+                {this.state.file &&
+                <Row type="flex" align="middle"  gutter={16} className="modal-switch-row">
+                  <Col span={7}>
+                    <label><Translate value={"UTM Setting"}/></label>
                   </Col>
-                  <Col span={19}>
+                  <Col span={17}>
                     <FormItem>
-                      <TextField
-                        value={this.state.utm_source}
-                        onChange={(e, value) => {
-                          this.onFormChange("utm_source", value);
-                        }}
-                        hintText={this.i18n._t("buffer")}
-                        fullWidth={true}
-                      />
+                      <Switch className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
+                              onChange={(e) => (this.setState({utm_setting: !this.state.utm_setting}))}/>
                     </FormItem>
                   </Col>
-
-                  <Col span={5}>
-                    <label>utm_medium</label>
-                  </Col>
-                  <Col span={19}>
-                    <FormItem>
-                      <TextField
-                        value={this.state.utm_medium}
-                        onChange={(e, value) => {
-                          this.onFormChange("utm_medium", value);
-                        }}
-                        hintText={this.i18n._t("post-original")}
-                        fullWidth={true}
-                      />
-                    </FormItem>
-                  </Col>
-
-                  <Col span={5}>
-                    <label>utm_campaign</label>
-                  </Col>
-                  <Col span={19}>
-                    <FormItem>
-                      <TextField
-                        value={this.state.utm_campaign}
-                        onChange={(e, value) => {
-                          this.onFormChange("utm_campaign", value);
-                        }}
-                        hintText={this.i18n._t("36-social-media-strategies")}
-                        fullWidth={true}
-                      />
-                    </FormItem>
-                  </Col>
-
-                  <Col span={5}>
-                    <label>utm_content</label>
-                  </Col>
-                  <Col span={19}>
-                    <FormItem>
-                      <TextField
-                        value={this.state.utm_content}
-                        onChange={(e, value) => {
-                          this.onFormChange("utm_content", value);
-                        }}
-                        hintText={this.i18n._t("image")}
-                        fullWidth={true}
-                      />
-                    </FormItem>
-                  </Col>
+                </Row>
+                }
+                {(this.state.utm_setting || !this.state.file) &&
+                <Row>
+                  <Row type="flex" align="middle" gutter={16}>
+                    <Col span={7}>
+                      <label>utm_source</label>
+                    </Col>
+                    <Col span={17}>
+                      <FormItem>
+                        <TextField
+                          value={this.state.utm_source}
+                          onChange={(e, value) => {
+                            this.onFormChange("utm_source", value);
+                          }}
+                          hintText={this.i18n._t("buffer")}
+                          fullWidth={true}
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>
+                  <Row type="flex" align="middle"  gutter={16}>
+                    <Col span={7}>
+                      <label>utm_medium</label>
+                    </Col>
+                    <Col span={17}>
+                      <FormItem>
+                        <TextField
+                          value={this.state.utm_medium}
+                          onChange={(e, value) => {
+                            this.onFormChange("utm_medium", value);
+                          }}
+                          hintText={this.i18n._t("post-original")}
+                          fullWidth={true}
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>
+                  <Row type="flex" align="middle"  gutter={16}>
+                    <Col span={7}>
+                      <label>utm_campaign</label>
+                    </Col>
+                    <Col span={17}>
+                      <FormItem>
+                        <TextField
+                          value={this.state.utm_campaign}
+                          onChange={(e, value) => {
+                            this.onFormChange("utm_campaign", value);
+                          }}
+                          hintText={this.i18n._t("36-social-media-strategies")}
+                          fullWidth={true}
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>
+                  <Row type="flex" align="middle"  gutter={16}>
+                    <Col span={7}>
+                      <label>utm_content</label>
+                    </Col>
+                    <Col span={17}>
+                      <FormItem>
+                        <TextField
+                          value={this.state.utm_content}
+                          onChange={(e, value) => {
+                            this.onFormChange("utm_content", value);
+                          }}
+                          hintText={this.i18n._t("image")}
+                          fullWidth={true}
+                        />
+                      </FormItem>
+                    </Col>
+                  </Row>
+                </Row>
+                }
+                <Row type="flex" align="middle" className="modal-btn-row">
+                  <RaisedButton
+                    onClick={this.props.onClose}
+                    label={<Translate value="Cancel"/>}
+                    primary={false}
+                    className="modal-cancel-btn"
+                    disableTouchRipple={true}
+                  />
+                  <RaisedButton
+                    onClick={this.handleSubmit.bind(this)}
+                    label={<Translate value="Submit"/>}
+                    primary={true}
+                    className="modal-ok-btn"
+                  />
                 </Row>
               </Col>
             </Row>

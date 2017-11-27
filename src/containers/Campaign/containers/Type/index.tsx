@@ -5,10 +5,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import {setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
+import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
-import {Row, Col} from "antd";
+import {Row, Col, Spin} from "antd";
 import SelectBox, {ISelectBoxItem} from "../Naming/Components/SelectBox/index";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
@@ -16,10 +16,12 @@ import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config" ;
 
-import Phone from "../../../../components/PhoneInput/index";
-
 
 import "./style.less";
+import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {isUndefined} from "util";
+import {Link} from "react-router-dom";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 /**
  * @interface IOwnProps
@@ -35,8 +37,11 @@ interface IOwnProps {
  * @desc Define Component, store and action's Props
  */
 interface IProps {
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
+  currentCampaign: OrmCampaign;
   setCurrentStep: (step: STEPS) => {};
-  setSelectedCampaignId: (id: number | null) => {};
+  setSelectedCampaignId: (id: number | null) => void;
+  setCurrentCampaign: (campaign: OrmCampaign) => void;
   currentStep: STEPS;
   selectedCampaignId: number | null;
   match: any;
@@ -48,11 +53,11 @@ interface IProps {
  * @desc Define component's States
  */
 interface IState {
+  currentCampaign?: OrmCampaign;
   internalStep: INTERNAL_STEPS;
-  selectedDevice?: DEVICE_TYPES;
+  selectedType?: DEVICE_TYPES;
   selectedWebType?: WEB_TYPES;
   selectedApplicationType?: APPLICATION_TYPES;
-  buttonDisable?: boolean;
 }
 
 /**
@@ -69,19 +74,19 @@ enum INTERNAL_STEPS {
  * @enum DEVICE_TYPES
  * @desc Device Types
  */
-enum DEVICE_TYPES {
-  WEB,
-  APPLICATION,
+export enum DEVICE_TYPES {
+  WEB = "web",
+  APPLICATION = "app",
 }
 
 /**
  * @enum WEB_TYPES
  * @desc Web Types
  */
-enum WEB_TYPES {
-  BANNER,
-  CONTENT,
-  VIDEO,
+export enum WEB_TYPES {
+  BANNER = "banner",
+  CONTENT = "native",
+  VIDEO = "vast",
 }
 
 
@@ -90,7 +95,7 @@ enum WEB_TYPES {
  * @desc Application Types
  */
 enum APPLICATION_TYPES {
-  BANNER,
+  BANNER = "banner",
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -110,13 +115,15 @@ class TypeComponent extends React.Component <IProps, IState> {
       title: this.i18n._t("Web").toString(),
       description: this.i18n._t("Show Advertising in Desktop, Mobile and tablet browsers.").toString(),
       value: DEVICE_TYPES.WEB,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {
       title: this.i18n._t("Application").toString(),
       description: this.i18n._t("Show Advertising in Android Mobile and tablet application.").toString(),
       value: DEVICE_TYPES.APPLICATION,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-mobile-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     }
   ];
 
@@ -128,17 +135,20 @@ class TypeComponent extends React.Component <IProps, IState> {
     {
       title: this.i18n._t("Banner").toString(),
       value: WEB_TYPES.BANNER,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {
       title: this.i18n._t("Content").toString(),
       value: WEB_TYPES.CONTENT,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-native-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {
       title: this.i18n._t("Video").toString(),
       value: WEB_TYPES.VIDEO,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-video-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     }
   ];
 
@@ -150,9 +160,11 @@ class TypeComponent extends React.Component <IProps, IState> {
     {
       title: this.i18n._t("Banner").toString(),
       value: APPLICATION_TYPES.BANNER,
-      icon: <Icon name="x"/>
+      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>,
+      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     }
   ];
+
 
   /**
    * @constructor
@@ -164,44 +176,37 @@ class TypeComponent extends React.Component <IProps, IState> {
 
     this.state = {
       internalStep: INTERNAL_STEPS.SELECT_DEVICE_TYPE,
-      selectedDevice: DEVICE_TYPES.WEB,
-      buttonDisable: true,
+      selectedType: props.currentCampaign ? props.currentCampaign.kind as DEVICE_TYPES : null,
+      selectedApplicationType: props.currentCampaign ? props.currentCampaign.type as APPLICATION_TYPES : null,
+      selectedWebType: props.currentCampaign ? props.currentCampaign.type as WEB_TYPES : null,
+      currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
     };
   }
 
   /**
    * check for edit mode by `id` and set selected campaign in Redux store
    */
-  public componentWillMount() {
+  public componentDidMount() {
+    this.props.setCurrentStep(STEPS.TYPE);
+    this.props.setBreadcrumb("type", this.i18n._t("Type").toString(), "campaign");
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
+      const controllerApi = new ControllersApi();
+      controllerApi.campaignIdGet({id: this.props.match.params.id})
+        .then(campaign => {
+          console.log(campaign);
+          this.props.setBreadcrumb("campaignTitle", campaign.title, "type");
+          this.setState({
+            currentCampaign: campaign,
+            selectedType: campaign ? campaign.kind as DEVICE_TYPES : null,
+          });
+        });
     } else {
+      this.props.setCurrentCampaign(null);
       this.props.setSelectedCampaignId(null);
     }
   }
 
-  /**
-   * @func handle change device type of ad
-   * @param {DEVICE_TYPES} value
-   */
-  private handleChangeDevicesType(value: DEVICE_TYPES) {
-    this.setState({
-      selectedDevice: value,
-      buttonDisable: false,
-    });
-  }
-
-  /**
-   * @func handle submit device type selection and render select desktop or application ad type
-   */
-  private handleSelectDeviceType() {
-    const step: INTERNAL_STEPS = (this.state.selectedDevice === DEVICE_TYPES.WEB) ?
-      INTERNAL_STEPS.SELECT_DESKTOP_TYPE : INTERNAL_STEPS.SELECT_APPLICATION_TYPE;
-    this.setState({
-      internalStep: step,
-      buttonDisable: true,
-    });
-  }
 
   /**
    * @func set select device type step as internal step
@@ -212,6 +217,29 @@ class TypeComponent extends React.Component <IProps, IState> {
     });
   }
 
+
+  /**
+   * @func handle change device type of ad
+   * @param {DEVICE_TYPES} value
+   */
+  private handleChangeDevicesType(value: DEVICE_TYPES) {
+    this.setState({
+      selectedType: value,
+    });
+  }
+
+  /**
+   * @func handle submit device type selection and render select desktop or application ad type
+   */
+  private handleSelectDeviceType() {
+    const step: INTERNAL_STEPS = (this.state.selectedType === DEVICE_TYPES.WEB) ?
+      INTERNAL_STEPS.SELECT_DESKTOP_TYPE : INTERNAL_STEPS.SELECT_APPLICATION_TYPE;
+    this.setState({
+      internalStep: step,
+    });
+  }
+
+
   /**
    * @func handle change web type of ad
    * @param {WEB_TYPES} value
@@ -219,8 +247,12 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeWebType(value: WEB_TYPES) {
     this.setState({
       selectedWebType: value,
-      buttonDisable: false,
     });
+  }
+
+
+  private handleSelectWebType() {
+    this.submit();
   }
 
   /**
@@ -230,69 +262,108 @@ class TypeComponent extends React.Component <IProps, IState> {
   private handleChangeApplicationType(value: APPLICATION_TYPES) {
     this.setState({
       selectedApplicationType: value,
-      buttonDisable: false,
     });
   }
 
-  private handleSelectWebType() {
-    const step: INTERNAL_STEPS = (this.state.selectedDevice === DEVICE_TYPES.WEB) ?
-      INTERNAL_STEPS.SELECT_DESKTOP_TYPE : INTERNAL_STEPS.SELECT_APPLICATION_TYPE;
-    // this.setState({
-    //   internalStep: step,
-    //   selectedWebType: null,
-    // });
+
+  private handleSelectApplicationType() {
+    this.submit();
+  }
+
+  private submit() {
+    let campaign: OrmCampaign = {};
+    campaign.kind = this.state.selectedType;
+    campaign.type = this.state.selectedType === DEVICE_TYPES.APPLICATION ? this.state.selectedApplicationType : this.state.selectedWebType;
+
+    if (isUndefined(campaign.status)) {
+      const date = new Date();
+      campaign.status = true;
+      campaign.start_at = date.toDateString();
+    }
+
+    this.props.setCurrentCampaign(campaign);
+    this.props.history.push("/campaign/naming");
+    this.props.setCurrentStep(STEPS.NAMING);
   }
 
   public render() {
+
+    if (this.props.match.params.id && !this.state.currentCampaign) {
+      return <Spin/>;
+    }
+
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <Row>
-          <h3 className="text-center">Select Campaign Type</h3>
-          <p className="text-center">Set configuration for show advertise in Desktop or Mobile</p>
+        <Row className="campaign-title">
+          <h3 className="text-center"><Translate value={"Select Campaign Type"}/></h3>
+          <p className="text-center"><Translate value={"Set configuration for show advertise in Desktop or Mobile"}/>
+          </p>
         </Row>
-        <hr/>
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DEVICE_TYPE &&
         <Row className="campaign-device">
-          <SelectBox span={8} items={this.deviceTypes} initialSelect={null}
-                     onChange={this.handleChangeDevicesType.bind(this)}/>
+          <SelectBox span={8} items={this.deviceTypes} initialSelect={this.state.selectedType}
+                     onChange={this.handleChangeDevicesType.bind(this)}
+                     className={"center-select-box device-type"}/>
           <RaisedButton
             onClick={this.handleSelectDeviceType.bind(this)}
             label={<Translate value="Next Step"/>}
             primary={true}
-            disabled={this.state.buttonDisable}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
+            disabled={!this.state.selectedType}
+            className="button-next-step type-btn"
+            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
           />
         </Row>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-        <Row className="campaign-type">
-          <SelectBox items={this.desktopTypes} initialSelect={null}
-                     onChange={this.handleChangeWebType.bind(this)}/>
-          <RaisedButton
-            onClick={this.handleChangeWebType.bind(this)}
-            label={<Translate value="Next Step"/>}
-            primary={true}
-            disabled={this.state.buttonDisable}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
-          />
-        </Row>
+        <div>
+          <Row className="campaign-type">
+            <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
+                       className={"center-select-box desktop-type"}
+                       onChange={this.handleChangeWebType.bind(this)}/>
+          </Row>
+          <Row type="flex" justify="center">
+            <RaisedButton
+              onClick={this.handleSelectWebType.bind(this)}
+              label={<Translate value="Next Step"/>}
+              primary={true}
+              disabled={!this.state.selectedWebType}
+              className="button-next-step type-btn"
+              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+            />
+          </Row>
+          <Row type="flex" justify="center">
+           <span className="campain-back-link"
+                 onClick={this.handleBack.bind(this)}>
+            <Translate value={"Choose wrong campaign type?"}/>
+          </span>
+          </Row>
+        </div>
         }
         {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
-        <Row className="campaign-type">
-          <SelectBox items={this.applicationTypes}
-                     initialSelect={null}
-                     onChange={this.handleChangeApplicationType.bind(this)}/>
-          <RaisedButton
-            onClick={this.handleChangeWebType.bind(this)}
-            label={<Translate value="Next Step"/>}
-            primary={true}
-            disabled={this.state.buttonDisable}
-            className="button-next-step"
-            icon={<Icon name="arrow" color="white"/>}
-          />
-        </Row>
+        <div>
+          <Row className="campaign-type">
+            <SelectBox items={this.applicationTypes}
+                       initialSelect={this.state.selectedApplicationType}
+                       className={"center-select-box app-type"}
+                       onChange={this.handleChangeApplicationType.bind(this)}/>
+          </Row>
+          <Row type="flex" justify="center">
+            <RaisedButton
+              onClick={this.handleSelectApplicationType.bind(this)}
+              label={<Translate value="Next Step"/>}
+              primary={true}
+              disabled={!this.state.selectedApplicationType}
+              className="button-next-step type-btn"
+              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
+            />
+          </Row>
+          <Row type="flex" justify="center">
+            <span className="campain-back-link"
+                  onClick={this.handleBack.bind(this)}>
+            <Translate value={"Choosed wrong campaign type?"}/>
+          </span>
+          </Row>
+        </div>
         }
       </div>
     );
@@ -308,6 +379,7 @@ class TypeComponent extends React.Component <IProps, IState> {
 function mapStateToProps(state: RootState, ownProps: IOwnProps) {
   return {
     currentStep: state.campaign.currentStep,
+    currentCampaign: state.campaign.currentCampaign,
     selectedCampaignId: state.campaign.selectedCampaignId,
     match: ownProps.match,
     history: ownProps.history,
@@ -323,6 +395,8 @@ function mapDispatchToProps(dispatch) {
   return {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
+    setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 

@@ -10,11 +10,17 @@
   .breadcrumb {
     display: inline-block;
     margin-right: 20px;
-
     > span {
       float: right;
       direction: rtl;
     }
+  }
+  .ant-breadcrumb-separator{
+    font-size: 8px;
+    display: inline-block;
+  }
+  .cif-home{
+    vertical-align: middle;
   }
 }
 .logo {
@@ -26,11 +32,27 @@
 .trigger {
   font-size: 1.5em;
   color: #969BA1;
+  cursor: pointer;
 }
 .content {
   min-height: 500px;
   margin: 0 16px;
   background: #fff;
+}
+.sidebar-wrapper{
+  overflow: inherit;
+  height: 100vh;
+  position: fixed !important;
+  right: 0 !important;
+  z-index: 999;
+}
+.layout-open{
+  margin-right: @sidebar-open-width;
+  transition: all @animation-duration-fast;
+}
+.layout-collapsed{
+  margin-right: @sidebar-close-width;
+  transition: all @animation-duration-fast;
 }
 .sidebar {
   direction: rtl;
@@ -38,6 +60,8 @@
     background-color:  @sidebar-list-hover !important;
   }
   li {
+    height: 36px ;
+    margin-bottom: 25px;
     border-radius: 4px;
     &:hover, &:active, &:focus, &:visited {
       background: @sidebar-list-hover !important;
@@ -47,6 +71,39 @@
       margin-right: 0;
     }
   }
+  .sidbar-menu-icon{
+    font-size: 20px;
+    margin-left: 25px;
+    margin-top: 2px;
+    float: right;
+  }
+}
+.logo-sidebar{
+  font-size: 25px;
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  display: block;
+}
+// Align btn text with Icon
+.create-campaign-text{
+  position: relative;
+  top:-2px;
+}
+.ant-menu-inline-collapsed{
+  .create-campaign-text{
+    display: none;
+  }
+  .create-campaign-icon{
+    margin: 0;
+  }
+}
+.ant-tooltip-inner{
+  .sidbar-menu-icon , .create-campaign-icon {
+    display: none;
+  }
+
 }
 .menu-list {
   width: 85%;
@@ -74,6 +131,8 @@
   height: @ghost-button-height !important;
   color: @sidebar-menu-item !important;
   border-color: @sidebar-menu-item !important;
+  border : 2px solid !important;
+  border-radius: 2px !important;
 }
 .campaignButton {
   padding: 0 !important;
