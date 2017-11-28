@@ -49,6 +49,7 @@ interface IState {
   currentCampaign: OrmCampaign;
   schedule ?: OrmCampaignSchedule;
   timePeriods: any[];
+  minRange: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -64,6 +65,7 @@ class NamingComponent extends React.Component <IProps, IState> {
       status: false,
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
       timePeriods: [{from: 0, to: 23}],
+      minRange: null,
     };
   }
 
@@ -247,6 +249,12 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
   }
 
+  private handleRange(date) {
+  this.setState({
+    minRange: date
+  });
+  }
+
   public render() {
 
     if (this.props.match.params.id && !this.state.currentCampaign) {
@@ -327,29 +335,28 @@ class NamingComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
               <Row type="flex" gutter={16} align="top">
-                {!this.state.allDay &&
-                <Col span={9}>
-                  <FormItem>
-                    {getFieldDecorator("end_at", {
-                      initialValue: this.state.currentCampaign.end_at,
-                      rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
-                    })(
-                      <PersianDatePicker/>
-                    )}
-                  </FormItem>
-                </Col>
-                }
-                <Col span={9}>
+                <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("start_at", {
                       initialValue: this.state.currentCampaign.start_at,
                       rules: [{required: true, message: this.i18n._t("Please select start date!")}],
                     })(
-                      <PersianDatePicker/>
+                      <PersianDatePicker onChange={this.handleRange.bind(this)} minValue={this.state.currentCampaign.start_at} />
                     )}
                   </FormItem>
                 </Col>
-
+                {!this.state.allDay &&
+                <Col span={12}>
+                  <FormItem>
+                    {getFieldDecorator("end_at", {
+                      initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at : this.state.minRange ,
+                      rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
+                    })(
+                      <PersianDatePicker minValue={this.state.minRange} />
+                    )}
+                  </FormItem>
+                </Col>
+                }
               </Row>
             </Col>
           </Row>
