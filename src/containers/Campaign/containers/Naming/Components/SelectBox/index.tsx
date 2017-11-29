@@ -31,6 +31,7 @@ interface IProps {
   className?: string;
   span?: number;
   offset?: number;
+  disable?: boolean;
 }
 
 /**
@@ -42,8 +43,10 @@ interface IState {
 }
 
 export default class SelectBox extends React.Component<IProps, IState> {
+  disable: boolean ;
   constructor(props: IProps) {
     super(props);
+    this.disable = props.disable ? props.disable : false;
   }
   componentWillMount() {
     const selectedItem = this.props.initialSelect !== null ? this.props.items.find((item) => (item.value === this.props.initialSelect)) : null;
@@ -56,11 +59,14 @@ export default class SelectBox extends React.Component<IProps, IState> {
    * @param {ISelectBoxItem} item
    */
   private handleClick(item: ISelectBoxItem) {
-    this.setState({
-      selectedItem: item,
-    });
-    this.props.onChange(item.value);
+    if (!this.disable) {
+      this.setState({
+        selectedItem: item,
+      });
+      this.props.onChange(item.value);
+    }
   }
+
 
   public render() {
     return (

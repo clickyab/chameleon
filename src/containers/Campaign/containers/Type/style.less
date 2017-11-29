@@ -82,6 +82,22 @@
   }
 }
 
+.select-box-disable {
+  cursor: not-allowed;
+  &:hover {
+    box-shadow: 0 0 0 0 transparent;
+    .hint-link {
+      opacity: 0;
+    }
+  }
+  &.active {
+    .hint-link {
+      opacity: 1;
+    }
+  }
+}
+
+
 .campaign-device, .campaign-type {
   margin-top: @campaign-type-top;
   text-align: center;
