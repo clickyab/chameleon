@@ -58,12 +58,18 @@ export default class PersianDatePicker extends React.Component<IProps, IState> {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.minValue !== this.state.minValue) ) {
-      this.setState({
-        value: nextProps.minValue,
-        minValue: nextProps.minValue,
-      });
-    }
+    let minVal = new Date(nextProps.minValue);
+    let val = new Date(this.state.value);
+      this.setState(
+        function (prevState, props) {
+          if ((nextProps.minValue !== prevState.minValue) && minVal.getTime() > val.getTime()) {
+            return {value: nextProps.minValue, minValue: nextProps.minValue};
+          }
+          if ((nextProps.minValue !== prevState.minValue)) {
+            return { minValue: nextProps.minValue};
+          }
+        }
+      );
   }
   onChange(date: moment.Moment) {
     if (date.toISOString() !== moment(this.state.value).toISOString()) {
@@ -153,6 +159,7 @@ export default class PersianDatePicker extends React.Component<IProps, IState> {
                      onOpen={value => this.setOpen(value)}
                      datePickerClass={"datepicker-popup"}
                      tetherAttachment={"top right"}
+                     inputReadOnly={true}
         />
         {/*<DatePicker value={this.state.value ? moment(this.state.value) : null}*/}
         {/*onChange={this.onChange.bind(this)} />*/}

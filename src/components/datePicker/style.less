@@ -16,8 +16,9 @@
   .date-combo-wrapper {
     position: absolute;
     top: 55px;
-    transform: translateX(-50%);
     z-index: 9999;
+    width: @datepicker-popup-width;
+    text-align: center;
   }
   .date-combo {
     margin: 2px;
@@ -123,7 +124,7 @@
         margin: 5px;
       }
     }
-    width: 270px;
+    width: @datepicker-popup-width;
     .dayWrapper {
       height: @day-wrapper-height !important;
       width: @day-wrapper-height !important;

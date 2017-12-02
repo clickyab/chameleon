@@ -196,13 +196,14 @@ class NamingComponent extends React.Component <IProps, IState> {
       if (this.state.allDay) {
         campaign.end_at = null;
       } else {
-        delete campaign.end_at;
+          campaign.end_at = values.end_at;
       }
 
       campaign.schedule = this.state.schedule as ControllersCampaignStatusSchedule;
 
       const controllerApi = new ControllersApi();
 
+      console.log("insert end-at" , campaign.end_at);
       if (this.props.match.params.id) {
         controllerApi.campaignBaseIdPut({
           id: this.state.currentCampaign.id.toString(),
@@ -249,10 +250,20 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
   }
 
-  private handleRange(date) {
-  this.setState({
-    minRange: date
-  });
+  /**
+   * @function handle minRange for second calendar
+   * @desc get and set minimum date of second calendar, also check if date was set to higher one
+   * @param date
+   */
+  private handleRange(date: string): void {
+    console.log("end" , this.state.currentCampaign.end_at);
+    console.log("date" , date);
+    if ((this.state.currentCampaign.end_at < date) || (!this.state.minRange) || (this.state.minRange < date)) {
+      console.log("inside condition");
+      this.setState({
+        minRange: date,
+      });
+    }
   }
 
   public render() {
@@ -347,12 +358,15 @@ class NamingComponent extends React.Component <IProps, IState> {
                 </Col>
                 {!this.state.allDay &&
                 <Col span={12}>
+                  {console.log("end at " , this.state.currentCampaign.end_at )}
+                  {console.log("minRange " , this.state.minRange)}
                   <FormItem>
                     {getFieldDecorator("end_at", {
                       initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at : this.state.minRange ,
                       rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
                     })(
-                      <PersianDatePicker minValue={this.state.minRange} />
+                      <PersianDatePicker
+                        minValue={this.state.minRange} />
                     )}
                   </FormItem>
                 </Col>
