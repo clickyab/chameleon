@@ -49,6 +49,7 @@ interface IState {
   currentCampaign: OrmCampaign;
   schedule ?: OrmCampaignSchedule;
   timePeriods: any[];
+  minRange: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -64,6 +65,7 @@ class NamingComponent extends React.Component <IProps, IState> {
       status: false,
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
       timePeriods: [{from: 0, to: 23}],
+      minRange: null,
     };
   }
 
@@ -194,13 +196,14 @@ class NamingComponent extends React.Component <IProps, IState> {
       if (this.state.allDay) {
         campaign.end_at = null;
       } else {
-        delete campaign.end_at;
+          campaign.end_at = values.end_at;
       }
 
       campaign.schedule = this.state.schedule as ControllersCampaignStatusSchedule;
 
       const controllerApi = new ControllersApi();
 
+      console.log("insert end-at" , campaign.end_at);
       if (this.props.match.params.id) {
         controllerApi.campaignBaseIdPut({
           id: this.state.currentCampaign.id.toString(),
@@ -244,6 +247,22 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
     else {
       this.props.history.push("/campaign/type");
+    }
+  }
+
+  /**
+   * @function handle minRange for second calendar
+   * @desc get and set minimum date of second calendar, also check if date was set to higher one
+   * @param date
+   */
+  private handleRange(date: string): void {
+    console.log("end" , this.state.currentCampaign.end_at);
+    console.log("date" , date);
+    if ((this.state.currentCampaign.end_at < date) || (!this.state.minRange) || (this.state.minRange < date)) {
+      console.log("inside condition");
+      this.setState({
+        minRange: date,
+      });
     }
   }
 
@@ -327,29 +346,31 @@ class NamingComponent extends React.Component <IProps, IState> {
                 )}
               </FormItem>
               <Row type="flex" gutter={16} align="top">
-                {!this.state.allDay &&
-                <Col span={9}>
-                  <FormItem>
-                    {getFieldDecorator("end_at", {
-                      initialValue: this.state.currentCampaign.end_at,
-                      rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
-                    })(
-                      <PersianDatePicker/>
-                    )}
-                  </FormItem>
-                </Col>
-                }
-                <Col span={9}>
+                <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("start_at", {
                       initialValue: this.state.currentCampaign.start_at,
                       rules: [{required: true, message: this.i18n._t("Please select start date!")}],
                     })(
-                      <PersianDatePicker/>
+                      <PersianDatePicker onChange={this.handleRange.bind(this)} minValue={this.state.currentCampaign.start_at} />
                     )}
                   </FormItem>
                 </Col>
-
+                {!this.state.allDay &&
+                <Col span={12}>
+                  {console.log("end at " , this.state.currentCampaign.end_at )}
+                  {console.log("minRange " , this.state.minRange)}
+                  <FormItem>
+                    {getFieldDecorator("end_at", {
+                      initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at : this.state.minRange ,
+                      rules: [{required: true, message: this.i18n._t("Please select stop date!")}],
+                    })(
+                      <PersianDatePicker
+                        minValue={this.state.minRange} />
+                    )}
+                  </FormItem>
+                </Col>
+                }
               </Row>
             </Col>
           </Row>
