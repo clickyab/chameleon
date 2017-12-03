@@ -13,6 +13,8 @@ import CONFIG from "../../../../constants/config";
 import Tooltip from "../../../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import DataTable from "../../../../components/DataTable/index";
+import"./style.less";
+import {setBreadcrumb} from "../../../../redux/app/actions/index";
 
 const Option = Select.Option;
 
@@ -28,6 +30,7 @@ interface IProps {
   form: any;
   match: any;
   history: any;
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
 }
 
 interface IState {
@@ -57,6 +60,7 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
   }
 
   public componentDidMount() {
+    this.props.setBreadcrumb("explore", this.i18n._t("Explore").toString(), "home");
     this.controllerApi.inventoryPresetsGet({})
       .then(data => {
         this.setState({
@@ -119,7 +123,7 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
               dataFn={this.controllerApi.inventoryListGet}/>
           </Row>
 
-          <Row type="flex" align="middle">
+          <Row type="flex" align="top">
             <Col span={4}>
               <label>
                 <Tooltip/>
@@ -141,6 +145,10 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
                                  label={this.i18n._t("Add to your created lists")}
                     />
                   </RadioButtonGroup>
+                </Col>
+              </Row>
+              <Row type="flex" gutter={16}>
+                <Col span={12} >
                   {!this.state.updateList &&
                   <TextField
                     fullWidth={true}
@@ -173,7 +181,7 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
 
             <RaisedButton
               onClick={this.handleSubmit.bind(this)}
-              label={<Translate value="Next Step"/>}
+              label={<Translate value="Save"/>}
               primary={true}
               className="button-next-step"
               icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
@@ -197,7 +205,9 @@ function mapStateToProps(state: RootState, ownProps: IOwnProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
+  };
 }
 
 export default Form.create()(withRouter(ListOfPublisherComponent as any));
