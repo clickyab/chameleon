@@ -14,6 +14,7 @@ import Tooltip from "../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../api/api";
 import DataTable from "../../components/DataTable/index";
 import {setBreadcrumb} from "../../redux/app/actions/index";
+import ListOfPublishers from "./containers/ListOfPublishers";
 import "./style.less";
 
 
@@ -60,17 +61,18 @@ class Explore extends React.Component <IProps, IState> {
   public render() {
     return (
       <div dir={CONFIG.DIR} className={"content-container"}>
-        <Row type={"flex"} align={"middle"}>
-          <Row className="campaign-title">
-            <h3 className="text-center"><Translate value={"Explore"}/></h3>
+          <Row className="page-title">
+            <h3 ><Translate value={"Explore"}/></h3>
           </Row>
           <Row type={"flex"} align={"middle"}>
-            <Tabs onChange={() => this.handleTab} type="card">
-              <TabPane tab={this.i18n._t("All publishers")} key="All publishers"></TabPane>
-              <TabPane tab={this.i18n._t("My List")} key="My lists"></TabPane>
+            <Tabs onChange={() => this.handleTab} type="card" className="tabs-container">
+              <TabPane tab={this.i18n._t("All publishers")} key="All publishers">
+                  <ListOfPublishers/>
+              </TabPane>
+              <TabPane tab={this.i18n._t("My List")} key="My lists">
+              </TabPane>
             </Tabs>
           </Row>
-        </Row>
       </div>
     );
   }
