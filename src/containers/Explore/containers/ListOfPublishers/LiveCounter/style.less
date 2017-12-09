@@ -1,0 +1,51 @@
+@import "../../../../App/theme";
+
+.live-counter-container{
+  background: @live-counter-bg-color;
+  height: @live-counter-height;
+  min-height: @live-counter-height;
+  margin-bottom: 20px;
+  width: 100%;
+  .item-wrapper{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    .item-container{
+      align-self: center;
+      text-align: center;
+      .counter{
+        font-size: @live-counter-number-size;
+        line-height: @live-counter-number-size;
+        display: block;
+        position: relative;
+        z-index: 2;
+      }
+    }
+    .live-counter-icon-container{
+      display: flex;
+      justify-content: center;
+      font-size:@live-counter-icon-size;
+      color: @live-counter-icon-color;
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 2px;
+      right: 2px;
+      margin: auto;
+      transform: rotate(170deg);
+      overflow: hidden;
+      z-index: 1;
+    }
+    .live-counter-icon{
+      display: flex;
+      align-self: center;
+      justify-self: center;
+    }
+  }
+  .live-counter-title{
+    position: relative;
+    z-index: 2;
+    font-size: @live-counter-title-size;
+    color: @live-counter-title-color;
+  }
+}

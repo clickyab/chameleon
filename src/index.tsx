@@ -6,7 +6,7 @@ import {createBrowserHistory} from "history";
 import {store} from "./redux/store";
 import App from "./containers/App";
 import {LocaleProvider} from "antd";
-import enUS from "antd/lib/locale-provider/en_US";
+const antLocale =  require("./Translate/antTranslate");
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
 
@@ -17,7 +17,7 @@ const history = createBrowserHistory();
 
 ReactDOM.render(
   <Provider store={store}>
-    <LocaleProvider locale={enUS}>
+    <LocaleProvider locale={antLocale.default}>
       <Router history={history}>
         <Switch>
           <Route path="/" component={App}/>

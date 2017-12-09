@@ -14,7 +14,7 @@ import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
 import CampaignContainer from "../Campaign/index";
 import CheckMail from "../User/containers/CheckMail";
 import {UserApi} from "../../api/api";
-// import ExploreContainer from "../Explore/index";
+import ExploreContainer from "../Explore/index";
 
 
 interface IProps {
@@ -84,7 +84,7 @@ class App extends React.Component<IProps, IState> {
             <Route path={`/user`} component={PublicContainer}/>
             <PrivateRoute path={`/dashboard`} component={Dashboard}/>
             <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
-            {/*<PrivateRoute path={`/explore`} component={ExploreContainer}/>*/}
+            <PrivateRoute path={`/explore`} component={ExploreContainer}/>
             <Route exact path={`/`} component={this.state.isLogin ? Dashboard : CheckMail} />
           </Switch>
         </LayoutSwitcher>
