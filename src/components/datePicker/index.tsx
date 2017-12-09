@@ -2,7 +2,6 @@ import * as React from "react";
 import DatePicker2 from "react-datepicker2";
 import "./style.less";
 import * as moment from "moment-jalaali";
-import {DatePicker} from "react-persian-datepicker/lib";
 import MonthComboBox from "./MonthComboBox" ;
 import YearComboBox from "./YearComboBox" ;
 
