@@ -249,7 +249,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.i18n._d(this.state.startDate, "LL")}
+                {this.i18n._d(this.state.startDate, "L")}
               </Col>
               <Col span={8}>
                 <label><Translate value={"Campaign start date"}/></label>
@@ -257,7 +257,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.endDate && this.i18n._d(this.state.endDate, "LL")}
+                {this.state.endDate && this.i18n._d(this.state.endDate, "L")}
                 {!this.state.endDate &&
                 <Translate value={"No End date Provided"}/>}
               </Col>
@@ -406,7 +406,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           />
           <RaisedButton
             onClick={this.handleSubmit.bind(this)}
-            label={<Translate value="Next Step"/>}
+            label={<Translate value="Save campaign"/>}
             primary={true}
             className="button-next-step btn-save"
           />
