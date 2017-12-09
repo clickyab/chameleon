@@ -117,7 +117,7 @@ class I18nExtractor {
   private async generatePoFiles(lang: string, json: object): Promise<any> {
     await this.checkOutPath();
     const result = json2po(JSON.stringify(json), {Language: lang});
-    const path = this.OUTPUT_PATH + "/" + lang + ".po";
+    const path = this.OUTPUT_PATH + "/" + lang + ".pot";
     console.log(path);
     fs.writeFileSync(path, result);
   }

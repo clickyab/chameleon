@@ -5,6 +5,8 @@ import "moment/locale/fa";
 import * as momentJalaali from "moment-jalaali";
 import LOCALES from "./locales";
 
+let fa_IR = require("./../../../dictionary/fa-IR.json");
+
 /**
  * interface of translate function option
  */
@@ -45,8 +47,7 @@ export default class I18n {
    * @type {{a: string; b: string}}
    */
     private source: object = {
-      a : "b _{name} _{name}",
-      b : "c",
+      "fa-IR" : fa_IR,
     };
 
   /**
@@ -58,7 +59,8 @@ export default class I18n {
     private constructor() {
 
       // check cookie for locale
-      const locale = LOCALES[Cookies.get(this.CookieName)] ? Cookies.get(this.CookieName) : LOCALES.en;
+      const locale = LOCALES[Cookies.get(this.CookieName)] ? Cookies.get(this.CookieName) : LOCALES.fa;
+      this.setLocale(locale);
       this.locale = locale;
       if (locale === LOCALES.fa) {
         this.moment = momentJalaali;
@@ -108,8 +110,7 @@ export default class I18n {
     public _t(value: string, translationOptions ?: ITranslateOptions): string | JSX.Element {
 
       // try to get new string from source or set value as new string
-      let translateStr: string = this.source[value] ?
-        this.source[value] : value;
+      let translateStr: string = this.source[this.locale] && this.source[this.locale][value] ? this.source[this.locale][value] : value;
 
       // if `translationOptions` is not defined, return `translate` string
       if (!translationOptions) {
