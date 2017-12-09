@@ -38,25 +38,28 @@ class translationApi {
   }
 
   pullTranslationFile(lang) {
-    return new Promise((res, rej)=>{
-    this.checkPath(this.tmp + "/po/" + lang);
-    this.checkPath(this.tmp + "/pot");
-    let project = new ZanataClient.Project(options);
-    return project
-      .pullTranslations("chameleon", "1", lang, {potdir: this.tmp + "/pot", podir: this.tmp + "/po/" + lang})
-      .on('fail', (e) => {
-        rej();
-        console.error(e)
-      })
-      .on('data', (d) => {
-        console.log(d);
-      })
-      .on('end', (r) => {
-        console.log(r);
-      })
-      .on("end_pull", (data) => {
-        console.log(`Translation file pulled for ${lang}`);
-        res();
+    return new Promise((res, rej) => {
+      this.checkPath(this.tmp + "/po/" + lang)
+        .then(() => {
+          return this.checkPath(this.tmp + "/pot");
+        }).then(() => {
+        let project = new ZanataClient.Project(options);
+        return project
+          .pullTranslations("chameleon", "1", lang, {potdir: this.tmp + "/pot", podir: this.tmp + "/po/" + lang})
+          .on('fail', (e) => {
+            rej();
+            console.error(e)
+          })
+          .on('data', (d) => {
+            console.log(d);
+          })
+          .on('end', (r) => {
+            console.log(r);
+          })
+          .on("end_pull", (data) => {
+            console.log(`Translation file pulled for ${lang}`);
+            res();
+          });
       });
     });
   }
@@ -97,6 +100,7 @@ class translationApi {
   }
 
   async checkPath(targetDir) {
+    targetDir = targetDir.replace(process.cwd(), "");
     return await new Promise(res => {
       targetDir.split("/").reduce((parentDir, childDir) => {
         const curDir = path.resolve(parentDir, childDir);
@@ -112,6 +116,6 @@ class translationApi {
 
 const a = new translationApi();
 a.pushPoFile();
-a.pullTranslationFile("fa-IR").then(()=>{
+a.pullTranslationFile("fa-IR").then(() => {
   a.transformFileToI18nJson("fa-IR");
 });
