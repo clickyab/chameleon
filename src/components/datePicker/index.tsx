@@ -138,7 +138,6 @@ export default class PersianDatePicker extends React.Component<IProps, IState> {
     moment.loadPersian({dialect: "persian-modern", usePersianDigits: false});
     return (
       <div className="persian-datepicker">
-        {console.log(this.state.value)}
         {this.state.open &&
         <div className={"date-combo-wrapper"}>
           <MonthComboBox month={moment(this.state.value).jMonth()}

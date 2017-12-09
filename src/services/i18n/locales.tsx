@@ -1,6 +1,7 @@
 const LOCALES =  {
-  fa : "fa",
-  en: "en",
+  fa : "fa-IR",
+  "fa-IR" : "fa-IR",
+  en: "en-US",
 };
 
 export default LOCALES;

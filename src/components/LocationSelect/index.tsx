@@ -206,9 +206,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @param {number} cityId
    */
   private setCity(event, index: number, cityId: number) {
-    console.log(2222, cityId);
     const city = this.state.cities.find((c) => (c.id === cityId));
-    console.log(city);
     this.setState({
       city,
     }, this.handleOnChangeEvent);

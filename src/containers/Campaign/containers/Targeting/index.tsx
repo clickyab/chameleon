@@ -246,7 +246,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   private updateDevices(selectedDevices) {
-    console.log(selectedDevices);
     this.setState({
       devices: selectedDevices,
     });
@@ -590,7 +589,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
                         })(
                           <IranMap
                             onChange={(locations) => {
-                              console.log(locations);
                               this.setState({locations});
                             }}
                           />

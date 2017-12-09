@@ -196,7 +196,6 @@ class TypeComponent extends React.Component <IProps, IState> {
       const controllerApi = new ControllersApi();
       controllerApi.campaignIdGet({id: this.props.match.params.id})
         .then(campaign => {
-          console.log(campaign);
           this.props.setBreadcrumb("campaignTitle", campaign.title, "type");
           this.setState({
             currentCampaign: campaign,
