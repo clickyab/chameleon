@@ -28,11 +28,12 @@ interface IState {
 }
 
 const muiTheme = getMuiTheme({
+  fontFamily: "IRANSans",
   palette: {
     primary1Color: "#41b6e6",
     // primary2Color: green700,
     // primary3Color: green100,
-    shadowColor: "#FFF",
+    shadowColor: "#FFF"
   },
 });
 
@@ -85,7 +86,7 @@ class App extends React.Component<IProps, IState> {
             <PrivateRoute path={`/dashboard`} component={Dashboard}/>
             <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
             <PrivateRoute path={`/explore`} component={ExploreContainer}/>
-            <Route exact path={`/`} component={this.state.isLogin ? Dashboard : CheckMail} />
+            <Route exact path={`/`} component={this.state.isLogin ? Dashboard : CheckMail}/>
           </Switch>
         </LayoutSwitcher>
       </MuiThemeProvider>
