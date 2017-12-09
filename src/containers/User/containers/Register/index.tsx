@@ -47,7 +47,6 @@ class RegisterForm extends React.Component<IProps, IState> {
     super(props);
 
     const email = localStorage.getItem(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
-    console.log(props.match.params["token"]);
     if (!email && !props.match.params["token"]) {
       this.props.history.push("/");
     }

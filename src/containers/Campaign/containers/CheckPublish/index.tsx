@@ -144,7 +144,6 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           if (campaign.white_black_id) {
             api.inventoryPresetIdGet({id: campaign.white_black_id.toString()})
               .then((list) => {
-                console.log(list);
                 this.setState({
                   listLabel: list.label,
                   // websitesList: list.domains,

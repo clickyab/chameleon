@@ -112,7 +112,6 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
     }
 
     public componentDidMount() {
-        console.log(this.props.currentCampaign);
         this.setState({
             currentCampaign: this.props.currentCampaign,
             adSize: (this.props.currentCampaign.kind === DEVICE_TYPES.APPLICATION) ? AppSize :
@@ -144,7 +143,6 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         controllerApi.campaignIdAdGet({
             id: this.state.currentCampaign.id.toString(),
         }).then((list) => {
-            console.log(list);
             let files: IFileItem[] = [];
             list.map((item) => {
                 let file: IFileItem = {
@@ -278,7 +276,6 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                         }).then((state) => {
                             this.changeFileProgressState(id, state);
                         }).catch((err) => {
-                            console.log(err);
                             // fixme:: handle error
                             notification.error({
                                 message: "Error",
