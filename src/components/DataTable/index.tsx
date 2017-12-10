@@ -13,7 +13,7 @@
 import * as React from "react";
 import {Table, Row, Checkbox, Col, Switch, Button} from "antd";
 import {DataTableDataParser} from "./lib/parsers";
-import {IColumn, IData, IDefinition} from "./lib/interfaces";
+import {IActionsFn, IColumn, IData, IDefinition} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
 import "./style.less";
 import Icon from "../Icon/index";
@@ -53,7 +53,11 @@ interface IProps {
 
   tableDescription?: JSX.Element;
 
-  customRenderColumns?: { [key: string]: (value?: string,  record?: any, index?: number) => JSX.Element };
+  customRenderColumns?: { [key: string]: (value?: string, record?: any, index?: number) => JSX.Element };
+
+  actionsFn?: IActionsFn;
+
+  onActionClick?: { [key: string]: (value?: string, record?: any, index?: number) => void };
 }
 
 
@@ -214,6 +218,13 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     this.props.dataFn(config).then((data: IData) => {
+
+      // TODO:: remove me
+      // data.data = data.data.map(d => {
+      //   d["_actions"] = "edit, delete";
+      //   return d;
+      // });
+
       if (this.state.data && this.props.infinite) {
         data.data = [...this.state.data.data, ...data.data];
       }
@@ -460,7 +471,11 @@ class DataTable extends React.Component<IProps, IState> {
           rowKey={(record) => (record[this.state.definition.key])}
           scroll={{y: 440}}
           loading={this.state.loading}
-          columns={this.parser.parseColumns(Object.keys(this.state.customField).filter(key => this.state.customField[key]), this.props.customRenderColumns)}
+          columns={this.parser.parseColumns({
+              customColumns: Object.keys(this.state.customField).filter(key => this.state.customField[key]),
+              actionsFn: this.props.actionsFn,
+              customRenderColumns: this.props.customRenderColumns,
+            })}
           dataSource={this.parser.parsData(this.state.data.data)}
           rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
           pagination={this.props.infinite ? false : this.loadPaginationConfig()}

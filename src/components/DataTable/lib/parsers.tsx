@@ -2,8 +2,8 @@
  * Data table definition and data parser
  */
 import {ColumnProps} from "antd/lib/table/Column";
-import {IColumn, IData, IDefinition} from "./interfaces";
-import {Input, Button} from "antd";
+import {IActionsFn, IColumn, IColumnParserParams, IData, IDefinition} from "./interfaces";
+import {Dropdown, Menu, Button} from "antd";
 import * as React from "react";
 import {TextField} from "material-ui";
 import Icon from "../../Icon/index";
@@ -38,19 +38,22 @@ export class DataTableDataParser {
    * Parse columns to Ant column
    * @returns {ColumnProps<any>[]}
    */
-  public parseColumns(customColumns?: string[], customRenderColumns?: { [key: string]: (value?: string,  record?: any, index?: number) => JSX.Element }): ColumnProps<any>[] {
-    if (!this.columns || customColumns !== this.customColumns) {
-      this.customColumns = customColumns;
+  public parseColumns(params: IColumnParserParams): ColumnProps<any>[] {
+    if (!this.columns || params.customColumns !== this.customColumns) {
+      this.customColumns = params.customColumns;
       this.columns = this.definition.columns
         .filter(c => {
-          if (customColumns) {
-            return customColumns.find(f => c.name === f);
+          if (params.customColumns) {
+            return params.customColumns.find(f => c.name === f);
           }
           return true;
         })
-        .map(c => this.definitionColumnToAntColumn(c, customRenderColumns && customRenderColumns[c.data] ? customRenderColumns[c.data] : null))
+        .map(c => this.definitionColumnToAntColumn(c, params.customRenderColumns && params.customRenderColumns[c.data] ? params.customRenderColumns[c.data] : null))
         .filter(c => c !== null);
     }
+
+    this.columns.push(this.createActionsColumnsDefinition(params.actionsFn));
+
     return this.columns;
   }
 
@@ -94,7 +97,7 @@ export class DataTableDataParser {
    * @param {IColumn} source
    * @returns {ColumnProps<any>}
    */
-  private definitionColumnToAntColumn(source: IColumn, customRender?: (value?: string,  record?: any, index?: number) => JSX.Element): ColumnProps<any> {
+  private definitionColumnToAntColumn(source: IColumn, customRender?: (value?: string, record?: any, index?: number) => JSX.Element): ColumnProps<any> {
     let searchValue: string = "";
     if (!source.visible) return null;
 
@@ -147,5 +150,43 @@ export class DataTableDataParser {
 
     return column;
 
+  }
+
+  private createActionsColumnsDefinition(actionsFn?: IActionsFn): ColumnProps<any> {
+
+    let column: ColumnProps<any> = {};
+    column.key = "actions";
+    column.dataIndex = "actions";
+    column.title = "";
+    column.sorter = false;
+    column.render = (value: string, record: any, index: number) => {
+
+      if (!record._actions) {
+        return null;
+      }
+
+      const menu = (
+        <Menu>
+          {record._actions.split(",").map((text, i) => (
+            <Menu.Item key={i}>
+              <a onClick={() => {
+                if (actionsFn && actionsFn[text]) {
+                  actionsFn[text](value, record, index);
+                }
+              }}>{text}</a>
+            </Menu.Item>
+          ))}
+        </Menu>
+      );
+
+      return <Dropdown overlay={menu} trigger={["click"]}>
+        <a className="ant-dropdown-link" href="#">
+          ....
+        </a>
+      </Dropdown>;
+    };
+
+
+    return column;
   }
 }
