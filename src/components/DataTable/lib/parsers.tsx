@@ -38,7 +38,7 @@ export class DataTableDataParser {
    * Parse columns to Ant column
    * @returns {ColumnProps<any>[]}
    */
-  public parseColumns(customColumns?: string[]): ColumnProps<any>[] {
+  public parseColumns(customColumns?: string[], customRenderColumns?: { [key: string]: (value?: string,  record?: any, index?: number) => JSX.Element }): ColumnProps<any>[] {
     if (!this.columns || customColumns !== this.customColumns) {
       this.customColumns = customColumns;
       this.columns = this.definition.columns
@@ -48,7 +48,7 @@ export class DataTableDataParser {
           }
           return true;
         })
-        .map(c => this.definitionColumnToAntColumn(c))
+        .map(c => this.definitionColumnToAntColumn(c, customRenderColumns && customRenderColumns[c.data] ? customRenderColumns[c.data] : null))
         .filter(c => c !== null);
     }
     return this.columns;
@@ -94,7 +94,7 @@ export class DataTableDataParser {
    * @param {IColumn} source
    * @returns {ColumnProps<any>}
    */
-  private definitionColumnToAntColumn(source: IColumn): ColumnProps<any> {
+  private definitionColumnToAntColumn(source: IColumn, customRender?: (value?: string,  record?: any, index?: number) => JSX.Element): ColumnProps<any> {
     let searchValue: string = "";
     if (!source.visible) return null;
 
@@ -109,6 +109,10 @@ export class DataTableDataParser {
       case "date":
         column.render = ((t) => new Date(t).toDateString());
         break;
+    }
+
+    if (customRender) {
+      column.render = customRender;
     }
 
     if (source.searchable && source.data === "name") {

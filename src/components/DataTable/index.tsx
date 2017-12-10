@@ -52,6 +52,8 @@ interface IProps {
   infinite?: boolean;
 
   tableDescription?: JSX.Element;
+
+  customRenderColumns?: { [key: string]: (value?: string,  record?: any, index?: number) => JSX.Element };
 }
 
 
@@ -290,7 +292,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {PaginationProps}
    */
 
-  itemRender(current, type, originalElement): ReactNode {
+  private itemRender(current, type, originalElement): ReactNode {
     if (type === "prev") {
       return <a><Icon name={"cif-arrow-left"} className="pagination-icon"/></a>;
     } else if (type === "next") {
@@ -299,7 +301,7 @@ class DataTable extends React.Component<IProps, IState> {
     return originalElement;
   }
 
-  loadPaginationConfig(): PaginationProps {
+  private loadPaginationConfig(): PaginationProps {
     const pagination: PaginationProps = {
       current: this.state.page,
       total: this.state.data.total,
@@ -393,7 +395,7 @@ class DataTable extends React.Component<IProps, IState> {
    */
   public render() {
 
-    if (!this.state.definition || !this.state.data) return null;
+    if (!this.state.definition || !this.state.data) return <h4>Loading...</h4>;
 
     if (!this.parser) {
       this.parser = new DataTableDataParser(this.state.definition);
@@ -458,7 +460,7 @@ class DataTable extends React.Component<IProps, IState> {
           rowKey={(record) => (record[this.state.definition.key])}
           scroll={{y: 440}}
           loading={this.state.loading}
-          columns={this.parser.parseColumns(Object.keys(this.state.customField).filter(key => this.state.customField[key]))}
+          columns={this.parser.parseColumns(Object.keys(this.state.customField).filter(key => this.state.customField[key]), this.props.customRenderColumns)}
           dataSource={this.parser.parsData(this.state.data.data)}
           rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
           pagination={this.props.infinite ? false : this.loadPaginationConfig()}
