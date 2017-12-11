@@ -152,6 +152,11 @@ export class DataTableDataParser {
 
   }
 
+  /**
+   * Create action column object
+   * @param {IActionsFn} actionsFn
+   * @returns {ColumnProps<any>}
+   */
   private createActionsColumnsDefinition(actionsFn?: IActionsFn): ColumnProps<any> {
 
     let column: ColumnProps<any> = {};
