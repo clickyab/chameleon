@@ -244,7 +244,7 @@ class DataTable extends React.Component<IProps, IState> {
 
       // TODO:: remove me
       data.data = data.data.map(d => {
-        d["_actions"] = "edit, delete";
+        d["_actions"] = "edit, archive, copy";
         return d;
       });
 
@@ -329,7 +329,6 @@ class DataTable extends React.Component<IProps, IState> {
    */
 
   setColumnsWidth() {
-    console.log(this);
     const tables = this.wrapperDOM.getElementsByTagName("table");
     if (tables.length !== 2) return;
     const bodyTRs = tables[1].getElementsByTagName("tr");
@@ -359,7 +358,6 @@ class DataTable extends React.Component<IProps, IState> {
 
 
     }
-    console.log(bodyTDs);
   }
 
   /**

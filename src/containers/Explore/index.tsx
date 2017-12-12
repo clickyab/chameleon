@@ -2,23 +2,18 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {RootState} from "../../redux/reducers/index";
-import {Form} from "antd";
-import {Row, Col, notification, Spin, Tabs} from "antd";
-import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedButton} from "material-ui";
+import {Row, Tabs} from "antd";
 import I18n from "../../services/i18n/index";
 import Translate from "../../components/i18n/Translate/index";
-import {Select} from "antd";
-import Icon from "../../components/Icon";
 import CONFIG from "../../constants/config";
-import Tooltip from "../../components/Tooltip/index";
-import {ControllersApi, OrmCampaign} from "../../api/api";
-import DataTable from "../../components/DataTable/index";
 import {setBreadcrumb} from "../../redux/app/actions/index";
 import ListOfPublishers from "./containers/ListOfPublishers";
+import ListOfInventories from "./containers/ListOfInventories";
 import "./style.less";
 
 
 const TabPane = Tabs.TabPane;
+
 enum COMP_TAB {
   PUBLISHER = "All publishers",
   MY_LISTS = "My lists",
@@ -37,6 +32,8 @@ interface IProps {
 
 interface IState {
   tab: COMP_TAB;
+  openedList: any[];
+  activeKey: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -47,6 +44,8 @@ class Explore extends React.Component <IProps, IState> {
     super(props);
     this.state = {
       tab: COMP_TAB.PUBLISHER,
+      openedList: [],
+      activeKey: "MyLists", // "AllPublishers",
     };
   }
 
@@ -55,24 +54,65 @@ class Explore extends React.Component <IProps, IState> {
   }
 
   private handleTab(key): void {
-    return console.log("key", key);
+    this.setState({
+      activeKey: key,
+    });
+  }
+
+  private onEdit(targetKey, action) {
+    if (action === "remove") {
+      this.remove(targetKey);
+    }
+  }
+
+  private remove(targetKey) {
+    let activeKey = this.state.activeKey;
+    let lastIndex;
+    this.state.openedList.forEach((list, i) => {
+      if (list.id.toString() === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
+    const openedList = this.state.openedList.filter(pane => pane.id.toString() !== targetKey);
+    if (activeKey !== "AllPublishers" &&  activeKey !== "MyLists" && lastIndex >= 0 && activeKey === targetKey) {
+      activeKey = openedList[lastIndex].id;
+    } else if (activeKey !== "AllPublishers" && activeKey === targetKey) {
+      activeKey = "MyLists";
+    }
+    this.setState({openedList, activeKey});
   }
 
   public render() {
     return (
       <div dir={CONFIG.DIR} className={"content-container"}>
-          <Row className="page-title">
-            <h3 ><Translate value={"Explore"}/></h3>
-          </Row>
-          <Row type={"flex"} align={"middle"}>
-            <Tabs onChange={() => this.handleTab} type="card" className="tabs-container">
-              <TabPane tab={this.i18n._t("All publishers")} key="All publishers">
-                  <ListOfPublishers/>
-              </TabPane>
-              <TabPane tab={this.i18n._t("My List")} key="My lists">
-              </TabPane>
-            </Tabs>
-          </Row>
+        <Row className="page-title">
+          <h3><Translate value={"Explore"}/></h3>
+        </Row>
+        <Row type={"flex"} align={"middle"}>
+          <Tabs activeKey={this.state.activeKey}
+                onEdit={this.onEdit.bind(this)}
+                onChange={this.handleTab.bind(this)}
+                type="editable-card"
+                hideAdd={true}
+                className="tabs-container">
+            <TabPane tab={this.i18n._t("All publishers")} key="AllPublishers" closable={false}>
+              <ListOfPublishers/>
+            </TabPane>
+            <TabPane tab={this.i18n._t("My List")} key="MyLists" closable={false}>
+              <ListOfInventories onEditListClick={(list) => {
+                this.setState({
+                  openedList: [...this.state.openedList, list],
+                  activeKey: list.id.toString(),
+                });
+              }}/>
+            </TabPane>
+            {this.state.openedList.map(list => (
+              <TabPane tab={list.label} key={list.id.toString()} closable={true}>
+                <ListOfInventories/>
+              </TabPane>)
+            )}
+          </Tabs>
+        </Row>
       </div>
     );
   }
@@ -90,4 +130,5 @@ function mapDispatchToProps(dispatch) {
     setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
+
 export default (withRouter(Explore));
