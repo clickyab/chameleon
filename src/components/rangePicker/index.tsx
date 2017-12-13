@@ -12,8 +12,9 @@ interface IProps {
 }
 interface IState {
     value: string;
-    selectedDay: number[];
+    selectedDay: any;
     currentMonth: moment.type;
+    enterSecond: boolean;
     isGregorian: boolean;
 }
 
@@ -25,6 +26,7 @@ class RangePicker extends React.Component<IProps , IState> {
             selectedDay: [],
             currentMonth: moment(props.value),
             isGregorian : false,
+            enterSecond : false,
         };
     }
     onChange(date: moment.Moment) {
@@ -94,6 +96,9 @@ class RangePicker extends React.Component<IProps , IState> {
         }
     }
 
+    private handleMouseEnter(status) {
+        this.setState({ enterSecond: status });
+    }
     private dismiss() {
     }
     render() {
@@ -114,6 +119,9 @@ class RangePicker extends React.Component<IProps , IState> {
                                  onPrevMonth={(value) => this.onPrevMonth(value)}
                                  isRange={true}
                                  syncSelectedDay={this.syncSelectedDay.bind(this)}
+                                 selectedDayArray ={(!!this.state.selectedDay.selectedDayArray) ? this.state.selectedDay.selectedDayArray : this.state.selectedDay}
+                                 firsCal={true}
+                                 secondHover={this.state.enterSecond}
                     />
                     <Calendar    isGregorian={false}
                                  defaultMonth={moment(this.state.currentMonth).add(1 , "month")}
@@ -123,6 +131,9 @@ class RangePicker extends React.Component<IProps , IState> {
                                  onPrevMonth={(value) => this.onPrevMonth(value)}
                                  isRange={true}
                                  syncSelectedDay={this.syncSelectedDay.bind(this)}
+                                 selectedDayArray ={(!!this.state.selectedDay.selectedDayArray) ? this.state.selectedDay.selectedDayArray : this.state.selectedDay}
+                                 onMouseEnterProp={this.handleMouseEnter.bind(this)}
+                                 secondHover={this.state.enterSecond}
                     />
                 </div>
                 <div className="rangePickerFooter">
@@ -130,7 +141,6 @@ class RangePicker extends React.Component<IProps , IState> {
                     <div className="rangePickerButton" onClick={this.dismiss}>انصراف</div>
                 </div>
             </div>
-            {console.log(this.state.selectedDay)}
             <div className="filters" key={Math.random()}>
                 <div className="filter-header">میانبر سریع</div>
                 <div className="date-filter">
@@ -152,6 +162,7 @@ class RangePicker extends React.Component<IProps , IState> {
                 <div className="date-filter">
                     <span onClick={this.onClick([moment().subtract(2, "jMonth").startOf("jMonth"), moment()])}>سه ماه اخیر</span>
                 </div>
+                {console.log("day" , this.state.selectedDay)}
             </div>
         </div>);
     }
