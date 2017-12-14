@@ -1,0 +1,28 @@
+@import "../../containers/App/theme";
+
+.content-container{
+  margin-top: @campaign-top-distance;
+  margin-right: @campaign-side-distance;
+  margin-left: @campaign-side-distance;
+  margin-bottom:@campaign-bottom-distance;
+}
+.page-title{
+  margin-bottom: 40px;
+}
+.ant-tabs-nav-container  , .ant-tabs-nav{
+  height: 50px !important;
+  line-height: 50px;
+}
+.ant-tabs{
+  width: 100%;
+}
+.ant-tabs-tab{
+  padding-top: 0 !important;
+  border: 0px solid transparent !important;
+  background: transparent !important;
+  &-active{
+    border-top: 2px solid @primary-color !important;
+    border-right: 1px solid #E1E5EC !important;
+    border-left: 1px solid #E1E5EC !important;
+  }
+}

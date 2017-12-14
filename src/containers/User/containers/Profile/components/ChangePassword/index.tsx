@@ -72,7 +72,6 @@ class ChangePassword extends React.Component<IProps, IState> {
   private changePassword(e?: any) {
     e && e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log(values);
       if (err) {
         notification.error({
           message: "Update profile failed!",

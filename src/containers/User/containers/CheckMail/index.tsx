@@ -41,7 +41,6 @@ class CheckMail extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     const email = localStorage.getItem(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL") || "";
-    console.log(email)
     this.state = {
       email,
       disableLoginBtn: email ? false : true,

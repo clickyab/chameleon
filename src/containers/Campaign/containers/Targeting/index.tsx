@@ -246,7 +246,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   private updateDevices(selectedDevices) {
-    console.log(selectedDevices);
     this.setState({
       devices: selectedDevices,
     });
@@ -311,45 +310,47 @@ class TargetingComponent extends React.Component <IProps, IState> {
             <div className={(CONFIG.DIR === "ltr" ) ? "targeting" : "targeting-rtl"}>
               <Form onSubmit={this.handleSubmit.bind(this)}>
                 {/* Devices */}
-                <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
-                    <Tooltip/>
-                    <label>{this.i18n._t("Device Type")}</label>
-                  </Col>
-                  <Col span={19}>
-                    <FormItem>
-                      <RadioButtonGroup className="campaign-radio-group" name="devices"
-                                        valueSelected={this.state.showOtherDevices}
-                                        defaultSelected={this.state.showOtherDevices}
-                                        onChange={(a, checked) => {
-                                          this.setState({
-                                            devices: [],
-                                            showOtherDevices: checked ? true : false,
-                                          });
-                                        }}>
-                        <RadioButton className="campaign-radio-button"
-                                     value={false}
-                                     label={this.i18n._t("All Devices")}
-                        />
-                        <RadioButton className="campaign-radio-button"
-                                     value={true}
-                                     label={this.i18n._t("Select devices type")}
-                        />
-                      </RadioButtonGroup>
-                      {this.state.showOtherDevices &&
-                      <div className="component-wrapper">
-                        <CheckBoxList
-                          items={this.devices}
-                          value={this.state.devices}
-                          onChange={this.updateDevices.bind(this)}
-                        />
-                      </div>
-                      }
-                    </FormItem>
-                  </Col>
-                </Row>
-
+                  {this.state.currentCampaign.kind === DEVICE_TYPES.WEB &&
+                  <Row type="flex" className="targeting-row">
+                      <Col span={5} className="title-target">
+                          <Tooltip/>
+                          <label>{this.i18n._t("Device Type")}</label>
+                      </Col>
+                      <Col span={19}>
+                          <FormItem>
+                              <RadioButtonGroup className="campaign-radio-group" name="devices"
+                                                valueSelected={this.state.showOtherDevices}
+                                                defaultSelected={this.state.showOtherDevices}
+                                                onChange={(a, checked) => {
+                                                    this.setState({
+                                                        devices: [],
+                                                        showOtherDevices: checked ? true : false,
+                                                    });
+                                                }}>
+                                  <RadioButton className="campaign-radio-button"
+                                               value={false}
+                                               label={this.i18n._t("All Devices")}
+                                  />
+                                  <RadioButton className="campaign-radio-button"
+                                               value={true}
+                                               label={this.i18n._t("Select devices type")}
+                                  />
+                              </RadioButtonGroup>
+                              {this.state.showOtherDevices &&
+                              <div className="component-wrapper">
+                                  <CheckBoxList
+                                      items={this.devices}
+                                      value={this.state.devices}
+                                      onChange={this.updateDevices.bind(this)}
+                                  />
+                              </div>
+                              }
+                          </FormItem>
+                      </Col>
+                  </Row>
+                  }
                 {/* Manufactures */}
+                {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
                 <Row type="flex" className="targeting-row">
                   <Col span={5} className="title-target">
                     <Tooltip/>
@@ -395,6 +396,8 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     </FormItem>
                   </Col>
                 </Row>
+                }
+
 
                 {/* Operation systems */}
                 <Row type="flex" className="targeting-row">
@@ -586,7 +589,6 @@ class TargetingComponent extends React.Component <IProps, IState> {
                         })(
                           <IranMap
                             onChange={(locations) => {
-                              console.log(locations);
                               this.setState({locations});
                             }}
                           />

@@ -134,7 +134,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
   }
 
   private handleSubscribersChange(value) {
-    console.log(value);
     this.setState({
       subscriber: value,
       // subscribers: [...this.state.subscribers, value],

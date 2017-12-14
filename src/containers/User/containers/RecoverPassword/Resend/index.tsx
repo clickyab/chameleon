@@ -100,7 +100,6 @@ export default class Resend extends React.Component<IProps, IState> {
   }
 
   private resendVerify() {
-    console.log("send request to:", this.props.email);
     this.startTimer();
   }
 

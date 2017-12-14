@@ -1,8 +1,7 @@
 @import "../../../App/theme";
 
 .upload-textfield {
-  margin-right: 20px;
-  max-width: 480px;
+  width: 480px;
   direction: ltr;
   font-size: 15px !important;
   @media (max-width: 1390px) {
@@ -10,9 +9,17 @@
   }
 }
 
+.url-label{
+  color: #5E6670;
+  font-weight: 500;
+  font-size: 15px;
+  margin-right: 2px;
+  margin-left: 2px;
+}
 
 .add-utm-btn {
   display: flex;
+  align-items: center;
   border-radius: 2px;
   margin-right: 10px;
   padding: 0 10px;
@@ -291,4 +298,27 @@
   font-size: 34px;
   margin-left: 5px;
   margin-right: 5px;
+}
+.select-list-rtl {
+  &.select-url {
+    min-width: 385px !important;
+  }
+  &.select-url-other{
+    width: 115px !important;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+}
+
+.url-row {
+  height: 30px;
+  margin-bottom: 0;
+  &-item {
+    margin-bottom: 10px;
+    .select-other-url-form{
+      &.ant-form-item {
+        margin: 0 !important;
+      }
+    }
+  }
 }

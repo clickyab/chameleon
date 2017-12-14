@@ -109,6 +109,7 @@ WORKDIR /clickyab/app
 
 RUN cd /clickyab/app && \
     npm install && \
+    npm run syncTranslation && \
     npm run build
 
 FROM nginx:1-alpine

@@ -310,7 +310,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             {this.state.showPublisherTable &&
             <div>
               <Row>
-                <Col span={24}>
+                <Col span={24} className="mt-5">
                   <DataTable
                     tableDescription={
                       <div className="pub-table-title">
