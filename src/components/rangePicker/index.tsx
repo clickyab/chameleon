@@ -120,7 +120,7 @@ class RangePicker extends React.Component<IProps , IState> {
                                  isRange={true}
                                  syncSelectedDay={this.syncSelectedDay.bind(this)}
                                  selectedDayArray ={(!!this.state.selectedDay.selectedDayArray) ? this.state.selectedDay.selectedDayArray : this.state.selectedDay}
-                                 firsCal={true}
+                                 firstCal={true}
                                  secondHover={this.state.enterSecond}
                     />
                     <Calendar    isGregorian={false}
@@ -144,10 +144,10 @@ class RangePicker extends React.Component<IProps , IState> {
             <div className="filters" key={Math.random()}>
                 <div className="filter-header">میانبر سریع</div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment()])}>امروز</span>
+                    <span onClick={this.onClick([moment(), moment()])}>امروز</span>
                 </div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment().subtract(1, "days")])}>دیروز</span>
+                    <span onClick={this.onClick([moment().subtract(1, "days") , moment().subtract(1, "days")])}>دیروز</span>
                 </div>
                 <div className="date-filter">
                     <span onClick={this.onClick([moment().subtract(6, "days"), moment()])}>۷ روز گذشته</span>
