@@ -1,6 +1,7 @@
 import * as React from "react";
 import {default as AntModal, ModalProps} from "antd/es/modal/Modal";
 import "./style.less";
+import CONFIG from "../../constants/config";
 
 /**
  * Props
@@ -8,6 +9,8 @@ import "./style.less";
 interface IProps extends ModalProps {
   children?: JSX.Element ;
   customClass?: any;
+  type?: "prompt" | "alert";
+  mask?: boolean;
 }
 
 /**
@@ -52,7 +55,8 @@ export default class Modal extends React.Component<IProps, {}> {
 
   public render() {
     return (
-      <AntModal wrapClassName="vertical-center-modal" {...this.props} className={`modal-wrapper ${(this.props.customClass) ? this.props.customClass : "" }`}>
+      <AntModal wrapClassName={`vertical-center-modal modal-${CONFIG.DIR}`} {...this.props}
+                className={`modal-wrapper  ${this.props.type ? "modal-" + this.props.type : ""} ${(this.props.customClass) ? this.props.customClass : "" }`}>
         {this.props.children}
       </AntModal>
     );

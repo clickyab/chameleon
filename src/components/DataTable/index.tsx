@@ -13,7 +13,7 @@
 import * as React from "react";
 import {Table, Row, Checkbox, Col, Switch, Button} from "antd";
 import {DataTableDataParser} from "./lib/parsers";
-import {IColumn, IData, IDefinition} from "./lib/interfaces";
+import {IActionsFn, IColumn, IData, IDefinition} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
 import "./style.less";
 import Icon from "../Icon/index";
@@ -45,13 +45,30 @@ interface IProps {
   name: string;
 
   /**
-   * @params name - callback function for on selected rows changed
+   * @params onSelectRow - callback function for on selected rows changed
    */
   onSelectRow?: (rows: string[], selectedRows: any[]) => void;
 
+  /**
+   * @params infinite - load table's data by infinite scroll
+   */
   infinite?: boolean;
 
+  /**
+   * @param tableDescription - An element to render in table description's position
+   */
   tableDescription?: JSX.Element;
+
+  /**
+   * @params customRenderColumns - an object with key of column for cell custom render
+   */
+  customRenderColumns?: { [key: string]: (value?: string, record?: any, index?: number) => JSX.Element };
+
+  /**
+   * @params actionsFn - an object with keys of each action function
+   */
+  actionsFn?: IActionsFn;
+
 }
 
 
@@ -78,6 +95,7 @@ class DataTable extends React.Component<IProps, IState> {
   parser;
   infiniteLoader: boolean = false;
   customFieldTemp: object = {};
+  wrapperDOM: HTMLElement;
 
   private i18n = I18n.getInstance();
 
@@ -104,6 +122,9 @@ class DataTable extends React.Component<IProps, IState> {
     this.loadData();
   }
 
+  /**
+   * Open customization modal by set state
+   */
   private openCustomizeModal() {
     this.setState(
       {customizeModal: true}
@@ -118,6 +139,11 @@ class DataTable extends React.Component<IProps, IState> {
     localStorage.setItem(`TABLE_DEFINITION_${this.props.name}`, JSON.stringify(definition));
   }
 
+
+  /**
+   * Store table customization data in local storage
+   * @param {any} definition
+   */
   storeCustom(customField) {
     localStorage.setItem(`TABLE_CUSTOM_${this.props.name}`, JSON.stringify(customField));
   }
@@ -163,6 +189,9 @@ class DataTable extends React.Component<IProps, IState> {
     });
   }
 
+  /**
+   * Add event to table's parent div for infinite scroll
+   */
   addScrollListener() {
     if (this.state.page === 1) {
       setTimeout(() => {
@@ -212,6 +241,13 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     this.props.dataFn(config).then((data: IData) => {
+
+      // TODO:: remove me
+      data.data = data.data.map(d => {
+        d["_actions"] = "edit, archive, copy";
+        return d;
+      });
+
       if (this.state.data && this.props.infinite) {
         data.data = [...this.state.data.data, ...data.data];
       }
@@ -247,9 +283,12 @@ class DataTable extends React.Component<IProps, IState> {
               // customField,
               loading: false,
               definition: def,
+            }, () => {
+              this.addScrollListener();
+              this.infiniteLoader = false;
+              this.setColumnsWidth();
             });
-            this.addScrollListener();
-            this.infiniteLoader = false;
+
           });
 
       }
@@ -286,11 +325,49 @@ class DataTable extends React.Component<IProps, IState> {
   }
 
   /**
-   * Generate table pagination config
-   * @returns {PaginationProps}
+   * Set cells width base on maximum width of each column
    */
 
-  itemRender(current, type, originalElement): ReactNode {
+  setColumnsWidth() {
+    const tables = this.wrapperDOM.getElementsByTagName("table");
+    if (tables.length !== 2) return;
+    const bodyTRs = tables[1].getElementsByTagName("tr");
+    const bodyTDs = tables[1].getElementsByTagName("tr")[0].getElementsByTagName("td");
+    for (let td = 0; td < bodyTDs.length; td++) {
+
+      let maxWidth = tables[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[td].getBoundingClientRect().width;
+      for (let tr in bodyTRs) {
+        try {
+          const innerTdWidth = tables[1].getElementsByTagName("tr")[tr].getElementsByTagName("td")[td].getBoundingClientRect().width;
+          if (innerTdWidth > maxWidth) {
+            maxWidth = innerTdWidth;
+          }
+        } catch (err) {
+          // empty
+        }
+      }
+
+      tables[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[td].width = maxWidth.toString();
+      for (let tr in bodyTRs) {
+        try {
+          tables[1].getElementsByTagName("tr")[tr].getElementsByTagName("td")[td].width = maxWidth.toString();
+        } catch (err) {
+          // empty
+        }
+      }
+
+
+    }
+  }
+
+  /**
+   * Render pagination buttons
+   * @param current
+   * @param type
+   * @param originalElement
+   * @returns {React.ReactNode}
+   */
+  private itemRender(current, type, originalElement): ReactNode {
     if (type === "prev") {
       return <a><Icon name={"cif-arrow-left"} className="pagination-icon"/></a>;
     } else if (type === "next") {
@@ -299,7 +376,11 @@ class DataTable extends React.Component<IProps, IState> {
     return originalElement;
   }
 
-  loadPaginationConfig(): PaginationProps {
+  /**
+   * generate pagination configuration
+   * @returns {PaginationProps}
+   */
+  private loadPaginationConfig(): PaginationProps {
     const pagination: PaginationProps = {
       current: this.state.page,
       total: this.state.data.total,
@@ -368,6 +449,10 @@ class DataTable extends React.Component<IProps, IState> {
     });
   }
 
+  /**
+   *
+   * @param keys
+   */
   public setCustomField(keys) {
     this.customFieldTemp = {};
     this.state.definition.columns.map(field => {
@@ -393,7 +478,7 @@ class DataTable extends React.Component<IProps, IState> {
    */
   public render() {
 
-    if (!this.state.definition || !this.state.data) return null;
+    if (!this.state.definition || !this.state.data) return <h4>Loading...</h4>;
 
     if (!this.parser) {
       this.parser = new DataTableDataParser(this.state.definition);
@@ -402,7 +487,9 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     return (
-      <div className="data-table-wrapper">
+      <div ref={(input) => {
+        this.wrapperDOM = input;
+      }} className="data-table-wrapper">
         <div className="data-table-description">
           {this.props.tableDescription}
           <Button
@@ -458,7 +545,11 @@ class DataTable extends React.Component<IProps, IState> {
           rowKey={(record) => (record[this.state.definition.key])}
           scroll={{y: 440}}
           loading={this.state.loading}
-          columns={this.parser.parseColumns(Object.keys(this.state.customField).filter(key => this.state.customField[key]))}
+          columns={this.parser.parseColumns({
+            customColumns: Object.keys(this.state.customField).filter(key => this.state.customField[key]),
+            actionsFn: this.props.actionsFn,
+            customRenderColumns: this.props.customRenderColumns,
+          })}
           dataSource={this.parser.parsData(this.state.data.data)}
           rowSelection={this.state.definition.checkable ? this.loadSelectionConfig() : null}
           pagination={this.props.infinite ? false : this.loadPaginationConfig()}
