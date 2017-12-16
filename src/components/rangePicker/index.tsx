@@ -1,9 +1,9 @@
 import * as React from "react";
 import {Calendar} from "react-datepicker2";
-import DatePicker2 from "react-datepicker2";
-import {toEnglishDigits} from "react-datepicker2";
 import "./style.less";
 import * as moment from "moment-jalaali";
+import I18n from "../../services/i18n/index";
+import Translate from "../i18n/Translate";
 
 interface IProps {
     getRange: any;
@@ -19,13 +19,14 @@ interface IState {
 }
 
 class RangePicker extends React.Component<IProps , IState> {
+    private i18n = I18n.getInstance();
     constructor(props) {
         super(props);
         this.state = {
             value: props.value ? props.value : moment().toISOString(),
             selectedDay: [],
             currentMonth: moment(props.value),
-            isGregorian : false,
+            isGregorian : props.isGregorian ? props.isGregorian : false,
             enterSecond : false,
         };
     }
@@ -37,33 +38,21 @@ class RangePicker extends React.Component<IProps , IState> {
             });
         }
     }
-    private start_at_onChange(is_min_month) {
-        const {isGregorian} = this.state;
-        const monthFormat = isGregorian ? "Month" : "jMonth";
-        const dateFormat = isGregorian ? "YYYY/M/D" : "jYYYY/jM/jD";
-        return (event) => {
-            if (is_min_month) {
-                const currentMonth = moment(toEnglishDigits(event.target.value), dateFormat);
-                if (currentMonth.isValid()) {
-                    this.setState({currentMonth});
-                } else {
-                    this.setState({currentMonth: moment()});
-                }
-            } else {
-                const currentMonth = moment(toEnglishDigits(event.target.value), dateFormat);
-                if (currentMonth.isValid()) {
-                    this.setState({currentMonth: currentMonth.subtract(1, monthFormat)});
-                } else {
-                    this.setState({currentMonth: moment()});
-                }
-            }
-        };
+
+    /**
+     * @func syncSelectedDay
+     * @desc synchronise days between two calendar
+     * @param days
+     */
+    private syncSelectedDay(days) {
+        this.setState({selectedDay: days});
     }
 
-    private syncSelectedDay(state) {
-        this.setState({selectedDay: state});
-    }
-
+    /**
+     * @func onNextMonth
+     * @desc add one month to current month (Support gregorian and jalaali)
+     * @param date
+     */
     private onNextMonth(date) {
         const {isGregorian} = this.state;
         const monthFormat = isGregorian ? "month" : "jMonth";
@@ -71,7 +60,11 @@ class RangePicker extends React.Component<IProps , IState> {
         this.setState({currentMonth: moment(currentMonth).add(1, monthFormat)
         });
     }
-
+    /**
+     * @func onPrevMonth
+     * @desc subtract one month to current month (Support gregorian and jalaali)
+     * @param date
+     */
     private onPrevMonth(date) {
         const {isGregorian} = this.state;
         const monthFormat = isGregorian ? "month" : "jMonth";
@@ -79,7 +72,12 @@ class RangePicker extends React.Component<IProps , IState> {
         this.setState({currentMonth: moment(currentMonth).subtract(1, monthFormat)
         });
     }
-    private onClick(days) {
+    /**
+     * @func setRange
+     * @desc setRange for calendar
+     * @param days
+     */
+    private setRange(days) {
         return () => {
             return this.setState({
                 selectedDay: [...days],
@@ -95,12 +93,15 @@ class RangePicker extends React.Component<IProps , IState> {
             getRange(this.state);
         }
     }
-
+    /**
+     * @func handleMouseEnter
+     * @desc set flag after mouse enter return true of false
+     * @param status
+     */
     private handleMouseEnter(status) {
         this.setState({ enterSecond: status });
     }
-    private dismiss() {
-    }
+
     render() {
         moment.loadPersian({dialect: "persian-modern", usePersianDigits: false});
         const {selectedDay, currentMonth} = this.state;
@@ -137,30 +138,30 @@ class RangePicker extends React.Component<IProps , IState> {
                     />
                 </div>
                 <div className="rangePickerFooter">
-                    <div className="rangePickerButton" onClick={this.getRange}>ثبت</div>
-                    <div className="rangePickerButton" onClick={this.dismiss}>انصراف</div>
+                    <div className="rangePickerButton" onClick={this.getRange}><Translate value={"submit"}/></div>
+                    <div className="rangePickerButton"><Translate value={"cancel"}/></div>
                 </div>
             </div>
             <div className="filters" key={Math.random()}>
-                <div className="filter-header">میانبر سریع</div>
+                <div className="filter-header"><Translate value={"shortcuts"}/></div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment(), moment()])}>امروز</span>
+                    <span onClick={this.setRange([moment(), moment()])}><Translate value={"today"}/></span>
                 </div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment().subtract(1, "days") , moment().subtract(1, "days")])}>دیروز</span>
+                    <span onClick={this.setRange([moment().subtract(1, "days") , moment().subtract(1, "days")])}><Translate value={"yesterday"}/></span>
                 </div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment().subtract(6, "days"), moment()])}>۷ روز گذشته</span>
+                    <span onClick={this.setRange([moment().subtract(6, "days"), moment()])}><Translate value={"last week"}/></span>
                 </div>
                 <div className="date-filter">
                         <span
-                            onClick={this.onClick([moment().startOf("jMonth"), moment().endOf("jMonth")])}>این ماه</span>
+                            onClick={this.setRange([moment().startOf(monthFormat), moment()])}><Translate value={"current month"}/></span>
                 </div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment().subtract(1, "jMonth"), moment()])}>ماه گذشته</span>
+                    <span onClick={this.setRange([moment().subtract(1, monthFormat).startOf(monthFormat), moment().subtract(1, monthFormat).endOf(monthFormat)])}><Translate value={"last month"}/></span>
                 </div>
                 <div className="date-filter">
-                    <span onClick={this.onClick([moment().subtract(2, "jMonth").startOf("jMonth"), moment()])}>سه ماه اخیر</span>
+                    <span onClick={this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat), moment()])}><Translate value={"last tree month"}/></span>
                 </div>
                 {console.log("day" , this.state.selectedDay)}
             </div>
