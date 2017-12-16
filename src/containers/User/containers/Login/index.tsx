@@ -140,7 +140,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             <form onSubmit={this.submitLogin.bind(this)}>
               <FormItem>
                 {getFieldDecorator("password", {
-                  rules: [{required: true, message: "Please input your username!"}],
+                  rules: [{required: true, message: this.i18n._t("Please input your username!")}],
                 })(
                   <TextField
                     fullWidth={true}

@@ -41,7 +41,7 @@ class I18nExtractor {
    */
   private PATTERNS = {
     FUNCTION: /_t\(['"](.*?)['"]\)/ig,
-    TAG: /<Translate.*?value=['|"](.*?)['|"].*?>/ig,
+    TAG: /<Translate.*?value=.*['|"](.*?)['|"].*?>/ig,
   };
 
   /**

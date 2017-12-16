@@ -112,7 +112,7 @@ class CheckMail extends React.Component<IProps, IState> {
               <FormItem className="login-input">
                 {getFieldDecorator("email", {
                   initialValue: this.state.email,
-                  rules: [{required: true, type: "email", message: "Please input a valid email!"}],
+                  rules: [{required: true, type: "email", message: this.i18n._t("Please input a valid email!")}],
                 })(
                   <TextField
                     fullWidth={true}
