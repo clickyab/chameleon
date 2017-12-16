@@ -77,7 +77,7 @@
     "rc-animate": "^2.4.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.2",
-    "react-datepicker2": "git+https://github.com/alireza-mh/react-datepicker2.git",
+    "react-datepicker2": "git+https://github.com/alireza-mh/react-datepicker-cy.git",
     "react-dom": "^15.6.1",
     "react-google-maps": "^9.2.2",
     "react-image-file": "^0.1.0",
