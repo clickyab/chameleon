@@ -179,7 +179,7 @@ class UtmModal extends React.Component<IProps, IState> {
    * @param value
    */
   private onFormChange(name, value) {
-    this.setState((prevState => {
+    this.setState((prevState: IState) => {
       if (prevState.url.indexOf(`${name}=`) === -1) {
         if (prevState.url.indexOf("?") === -1) {
           prevState.url = prevState.url + `?${name}=${value}`;
@@ -191,7 +191,7 @@ class UtmModal extends React.Component<IProps, IState> {
       }
       prevState[name] = value;
       return prevState;
-    }));
+    });
   }
 
   render() {
