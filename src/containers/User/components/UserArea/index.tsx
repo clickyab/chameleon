@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import {UserApi, UserAvatarPayload, UserResponseLoginOKAccount, UserUserPayload} from "../../../../api/api";
 import {default as Upload, UPLOAD_MODULES} from "../../../../services/Upload/index";
-import {notification} from "antd/lib";
+import {notification , Tabs} from "antd/lib";
 import I18n from "../../../../services/i18n/index";
 import {setUser} from "../../../../redux/app/actions/index";
 import CONFIG from "../../../../constants/config";
@@ -18,7 +18,7 @@ import classNames = require("classnames");
 import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 
-
+const TabPane = Tabs.TabPane;
 /**
  * @interface
  * @desc define component props

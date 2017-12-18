@@ -50,8 +50,8 @@ class SidebarMenu extends React.Component<IProps, IState> {
               onClick={e => this.sideBarRouting(e.key)}>
           <Menu.Item key="createCampaign" className="campaignButton">
             <Button className="ghostButton" size="large" ghost>
+                <Icon className="create-campaign-icon" name="cif-plusbold"/>
               <span className="create-campaign-text">{this.i18n._t("Create Campaign")}</span>
-              <Icon className="create-campaign-icon" name="cif-plusbold"/>
             </Button>
           </Menu.Item>
           <Menu.Item key="dashboard">
