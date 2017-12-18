@@ -92,6 +92,7 @@
     "redux-form": "^7.0.3",
     "redux-form-material-ui": "^4.2.0",
     "request": "^2.81.0",
+    "ts-loader": "^3.2.0",
     "tslint": "^5.5.0",
     "tslint-react": "^3.2.0",
     "url-parse": "^1.1.9",
