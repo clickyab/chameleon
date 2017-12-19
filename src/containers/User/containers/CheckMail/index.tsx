@@ -83,7 +83,8 @@ class CheckMail extends React.Component<IProps, IState> {
 
           }).catch((err) => {
             notification.error({
-              message: "Check mail Failed",
+              message: this.i18n._t("Check mail Failed").toString(),
+              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
               description: this.i18n._t("Please check your email and try again").toString(),
             });
 

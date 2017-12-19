@@ -95,7 +95,8 @@ class RegisterForm extends React.Component<IProps, IState> {
       }).catch((error) => {
         if (error.error) {
           notification.error({
-            message: "Registration Failed",
+            message: this.i18n._t("Registration Failed").toString(),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: this.i18n._t(error.error.text).toString(),
           });
         } else {
@@ -104,7 +105,8 @@ class RegisterForm extends React.Component<IProps, IState> {
             errors.push(this.i18n._t(error[key].text).toString());
           });
           notification.error({
-            message: "Registration Failed",
+            message: this.i18n._t("Registration Failed").toString(),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: errors.join("<br>"),
           });
         }
@@ -139,13 +141,15 @@ class RegisterForm extends React.Component<IProps, IState> {
 
           // show notification
           notification.success({
-            message: "Registration",
+            message: this.i18n._t("Registration"),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: this.i18n._t("Your account created successfully.").toString(),
           });
         })
           .catch((error) => {
             notification.error({
-              message: "Verification Failed",
+              message: this.i18n._t("Verification Failed").toString(),
+              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
               description: this.i18n._t(error.error.text).toString(),
             });
           });
@@ -176,13 +180,15 @@ class RegisterForm extends React.Component<IProps, IState> {
 
         // show notification
         notification.success({
-          message: "Registration",
+          message: this.i18n._t("Registration"),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Your account created successfully.").toString(),
         });
       })
       .catch((error) => {
         notification.error({
-          message: "Verification Failed",
+          message: this.i18n._t("Verification Failed").toString(),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t(error.statusText).toString(),
         });
       });
@@ -197,7 +203,8 @@ class RegisterForm extends React.Component<IProps, IState> {
       }
     }).then(() => {
       notification.success({
-        message: "Resend Verification Code",
+        message: this.i18n._t("Resend Verification Code"),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
         description: this.i18n._t("Your verification has been sent.").toString(),
       });
     });
@@ -243,7 +250,7 @@ class RegisterForm extends React.Component<IProps, IState> {
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("lastName", {
-                      rules: [{required: true, message: "Please input your last name!"}],
+                      rules: [{required: true, message: this.i18n._t("Please input your last name!")}],
                     })(
                       <TextField
                         fullWidth={true}
@@ -256,7 +263,7 @@ class RegisterForm extends React.Component<IProps, IState> {
               <FormItem>
                 {getFieldDecorator("email", {
                   initialValue: this.state.email,
-                  rules: [{required: true, message: "Please input your email!"}],
+                  rules: [{required: true, message: this.i18n._t("Please input your email!")}],
                 })(
                   <TextField
                     fullWidth={true}
@@ -268,7 +275,7 @@ class RegisterForm extends React.Component<IProps, IState> {
               </FormItem>
               <FormItem>
                 {getFieldDecorator("password", {
-                  rules: [{required: true, message: "Please input your password!"}],
+                  rules: [{required: true, message: this.i18n._t("Please input your password!")}],
                 })(
                   <PasswordStrength
                     fullWidth={true}
@@ -279,7 +286,7 @@ class RegisterForm extends React.Component<IProps, IState> {
               </FormItem>
               <FormItem>
                 {getFieldDecorator("mobile", {
-                  rules: [{required: true, message: "Please input your phone!"}],
+                  rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
                 })(
                   <PhoneInput/>
                 )}
@@ -292,7 +299,7 @@ class RegisterForm extends React.Component<IProps, IState> {
               {this.state.isCorporation &&
               <FormItem>
                 {getFieldDecorator("companyName", {
-                  rules: [{required: this.state.isCorporation, message: "Please input your company name!"}],
+                  rules: [{required: this.state.isCorporation, message: this.i18n._t("Please input your company name!")}],
                 })(
                   <TextField
                     fullWidth={true}
@@ -325,7 +332,7 @@ class RegisterForm extends React.Component<IProps, IState> {
             <form onSubmit={this.submitVerification.bind(this)}>
               <FormItem>
                 {getFieldDecorator("number", {
-                  rules: [{required: true, message: "Please input your verification code!"}],
+                  rules: [{required: true, message: this.i18n._t("Please input your verification code!")}],
                 })(
                   <TextField
                     fullWidth={true}

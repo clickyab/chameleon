@@ -125,7 +125,8 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       this.setState({token: data.token, step: STEPS.NEWPASSWORD});
     }).catch(err => {
       notification.error({
-        message: "Email Verification!",
+        message: this.i18n._t("Email Verification!"),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
         description: err.status === 403 ? this.i18n._t("Your code is invalid!").toString() : this.i18n._t("Please check all fields and try again!").toString(),
       });
     });
