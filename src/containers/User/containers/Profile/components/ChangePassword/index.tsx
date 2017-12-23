@@ -11,6 +11,7 @@ import {Form, Row, Col, notification} from "antd";
 import {UserApi} from "../../../../../../api/api";
 import {TextField} from "material-ui";
 import PasswordStrength from "../../../../../../components/PasswordStrength/index";
+import CONFIG from "../../../../../../constants/config";
 
 const FormItem = Form.Item;
 
@@ -74,7 +75,8 @@ class ChangePassword extends React.Component<IProps, IState> {
     this.props.form.validateFields((err, values) => {
       if (err) {
         notification.error({
-          message: "Update profile failed!",
+          message: this.i18n._t("Update profile failed!").toString(),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Please check all fields and try again!").toString(),
         });
         return;
@@ -89,18 +91,21 @@ class ChangePassword extends React.Component<IProps, IState> {
       }).then(() => {
         notification.success({
           message: this.i18n._t("Change Password"),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Your password changed successfully.").toString(),
         });
         this.props.onOk && this.props.onOk();
       }).catch((err) => {
         if (err.state === 400) {
           notification.error({
-            message: this.i18n._t("Change Password"),
+            message: this.i18n._t("Change Password").toString(),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: this.i18n._t("Your current password is wrong.").toString(),
           });
         } else {
           notification.error({
-            message: this.i18n._t("Change Password"),
+            message: this.i18n._t("Change Password").toString(),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: this.i18n._t("Error in changing password.").toString(),
           });
         }

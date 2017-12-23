@@ -197,6 +197,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
     }).catch((error) => {
       notification.error({
         message: this.i18n._t("Set publishers failed!"),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
         description: error.message,
       });
     });

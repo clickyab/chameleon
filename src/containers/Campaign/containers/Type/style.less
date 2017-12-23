@@ -112,6 +112,8 @@
 .arrow-next-step {
   color: white !important;
   font-size: 9px;
+  position: relative;
+  top:2px;
   margin-right: 10px;
 }
 
@@ -119,7 +121,7 @@
   margin-top: 25px !important;
   height: @campaign-button-height;
   min-width: 105px;
-  box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
+  box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0 1px 4px !important;
   font-size: 14px !important;
   margin-bottom: 10px;
   button:disabled {
@@ -168,6 +170,27 @@
           margin-left: 5px;
           font-size: 13px;
         }
+      }
+    }
+  }
+}
+
+div[dir="rtl"] {
+  .button-next-step {
+    button:disabled {
+      div  {
+        display: flex;
+        direction: ltr;
+        align-content: center;
+        justify-content: center;
+      }
+    }
+    button {
+      div > div {
+        display: flex;
+        direction: ltr;
+        align-content: center;
+        justify-content: center;
       }
     }
   }

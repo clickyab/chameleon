@@ -246,13 +246,33 @@ div[dir="rtl"] .table-icon {
   &:before {
     content: "\e015" !important;
     font-size: 40px;
+    line-height: 50px;
     font-family: clickyabdashboard !important;
+  }
+}
+.ant-notification-notice-close-x{
+  &:after {
+    content: "\e014" !important;
+    font-size: 10px;
+    font-family: clickyabdashboard !important;
+  }
+}
+.notif-rtl {
+  .ant-notification-notice-message {
+    display: flex;
+    direction: rtl;
+    padding-right: 0;
+    padding-top: 10px;
+  }
+  .ant-notification-notice-description {
+    text-align: right;
   }
 }
 .ant-notification-notice-icon.ant-notification-notice-icon-success{
   &:before{
     content: "\e013" !important;
     font-size: 40px;
+    line-height: 50px;
     font-family: "clickyabdashboard" !important;
   }
 }

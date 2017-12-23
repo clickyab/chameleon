@@ -478,7 +478,7 @@ class DataTable extends React.Component<IProps, IState> {
    */
   public render() {
 
-    if (!this.state.definition || !this.state.data) return <h4>Loading...</h4>;
+    if (!this.state.definition || !this.state.data) return <h4><Translate value={"Loading..."}/></h4>;
 
     if (!this.parser) {
       this.parser = new DataTableDataParser(this.state.definition);
