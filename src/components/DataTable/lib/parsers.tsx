@@ -175,8 +175,8 @@ export class DataTableDataParser {
           {record._actions.split(",").map((text, i) => (
             <Menu.Item key={i}>
               <a onClick={() => {
-                if (actionsFn && actionsFn[text]) {
-                  actionsFn[text](value, record, index);
+                if (!!actionsFn && typeof actionsFn[text.trim()] === "function") {
+                  actionsFn[text.trim()](value, record, index);
                 }
               }}>{text}</a>
             </Menu.Item>

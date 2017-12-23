@@ -1,19 +1,34 @@
 @import "../../containers/App/theme";
 
+.modal-rtl {
+  .ant-modal-content {
+    direction: rtl;
+  }
+
+  .ant-modal-footer {
+
+    button + button {
+      margin-left: 0px;
+      margin-right: 8px;
+      margin-bottom: 0;
+    }
+  }
+}
+
 .modal-wrapper {
   .ant-modal-content {
     border-radius: 3px;
-    .ant-modal-header{
-      border-radius:3px;
+    .ant-modal-header {
+      border-radius: 3px;
     }
   }
-  .ant-modal-body{
+  .ant-modal-body {
     padding: 20px;
   }
   .ant-modal-header {
     border-radius: 0;
     background: @modal-header-bg-color;
-    color:@modal-header-color;
+    color: @modal-header-color;
     border-bottom: 1px solid #E4E6E9;
 
     .ant-modal-title {
@@ -26,7 +41,7 @@
   }
 }
 
-.ant-modal-mask{
+.ant-modal-mask {
   display: none;
 }
 
@@ -41,7 +56,19 @@
     right: 0;
   }
 }
-.blur{
-  filter:blur(3px);
+
+.blur {
+  filter: blur(3px);
   transition: filte linear .3s;
+}
+
+.modal-prompt {
+  width: 350px !important;
+  .ant-modal-close {
+    display: none;
+  }
+  .ant-modal-footer {
+    border: none;
+
+  }
 }

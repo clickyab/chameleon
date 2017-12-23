@@ -38,10 +38,10 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: isProduction
-          ? "awesome-typescript-loader?module=es6"
+          ? "ts-loader?module=es6"
           : [
             "react-hot-loader",
-            "awesome-typescript-loader",
+            "ts-loader",
           ],
       },
       // static assets
@@ -56,7 +56,7 @@ module.exports = {
         test: /\.tsx?$/,
       },
       {
-        loader: "react-hot-loader!awesome-typescript-loader",
+        loader: "react-hot-loader!ts-loader",
         test: /\.tsx?$/,
       },
       {test: /\.svg$/, use: "file-loader"},

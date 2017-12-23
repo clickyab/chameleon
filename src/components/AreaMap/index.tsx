@@ -57,10 +57,8 @@ export default class AreaMap extends React.Component<IProps, IState> {
       defaultCenter={{lat: Number(this.state.coordinate.lat) , lng: Number(this.state.coordinate.lng) }}
       defaultOptions={{styles: Theme}}
       onClick = {(e) => this.handleCirclePosition(e.latLng)}
-      onDoubleClick = {(e) => e.preventDefault()}
     >
       <Circle
-        clickable
         editable={false}
         center={{lat: Number(this.state.coordinate.lat) , lng: Number(this.state.coordinate.lng) }}
         radius={this.state.radius}
