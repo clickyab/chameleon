@@ -278,14 +278,16 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                         }).catch((err) => {
                             // fixme:: handle error
                             notification.error({
-                                message: "Error",
-                                description: "Error in upload progress!"
+                                message: this.i18n._t("Error").toString(),
+                                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                                description: this.i18n._t("Error in upload progress!").toString(),
                             });
                         });
                     });
                 } else {
                     notification.error({
                         message: this.i18n._t("File Size").toString(),
+                        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                         description: this.i18n._t("This file size isn't acceptable!").toString(),
                     });
                 }

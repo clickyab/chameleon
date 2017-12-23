@@ -154,7 +154,8 @@ class UtmModal extends React.Component<IProps, IState> {
     this.props.form.validateFields((err, values) => {
       if (err) {
         notification.error({
-          message: "Submit failed!",
+          message: this.i18n._t("Submit failed!").toString(),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Please check all fields and try again!").toString(),
         });
         return;

@@ -85,7 +85,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
     this.props.form.validateFields((err, values) => {
       if (err) {
         notification.error({
-          message: "Update profile failed!",
+          message: this.i18n._t("Update profile failed!"),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Please check all fields and try again!").toString(),
         });
         return;
@@ -102,13 +103,15 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
       }).then((data) => {
         this.props.setUser(data.account as UserResponseLoginOKAccount);
         notification.success({
-          message: "Update Profile",
+          message: this.i18n._t("Update Profile"),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Your corporation profile has been updated successfully.").toString(),
         });
       }).catch((error) => {
         if (error.error) {
           notification.error({
-            message: "Update Failed",
+            message: this.i18n._t("Update Failed").toString(),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: this.i18n._t(error.error.text).toString(),
           });
         } else {
@@ -118,7 +121,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
             errors.push(this.i18n._t(error[key].text).toString());
           });
           notification.error({
-            message: "Update Failed",
+            message: this.i18n._t("Update Failed").toString(),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: errors.join("<br>"),
           });
         }

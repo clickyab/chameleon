@@ -1,5 +1,5 @@
 import * as React from "react";
-import {RouteComponentProps, Switch, withRouter} from "react-router";
+import {Redirect, RouteComponentProps, Switch, withRouter} from "react-router";
 import {Link} from "react-router-dom";
 import {PrivateRoute} from "../../../../components/PrivateRoute/index";
 import PublicProfileContainer from "../../containers/Profile/index";
@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import {UserApi, UserAvatarPayload, UserResponseLoginOKAccount, UserUserPayload} from "../../../../api/api";
 import {default as Upload, UPLOAD_MODULES} from "../../../../services/Upload/index";
-import {notification} from "antd/lib";
+import {notification , Tabs} from "antd/lib";
 import I18n from "../../../../services/i18n/index";
 import {setUser} from "../../../../redux/app/actions/index";
 import CONFIG from "../../../../constants/config";
@@ -18,7 +18,7 @@ import classNames = require("classnames");
 import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 
-
+const TabPane = Tabs.TabPane;
 /**
  * @interface
  * @desc define component props
@@ -28,14 +28,23 @@ interface IOwnProps {
   history?: any;
 }
 
+enum COMP_TAB_USR {
+    PROFILE = "Profile",
+    TRANSACTION = "Transaction",
+    CHARGE = "Charge",
+    LOGOUT = "Logout",
+}
+
 interface IProps extends RouteComponentProps<void> {
   user: UserResponseLoginOKAccount;
   setUser: (user: UserResponseLoginOKAccount) => {};
+  activeTab: string;
 }
 
 interface IState {
   user: UserResponseLoginOKAccount;
   uploadProgress: number;
+  activeTab: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -48,6 +57,7 @@ class UserArea extends React.Component<IProps, IState> {
     this.state = {
       user: props.user,
       uploadProgress: null,
+      activeTab: props.activeTab ? props.activeTab : "Profile",
     };
   }
 
@@ -55,7 +65,35 @@ class UserArea extends React.Component<IProps, IState> {
     this.setState({
       user: props.user,
     });
+    this.handleTabUrl(this.props.history.location.pathname);
   }
+    private handleTabUrl(url: string): void {
+      let splitUrl = (url.split("/"));
+      let tempKey: string;
+      switch (splitUrl[splitUrl.length - 1]) {
+          case "profile":
+              tempKey = "Profile";
+          break;
+          case "transaction":
+              tempKey = "Transaction";
+              break;
+          case "charge":
+              tempKey = "Charge";
+              break;
+          case "logout":
+              tempKey = "Logout";
+              break;
+      }
+      console.log(tempKey);
+        this.setState({
+            activeTab: tempKey,
+        });
+    }
+    private handleTab(key): void {
+        this.setState({
+            activeTab: key,
+        });
+    }
 
   uploadAvatar(file) {
     const uploader = new Upload(UPLOAD_MODULES.AVATAR, file);
@@ -76,6 +114,7 @@ class UserArea extends React.Component<IProps, IState> {
         }).then((data) => {
           notification.success({
             message: this.i18n._t("Upload Avatar"),
+            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
             description: this.i18n._t("Your avatar changed successfully.").toString(),
           });
           this.props.setUser(data.account);
@@ -88,7 +127,8 @@ class UserArea extends React.Component<IProps, IState> {
       })
       .catch((error) => {
         notification.error({
-          message: this.i18n._t("Upload Avatar"),
+          message: this.i18n._t("Upload Avatar").toString(),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Error in change avatar.").toString(),
         });
         this.setState({
@@ -109,36 +149,23 @@ class UserArea extends React.Component<IProps, IState> {
                  accept="image/*"/>
           <h2>{this.state.user.first_name} {this.state.user.last_name}</h2>
         </div>
-        <div className="ul-wrapper">
-        <ul>
-          <li>
-            <Link className={ (this.props.history.location.pathname === match.url + "/profile") ? "active" : ""}
-                  to={`${match.url}/profile`}>
-              <Translate value="Profile"/>
-            </Link>
-          </li>
-          <li>
-            <Link className={ (this.props.history.location.pathname === match.url + "/transaction-history") ? "active" : ""}
-                  to={`${match.url}/transaction-history`}>
-              <Translate value="Transaction History"/>
-            </Link>
-          </li>
-          <li>
-            <Link className={ (this.props.history.location.pathname === match.url + "/charge-account") ? "active" : ""}
-                  to={`${match.url}/charge-account`}>
-              <Translate value="Charge Account"/>
-            </Link>
-          </li>
-          <li>
-            <Link className={ (this.props.history.location.pathname === match.url + "/logout") ? "active" : ""}
-                  to={`${match.url}/logout`}>
-              <Translate value="Logout"/>
-            </Link>
-          </li>
-        </ul>
-        </div>
         <Switch>
-          <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
+            <Tabs activeKey={this.state.activeTab}
+                  onChange={this.handleTab.bind(this)}
+                  type="editable-card"
+                  hideAdd={true}
+                  className="tabs-container mt-2 mr-4 ml-4">
+                <TabPane tab={this.i18n._t("Profile")} key="Profile" closable={false}>
+                    <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
+                </TabPane>
+                <TabPane tab={this.i18n._t("Transaction History")} key="Transaction" closable={false}>
+                </TabPane>
+                <TabPane tab={this.i18n._t("Charge Account")} key="Charge" closable={false}>
+                </TabPane>
+                <TabPane tab={this.i18n._t("Logout")} key="Logout" closable={false}>
+                        <Redirect to={`${match.url}/logout`} />
+                </TabPane>
+            </Tabs>
           {/*<Redirect to="/dashboard"/>*/}
         </Switch>
       </div>

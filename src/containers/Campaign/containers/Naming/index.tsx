@@ -183,7 +183,8 @@ class NamingComponent extends React.Component <IProps, IState> {
         this.props.form.validateFields((err, values) => {
             if (err) {
                 notification.error({
-                    message: "Submit failed!",
+                    message: this.i18n._t("Submit failed!").toString(),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                     description: this.i18n._t("Please check all fields and try again!").toString(),
                 });
                 return;
@@ -214,11 +215,13 @@ class NamingComponent extends React.Component <IProps, IState> {
                     this.props.setCurrentStep(STEPS.BUDGET);
                     notification.success({
                         message: this.i18n._t("Campaign updated successfully"),
+                        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                         description: "",
                     });
                 }).catch((error) => {
                     notification.error({
                         message: this.i18n._t("Campaign update failed!"),
+                        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                         description: error.message,
                     });
                 });
@@ -232,6 +235,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                 }).catch((error) => {
                     notification.error({
                         message: this.i18n._t("Create campaign failed!"),
+                        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                         description: error.message,
                     });
                 });
@@ -273,7 +277,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                 <Row className="campaign-title">
                     <Col>
                         <h2><Translate value="Campaign Naming"/></h2>
-                        <p>Set configuration for ad name, period of time to show ad and ad"s status:</p>
+                       <p><Translate value="Set configuration for ad name, period of time to show ad and ad's status:"/></p>
                     </Col>
                 </Row>
                 <Form onSubmit={this.handleSubmit.bind(this)}>

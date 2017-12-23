@@ -260,7 +260,8 @@ class TargetingComponent extends React.Component <IProps, IState> {
     this.props.form.validateFields((err, values) => {
       if (err) {
         notification.error({
-          message: "Submit failed!",
+          message: this.i18n._t("Submit failed!").toString(),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: this.i18n._t("Please check all fields and try again!").toString(),
         });
         return;
@@ -284,7 +285,8 @@ class TargetingComponent extends React.Component <IProps, IState> {
       this.props.history.push(`/campaign/select-publisher/${data.id}`);
     }).catch((error) => {
       notification.error({
-        message: this.i18n._t("Campaign update failed!"),
+        message: this.i18n._t("Campaign update failed!").toString(),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
         description: error.message,
       });
     });

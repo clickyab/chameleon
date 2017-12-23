@@ -175,11 +175,13 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
     }).then(() => {
       notification.success({
         message: this.i18n._t("Your campaign finalized!"),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
         description: ""
       });
     }).catch(error => {
       notification.error({
-        message: this.i18n._t("Some treble things happened on campaign finalization!"),
+        message: this.i18n._t("Some treble things happened on campaign finalization!").toString(),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
         description: ""
       });
     });

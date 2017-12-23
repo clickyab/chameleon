@@ -96,8 +96,9 @@ class BudgetComponent extends React.Component <IProps, IState> {
     this.props.form.validateFields((err, values) => {
       if (err) {
         notification.error({
-          message: "Submit failed!",
-          description: this.i18n._t("Please check all fields and try again!").toString(),
+        message: this.i18n._t("Submit failed!").toString(),
+        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+        description: this.i18n._t("Please check all fields and try again!").toString(),
         });
         return;
       }
@@ -116,12 +117,14 @@ class BudgetComponent extends React.Component <IProps, IState> {
         this.props.setCurrentCampaign(data as OrmCampaign);
         notification.success({
           message: this.i18n._t("Submit Budget successfully!"),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: "",
         });
         this.props.history.push(`/campaign/targeting/${data.id}`);
       }).catch((error) => {
         notification.error({
-          message: this.i18n._t("Submit Budget failed!"),
+          message: this.i18n._t("Submit Budget failed!").toString(),
+          className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: error.message,
         });
       });
