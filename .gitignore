@@ -8,3 +8,6 @@ dist
 .idea
 .tmp
 .history
+dictionary
+bin/i18n-extractor.js
+bin/i18n-extractor.js.map
