@@ -139,7 +139,7 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
   }
 }
 
-
+/* generate Margin and Padding helper class */
 .generate-space(5);
 .generate-space(@n, @i: 0) when (@i =< @n  ) {
   .m {
@@ -187,4 +187,7 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
     }
   }
   .generate-space(@n, (@i + 1 ));
+}
+[dir="rtl"] label{
+  transform-origin: right top 0px !important;
 }

@@ -3,12 +3,13 @@ import {Redirect, RouteComponentProps, Switch, withRouter} from "react-router";
 import {Link} from "react-router-dom";
 import {PrivateRoute} from "../../../../components/PrivateRoute/index";
 import PublicProfileContainer from "../../containers/Profile/index";
+import ChargeContainer from "../../containers/Charge/index";
 import Avatar from "../../../../components/Avatar/index";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import {UserApi, UserAvatarPayload, UserResponseLoginOKAccount, UserUserPayload} from "../../../../api/api";
 import {default as Upload, UPLOAD_MODULES} from "../../../../services/Upload/index";
-import {notification , Tabs} from "antd/lib";
+import {notification , Tabs , Row} from "antd/lib";
 import I18n from "../../../../services/i18n/index";
 import {setUser} from "../../../../redux/app/actions/index";
 import CONFIG from "../../../../constants/config";
@@ -72,16 +73,16 @@ class UserArea extends React.Component<IProps, IState> {
       let tempKey: string;
       switch (splitUrl[splitUrl.length - 1]) {
           case "profile":
-              tempKey = "Profile";
+              tempKey = "profile";
           break;
           case "transaction":
-              tempKey = "Transaction";
+              tempKey = "transaction";
               break;
           case "charge":
-              tempKey = "Charge";
+              tempKey = "charge";
               break;
           case "logout":
-              tempKey = "Logout";
+              tempKey = "logout";
               break;
       }
       console.log(tempKey);
@@ -93,6 +94,7 @@ class UserArea extends React.Component<IProps, IState> {
         this.setState({
             activeTab: key,
         });
+        this.props.history.push("/user/" + key.toString());
     }
 
   uploadAvatar(file) {
@@ -150,23 +152,23 @@ class UserArea extends React.Component<IProps, IState> {
           <h2>{this.state.user.first_name} {this.state.user.last_name}</h2>
         </div>
         <Switch>
+            <Row type="flex" align="middle">
             <Tabs activeKey={this.state.activeTab}
                   onChange={this.handleTab.bind(this)}
                   type="editable-card"
                   hideAdd={true}
                   className="tabs-container mt-2 mr-4 ml-4">
-                <TabPane tab={this.i18n._t("Profile")} key="Profile" closable={false}>
+                <TabPane tab={this.i18n._t("Profile")} key="profile" closable={false}>
                     <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
                 </TabPane>
-                <TabPane tab={this.i18n._t("Transaction History")} key="Transaction" closable={false}>
+                <TabPane tab={this.i18n._t("Transaction History")} key="transaction" closable={false}>
                 </TabPane>
-                <TabPane tab={this.i18n._t("Charge Account")} key="Charge" closable={false}>
-                </TabPane>
-                <TabPane tab={this.i18n._t("Logout")} key="Logout" closable={false}>
-                        <Redirect to={`${match.url}/logout`} />
+                <TabPane tab={this.i18n._t("Charge Account")} key="charge" closable={false}>
+                    <PrivateRoute path={`${match.url}/charge`} component={ChargeContainer}/>
                 </TabPane>
             </Tabs>
           {/*<Redirect to="/dashboard"/>*/}
+            </Row>
         </Switch>
       </div>
     )
