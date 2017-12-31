@@ -22,6 +22,7 @@ import Modal from "../../components/Modal/index";
 import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
 import CONFIG from "../../constants/config";
+import * as moment from "moment-jalaali";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -69,6 +70,15 @@ interface IProps {
    */
   actionsFn?: IActionsFn;
 
+  /**
+   * @params onQueryChange - function that called when load data parameters changed
+   */
+  onQueryChange?: (query: any) => void;
+
+  dateRange ?: {
+    from: moment.type,
+    to: moment.type,
+  };
 }
 
 
@@ -91,11 +101,21 @@ interface IState {
   customField: object;
 }
 
+
+export interface IData {
+  data: object[];
+  hash: string;
+  page: number;
+  per_page: number;
+  total: number;
+}
+
 class DataTable extends React.Component<IProps, IState> {
   parser;
   infiniteLoader: boolean = false;
   customFieldTemp: object = {};
   wrapperDOM: HTMLElement;
+  range;
 
   private i18n = I18n.getInstance();
 
@@ -120,6 +140,13 @@ class DataTable extends React.Component<IProps, IState> {
    */
   componentDidMount() {
     this.loadData();
+  }
+
+  componentWillReceiveProps(props: IProps) {
+    if (!this.range || this.range.from !== props.dateRange.from || this.range.to !== props.dateRange.to) {
+      this.range = props.dateRange;
+      this.loadData(false);
+    }
   }
 
   /**
@@ -153,10 +180,11 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {IDefinition}
    */
   restoreDefinition(): IDefinition | null {
-    const def = localStorage.getItem(`TABALE_DEFINITION_${this.props.name}`);
+    const def = localStorage.getItem(`CHART_DEFINITION_${this.props.name}`);
     if (def) {
       return JSON.parse(def);
     } else {
+
       return null;
     }
   }
@@ -217,12 +245,20 @@ class DataTable extends React.Component<IProps, IState> {
    * Try to load data from API Call and if data's hash response is different with definition's hash, try to load
    * new definition
    */
-  loadData() {
+  loadData(callOnQueryChange: boolean = true) {
 
     let config = {
       p: this.state.page,
       loading: true,
     };
+    console.log(this.range);
+
+    if (this.range && this.range.from) {
+      config["start"] = this.range.from.toISOString();
+    }
+    if (this.range && this.range.to) {
+      config["end"] = this.range.to.toISOString();
+    }
 
     if (this.state.sort) {
       config["sort"] = `${this.state.sort}:${this.state.order}`;
@@ -238,6 +274,10 @@ class DataTable extends React.Component<IProps, IState> {
       Object.keys(this.state.searches).map((s) => {
         config[s] = this.state.searches[s];
       });
+    }
+
+    if (this.props.onQueryChange && callOnQueryChange) {
+      this.props.onQueryChange(config);
     }
 
     this.props.dataFn(config).then((data: IData) => {

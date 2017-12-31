@@ -30,7 +30,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
       case "dashboard":
         return this.props.history.push("/");
       case "campaigns":
-        return this.props.history.push("/Campaign/type");
+        return this.props.history.push("/my/campaign/list");
       case "media":
         return this.props.history.push("/media");
       case "explore":
