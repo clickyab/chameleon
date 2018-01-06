@@ -81,7 +81,7 @@ class UploadComponent extends React.Component <IProps, IState> {
         <UplaodBannerVideo currentCampaign={this.state.currentCampaign}/>
         }
         {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.CONTENT) &&
-        <Native currentCampaign={this.state.currentCampaign} />
+        <Native currentCampaign={this.state.currentCampaign}  />
         }
       </div>
     );

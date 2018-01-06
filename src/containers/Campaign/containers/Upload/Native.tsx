@@ -29,7 +29,7 @@ import {PhonePreview} from "./previewComponent/phone";
  * @desc define Prop object
  */
 interface IProps {
-    currentCampaign: OrmCampaign;
+    currentCampaign?: OrmCampaign;
     setCurrentStep?: (step: STEPS) => {};
     form?: any;
     setSelectedCampaignId?: (id: number | null) => {};
@@ -37,7 +37,7 @@ interface IProps {
     selectedCampaignId?: number | null;
     match?: any;
     history?: any;
-    nativeItems: NativeAdd[];
+    nativeItems?: NativeAdd[];
     previewType?: PREVIEW;
 }
 
