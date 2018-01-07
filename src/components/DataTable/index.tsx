@@ -11,7 +11,7 @@
  *
  */
 import * as React from "react";
-import {Table, Row, Checkbox, Col, Switch, Button} from "antd";
+import {Table, Row, Checkbox, Col, Switch, Button , Select } from "antd";
 import {DataTableDataParser} from "./lib/parsers";
 import {IActionsFn, IColumn, IData, IDefinition} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
@@ -25,6 +25,7 @@ import CONFIG from "../../constants/config";
 import * as moment from "moment-jalaali";
 
 const CheckboxGroup = Checkbox.Group;
+const Option = Select.Option;
 
 /**
  * @interface IProps
@@ -99,6 +100,7 @@ interface IState {
   selectedKeys: string[];
   customizeModal: boolean;
   customField: object;
+  pageSize: number;
 }
 
 
@@ -132,6 +134,7 @@ class DataTable extends React.Component<IProps, IState> {
       searches: {},
       customizeModal: false,
       customField: customField,
+      pageSize: 10,
     };
   }
 
@@ -158,6 +161,11 @@ class DataTable extends React.Component<IProps, IState> {
     );
   }
 
+  private selectPageSize(value) {
+      this.setState({
+          pageSize: parseInt(value)
+      });
+  }
   /**
    * Store table definition in local storage
    * @param {IDefinition} definition
@@ -425,10 +433,20 @@ class DataTable extends React.Component<IProps, IState> {
       current: this.state.page,
       total: this.state.data.total,
       size: "small",
-      showSizeChanger: true,
+      showSizeChanger: false,
       itemRender: this.itemRender as any,
+      pageSize: this.state.pageSize,
       showTotal: (total, range) => {
-        return <div>{total}</div>;
+        return <div className={"pagination-description"}>
+            <Translate value={"Number of record show on page"}/>
+            <Select className={"pagesize-selector"} defaultValue="10" style={{ width: 50 }} onChange={(value) => this.selectPageSize(value)} >
+                <Option value="10">10</Option>
+                <Option value="20">20</Option>
+                <Option value="30">30</Option>
+                <Option value="50">50</Option>
+            </Select>
+          <Translate value={"(Show _{page} from _{endPage})"} params={{page: this.state.page , endPage: Math.ceil(this.state.data.total / this.state.pageSize)}}/>
+        </div> ;
       },
       onChange: (page, pageSize) => {
         this.setState({
@@ -596,10 +614,14 @@ class DataTable extends React.Component<IProps, IState> {
           onChange={this.handleTableChange.bind(this)}
           className="campaign-data-table"
         />
-        <div className="table-total-number">
-          <Icon name={"cif-target"}/>
-          <Translate value={"_{totalResult} result"} params={{totalResult: this.state.data.total}}/>
-        </div>
+          <div className={(this.infiniteLoader) ? "table-total-number" : "mt-2"}>
+              {this.infiniteLoader &&
+              <div>
+                  <Icon name={"cif-target"}/>
+                  <Translate value={"_{totalResult} result"} params={{totalResult: this.state.data.total}}/>
+              </div>
+              }
+          </div>
       </div>
     );
   }

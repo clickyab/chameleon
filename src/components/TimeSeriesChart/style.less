@@ -1,7 +1,7 @@
 @import "../../../node_modules/antd/dist/antd.less";
 @import "../../containers/App/theme.less";
 
-.chart-tooltip{
+.chart-tooltip {
   width: 180px;
   font-family: @font-family;
   font-size: 13px;
@@ -18,5 +18,36 @@
         width: 20px;
       }
     }
+  }
+}
+
+.legend-item {
+  display: inline-block;
+  min-width: 150px;
+  a {
+    &.deactive {
+      color: #BCBCBC !important;
+      h5 , h4 {
+        color: #BCBCBC !important
+      }
+      .bullet {
+        background: #BCBCBC !important;
+      }
+    }
+  }
+  h5 {
+    display: inline-block;
+  }
+  .bullet {
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+    display: inline-block;
+  }
+}
+
+[dir="rtl"] .legend-item {
+  .bullet {
+    margin-left: 5px;
   }
 }
