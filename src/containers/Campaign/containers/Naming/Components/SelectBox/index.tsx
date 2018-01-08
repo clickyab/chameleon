@@ -70,26 +70,30 @@ export default class SelectBox extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Row type="flex" gutter={16} align="middle" justify="center">
+      <Row type="flex"  align="middle" justify="center" >
         {this.props.items.map((item) => {
           return (
+              <div key={`s_${item.value}`}
+                   onClick={() => {
+                  this.handleClick(item);
+              }}>
             <Col key={`s_${item.value}`}
                  span={ (this.props.span) ? this.props.span : 4 }
                  className={"select-box " + (this.props.className ? this.props.className : "") +
                  (this.state.selectedItem && this.state.selectedItem.value === item.value ? " active" : "") } >
               <div
-                className={"select-item"}
-                onClick={() => {
-                  this.handleClick(item);
-                }}>
+                className={"select-item"}>
                 <div className="middle">
                 {item.icon && item.icon}
                 <h6>{item.title}</h6>
                 <p>{item.description}</p>
-                  <p className="hint-link">{item.hintText}</p>
+                    {item.hintText !== undefined &&
+                    <p className="hint-link">{item.hintText}</p>
+                    }
                 </div>
               </div>
             </Col>
+              </div>
           );
         })}
       </Row>
