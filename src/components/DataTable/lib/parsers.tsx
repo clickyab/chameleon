@@ -171,7 +171,7 @@ export class DataTableDataParser {
       }
 
       const menu = (
-        <Menu>
+        <Menu className="data-table-action-dropdown">
           {record._actions.split(",").map((text, i) => (
             <Menu.Item key={i}>
               <a onClick={() => {
@@ -184,9 +184,9 @@ export class DataTableDataParser {
         </Menu>
       );
 
-      return <Dropdown overlay={menu} trigger={["click"]}>
-        <a className="ant-dropdown-link" href="#">
-          ....
+      return <Dropdown overlay={menu} trigger={["click"]} >
+        <a className="ant-dropdown-link dropdown-link" href="#">
+          ...
         </a>
       </Dropdown>;
     };

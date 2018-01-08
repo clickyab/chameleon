@@ -63,14 +63,7 @@ const api = {
       name: "aaa",
       type: "bar",
       hidden: true,
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20],
-    },
-    {
-      title: "bbb",
-      name: "bbb",
-      type: "line",
-      hidden: true,
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
+      data: [100, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20],
     },
     {
       title: "vvv",
@@ -83,25 +76,7 @@ const api = {
       name: "hhh",
       type: "line",
       data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "fff",
-      name: "fff",
-      type: "line",
-      data: [4, 14, 100, 20, 5, 14, 8, 13, 15, 60, 10, 27, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "yyy",
-      name: "yyy",
-      type: "line",
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "iii",
-      name: "iii",
-      type: "line",
-      data: [4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
+    }
   ]
 };
 
@@ -239,13 +214,11 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   private getOption() {
     let options = {
       grid: {
-        top: 80,
+        top: 30,
         containLabel: true
       },
       tooltip: {
         formatter: (a) => {
-          console.log("a" , a ) ;
-          console.log("state" , this.state.api);
           let tooltip = `<div class="chart-tooltip">
             <p class="pr-1">${a[0].axisValueLabel}</p>
             <table>
@@ -283,7 +256,6 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
         backgroundColor: "rgba(255,255,255,1)",
         extraCssText: "border: 1px solid #DBDDE1; opacity: 0.9;"
       },
-      color: ["rgb(25, 183, 207)"],
       title: {
         text: "ECharts entry example"
       },
@@ -300,7 +272,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
         return {
           name: d.title,
           type: d.type,
-          areaStyle: {normal: {}},
+          areaStyle: {normal: {opacity: 0.3 }},
           data: d.data
         };
       }),
@@ -339,7 +311,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   public render() {
     return (
       <div>
-        <Row type={"flex"}>
+        <Row type={"flex"} className="legend-wrapper">
           <Col>
             {this.state.api.data && this.state.api.data.map(this.renderLegends.bind(this))}
           </Col>
@@ -351,7 +323,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
         </Row>
         <Row>
           <ReactEcharts
-            ref={(e) => {
+            ref={(e: any) => {
               if (e)
                 this.chartInc = e.getEchartsInstance();
             }}

@@ -10,6 +10,7 @@ let axisCommon = function () {
         color: "#f3f5f7"
       }
     },
+      yAxis: {},
     axisLabel: {
       textStyle: {
         color: "#485465"
@@ -29,8 +30,9 @@ let axisCommon = function () {
   };
 };
 let contrastColor = "#fff";
-let colorPalette = ["rgba(65,182,230,1)", "rgba(65,156,120,0.30)", "#EEBB3B", "#EC4E32", "#7460EE", "#eedd78", "#73a373", "#73b9bc", "#7289ab", "#91ca8c", "#f49f42"];
+let colorPalette = ["#419C78", "#41B6E6", "#EEBB3B", "#EC4E32", "#7460EE", "#eedd78", "#73a373", "#73b9bc", "#7289ab", "#91ca8c", "#f49f42"];
 let theme = {
+  grid: {x: 0 , y: 10 , x2: 0 , y2: 20},
   color: colorPalette,
   backgroundColor: "#fff",
   tooltip: {

@@ -281,10 +281,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
           <Form onSubmit={this.handleSubmit.bind(this)} className="full-width">
             {!this.state.showPublisherTable &&
             <Row type="flex" className={"mt-4"}>
-              <Col span={4}>
-                <Tooltip/>
-                <label><Translate value="Select"/></label>
-              </Col>
+              <Col span={12}>
               <Col span={20} className={"publisher-column"}>
                 {invertorySelect}
                 <div className="publisher-or-wrapper">
@@ -299,6 +296,11 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                   fullWidth={true}
                   icon={<Icon name="cif-plusregular plus-icon "/>}
                 />
+              </Col>
+                  <Col span={4}>
+                      <Tooltip/>
+                      <label><Translate value="Select"/></label>
+                  </Col>
               </Col>
             </Row>
             }
@@ -366,7 +368,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             </div>
             }
             <Row type="flex" align="middle" className="mt-5">
-              <Col span={4}>
+              <Col span={2}>
               <RaisedButton
                 onClick={this.handleBack.bind(this)}
                 label={<Translate value="Back"/>}

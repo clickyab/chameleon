@@ -7,10 +7,13 @@ import I18n from "../../../../services/i18n/index";
 import {ControllersApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Row, Col} from "antd";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
+import {Button} from "antd";
 import CONFIG from "../../../../constants/config";
 import DataTableChartWrapper from "../../../../components/DataTableChartWrapper/index";
 
 import "./style.less";
+import Translate from "../../../../components/i18n/Translate";
+import Icon from "../../../../components/Icon";
 
 const FormItem = Form.Item;
 
@@ -42,6 +45,9 @@ class List extends React.Component<IProps, IState> {
       <Row className={"content-container"}>
         <Col>
           <div dir={CONFIG.DIR}>
+            <Row className="mb-2">
+              <h3><Translate value={"campaigns"}/></h3>
+            </Row>
             <DataTableChartWrapper
               name="myCampaign"
               chartDataFn={this.controllerApi.inventoryListGet}

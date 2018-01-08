@@ -8,6 +8,7 @@ interface IProps {
   chartDefinitionFn: any;
   chartDataFn: any;
   name: string;
+  dataTableDescription?: JSX.Element;
 }
 
 interface IState {
@@ -49,6 +50,7 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
           dateRange={this.state.range}
           onQueryChange={this.onQueryChange}
           dataFn={this.props.dataTableDataFn}
+          tableDescription={this.props.dataTableDescription}
           definitionFn={this.props.dataTableDefinitionFn}/>
       </div>
     );
