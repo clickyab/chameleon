@@ -283,12 +283,12 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   private renderLegends(record, index) {
     const sum = record.data.reduce((t, v) => (t + v));
     return <Col className="legend-item" key={index}>
-      <a className={(record.hidden && record.hidden === true) ? "deactive" : "" } onClick={(e) => {
+      <a className={(record.hidden) ? "deactive" : "" } onClick={(e) => {
         e.persist();
         console.log(record);
         this.chartInc.dispatchAction({type: "legendToggleSelect", name: record.name});
         let tempRecord = record;
-        tempRecord.hidden = (record.hidden && record.hidden === true) ? false : true;
+        tempRecord.hidden = !record.hidden
         let tempApi = this.state.api;
         tempApi[this.state.api.data.indexOf(record)] = tempRecord;
         this.setState({
