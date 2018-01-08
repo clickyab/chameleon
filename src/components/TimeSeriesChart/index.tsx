@@ -48,6 +48,8 @@ interface IState {
   definition?: IDefinition;
   data?: any;
   loading?: boolean;
+  api?: any;
+  activeIndex?: number[];
 }
 
 const api = {
@@ -60,14 +62,8 @@ const api = {
       title: "fd  gdf gfd aaa",
       name: "aaa",
       type: "bar",
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-    },
-    {
-      title: "bbb",
-      name: "bbb",
-      type: "line",
       hidden: true,
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
+      data: [100, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20],
     },
     {
       title: "vvv",
@@ -76,29 +72,11 @@ const api = {
       data: [4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
     },
     {
-      title: "bbb",
-      name: "bbb",
+      title: "hhh",
+      name: "hhh",
       type: "line",
       data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "vvv",
-      name: "vvv",
-      type: "line",
-      data: [4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "bbb",
-      name: "bbb",
-      type: "line",
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "vvv",
-      name: "vvv",
-      type: "line",
-      data: [4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
+    }
   ]
 };
 
@@ -112,7 +90,11 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
 
   constructor(props) {
     super(props);
-    this.state = {options: {}};
+    this.state = {
+        options: {} ,
+        activeIndex: [],
+        api : api,
+    };
 
     this.changeRange = this.changeRange.bind(this);
   }
@@ -232,15 +214,21 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   private getOption() {
     let options = {
       grid: {
-        top: 80,
+        top: 30,
         containLabel: true
       },
       tooltip: {
         formatter: (a) => {
           let tooltip = `<div class="chart-tooltip">
-            <p>${a[0].axisValueLabel}</p>
+            <p class="pr-1">${a[0].axisValueLabel}</p>
             <table>
               ${a.map(c => {
+              let hidden = false ;
+              for (let i = 0 ; i < this.state.api.data.length ; i++ ) {
+                if (this.state.api.data[i].title === c.seriesName && this.state.api.data[i].hidden !== undefined) {
+                  hidden = this.state.api.data[i].hidden;
+                }
+              }
             const tr = `
                     <tr>
                       <td>${c.marker}</td>
@@ -248,7 +236,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
                       <td>${c.value}</td>
                     </tr>
                  `;
-            return tr;
+            return (hidden) ? "" : tr;
           }).join("")}
             </table>
           </div>`;
@@ -266,26 +254,25 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
           }
         },
         backgroundColor: "rgba(255,255,255,1)",
-        extraCssText: "box-shadow: 0 0 5px rgba(0,0,0,0.3);"
+        extraCssText: "border: 1px solid #DBDDE1; opacity: 0.9;"
       },
-      color: ["rgb(25, 183, 207)"],
       title: {
         text: "ECharts entry example"
       },
       theme: "CampaignTimeSeries",
       xAxis: {
-        data: api.xaxis
+        data: this.state.api.xaxis
       },
       legend: {
         show: true,
         // data: ["a", "b", "c"]
       },
       yAxis: {},
-      series: api.data.map(d => {
+      series: this.state.api.data.map(d => {
         return {
           name: d.title,
           type: d.type,
-          areaStyle: {normal: {}},
+          areaStyle: {normal: {opacity: 0.3 }},
           data: d.data
         };
       }),
@@ -295,15 +282,22 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
 
   private renderLegends(record, index) {
     const sum = record.data.reduce((t, v) => (t + v));
-    return <Col key={index}>
-      <a onClick={(e) => {
+    return <Col className="legend-item" key={index}>
+      <a className={(record.hidden) ? "deactive" : "" } onClick={(e) => {
         e.persist();
         console.log(record);
         this.chartInc.dispatchAction({type: "legendToggleSelect", name: record.name});
+        let tempRecord = record;
+        tempRecord.hidden = !record.hidden
+        let tempApi = this.state.api;
+        tempApi[this.state.api.data.indexOf(record)] = tempRecord;
+        this.setState({
+            api : tempApi
+        });
       }}>
         <h4>{sum}</h4>
-        <h1 style={{color: colorPalette[index]}}>.</h1>
-        {record.title}
+        <div className="bullet" style={{backgroundColor: colorPalette[index]}}></div>
+        <h5 style={{color: colorPalette[index]}}>{record.title}</h5>
       </a>
     </Col>;
   }
@@ -317,9 +311,9 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   public render() {
     return (
       <div>
-        <Row type={"flex"}>
+        <Row type={"flex"} className="legend-wrapper">
           <Col>
-            {api.data && api.data.map(this.renderLegends.bind(this))}
+            {this.state.api.data && this.state.api.data.map(this.renderLegends.bind(this))}
           </Col>
           <Col>
             {/*<RangePicker*/}

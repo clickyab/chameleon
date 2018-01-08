@@ -1,15 +1,20 @@
 @import "../../../../App/theme";
 
 .live-counter-container{
-  background: @live-counter-bg-color;
   height: @live-counter-height;
   min-height: @live-counter-height;
   margin-bottom: 20px;
   width: 100%;
   .item-wrapper{
+    background: @live-counter-bg-color;
+    background-clip:content-box;
     display: flex;
     justify-content: center;
     height: 100%;
+    &.space{
+      padding-right:10px ;
+      padding-left: 10px;
+    }
     .item-container{
       align-self: center;
       text-align: center;

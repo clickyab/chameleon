@@ -54,7 +54,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                         </span>
                     </div>
                 </Col>
-                <Col span={8} className="item-wrapper">
+                <Col span={8} className="item-wrapper space">
                     <div className="item-container">
                         <div className="live-counter-icon-container">
                         <Icon name={"cif-plusregular live-counter-icon"}/>

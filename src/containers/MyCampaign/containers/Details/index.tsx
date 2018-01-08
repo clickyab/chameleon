@@ -144,7 +144,7 @@ class Details extends React.Component<IProps, IState> {
                 </Row>
               </Col>
             </Row>
-            <Row>
+            <Row type="flex">
               <Tabs activeKey={this.state.activeTab}
                     onChange={this.handleTab.bind(this)}
                     type="editable-card"

@@ -36,8 +36,11 @@
 
 .ant-upload.ant-upload-drag {
   border-radius: 0;
-  border: 3px dashed @light-gray-color ;
-  height: 380px;
+  border: 3px dashed @light-gray-color !important;
+  height: 380px !important;
+  &:hover{
+    border: 3px dashed @primary-color !important;
+  }
 }
 
 .ant-upload-list {
