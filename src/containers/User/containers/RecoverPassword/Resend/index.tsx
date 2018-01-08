@@ -43,7 +43,7 @@ export default class Resend extends React.Component<IProps, IState> {
     this.resendVerify = this.resendVerify.bind(this);
   }
 
-  //Translation
+  // Translation
   private i18n = I18n.getInstance();
 
   private timer;
