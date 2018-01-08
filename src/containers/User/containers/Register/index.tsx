@@ -237,7 +237,7 @@ class RegisterForm extends React.Component<IProps, IState> {
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator("firstName", {
-                      rules: [{required: true, message: "Please input your first name!"}],
+                      rules: [{required: true, message: this.i18n._t("Please input your first name!").toString()}],
                     })(
                       <TextField
                         fullWidth={true}
@@ -286,7 +286,7 @@ class RegisterForm extends React.Component<IProps, IState> {
               </FormItem>
               <FormItem>
                 {getFieldDecorator("mobile", {
-                  rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
+                  rules: [{required: true, message: this.i18n._t("Please input your mobile number!")}],
                 })(
                   <PhoneInput/>
                 )}

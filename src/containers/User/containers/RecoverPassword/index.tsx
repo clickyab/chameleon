@@ -240,7 +240,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     {
                       type: "email", message: "The input is not valid E-mail",
                     }, {
-                      required: true, message: "Please input your username!"
+                      required: true, message: this.i18n._t("Please input your email!").toString(),
                     }],
                 })(
                   <TextField
