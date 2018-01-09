@@ -80,6 +80,12 @@ server {
         root   /usr/share/nginx/html;
         try_files \$uri \$uri/ /index.html;
         index  index.html index.htm;
+        add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With' always;
+        # required to be able to read Authorization header in frontend
+        # add_header 'Access-Control-Expose-Headers' 'Authorization' always;
     }
 }
 EONGINX
@@ -125,12 +131,15 @@ CMD ["/run.sh"]
 
 TAG registry.clickyab.ae/clickyab/{{ .App }}:{{ .Version }}
 PUSH registry.clickyab.ae/clickyab/{{ .App }}:{{ .Version }}
+TAG registry.clickyab.ae/clickyab/{{ .App }}:latest
+PUSH registry.clickyab.ae/clickyab/{{ .App }}:latest
+
 EOF
 
 TARGET=$(mktemp -d)
 pushd ${TEMPORARY}
 # Actual build
-rocker build ${PUSH} -var Build=${BUILD} -var EnvDir=${VARS} -var Cache=${CACHE} -var Target=${TARGET} -var Version=${BRANCH}.${COMMIT_COUNT} -var App=${APP}
+rocker build ${PUSH} -var Build=${BUILD} -var EnvDir=${VARS} -var Cache=${CACHE} -var Target=${TARGET} -var Version=${COMMIT_COUNT} -var App=${APP}_${BRANCH}
 popd
 
 echo "${VARS}" >> /tmp/kill-me
@@ -145,6 +154,6 @@ if [[ ( "${BRANCH}" != "master" ) && ( "${BRANCH}" != "deploy" ) ]]; then
 fi
 echo "The branch ${BRANCH} build finished, try to deploy it" >> ${OUT_LOG}
 echo "If there is no report after this for successful deploy, it means the deploy failed. report it please." >> ${OUT_LOG}
-kubectl -n ${PROJECT} set image deployment  ${APP}-${BRANCH} ${APP}-${BRANCH}=registry.clickyab.ae/clickyab/${APP}:${BRANCH}.${COMMIT_COUNT} --record
+kubectl -n ${PROJECT} set image deployment  ${APP}-${BRANCH} ${APP}-${BRANCH}=registry.clickyab.ae/clickyab/${APP}_${BRANCH}:${COMMIT_COUNT} --record
 echo "Deploy done successfully to image registry.clickyab.ae/clickyab/${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
 echo "green" > ${OUT_LOG_COLOR}
