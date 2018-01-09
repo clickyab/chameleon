@@ -288,7 +288,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
         console.log(record);
         this.chartInc.dispatchAction({type: "legendToggleSelect", name: record.name});
         let tempRecord = record;
-        tempRecord.hidden = !record.hidden
+        tempRecord.hidden = !record.hidden;
         let tempApi = this.state.api;
         tempApi[this.state.api.data.indexOf(record)] = tempRecord;
         this.setState({
