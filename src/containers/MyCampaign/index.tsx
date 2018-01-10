@@ -4,6 +4,7 @@ import {RootState} from "../../redux/reducers/index";
 import {connect} from "react-redux";
 import ListComponent from "./containers/List";
 import DetailsComponent from "./containers/Details";
+import DetailsDailyComponent from "./containers/Details/Daily";
 import {UserUserPayload} from "../../api/api";
 
 
@@ -33,7 +34,8 @@ export default class PublicContainer extends React.Component<IProps, IState> {
       <div>
         <Switch>
           <Route path={`${match.url}/list`} component={ListComponent}/>
-          <Route path={`${match.url}/details`} component={DetailsComponent}/>
+          <Route exact path={`${match.url}/details`} component={DetailsComponent}/>
+          <Route path={`${match.url}/details/daily`} component={DetailsDailyComponent}/>
         </Switch>
       </div>
     );
