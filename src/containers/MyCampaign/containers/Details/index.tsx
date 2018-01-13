@@ -13,6 +13,8 @@ const TabPane = Tabs.TabPane;
 
 const numeral = require("numeral");
 import "./style.less";
+import Translate from "../../../../components/i18n/Translate";
+import Icon from "../../../../components/Icon";
 
 const FormItem = Form.Item;
 
@@ -22,6 +24,7 @@ interface IProps extends RouteComponentProps<void> {
 
 interface IState {
   activeTab: string;
+  progress: number;
 }
 
 
@@ -34,7 +37,8 @@ class Details extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      activeTab : "GraphingStatistics"
+      activeTab : "GraphingStatistics",
+      progress: 20
     };
   }
 
@@ -54,62 +58,69 @@ class Details extends React.Component<IProps, IState> {
         <Col>
           <div dir={CONFIG.DIR}>
             <Row type={"flex"} className={"content-container"}>
-              <Col span={6}>
+              <Col className="campaigns-title" span={6}>
                 <h5>حراج کمپین
-                  <Button size={"small"} icon={"pencil"}>{this.i18n._t("Edit Campaign")}</Button>
+                    <Button size={"small"} className="add-customize-btn btn-margin">
+                        <Icon name={"cif-edit"} className="custom-icon"/>
+                        <Translate value={"Edit Campaign"}/>
+                    </Button>
                 </h5>
-                <table className={"details"}>
-                  <tbody>
-                  <tr>
-                    <td>{this.i18n._t("Campaign Type")}</td>
-                    <td>: وب</td>
-                  </tr>
-                  <tr>
-                    <td>{this.i18n._t("Status")}</td>
-                    <td>: وب</td>
-                  </tr>
-                  <tr>
-                    <td>{this.i18n._t("Show Period")}</td>
-                    <td>: وب</td>
-                  </tr>
-                  <tr>
-                    <td>{this.i18n._t("Campaign Owner's Email")}</td>
-                    <td>: وب</td>
-                  </tr>
-                  <tr>
-                    <td>{this.i18n._t("Campaign Manager's Email")}</td>
-                    <td>: وب</td>
-                  </tr>
-                  <tr>
-                    <td>{this.i18n._t("CRM")}</td>
-                    <td>: وب</td>
-                  </tr>
-                  </tbody>
-                </table>
+                <Row className={"details"}>
+                  <Row type="flex">
+                    <Col span={14}>{this.i18n._t("Campaign Type")}</Col>
+                    <Col>: وب</Col>
+                  </Row>
+                  <Row type="flex">
+                   <Col span={14}>{this.i18n._t("Status")}</Col>
+                      <Col>: وب</Col>
+                  </Row>
+                  <Row type="flex">
+                   <Col span={14}>{this.i18n._t("Show Period")}</Col>
+                      <Col>: وب</Col>
+                  </Row>
+                  <Row type="flex">
+                   <Col span={14}>{this.i18n._t("Owner's Email")}</Col>
+                      <Col>: وب</Col>
+                  </Row>
+                  <Row type="flex">
+                   <Col span={14}>{this.i18n._t("Manager's Email")}</Col>
+                      <Col>: وب</Col>
+                  </Row>
+                  <Row type="flex">
+                   <Col span={14}>{this.i18n._t("CRM")}</Col>
+                      <Col>: وب</Col>
+                  </Row>
+                </Row>
               </Col>
               <Col span={18}>
                 <Row type={"flex"}>
                   <Col span={3}></Col>
                   <Col span={16}>
-                    <div className={"dialog"}>
+                    <div className={"dialog-wrapper"} style={{marginRight: this.state.progress + "%" }}>
+                      <div className={"dialog"}>
                       {this.i18n._t("Spent")}
                       <h6>{numeral(9500).format("0,0")} {this.i18n._t("_currency_")}</h6>
-                    </div>
-                  </Col>
-                  <Col span={5}>
-                  </Col>
-                  <Col span={3}>{this.i18n._t("Spent")}</Col>
-                  <Col span={16}>
-                    <div style={{height: 20, backgroundColor: "#F7F7F8", borderRadius: 15, overflow: "hidden"}}>
-                      <div style={{height: 201, width: "20%", backgroundColor: "#41B6E6"}}>
                       </div>
                     </div>
                   </Col>
                   <Col span={5}>
-                    <small>{this.i18n._t("Campaign Budget")}</small>
-                    <h6>{numeral(95000).format("0,0")} {this.i18n._t("_currency_")}</h6>
                   </Col>
                 </Row>
+                  <Row type="flex">
+                  <Col span={3} className="progress-start-text"><Translate value={"Spent"}/></Col>
+                  <Col span={16}>
+                    <div className="campaign-strip-bar-wrapper">
+                      <div className="campaign-strip-bar" style={{width: "20%" }}>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col span={5} className="progress-end-text-wrapper">
+                    <div className="progress-end-text">
+                    <div className="title"><Translate value={"Campaign Budget"}/></div>
+                    <div className="description">{numeral(95000).format("0,0")} {this.i18n._t("_currency_")}</div>
+                    </div>
+                  </Col>
+                  </Row>
                 <Row type={"flex"}>
                   <Col span={3}></Col>
                   <Col span={16}>
