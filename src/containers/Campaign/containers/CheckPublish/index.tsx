@@ -121,7 +121,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
-      api.campaignIdGet({id: this.props.match.params.id})
+      api.campaignGetIdGet({id: this.props.match.params.id})
         .then((campaign) => {
           this.props.setBreadcrumb("campaignTitle", campaign.title, "checkPublisher");
           this.props.setCurrentCampaign(campaign as OrmCampaign);

@@ -1,3 +1,5 @@
+@import "../../../../../node_modules/cropperjs/dist/cropper.css";
+@import "../../../../../node_modules/react-image-crop/dist/ReactCrop.css";
 @import "../../../App/theme";
 
 .upload-textfield {
@@ -378,7 +380,7 @@
   .native-img-wrapper {
     min-width: @native-img-width;
     box-sizing: content-box;
-    .img-container {
+    .img-container, img {
       position: relative;
       width: @native-img-width;
       height: @native-img-height;

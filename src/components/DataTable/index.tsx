@@ -445,7 +445,7 @@ class DataTable extends React.Component<IProps, IState> {
                 <Option value="30">30</Option>
                 <Option value="50">50</Option>
             </Select>
-          <Translate value={"(Show _{page} from _{endPage})"} params={{page: this.state.page , endPage: Math.ceil(this.state.data.total / this.state.pageSize)}}/>
+          <Translate value={"(Show %s from %s)"} params={{page: this.state.page , endPage: Math.ceil(this.state.data.total / this.state.pageSize)}}/>
         </div> ;
       },
       onChange: (page, pageSize) => {
@@ -618,7 +618,7 @@ class DataTable extends React.Component<IProps, IState> {
               {this.infiniteLoader &&
               <div>
                   <Icon name={"cif-target"}/>
-                  <Translate value={"_{totalResult} result"} params={{totalResult: this.state.data.total}}/>
+                  <Translate value={"%s result"} params={{totalResult: this.state.data.total}}/>
               </div>
               }
           </div>

@@ -83,7 +83,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
     this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
     this.props.setBreadcrumb("selectPublisher", this.i18n._t("Select Publisher").toString(), "campaign");
     const collectionApi = new ControllersApi();
-    collectionApi.campaignIdGet({
+    collectionApi.campaignGetIdGet({
       id: this.props.match.params.id,
     }).then(campaign => {
       let listType: List;
@@ -105,7 +105,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
       this.setState({
         currentCampaign: campaign,
         listID: campaign.white_black_id,
-        listName: this.i18n._t("_{campaignName} Publishers", {params: {campaignName: campaign.title}}).toString(),
+        listName: this.i18n._t("%s Publishers", {params: {campaignName: campaign.title}}).toString(),
       });
     });
   }

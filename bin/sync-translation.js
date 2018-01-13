@@ -5,7 +5,7 @@ const ZanataClient = require('zanata-js').ZanataClient;
 const options = {
   url: "http://zanata.clickyab.ae:80/zanata/",
   username: "admin",
-  "api-key": "161b7d687ba85eeff3a0ba94ecc281a8",
+  "api-key": "1a214aa61ccc7f23c2e9c7062f21b031",
   'project-version': "1",
   project: "chameleon",
   verbose: true,

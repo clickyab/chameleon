@@ -38,6 +38,7 @@ export class BaseAPI {
 }
 
 export interface AddAd {
+    "attr"?: AddAdAttr;
     "campaign_id"?: number;
     "created_at"?: string;
     "height"?: number;
@@ -54,10 +55,19 @@ export interface AddAd {
 export interface AddAdActiveStatus {
 }
 
+export interface AddAdAttr {
+    "native"?: AddAdAttrNative;
+}
+
+export interface AddAdAttrNative {
+    "title"?: string;
+}
+
 export interface AddAdType {
 }
 
 export interface AddAdUser {
+    "attr"?: AddAdAttr;
     "campaign_id"?: number;
     "created_at"?: string;
     "height"?: number;
@@ -76,6 +86,7 @@ export interface AddAdsUserSlice extends Array<AddAdsUserSliceInner> {
 }
 
 export interface AddAdsUserSliceInner {
+    "attr"?: AddAdAttr;
     "campaign_id"?: number;
     "created_at"?: string;
     "height"?: number;
@@ -88,6 +99,10 @@ export interface AddAdsUserSliceInner {
     "updated_at"?: string;
     "user_id"?: number;
     "width"?: number;
+}
+
+export interface AddNativeAdAttr {
+    "title"?: string;
 }
 
 export interface ControllerErrorResponseSimple {
@@ -184,6 +199,18 @@ export interface ControllersCreateCampaignPayload {
     "type"?: string;
 }
 
+export interface ControllersGetNativeDataPayload {
+    "url"?: string;
+}
+
+export interface ControllersGetNativeDataResp {
+    "description"?: string;
+    "image"?: string;
+    "site_name"?: string;
+    "title"?: string;
+    "url"?: string;
+}
+
 export interface ControllersIspResponse extends Array<ControllersIspResponseInner> {
 }
 
@@ -195,14 +222,15 @@ export interface ControllersIspResponseInner {
     "updated_at"?: string;
 }
 
-export interface ControllersListInventoryDefResponse {
+export interface ControllersListCampaignDefResponse {
     "checkable"?: boolean;
-    "columns"?: Array<ControllersListInventoryDefResponseColumns>;
+    "columns"?: Array<ControllersListCampaignDefResponseColumns>;
+    "datefilter"?: string;
     "hash"?: string;
     "multiselect"?: boolean;
 }
 
-export interface ControllersListInventoryDefResponseColumns {
+export interface ControllersListCampaignDefResponseColumns {
     "data"?: string;
     "filter"?: boolean;
     "filter_valid_map"?: { [key: string]: Array<string>; };
@@ -212,6 +240,60 @@ export interface ControllersListInventoryDefResponseColumns {
     "title"?: string;
     "type"?: string;
     "visible"?: boolean;
+}
+
+export interface ControllersListCampaignResponse {
+    "data"?: Array<ControllersListCampaignResponseData>;
+    "hash"?: string;
+    "page"?: number;
+    "per_page"?: number;
+    "total"?: number;
+}
+
+export interface ControllersListCampaignResponseData {
+    "_actions"?: string;
+    "active"?: boolean;
+    "avg_cpc"?: number;
+    "avg_cpm"?: number;
+    "budget"?: number;
+    "cost_type"?: string;
+    "created_at"?: string;
+    "ctr"?: number;
+    "daily_limit"?: number;
+    "domain_id"?: number;
+    "end_at"?: string;
+    "id"?: number;
+    "kind"?: string;
+    "max_bid"?: number;
+    "owner_email"?: string;
+    "owner_id"?: number;
+    "parent_email"?: ControllersListCampaignResponseParentEmail;
+    "start_at"?: string;
+    "status"?: boolean;
+    "title"?: string;
+    "today_click"?: number;
+    "today_ctr"?: number;
+    "today_imp"?: number;
+    "total_click"?: number;
+    "total_conv"?: number;
+    "total_cpc"?: number;
+    "total_cpm"?: number;
+    "total_imp"?: number;
+    "total_spent"?: number;
+    "type"?: string;
+}
+
+export interface ControllersListCampaignResponseParentEmail {
+    "String"?: string;
+    "Valid"?: boolean;
+}
+
+export interface ControllersListInventoryDefResponse {
+    "checkable"?: boolean;
+    "columns"?: Array<ControllersListCampaignDefResponseColumns>;
+    "datefilter"?: string;
+    "hash"?: string;
+    "multiselect"?: boolean;
 }
 
 export interface ControllersListInventoryResponse {
@@ -234,34 +316,6 @@ export interface ControllersListInventoryResponseData {
     "publisher"?: string;
     "status"?: string;
     "updated_at"?: string;
-}
-
-export interface ControllersListPublisherDefResponse {
-    "checkable"?: boolean;
-    "columns"?: Array<ControllersListInventoryDefResponseColumns>;
-    "hash"?: string;
-    "multiselect"?: boolean;
-}
-
-export interface ControllersListPublisherResponse {
-    "data"?: Array<ControllersListPublisherResponseData>;
-    "hash"?: string;
-    "page"?: number;
-    "per_page"?: number;
-    "total"?: number;
-}
-
-export interface ControllersListPublisherResponseData {
-    "_actions"?: string;
-    "created_at"?: string;
-    "domain"?: string;
-    "id"?: number;
-    "name"?: string;
-    "pub_type"?: string;
-    "status"?: string;
-    "supplier"?: string;
-    "updated_at"?: string;
-    "user_id"?: number;
 }
 
 export interface ControllersManufacturers extends Array<ControllersBrowserResponseInner> {
@@ -314,15 +368,10 @@ export interface ControllersWhiteBlackPayload {
 export interface DmnDomain {
     "active"?: boolean;
     "created_at"?: string;
-    "description"?: DmnDomainDescription;
+    "description"?: ControllersListCampaignResponseParentEmail;
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
-}
-
-export interface DmnDomainDescription {
-    "String"?: string;
-    "Valid"?: boolean;
 }
 
 export interface LocationCities extends Array<LocationCitiesInner> {
@@ -432,6 +481,39 @@ export interface OrmCampaignBaseType {
     "type"?: string;
 }
 
+export interface OrmCampaignDataTable {
+    "_actions"?: string;
+    "active"?: boolean;
+    "avg_cpc"?: number;
+    "avg_cpm"?: number;
+    "budget"?: number;
+    "cost_type"?: string;
+    "created_at"?: string;
+    "ctr"?: number;
+    "daily_limit"?: number;
+    "domain_id"?: number;
+    "end_at"?: string;
+    "id"?: number;
+    "kind"?: string;
+    "max_bid"?: number;
+    "owner_email"?: string;
+    "owner_id"?: number;
+    "parent_email"?: ControllersListCampaignResponseParentEmail;
+    "start_at"?: string;
+    "status"?: boolean;
+    "title"?: string;
+    "today_click"?: number;
+    "today_ctr"?: number;
+    "today_imp"?: number;
+    "total_click"?: number;
+    "total_conv"?: number;
+    "total_cpc"?: number;
+    "total_cpm"?: number;
+    "total_imp"?: number;
+    "total_spent"?: number;
+    "type"?: string;
+}
+
 export interface OrmCampaignFinance {
     "budget"?: number;
     "cost_type"?: string;
@@ -444,30 +526,30 @@ export interface OrmCampaignKind {
 }
 
 export interface OrmCampaignSchedule {
-    "h00"?: DmnDomainDescription;
-    "h01"?: DmnDomainDescription;
-    "h02"?: DmnDomainDescription;
-    "h03"?: DmnDomainDescription;
-    "h04"?: DmnDomainDescription;
-    "h05"?: DmnDomainDescription;
-    "h06"?: DmnDomainDescription;
-    "h07"?: DmnDomainDescription;
-    "h08"?: DmnDomainDescription;
-    "h09"?: DmnDomainDescription;
-    "h10"?: DmnDomainDescription;
-    "h11"?: DmnDomainDescription;
-    "h12"?: DmnDomainDescription;
-    "h13"?: DmnDomainDescription;
-    "h14"?: DmnDomainDescription;
-    "h15"?: DmnDomainDescription;
-    "h16"?: DmnDomainDescription;
-    "h17"?: DmnDomainDescription;
-    "h18"?: DmnDomainDescription;
-    "h19"?: DmnDomainDescription;
-    "h20"?: DmnDomainDescription;
-    "h21"?: DmnDomainDescription;
-    "h22"?: DmnDomainDescription;
-    "h23"?: DmnDomainDescription;
+    "h00"?: ControllersListCampaignResponseParentEmail;
+    "h01"?: ControllersListCampaignResponseParentEmail;
+    "h02"?: ControllersListCampaignResponseParentEmail;
+    "h03"?: ControllersListCampaignResponseParentEmail;
+    "h04"?: ControllersListCampaignResponseParentEmail;
+    "h05"?: ControllersListCampaignResponseParentEmail;
+    "h06"?: ControllersListCampaignResponseParentEmail;
+    "h07"?: ControllersListCampaignResponseParentEmail;
+    "h08"?: ControllersListCampaignResponseParentEmail;
+    "h09"?: ControllersListCampaignResponseParentEmail;
+    "h10"?: ControllersListCampaignResponseParentEmail;
+    "h11"?: ControllersListCampaignResponseParentEmail;
+    "h12"?: ControllersListCampaignResponseParentEmail;
+    "h13"?: ControllersListCampaignResponseParentEmail;
+    "h14"?: ControllersListCampaignResponseParentEmail;
+    "h15"?: ControllersListCampaignResponseParentEmail;
+    "h16"?: ControllersListCampaignResponseParentEmail;
+    "h17"?: ControllersListCampaignResponseParentEmail;
+    "h18"?: ControllersListCampaignResponseParentEmail;
+    "h19"?: ControllersListCampaignResponseParentEmail;
+    "h20"?: ControllersListCampaignResponseParentEmail;
+    "h21"?: ControllersListCampaignResponseParentEmail;
+    "h22"?: ControllersListCampaignResponseParentEmail;
+    "h23"?: ControllersListCampaignResponseParentEmail;
 }
 
 export interface OrmCampaignStatus {
@@ -566,30 +648,30 @@ export interface OrmRegion {
 }
 
 export interface OrmScheduleSheet {
-    "h00"?: DmnDomainDescription;
-    "h01"?: DmnDomainDescription;
-    "h02"?: DmnDomainDescription;
-    "h03"?: DmnDomainDescription;
-    "h04"?: DmnDomainDescription;
-    "h05"?: DmnDomainDescription;
-    "h06"?: DmnDomainDescription;
-    "h07"?: DmnDomainDescription;
-    "h08"?: DmnDomainDescription;
-    "h09"?: DmnDomainDescription;
-    "h10"?: DmnDomainDescription;
-    "h11"?: DmnDomainDescription;
-    "h12"?: DmnDomainDescription;
-    "h13"?: DmnDomainDescription;
-    "h14"?: DmnDomainDescription;
-    "h15"?: DmnDomainDescription;
-    "h16"?: DmnDomainDescription;
-    "h17"?: DmnDomainDescription;
-    "h18"?: DmnDomainDescription;
-    "h19"?: DmnDomainDescription;
-    "h20"?: DmnDomainDescription;
-    "h21"?: DmnDomainDescription;
-    "h22"?: DmnDomainDescription;
-    "h23"?: DmnDomainDescription;
+    "h00"?: ControllersListCampaignResponseParentEmail;
+    "h01"?: ControllersListCampaignResponseParentEmail;
+    "h02"?: ControllersListCampaignResponseParentEmail;
+    "h03"?: ControllersListCampaignResponseParentEmail;
+    "h04"?: ControllersListCampaignResponseParentEmail;
+    "h05"?: ControllersListCampaignResponseParentEmail;
+    "h06"?: ControllersListCampaignResponseParentEmail;
+    "h07"?: ControllersListCampaignResponseParentEmail;
+    "h08"?: ControllersListCampaignResponseParentEmail;
+    "h09"?: ControllersListCampaignResponseParentEmail;
+    "h10"?: ControllersListCampaignResponseParentEmail;
+    "h11"?: ControllersListCampaignResponseParentEmail;
+    "h12"?: ControllersListCampaignResponseParentEmail;
+    "h13"?: ControllersListCampaignResponseParentEmail;
+    "h14"?: ControllersListCampaignResponseParentEmail;
+    "h15"?: ControllersListCampaignResponseParentEmail;
+    "h16"?: ControllersListCampaignResponseParentEmail;
+    "h17"?: ControllersListCampaignResponseParentEmail;
+    "h18"?: ControllersListCampaignResponseParentEmail;
+    "h19"?: ControllersListCampaignResponseParentEmail;
+    "h20"?: ControllersListCampaignResponseParentEmail;
+    "h21"?: ControllersListCampaignResponseParentEmail;
+    "h22"?: ControllersListCampaignResponseParentEmail;
+    "h23"?: ControllersListCampaignResponseParentEmail;
 }
 
 export interface OrmStatus {
@@ -617,37 +699,6 @@ export interface PermissionColumn {
     "title"?: string;
     "type"?: string;
     "visible"?: boolean;
-}
-
-export interface PubPType {
-}
-
-export interface PubPublisher {
-    "created_at"?: string;
-    "domain"?: string;
-    "id"?: number;
-    "name"?: string;
-    "pub_type"?: string;
-    "status"?: string;
-    "supplier"?: string;
-    "updated_at"?: string;
-    "user_id"?: number;
-}
-
-export interface PubPublisherDataTable {
-    "_actions"?: string;
-    "created_at"?: string;
-    "domain"?: string;
-    "id"?: number;
-    "name"?: string;
-    "pub_type"?: string;
-    "status"?: string;
-    "supplier"?: string;
-    "updated_at"?: string;
-    "user_id"?: number;
-}
-
-export interface PubStatus {
 }
 
 export interface TransT9Base {
@@ -680,7 +731,7 @@ export interface UserCheckMailResponse {
 export interface UserCheckMailResponseDomains {
     "active"?: boolean;
     "created_at"?: string;
-    "description"?: DmnDomainDescription;
+    "description"?: ControllersListCampaignResponseParentEmail;
     "id"?: number;
     "name"?: string;
     "updated_at"?: string;
@@ -792,21 +843,27 @@ export interface UserVerifyResendPayload {
 export const ControllersApiFetchParamCreator = {
     /**
      * @func
-     * adBannerIdPost
+     * adBannerTypeIdPost
+     * @param bannerType  param
      * @param id  param
      * @param token the security token, get it from login route param
      * @param payloadData  param
      */
-    adBannerIdPost(params: {  id: string; token?: string; payloadData?: ControllersAssignBannerPayload; }, options: any = {}): FetchArgs {
+    adBannerTypeIdPost(params: {  bannerType: string; id: string; token?: string; payloadData?: ControllersAssignBannerPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "bannerType" is set
+        if (params["bannerType"] == null) {
+            throw new Error("Missing required parameter bannerType when calling adBannerTypeIdPost");
+        }
         // verify required parameter "id" is set
         if (params["id"] == null) {
-            throw new Error("Missing required parameter id when calling adBannerIdPost");
+            throw new Error("Missing required parameter id when calling adBannerTypeIdPost");
         }
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
         }
-        const baseUrl = `/ad/banner/{id}`
+        const baseUrl = `/ad/{banner_type}/{id}`
+            .replace(`{${"banner_type"}}`, `${ params["bannerType"] }`)
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
@@ -1165,20 +1222,20 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
-     * campaignIdAdGet
+     * campaignGetIdAdGet
      * @param id  param
      * @param token the security token, get it from login route param
      */
-    campaignIdAdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+    campaignGetIdAdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
-            throw new Error("Missing required parameter id when calling campaignIdAdGet");
+            throw new Error("Missing required parameter id when calling campaignGetIdAdGet");
         }
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
         }
-        const baseUrl = `/campaign/{id}/ad`
+        const baseUrl = `/campaign/get/{id}/ad`
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
@@ -1195,25 +1252,143 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
-     * campaignIdGet
+     * campaignGetIdGet
      * @param id  param
      * @param token the security token, get it from login route param
      */
-    campaignIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+    campaignGetIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
-            throw new Error("Missing required parameter id when calling campaignIdGet");
+            throw new Error("Missing required parameter id when calling campaignGetIdGet");
         }
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
         }
-        const baseUrl = `/campaign/{id}`
+        const baseUrl = `/campaign/get/{id}`
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * campaignListDefinitionGet
+     * @param token the security token, get it from login route param
+     */
+    campaignListDefinitionGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/campaign/list/definition`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * campaignListGet
+     * @param token the security token, get it from login route param
+     * @param p  page number param
+     * @param kind  param
+     * @param ownerEmail  search the owner_email field param
+     * @param costType  param
+     * @param title  search the title field param
+     * @param c  count per page param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param type  param
+     * @param sort  param
+     */
+    campaignListGet(params: {  token?: string; p?: string; kind?: string; ownerEmail?: string; costType?: string; title?: string; c?: string; from?: string; to?: string; type?: string; sort?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/campaign/list`;
+        let urlObj = url.parse(baseUrl, true);
+        urlObj.query =  assign({}, urlObj.query);
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
+        }
+        if (params["ownerEmail"] !== undefined) {
+            urlObj.query["owner_email"] = params["ownerEmail"];
+        }
+        if (params["costType"] !== undefined) {
+            urlObj.query["cost_type"] = params["costType"];
+        }
+        if (params["title"] !== undefined) {
+            urlObj.query["title"] = params["title"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
+        }
+        if (params["type"] !== undefined) {
+            urlObj.query["type"] = params["type"];
+        }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * campaignNativeFetchPost
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    campaignNativeFetchPost(params: {  token?: string; payloadData?: ControllersGetNativeDataPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/campaign/native/fetch`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
         fetchOptions.headers = assign({
             "token": params["token"],
         }, contentTypeHeader, fetchOptions.headers);
@@ -1316,14 +1491,16 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryListGet
      * @param token the security token, get it from login route param
-     * @param c  count per page param
-     * @param p  page number param
-     * @param kind  param
-     * @param domain  search the domain field param
      * @param sort  param
+     * @param kind  param
      * @param name  search the name field param
+     * @param domain  search the domain field param
+     * @param c  count per page param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param p  page number param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      */
-    inventoryListGet(params: {  token?: string; c?: string; p?: string; kind?: string; domain?: string; sort?: string; name?: string; }, options: any = {}): FetchArgs {
+    inventoryListGet(params: {  token?: string; sort?: string; kind?: string; name?: string; domain?: string; c?: string; from?: string; p?: string; to?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -1331,23 +1508,29 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
         }
         if (params["kind"] !== undefined) {
             urlObj.query["kind"] = params["kind"];
         }
+        if (params["name"] !== undefined) {
+            urlObj.query["name"] = params["name"];
+        }
         if (params["domain"] !== undefined) {
             urlObj.query["domain"] = params["domain"];
         }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
-        if (params["name"] !== undefined) {
-            urlObj.query["name"] = params["name"];
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -1446,90 +1629,75 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
-     * publisherListDefinitionGet
-     * @param token the security token, get it from login route param
-     */
-    publisherListDefinitionGet(params: {  token?: string; }, options: any = {}): FetchArgs {
-        // verify required parameter "token" is set
-        if (params["token"] == null) {
-            params["token"] = AAA.getInstance().getToken();
-        }
-        const baseUrl = `/publisher/list/definition`;
-        let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
-
-        let contentTypeHeader: Dictionary<string> = {};
-        fetchOptions.headers = assign({
-            "token": params["token"],
-        }, contentTypeHeader, fetchOptions.headers);
-
-        return {
-            url: url.format(urlObj),
-            options: fetchOptions,
-        };
-    },
-    /**
-     * @func
-     * publisherListGet
-     * @param token the security token, get it from login route param
-     * @param status  param
-     * @param c  count per page param
-     * @param p  page number param
-     * @param pubType  param
-     * @param domain  search the domain field param
-     */
-    publisherListGet(params: {  token?: string; status?: string; c?: string; p?: string; pubType?: string; domain?: string; }, options: any = {}): FetchArgs {
-        // verify required parameter "token" is set
-        if (params["token"] == null) {
-            params["token"] = AAA.getInstance().getToken();
-        }
-        const baseUrl = `/publisher/list`;
-        let urlObj = url.parse(baseUrl, true);
-        urlObj.query =  assign({}, urlObj.query);
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["pubType"] !== undefined) {
-            urlObj.query["pub_type"] = params["pubType"];
-        }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
-        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
-
-        let contentTypeHeader: Dictionary<string> = {};
-        fetchOptions.headers = assign({
-            "token": params["token"],
-        }, contentTypeHeader, fetchOptions.headers);
-
-        return {
-            url: url.format(urlObj),
-            options: fetchOptions,
-        };
-    },
-    /**
-     * @func
-     * uploadModulePost
+     * uploadBannerModulePost
      * @param module  param
      * @param token the security token, get it from login route param
      */
-    uploadModulePost(params: {  module: string; token?: string; }, options: any = {}): FetchArgs {
+    uploadBannerModulePost(params: {  module: string; token?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "module" is set
         if (params["module"] == null) {
-            throw new Error("Missing required parameter module when calling uploadModulePost");
+            throw new Error("Missing required parameter module when calling uploadBannerModulePost");
         }
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
         }
-        const baseUrl = `/upload/{module}`
+        const baseUrl = `/upload/banner/{module}`
             .replace(`{${"module"}}`, `${ params["module"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * uploadVideoIdGet
+     * @param id  param
+     * @param token the security token, get it from login route param
+     */
+    uploadVideoIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling uploadVideoIdGet");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/upload/video/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * uploadVideoPost
+     * @param token the security token, get it from login route param
+     */
+    uploadVideoPost(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/upload/video`;
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
 
@@ -1550,13 +1718,14 @@ export const ControllersApiFetchParamCreator = {
  */
 export const ControllersApiFp = {
     /**
-     * adBannerIdPost
+     * adBannerTypeIdPost
+     * @param bannerType  (def)
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
-    adBannerIdPost(params: { id: string; token?: string; payloadData?: ControllersAssignBannerPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<AddAd> {
-        const fetchArgs = ControllersApiFetchParamCreator.adBannerIdPost(params, options);
+    adBannerTypeIdPost(params: { bannerType: string; id: string; token?: string; payloadData?: ControllersAssignBannerPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<AddAd> {
+        const fetchArgs = ControllersApiFetchParamCreator.adBannerTypeIdPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1873,12 +2042,12 @@ export const ControllersApiFp = {
         };
     },
     /**
-     * campaignIdAdGet
+     * campaignGetIdAdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      */
-    campaignIdAdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<AddAdsUserSlice> {
-        const fetchArgs = ControllersApiFetchParamCreator.campaignIdAdGet(params, options);
+    campaignGetIdAdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<AddAdsUserSlice> {
+        const fetchArgs = ControllersApiFetchParamCreator.campaignGetIdAdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1898,12 +2067,95 @@ export const ControllersApiFp = {
         };
     },
     /**
-     * campaignIdGet
+     * campaignGetIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      */
-    campaignIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
-        const fetchArgs = ControllersApiFetchParamCreator.campaignIdGet(params, options);
+    campaignGetIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
+        const fetchArgs = ControllersApiFetchParamCreator.campaignGetIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * campaignListDefinitionGet
+     * @param token the security token, get it from login route (def)
+     */
+    campaignListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignDefResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.campaignListDefinitionGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * campaignListGet
+     * @param token the security token, get it from login route (def)
+     * @param p  page number (def)
+     * @param kind  (def)
+     * @param ownerEmail  search the owner_email field (def)
+     * @param costType  (def)
+     * @param title  search the title field (def)
+     * @param c  count per page (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param type  (def)
+     * @param sort  (def)
+     */
+    campaignListGet(params: { token?: string; p?: string; kind?: string; ownerEmail?: string; costType?: string; title?: string; c?: string; from?: string; to?: string; type?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignResponse> {
+        const fetchArgs = ControllersApiFetchParamCreator.campaignListGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * campaignNativeFetchPost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    campaignNativeFetchPost(params: { token?: string; payloadData?: ControllersGetNativeDataPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGetNativeDataResp> {
+        const fetchArgs = ControllersApiFetchParamCreator.campaignNativeFetchPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -2000,14 +2252,16 @@ export const ControllersApiFp = {
     /**
      * inventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param kind  (def)
-     * @param domain  search the domain field (def)
      * @param sort  (def)
+     * @param kind  (def)
      * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
+     * @param c  count per page (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param p  page number (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    inventoryListGet(params: { token?: string; c?: string; p?: string; kind?: string; domain?: string; sort?: string; name?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
+    inventoryListGet(params: { token?: string; sort?: string; kind?: string; name?: string; domain?: string; c?: string; from?: string; p?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
         const fetchArgs = ControllersApiFetchParamCreator.inventoryListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -2102,65 +2356,61 @@ export const ControllersApiFp = {
         };
     },
     /**
-     * publisherListDefinitionGet
-     * @param token the security token, get it from login route (def)
-     */
-    publisherListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherDefResponse> {
-        const fetchArgs = ControllersApiFetchParamCreator.publisherListDefinitionGet(params, options);
-        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
-            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else {
-                  return response.json()
-                  .then(res => {
-                    res.status = response.status;
-                    throw res;
-                  })
-                  .catch((err) => {
-                    err.status = response.status;
-                    throw err;
-                  });
-                }
-            });
-        };
-    },
-    /**
-     * publisherListGet
-     * @param token the security token, get it from login route (def)
-     * @param status  (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param pubType  (def)
-     * @param domain  search the domain field (def)
-     */
-    publisherListGet(params: { token?: string; status?: string; c?: string; p?: string; pubType?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
-        const fetchArgs = ControllersApiFetchParamCreator.publisherListGet(params, options);
-        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
-            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else {
-                  return response.json()
-                  .then(res => {
-                    res.status = response.status;
-                    throw res;
-                  })
-                  .catch((err) => {
-                    err.status = response.status;
-                    throw err;
-                  });
-                }
-            });
-        };
-    },
-    /**
-     * uploadModulePost
+     * uploadBannerModulePost
      * @param module  (def)
      * @param token the security token, get it from login route (def)
      */
-    uploadModulePost(params: { module: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
-        const fetchArgs = ControllersApiFetchParamCreator.uploadModulePost(params, options);
+    uploadBannerModulePost(params: { module: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
+        const fetchArgs = ControllersApiFetchParamCreator.uploadBannerModulePost(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response;
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * uploadVideoIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    uploadVideoIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
+        const fetchArgs = ControllersApiFetchParamCreator.uploadVideoIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response;
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * uploadVideoPost
+     * @param token the security token, get it from login route (def)
+     */
+    uploadVideoPost(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
+        const fetchArgs = ControllersApiFetchParamCreator.uploadVideoPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -2186,13 +2436,14 @@ export const ControllersApiFp = {
  */
 export class ControllersApi extends BaseAPI {
     /**
-     * adBannerIdPost
+     * adBannerTypeIdPost
+     * @param bannerType  (def)
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
-    adBannerIdPost(params: {  id: string; token?: string; payloadData?: ControllersAssignBannerPayload; }, options: any = {}) {
-        return ControllersApiFp.adBannerIdPost(params, options)(this.fetch, this.basePath);
+    adBannerTypeIdPost(params: {  bannerType: string; id: string; token?: string; payloadData?: ControllersAssignBannerPayload; }, options: any = {}) {
+        return ControllersApiFp.adBannerTypeIdPost(params, options)(this.fetch, this.basePath);
     }
     /**
      * assetBrowserGet
@@ -2288,20 +2539,52 @@ export class ControllersApi extends BaseAPI {
         return ControllersApiFp.campaignFinalizeIdPut(params, options)(this.fetch, this.basePath);
     }
     /**
-     * campaignIdAdGet
+     * campaignGetIdAdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      */
-    campaignIdAdGet(params: {  id: string; token?: string; }, options: any = {}) {
-        return ControllersApiFp.campaignIdAdGet(params, options)(this.fetch, this.basePath);
+    campaignGetIdAdGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignGetIdAdGet(params, options)(this.fetch, this.basePath);
     }
     /**
-     * campaignIdGet
+     * campaignGetIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      */
-    campaignIdGet(params: {  id: string; token?: string; }, options: any = {}) {
-        return ControllersApiFp.campaignIdGet(params, options)(this.fetch, this.basePath);
+    campaignGetIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignGetIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * campaignListDefinitionGet
+     * @param token the security token, get it from login route (def)
+     */
+    campaignListDefinitionGet(params: {  token?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignListDefinitionGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * campaignListGet
+     * @param token the security token, get it from login route (def)
+     * @param p  page number (def)
+     * @param kind  (def)
+     * @param ownerEmail  search the owner_email field (def)
+     * @param costType  (def)
+     * @param title  search the title field (def)
+     * @param c  count per page (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param type  (def)
+     * @param sort  (def)
+     */
+    campaignListGet(params: {  token?: string; p?: string; kind?: string; ownerEmail?: string; costType?: string; title?: string; c?: string; from?: string; to?: string; type?: string; sort?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignListGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * campaignNativeFetchPost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    campaignNativeFetchPost(params: {  token?: string; payloadData?: ControllersGetNativeDataPayload; }, options: any = {}) {
+        return ControllersApiFp.campaignNativeFetchPost(params, options)(this.fetch, this.basePath);
     }
     /**
      * campaignWbIdPut
@@ -2330,14 +2613,16 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param kind  (def)
-     * @param domain  search the domain field (def)
      * @param sort  (def)
+     * @param kind  (def)
      * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
+     * @param c  count per page (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param p  page number (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    inventoryListGet(params: {  token?: string; c?: string; p?: string; kind?: string; domain?: string; sort?: string; name?: string; }, options: any = {}) {
+    inventoryListGet(params: {  token?: string; sort?: string; kind?: string; name?: string; domain?: string; c?: string; from?: string; p?: string; to?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -2364,31 +2649,27 @@ export class ControllersApi extends BaseAPI {
         return ControllersApiFp.inventoryPresetsGet(params, options)(this.fetch, this.basePath);
     }
     /**
-     * publisherListDefinitionGet
-     * @param token the security token, get it from login route (def)
-     */
-    publisherListDefinitionGet(params: {  token?: string; }, options: any = {}) {
-        return ControllersApiFp.publisherListDefinitionGet(params, options)(this.fetch, this.basePath);
-    }
-    /**
-     * publisherListGet
-     * @param token the security token, get it from login route (def)
-     * @param status  (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param pubType  (def)
-     * @param domain  search the domain field (def)
-     */
-    publisherListGet(params: {  token?: string; status?: string; c?: string; p?: string; pubType?: string; domain?: string; }, options: any = {}) {
-        return ControllersApiFp.publisherListGet(params, options)(this.fetch, this.basePath);
-    }
-    /**
-     * uploadModulePost
+     * uploadBannerModulePost
      * @param module  (def)
      * @param token the security token, get it from login route (def)
      */
-    uploadModulePost(params: {  module: string; token?: string; }, options: any = {}) {
-        return ControllersApiFp.uploadModulePost(params, options)(this.fetch, this.basePath);
+    uploadBannerModulePost(params: {  module: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.uploadBannerModulePost(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * uploadVideoIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    uploadVideoIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.uploadVideoIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * uploadVideoPost
+     * @param token the security token, get it from login route (def)
+     */
+    uploadVideoPost(params: {  token?: string; }, options: any = {}) {
+        return ControllersApiFp.uploadVideoPost(params, options)(this.fetch, this.basePath);
     }
 }
 
@@ -2398,13 +2679,14 @@ export class ControllersApi extends BaseAPI {
 export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: string) {
     return {
         /**
-         * adBannerIdPost
+         * adBannerTypeIdPost
+         * @param bannerType  (def)
          * @param id  (def)
          * @param token the security token, get it from login route (def)
          * @param payloadData  (def)
          */
-        adBannerIdPost(params: {  id: string; token?: string; payloadData?: ControllersAssignBannerPayload; }, options: any = {}) {
-            return ControllersApiFp.adBannerIdPost(params, options)(fetch, basePath);
+        adBannerTypeIdPost(params: {  bannerType: string; id: string; token?: string; payloadData?: ControllersAssignBannerPayload; }, options: any = {}) {
+            return ControllersApiFp.adBannerTypeIdPost(params, options)(fetch, basePath);
         },
         /**
          * assetBrowserGet
@@ -2500,20 +2782,52 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
             return ControllersApiFp.campaignFinalizeIdPut(params, options)(fetch, basePath);
         },
         /**
-         * campaignIdAdGet
+         * campaignGetIdAdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
          */
-        campaignIdAdGet(params: {  id: string; token?: string; }, options: any = {}) {
-            return ControllersApiFp.campaignIdAdGet(params, options)(fetch, basePath);
+        campaignGetIdAdGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignGetIdAdGet(params, options)(fetch, basePath);
         },
         /**
-         * campaignIdGet
+         * campaignGetIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
          */
-        campaignIdGet(params: {  id: string; token?: string; }, options: any = {}) {
-            return ControllersApiFp.campaignIdGet(params, options)(fetch, basePath);
+        campaignGetIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignGetIdGet(params, options)(fetch, basePath);
+        },
+        /**
+         * campaignListDefinitionGet
+         * @param token the security token, get it from login route (def)
+         */
+        campaignListDefinitionGet(params: {  token?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignListDefinitionGet(params, options)(fetch, basePath);
+        },
+        /**
+         * campaignListGet
+         * @param token the security token, get it from login route (def)
+         * @param p  page number (def)
+         * @param kind  (def)
+         * @param ownerEmail  search the owner_email field (def)
+         * @param costType  (def)
+         * @param title  search the title field (def)
+         * @param c  count per page (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param type  (def)
+         * @param sort  (def)
+         */
+        campaignListGet(params: {  token?: string; p?: string; kind?: string; ownerEmail?: string; costType?: string; title?: string; c?: string; from?: string; to?: string; type?: string; sort?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignListGet(params, options)(fetch, basePath);
+        },
+        /**
+         * campaignNativeFetchPost
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        campaignNativeFetchPost(params: {  token?: string; payloadData?: ControllersGetNativeDataPayload; }, options: any = {}) {
+            return ControllersApiFp.campaignNativeFetchPost(params, options)(fetch, basePath);
         },
         /**
          * campaignWbIdPut
@@ -2542,14 +2856,16 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryListGet
          * @param token the security token, get it from login route (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
-         * @param kind  (def)
-         * @param domain  search the domain field (def)
          * @param sort  (def)
+         * @param kind  (def)
          * @param name  search the name field (def)
+         * @param domain  search the domain field (def)
+         * @param c  count per page (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param p  page number (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          */
-        inventoryListGet(params: {  token?: string; c?: string; p?: string; kind?: string; domain?: string; sort?: string; name?: string; }, options: any = {}) {
+        inventoryListGet(params: {  token?: string; sort?: string; kind?: string; name?: string; domain?: string; c?: string; from?: string; p?: string; to?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryListGet(params, options)(fetch, basePath);
         },
         /**
@@ -2576,31 +2892,27 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
             return ControllersApiFp.inventoryPresetsGet(params, options)(fetch, basePath);
         },
         /**
-         * publisherListDefinitionGet
-         * @param token the security token, get it from login route (def)
-         */
-        publisherListDefinitionGet(params: {  token?: string; }, options: any = {}) {
-            return ControllersApiFp.publisherListDefinitionGet(params, options)(fetch, basePath);
-        },
-        /**
-         * publisherListGet
-         * @param token the security token, get it from login route (def)
-         * @param status  (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
-         * @param pubType  (def)
-         * @param domain  search the domain field (def)
-         */
-        publisherListGet(params: {  token?: string; status?: string; c?: string; p?: string; pubType?: string; domain?: string; }, options: any = {}) {
-            return ControllersApiFp.publisherListGet(params, options)(fetch, basePath);
-        },
-        /**
-         * uploadModulePost
+         * uploadBannerModulePost
          * @param module  (def)
          * @param token the security token, get it from login route (def)
          */
-        uploadModulePost(params: {  module: string; token?: string; }, options: any = {}) {
-            return ControllersApiFp.uploadModulePost(params, options)(fetch, basePath);
+        uploadBannerModulePost(params: {  module: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.uploadBannerModulePost(params, options)(fetch, basePath);
+        },
+        /**
+         * uploadVideoIdGet
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         */
+        uploadVideoIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.uploadVideoIdGet(params, options)(fetch, basePath);
+        },
+        /**
+         * uploadVideoPost
+         * @param token the security token, get it from login route (def)
+         */
+        uploadVideoPost(params: {  token?: string; }, options: any = {}) {
+            return ControllersApiFp.uploadVideoPost(params, options)(fetch, basePath);
         },
     };
 };
