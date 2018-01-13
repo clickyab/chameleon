@@ -134,7 +134,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
           <Row>
             <Col span={20}>
               <div>
-                <Translate value={"Are you sure about remove <b>\"%s\"</b>?"} html={true} params={{name: "sss"}}/>
+                <Translate value={"Are you sure about remove <b>\"%s\"</b>?"} html={true} params={["sss"]}/>
               </div>
               <div>
                 <Translate value={"You can't undo this action after confirm."}/>
@@ -145,7 +145,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
             </Col>
           </Row>
         </Modal>
-        <Modal title={this.i18n._t("Create a copy from: %s", {params: {name: "sss"}})}
+        <Modal title={this.i18n._t("Create a copy from: %s", {params: ["sss"]})}
                okText={this.i18n._t("Save").toString()}
                visible={this.state.openArchiveModal}
                mask={true}

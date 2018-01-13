@@ -1,7 +1,7 @@
 /**
  * @file Datetime directive
  * @desc convert datetime to locale
- * @example <Translate value={"hello <b> %s</b>"} params={{fullName :"click yab"}} html={true}/>
+ * @example <Translate value={"hello <b> %s</b>"} params={["click yab"]} html={true}/>
  */
 import * as React from "react";
 import I18n from "../../../services/i18n/index";
@@ -19,7 +19,7 @@ interface ITranslateProps {
   /**
    * @param {object} params - object of params to replace parameters on original string
    */
-  params?: object;
+  params?: any[];
 
   /**
    * render html object or not
@@ -28,7 +28,7 @@ interface ITranslateProps {
 }
 
 interface IState {
-  params: object ;
+  params: any[] ;
 }
 export default class Translate extends React.Component<ITranslateProps, IState> {
 
@@ -47,7 +47,7 @@ export default class Translate extends React.Component<ITranslateProps, IState> 
     return (
       <span>
         {i18n._t(this.props.value,
-          {html : this.props.html || false , params : this.state.params || {}})}
+          {html : this.props.html || false , params : this.state.params || []})}
       </span>
     );
   }

@@ -123,13 +123,13 @@ export default class SelectTag extends React.Component<IProps, IStates> {
         return "";
       case 1:
         if (value[0] === -1) {
-          return <Translate value={"All %s selected"} params={{type: this.props.type}}/>;
+          return <Translate value={"All %s selected"} params={[this.props.type]}/>;
         }
         return this.props.data[0].name;
       case this.props.data.length:
-        return <Translate value={"All %s selected"} params={{type: this.props.type}}/>;
+        return <Translate value={"All %s selected"} params={[this.props.type]}/>;
       default:
-        return <Translate value={"%s selected %s"} params={{type: this.props.type, length: value.length}}/>;
+        return <Translate value={"%s selected %s"} params={[this.props.type, value.length]}/>;
     }
   }
 
@@ -138,7 +138,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
       <div>
         {this.props.type &&
         <div className="select-label">
-          <Translate value={"select %s"} params={{type: this.props.type}}/>
+          <Translate value={"select %s"} params={[this.props.type]}/>
         </div>}
         <div className="select-tag">
           <SelectField className={`${(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}`}
@@ -164,13 +164,13 @@ export default class SelectTag extends React.Component<IProps, IStates> {
           <div>
             {this.props.type &&
             <div className="select-title">
-              <Translate value={"selected %s"} params={{type: this.props.type}}/>
+              <Translate value={"selected %s"} params={[this.props.type]}/>
             </div>}
             {!this.state.selectAll && this.handleTags(this.props.data)}
             {this.state.selectAll &&
             <div className="show-tag">
             <span className="tag">
-              <Translate value={"All %s Has been selected"} params={{type: this.props.type}}/>
+              <Translate value={"All %s Has been selected"} params={[this.props.type]}/>
             </span>
               <span className="close" onClick={() => {
                 this.handleReset();
@@ -178,7 +178,7 @@ export default class SelectTag extends React.Component<IProps, IStates> {
             </div>
             }
             {this.state.value.length === 0 &&
-            <Translate value={"No %s Has been selected"} params={{type: this.props.type}}/>}
+            <Translate value={"No %s Has been selected"} params={[this.props.type]}/>}
           </div>
         </div>
       </div>
