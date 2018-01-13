@@ -6,61 +6,83 @@
   text-align: right;
   height: auto !important;
   line-height: inherit !important;
-
   .breadcrumb {
     display: inline-block;
     margin-right: 20px;
-    > span {
-      float: right;
-      direction: rtl;
-    }
   }
-  .ant-breadcrumb-separator{
+  .ant-breadcrumb-separator {
     font-size: 8px;
     display: inline-block;
   }
-  .cif-home{
+  .cif-home {
     vertical-align: middle;
   }
 }
+
 .logo {
   height: 32px;
   background: #333;
   border-radius: 6px;
   margin: 16px;
 }
+
 .trigger {
   font-size: 1.5em;
   color: #969BA1;
   cursor: pointer;
+  position: relative;
+  top: 3px;
 }
+
 .content {
   min-height: 500px;
   margin: 0 16px;
   background: #fff;
 }
-.sidebar-wrapper{
+
+.sidebar-wrapper-rtl {
   overflow: inherit;
   height: 100vh;
   position: fixed !important;
   right: 0 !important;
   z-index: 999;
 }
-.layout-open{
+
+.sidebar-wrapper-ltr {
+  overflow: inherit;
+  height: 100vh;
+  position: fixed !important;
+  left: 0 !important;
+  z-index: 999;
+}
+
+.layout-open-rtl {
   margin-right: @sidebar-open-width;
   transition: all @animation-duration-fast;
 }
-.layout-collapsed{
+
+.layout-collapsed-rtl {
   margin-right: @sidebar-close-width;
   transition: all @animation-duration-fast;
 }
+
+.layout-open-ltr {
+  margin-left: @sidebar-open-width;
+  transition: all @animation-duration-fast;
+}
+
+.layout-collapsed-ltr {
+  margin-left: @sidebar-close-width;
+  transition: all @animation-duration-fast;
+}
+
 .sidebar {
   direction: rtl;
   .ant-menu-item-selected {
-    background-color:  @sidebar-list-hover !important;
+    background-color: @sidebar-list-hover !important;
   }
   li {
-    height: 36px ;
+    height: 36px;
     margin-bottom: 25px;
     border-radius: 4px;
     &:hover, &:active, &:focus, &:visited {
@@ -71,14 +93,15 @@
       margin-right: 0;
     }
   }
-  .sidbar-menu-icon{
+  .sidbar-menu-icon {
     font-size: 20px;
     margin-left: 25px;
     margin-top: 2px;
     float: right;
   }
 }
-.logo-sidebar{
+
+.logo-sidebar {
   font-size: 25px;
   color: white;
   margin-top: 20px;
@@ -86,25 +109,29 @@
   text-align: center;
   display: block;
 }
+
 // Align btn text with Icon
-.create-campaign-text{
+.create-campaign-text {
   position: relative;
-  top:-2px;
+  top: -2px;
 }
-.ant-menu-inline-collapsed{
-  .create-campaign-text{
+
+.ant-menu-inline-collapsed {
+  .create-campaign-text {
     display: none;
   }
-  .create-campaign-icon{
+  .create-campaign-icon {
     margin: 0;
   }
 }
-.ant-tooltip-inner{
-  .sidbar-menu-icon , .create-campaign-icon {
+
+.ant-tooltip-inner {
+  .sidbar-menu-icon, .create-campaign-icon {
     display: none;
   }
 
 }
+
 .menu-list {
   width: 85%;
   margin: 0 auto;
@@ -116,6 +143,7 @@
     }
   }
 }
+
 .badge {
   float: left;
   margin-top: 11px;
@@ -125,15 +153,17 @@
     line-height: 1.8;
   }
 }
+
 .ghostButton {
   width: 100%;
   direction: rtl;
   height: @ghost-button-height !important;
   color: @sidebar-menu-item !important;
   border-color: @sidebar-menu-item !important;
-  border : 2px solid !important;
+  border: 2px solid !important;
   border-radius: 2px !important;
 }
+
 .campaignButton {
   padding: 0 !important;
   margin-bottom: 20px !important;
@@ -150,29 +180,68 @@
     }
   }
 }
-.ant-layout{
- min-height: 100vh;
+
+.ant-layout {
+  min-height: 100vh;
 }
+
 // little badge in collapsed sidebar
-.dot-badge{
-  top:-8px;
+.dot-badge {
+  top: -8px;
 }
-.dot-badge{
-  sup{
+
+.dot-badge {
+  sup {
     box-shadow: 0 0 0 1px @layout-sider-background !important;
   }
 }
+
 //Menu item color for sidebar
 
-.ant-menu-item{
+.ant-menu-item {
   font-weight: bold;
-  color:@sidebar-menu-item !important;
-  }
-.ant-menu.ant-menu-vertical.sidebar.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root>.campaignButton {
+  color: @sidebar-menu-item !important;
+}
+
+.ant-menu.ant-menu-vertical.sidebar.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root > .campaignButton {
   padding: 0 !important;
   margin-bottom: 20px !important;
 }
-.ant-layout-sider-children
-{
+
+.ant-layout-sider-children {
   height: auto !important;
+}
+
+.ant-layout-header {
+  direction: rtl;
+  display: flex;
+  align-items: center;
+}
+.layout-open-ltr , .layout-collapsed-ltr {
+  .ant-layout-header{
+    direction: ltr;
+  }
+  .breadcrumb {
+    margin-right: 0;
+    margin-left: 15px;
+  }
+}
+[dir="ltr"] {
+  .campaign-menu-item {
+    direction: ltr;
+    display: flex;
+    i {
+      margin-left: 0;
+      margin-right: 25px;
+    }
+  }
+  .breadcrumb {
+    span {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .ant-col-offset-10 {
+    margin-left: 0;
+  }
 }

@@ -18,6 +18,7 @@
   .svg-container {
     position: absolute;
     top: -14px;
+    left: 0;
     .arrow-open {
       transform: translate(25px, 8px) rotate(-90deg) translate(-26px, -8px);
       transition: transform .3s ease-In;
@@ -30,7 +31,6 @@
     display: flex;
     justify-content: baseline;
     align-items: center;
-    flex-direction: row-reverse;
     height: 65px;
     padding-right: 20px;
     padding-left: 20px;
@@ -214,4 +214,25 @@
     }
   }
 }
-
+[dir="ltr"] {
+  .mini-container {
+    .mini-close {
+      .mini-bell {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+  .mini-open {
+    ul {
+      li {
+        direction: ltr !important;
+        display: flex;
+      }
+    }
+  }
+  .svg-container{
+    left:auto;
+    right:0;
+  }
+}

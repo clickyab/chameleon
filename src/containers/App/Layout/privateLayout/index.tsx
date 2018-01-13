@@ -5,6 +5,7 @@ import {PrivateFooter} from "./footer/index";
 import "./style.less";
 import PrivateBreadcrumb from "./Breadcrumb/index";
 import Icon from "../../../../components/Icon/index";
+import CONFIG from "../../../../constants/config";
 
 const {Header, Sider, Content} = Layout;
 
@@ -36,29 +37,29 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
   public render() {
     return (
       <Layout style={{ minHeight: "100vh" }}>
-        <Layout className={(this.state.collapsed) ? "layout-collapsed" : "layout-open"}>
+        <Layout className={(this.state.collapsed) ? "layout-collapsed" + "-" + CONFIG.DIR : "layout-open" + "-" + CONFIG.DIR}>
           <Header className="header">
+              <Icon
+                  className="trigger"
+                  name={this.state.collapsed ? "cif-opennav" : "cif-closenav"}
+                  onClick={this.toggle}
+              />
             <PrivateBreadcrumb/>
-            <Icon
-              className="trigger"
-              name={this.state.collapsed ? "cif-opennav" : "cif-closenav"}
-              onClick={this.toggle}
-            />
           </Header>
           <Content className="content">
             {this.props.children}
           </Content>
           <PrivateFooter/>
         </Layout>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          width="300"
-          className="sidebar-wrapper"
-        >
-          <SidebarMenu collapsed={this.state.collapsed}/>
-        </Sider>
+          <Sider
+              trigger={null}
+              collapsible
+              collapsed={this.state.collapsed}
+              width="300"
+              className={"sidebar-wrapper-" + CONFIG.DIR}
+          >
+              <SidebarMenu collapsed={this.state.collapsed}/>
+          </Sider>
       </Layout>
     );
   }

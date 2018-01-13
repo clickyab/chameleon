@@ -152,9 +152,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
     const {getFieldDecorator} = this.props.form;
     return (
       <div dir={CONFIG.DIR} className="campaign-content">
-        <Row>
-          <Col span={6}>
-          </Col>
+        <Row type="flex">
           <Col span={18}>
           <Row className="campaign-title">
             <Col>
@@ -343,6 +341,8 @@ class BudgetComponent extends React.Component <IProps, IState> {
             </Row>
           </Form>
           </Col>
+            <Col span={6}>
+            </Col>
         </Row>
       </div>
     );
