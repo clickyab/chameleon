@@ -58,7 +58,7 @@ class UploadComponent extends React.Component <IProps, IState> {
     if (this.props.match.params.id) {
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const api = new ControllersApi();
-      api.campaignIdGet({id: this.props.match.params.id})
+      api.campaignGetIdGet({id: this.props.match.params.id})
         .then((campaign) => {
           this.props.setBreadcrumb("campaignTitle", campaign.title, "upload");
           this.setState({
@@ -81,7 +81,7 @@ class UploadComponent extends React.Component <IProps, IState> {
         <UplaodBannerVideo currentCampaign={this.state.currentCampaign}/>
         }
         {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.CONTENT) &&
-        <Native currentCampaign={this.state.currentCampaign}  />
+        <Native currentCampaign={this.state.currentCampaign} />
         }
       </div>
     );

@@ -194,7 +194,7 @@ class TypeComponent extends React.Component <IProps, IState> {
       this.disable = true;
       this.props.setSelectedCampaignId(this.props.match.params.id);
       const controllerApi = new ControllersApi();
-      controllerApi.campaignIdGet({id: this.props.match.params.id})
+      controllerApi.campaignGetIdGet({id: this.props.match.params.id})
         .then(campaign => {
           this.props.setBreadcrumb("campaignTitle", campaign.title, "type");
           this.setState({

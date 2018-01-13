@@ -18,7 +18,9 @@ import AAA from "../AAA/index";
  */
 export const UPLOAD_MODULES = {
   AVATAR: "avatar",
-  BANNER : "banner"
+  BANNER : "banner",
+  TEMP : "temp",
+  NATIVE : "native",
 };
 
 /**
@@ -67,7 +69,7 @@ export default class Upload {
    * @param {(state: UploadState) => void} progressCallback
    * @returns {Promise<UploadState>}
    */
-  public upload(progressCallback: (state: UploadState) => void): Promise<UploadState> {
+  public upload(progressCallback?: (state: UploadState) => void): Promise<UploadState> {
 
     return new Promise((resolve, reject) => {
 

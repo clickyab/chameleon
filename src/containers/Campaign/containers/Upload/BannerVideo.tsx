@@ -140,7 +140,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
 
     loadBanners() {
         const controllerApi = new ControllersApi();
-        controllerApi.campaignIdAdGet({
+        controllerApi.campaignGetIdAdGet({
             id: this.state.currentCampaign.id.toString(),
         }).then((list) => {
             let files: IFileItem[] = [];
@@ -343,7 +343,8 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         });
 
         const controllerApi = new ControllersApi();
-        controllerApi.adBannerIdPost({
+        controllerApi.adBannerTypeIdPost({
+            bannerType: UPLOAD_MODULES.BANNER,
             id: this.state.currentCampaign.id.toString(),
             payloadData: {
                 banners

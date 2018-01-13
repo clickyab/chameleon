@@ -145,7 +145,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
     // load initial values
     this.props.setCurrentStep(STEPS.TARGETING);
     this.props.setBreadcrumb("targeting", this.i18n._t("Targeting").toString(), "campaign");
-    this.collectionApi.campaignIdGet({
+    this.collectionApi.campaignGetIdGet({
       id: this.props.match.params.id,
     }).then(campaign => {
       const attr = campaign.attributes || {};
