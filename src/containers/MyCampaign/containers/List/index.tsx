@@ -14,11 +14,13 @@ import DataTableChartWrapper from "../../../../components/DataTableChartWrapper/
 import "./style.less";
 import Translate from "../../../../components/i18n/Translate";
 import Icon from "../../../../components/Icon";
+import {setBreadcrumb} from "../../../../redux/app/actions";
 
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
   form: any;
+  setBreadcrumb: (name: string, title: string, parent: string) => void;
 }
 
 interface IState {
@@ -37,7 +39,7 @@ class List extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    // empty
+      this.props.setBreadcrumb("campaigns", this.i18n._t("Campaigns").toString(), "home");
   }
 
   public render() {
@@ -70,10 +72,11 @@ function mapStateToProps(state: RootState) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
-    setIsLogin: () => dispatch(setIsLogin()),
-  };
+    return {
+        setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
+        setIsLogin: () => dispatch(setIsLogin()),
+        setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
+    };
 }
 
 export default Form.create()(withRouter(List as any));
