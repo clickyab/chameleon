@@ -12,7 +12,7 @@ let fa_IR = require("./../../../dictionary/fa-IR.json");
  */
 interface ITranslateOptions {
   html?: boolean;
-  params?: {};
+  params?: any[];
 }
 
 export default class I18n {
@@ -118,11 +118,10 @@ export default class I18n {
       }
 
       // replace defined params with values
-      Object.keys(translationOptions.params)
-        .forEach((key: string) => {
+      translationOptions.params.forEach((item , index) => {
           translateStr = translateStr.replace(
-            new RegExp(`_{${key}}`, "g"),
-            translationOptions.params[key] ? translationOptions.params[key] : "",
+              new RegExp(`%s`),
+              item ? item : ""
           );
       });
 
