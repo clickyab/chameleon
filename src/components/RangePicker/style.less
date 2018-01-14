@@ -1,12 +1,17 @@
 @import "../../containers/App/theme";
+
 .rangePicker {
   .wrapRangePicker {
     display: flex;
     direction: rtl;
   }
 
+  .flex {
+    display: flex;
+  }
   .calendarContainer {
     width: 232px;
+    margin: 0 !important;
     .persian-calendar-range {
       .daysOfWeek {
         div {
@@ -19,14 +24,14 @@
         width: 30px;
         position: relative;
         margin: 0;
-        &.selected{
-          button{
-            height: 22px ;
-            width: 22px ;
+        &.selected {
+          button {
+            height: 22px;
+            width: 22px;
           }
         }
         .cal-day-hover {
-          background: #F0F8FF;
+          background: @day-wrapper-selected-color ;
           border-radius: unset;
         }
         button {
@@ -41,5 +46,155 @@
         }
       }
     }
+  }
+}
+
+.rangePicker {
+  .filters {
+    text-align: right;
+    width: 123px;
+    background-color: #005CAB;
+    padding: 10px;
+    .date-filter{
+      margin-bottom: 8px;
+      cursor: pointer;
+    > span{
+      color: rgba(214,226,237,.7);
+      font-size: 11px;
+      background: #004E92;
+      border-radius: 8px;
+      padding-right:7px;
+      padding-left:7px;
+    }
+    }
+  }
+}
+[dir="ltr"] .rangePicker {
+  .filter {
+    text-align: left;
+  }
+}
+.rangePickersWrapper{
+  width: 466px;
+}
+.rangePicker{
+  display: flex;
+}
+.range-input-wrapper{
+  width: 100%;
+  display: flex;
+}
+.header-rangePicker{
+  display: flex;
+}
+.wrapper-all-rangePicker{
+  width: 590px;
+  border: 1px solid #DDDDDD;
+}
+
+  .filter-header{
+    width: 123px;
+    text-align: right;
+    background-color: #005CAB;
+    border-bottom: 1px solid rgba(0,0,0,.07) ;
+    padding: 15px 10px 10px 10px;
+    color: #fff;
+    font-size: 11px;
+  }
+[dir="ltr"]  {
+  .filter-header{
+    text-align: left;
+  }
+}
+.header-column{
+  width: 233px;
+  border-bottom: 1px solid rgba(0,0,0,.07) ;
+  padding: 15px 10px 10px 10px;
+  > span {
+    float: right;
+  }
+  .date-input{
+    width: 75px;
+    height: 22px;
+    text-align: center;
+    border : 1px solid #F3F3F3;
+  }
+  &.right{
+    border-left: 1px solid rgba(0,0,0,.07) ;
+  }
+}
+.first-picker{
+  .next{
+    visibility: hidden;
+  }
+}
+.second-picker{
+  .prev{
+    visibility: hidden;
+  }
+}
+.rangePicker {
+  .calendarContainer{
+    box-shadow: 0 0 0 transparent;
+    border: 0 transparent;
+    border-radius: 0;
+  }
+  .persian-calendar-range {
+    button:focus {outline:0;}
+    .heading {
+      .prev, .next , .title {
+        border: 0 transparent;
+        &:hover{
+          background: transparent;
+        }
+      }
+      .title{
+        visibility: hidden;
+      }
+    }
+  }
+  .rangePickerFooter{
+    display: flex;
+    .submit-btn , .cancel-btn{
+      padding: 4px 15px 4px 15px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .submit-btn{
+      background: #9B9B9B;
+      border-radius: 3px;
+      color: white;
+      &:hover{
+        background: #005CAB;
+      }
+    }
+    .cancel-btn{
+      margin-left: 0;
+      margin-right: 0;
+      padding-right: 0;
+      padding-left: 0;
+      min-width: 45px;
+      text-align: center;
+    }
+  }
+}
+.calendar-wrapper{
+  position: relative;
+  .header-month-name{
+    position: absolute;
+    top:22px;
+    right: 100px;
+  }
+  &.first{
+      &:after {
+        content: "";
+        position: absolute;
+        width: 1px;
+        top: 0;
+        left: -0.5px;
+        bottom: 0;
+        border-left: 1px solid rgba(0, 0, 0, .07);
+        z-index: 9999;
+      }
   }
 }
