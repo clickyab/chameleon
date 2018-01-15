@@ -6,6 +6,7 @@ import {BreadcrumbProps} from "antd/es/breadcrumb/Breadcrumb";
 import {connect} from "react-redux";
 import {RootState} from "../../../../../redux/reducers/index";
 import Icon from "../../../../../components/Icon/index";
+import CONFIG from "../../../../../constants/config";
 
 /**
  * @interface IProps
@@ -65,7 +66,7 @@ class PrivateBreadcrumb extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Breadcrumb separator={<Icon name="cif-arrow-left"/>} className="breadcrumb">
+      <Breadcrumb separator={(CONFIG.DIR === "rtl") ? <Icon name="cif-arrow-left"/> : <Icon name="cif-arrow-right"/>} className="breadcrumb">
         <Breadcrumb.Item><Link to="/dashboard"><Icon name="cif-home"/></Link></Breadcrumb.Item>
         {this.createBreadCrumb()}
       </Breadcrumb>

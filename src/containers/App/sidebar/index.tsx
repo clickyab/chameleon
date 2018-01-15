@@ -4,6 +4,7 @@ import {Badge, Button, Layout, Menu} from "antd";
 import I18n from "../../../services/i18n/index";
 import UserBox from "./UserBox/index";
 import Icon from "../../../components/Icon/index";
+import CONFIG from "../../../constants/config";
 
 
 const {Sider}: any = Layout;
@@ -44,7 +45,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <div className={this.props.collapsed ? "" : "menu-list"}>
+      <div dir={CONFIG.DIR} className={this.props.collapsed ? "" : "menu-list"}>
         <Icon className="logo-sidebar" name={"cif-cylogo-without-typo"}/>
         <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]}
               onClick={e => this.sideBarRouting(e.key)}>
@@ -54,27 +55,27 @@ class SidebarMenu extends React.Component<IProps, IState> {
               <span className="create-campaign-text">{this.i18n._t("Create Campaign")}</span>
             </Button>
           </Menu.Item>
-          <Menu.Item key="dashboard">
+          <Menu.Item key="dashboard" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-dashboard"/>
             <span>{this.i18n._t("Dashboard")}</span>
           </Menu.Item>
-          <Menu.Item key="campaigns">
+          <Menu.Item key="campaigns" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-campaign"/>
             <span>{this.i18n._t("Campaigns")}</span>
           </Menu.Item>
-          <Menu.Item key="media">
+          <Menu.Item key="media" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-publishers"/>
             <span>{this.i18n._t("Media")}</span>
           </Menu.Item>
-          <Menu.Item key="explore">
+          <Menu.Item key="explore" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-inventory"/>
             <span>{this.i18n._t("explore")}</span>
           </Menu.Item>
-          <Menu.Item key="reports">
+          <Menu.Item key="reports" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-analytics"/>
             <span>{this.i18n._t("Reports")}</span>
           </Menu.Item>
-          <Menu.Item key="support">
+          <Menu.Item key="support" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-help"/>
             <span>{this.i18n._t("Support")}</span>
             {this.props.collapsed &&

@@ -302,7 +302,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                             <Tooltip/>
                             <label><Translate value={"Campaign Name"}/></label>
                         </Col>
-                        <Col span={15} offset={5}>
+                        <Col span={15}>
                             <FormItem>
                                 {getFieldDecorator("name", {
                                     initialValue: this.state.currentCampaign.title,
@@ -318,6 +318,8 @@ class NamingComponent extends React.Component <IProps, IState> {
                                     />
                                 )}
                             </FormItem>
+                        </Col>
+                        <Col span={5}>
                         </Col>
                     </Row>
                     <Row type="flex">

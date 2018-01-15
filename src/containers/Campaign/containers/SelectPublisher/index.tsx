@@ -282,6 +282,11 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             {!this.state.showPublisherTable &&
             <Row type="flex" className={"mt-4"}>
               <Col span={12}>
+              <Row type="flex">
+                  <Col span={4}>
+                      <Tooltip/>
+                      <label><Translate value="Select"/></label>
+                  </Col>
               <Col span={20} className={"publisher-column"}>
                 {invertorySelect}
                 <div className="publisher-or-wrapper">
@@ -297,10 +302,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                   icon={<Icon name="cif-plusregular plus-icon "/>}
                 />
               </Col>
-                  <Col span={4}>
-                      <Tooltip/>
-                      <label><Translate value="Select"/></label>
-                  </Col>
+              </Row>
               </Col>
             </Row>
             }
