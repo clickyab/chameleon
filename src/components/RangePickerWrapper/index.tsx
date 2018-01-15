@@ -2,6 +2,7 @@ import * as React from "react";
 import "./style.less";
 import RangePicker , {rangeType} from "../RangePicker";
 import * as moment from "moment-jalaali";
+import onClickOutside from "react-onclickoutside";
 import I18n from "../../services/i18n/index";
 
 export interface IRangeObject {
@@ -50,12 +51,22 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
         if (value.type === "custom") {
             let temp = value;
             temp.type = moment(temp.range.from).format("jYYYY/jM/jD") + this.i18n._t(" to ").toString() + ((temp.range.to) ? moment(temp.range.to).format("jYYYY/jM/jD") : "");
+            if (this.props.onChange) {
+                this.props.onChange(value);
+            }
             this.setState({value: temp});
         }
         else {
             this.setState({value});
+            if (this.props.onChange) {
+                this.props.onChange(value);
+            }
         }
     }
+    private handleClickOutside(evt) {
+        this.setState({display: false});
+    }
+
     render() {
         return (
             <div className="range-wrapper" >
@@ -72,4 +83,4 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
     }
 }
 
-export default RangePickerWrapper;
+export default onClickOutside(RangePickerWrapper);
