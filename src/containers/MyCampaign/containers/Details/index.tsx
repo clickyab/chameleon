@@ -10,16 +10,18 @@ import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import CONFIG from "../../../../constants/config";
 import DataTableChartWrapper from "../../../../components/DataTableChartWrapper/index";
 const TabPane = Tabs.TabPane;
-
-const numeral = require("numeral");
 import "./style.less";
 import Translate from "../../../../components/i18n/Translate";
 import Icon from "../../../../components/Icon";
+import {setBreadcrumb} from "../../../../redux/app/actions";
+
+const numeral = require("numeral");
 
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
   form: any;
+    setBreadcrumb: (name: string, title: string, parent: string) => void;
 }
 
 interface IState {
@@ -43,7 +45,7 @@ class Details extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    // empty
+      this.props.setBreadcrumb("details", this.i18n._t("Details").toString(), "campaigns");
   }
 
   private handleTab(key): void {
@@ -193,6 +195,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
     setIsLogin: () => dispatch(setIsLogin()),
+    setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
 

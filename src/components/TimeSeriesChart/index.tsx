@@ -322,7 +322,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
           </Col>
         </Row>
         <Row>
-          <ReactEcharts
+          <ReactEcharts className={"time-series-chart"}
             ref={(e: any) => {
               if (e)
                 this.chartInc = e.getEchartsInstance();

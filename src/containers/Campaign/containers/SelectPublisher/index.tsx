@@ -105,7 +105,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
       this.setState({
         currentCampaign: campaign,
         listID: campaign.white_black_id,
-        listName: this.i18n._t("%s Publishers", {params: {campaignName: campaign.title}}).toString(),
+        listName: this.i18n._t("%s Publishers", {params: [campaign.title]}).toString(),
       });
     });
   }

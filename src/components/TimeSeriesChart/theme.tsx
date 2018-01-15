@@ -127,6 +127,9 @@ let theme = {
     }
   }
 };
-
+let pieColorPalette = ["#1680AB" , "#1CA1DB" , "#41B6E6" , "#6EC7EC" , "#9BD9F2"];
+let pieTheme = {
+    color: pieColorPalette,
+};
 export default theme;
-export {colorPalette, contrastColor, axisCommon};
+export {colorPalette, contrastColor, axisCommon , pieTheme , pieColorPalette};
