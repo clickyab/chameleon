@@ -19,7 +19,15 @@ interface IState {
     isGregorian: boolean;
 }
 
-export enum rangeType { TODAY, CUSTOM }
+export enum rangeType {
+    TODAY =  "today",
+    YESTERDAY = "yesterday",
+    LAST_WEEK = "last week",
+    CURRENT_MONTH = "current month",
+    LAST_MONTH = "last month",
+    LAST_TREE_MONTH = "last tree month",
+    CUSTOM = "custom",
+}
 
 export interface IRangeObject {
     range: {
@@ -57,14 +65,16 @@ class RangePicker extends React.Component<IProps, IState> {
      * @param days
      */
     private syncSelectedDay(days) {
-        this.setState({selectedDay: days ,
+        this.setState({
+            selectedDay: days,
             value: {
                 range: {
                     from: days.selectedDayArray[0],
                     to: days.selectedDayArray[1]
                 },
                 type: rangeType.CUSTOM,
-            }});
+            }
+        });
         this.props.onChange({
             range: {
                 from: days.selectedDayArray[0],
@@ -108,8 +118,9 @@ class RangePicker extends React.Component<IProps, IState> {
         (this.state.value.range.to) ? days[1] = (this.state.value.range.to) : "";
         this.setState({selectedDay: [...days]});
     }
+
     componentDidMount() {
-      this.dateFormatter();
+        this.dateFormatter();
     }
 
     /**
@@ -151,7 +162,7 @@ class RangePicker extends React.Component<IProps, IState> {
     }
 
     private renderMonth(date) {
-        let monthName ;
+        let monthName;
         if (!this.state.isGregorian) {
             let month = date.jMonth();
             switch (month) {
@@ -193,8 +204,50 @@ class RangePicker extends React.Component<IProps, IState> {
                     break;
             }
         }
+        else {
+            let month = date.month();
+            switch (month) {
+                case 0:
+                    monthName = this.i18n._t("january");
+                    break;
+                case 1:
+                    monthName = this.i18n._t("february");
+                    break;
+                case 2:
+                    monthName = this.i18n._t("march");
+                    break;
+                case 3:
+                    monthName = this.i18n._t("april");
+                    break;
+                case 4:
+                    monthName = this.i18n._t("may");
+                    break;
+                case 5:
+                    monthName = this.i18n._t("june");
+                    break;
+                case 6:
+                    monthName = this.i18n._t("july");
+                    break;
+                case 7:
+                    monthName = this.i18n._t("august");
+                    break;
+                case 8:
+                    monthName = this.i18n._t("september");
+                    break;
+                case 9:
+                    monthName = this.i18n._t("october");
+                    break;
+                case 10:
+                    monthName = this.i18n._t("november");
+                    break;
+                case 11:
+                    monthName = this.i18n._t("december");
+                    break;
+            }
+        }
         return <div className="header-month-name">{monthName}</div>;
     }
+
     render() {
         moment.loadPersian({dialect: "persian-modern", usePersianDigits: false});
         const {selectedDay, currentMonth} = this.state;
@@ -208,6 +261,7 @@ class RangePicker extends React.Component<IProps, IState> {
                     <div className="header-column">
                         <Translate value={"end Date:"}/>
                         <input className="date-input" type="text" value={((this.state.value).range).to ? moment(((this.state.value).range).to).format("jYYYY/jM/jD") : ""}/>
+                        {console.log("state" , this.state.value)}
                     </div>
                     <div className="header-column right">
                         <Translate value={"start Date:"}/>
@@ -264,33 +318,33 @@ class RangePicker extends React.Component<IProps, IState> {
                         </div>
                         <div className="date-filter">
           <span onClick={() => {
-              this.setRange([moment().subtract(1, "days"), moment().subtract(1, "days")], rangeType.CUSTOM);
+              this.setRange([moment().subtract(1, "days"), moment().subtract(1, "days")], rangeType.YESTERDAY);
           }}><Translate
               value={"yesterday"}/></span>
                         </div>
                         <div className="date-filter">
           <span onClick={() => {
-              this.setRange([moment().subtract(6, "days"), moment()], rangeType.CUSTOM);
+              this.setRange([moment().subtract(6, "days"), moment()], rangeType.LAST_WEEK);
           }}>
             <Translate value={"last week"}/></span>
                         </div>
                         <div className="date-filter">
           <span
               onClick={() => {
-                  this.setRange([moment().startOf(monthFormat), moment()], rangeType.CUSTOM);
+                  this.setRange([moment().startOf(monthFormat), moment()], rangeType.CURRENT_MONTH);
               }}>
             <Translate value={"current month"}/></span>
                         </div>
                         <div className="date-filter">
           <span
               onClick={() => {
-                  this.setRange([moment().subtract(1, monthFormat).startOf(monthFormat), moment().subtract(1, monthFormat).endOf(monthFormat)], rangeType.CUSTOM);
+                  this.setRange([moment().subtract(1, monthFormat).startOf(monthFormat), moment().subtract(1, monthFormat).endOf(monthFormat)], rangeType.LAST_MONTH);
               }}>
             <Translate value={"last month"}/></span>
                         </div>
                         <div className="date-filter">
           <span onClick={() => {
-              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat), moment()], rangeType.CUSTOM);
+              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat), moment()], rangeType.LAST_TREE_MONTH);
           }}>
             <Translate value={"last tree month"}/></span>
                         </div>

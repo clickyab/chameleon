@@ -11,6 +11,7 @@ import I18n from "../../../../services/i18n/index";
 import Menu from "antd/es/menu";
 import CONFIG from "../../../../constants/config";
 import Icon from "../../../../components/Icon/index";
+import Translate from "../../../../components/i18n/Translate";
 
 let Animate = require("rc-animate");
 
@@ -256,12 +257,12 @@ class UserBox extends React.Component<IProps, IState> {
               </div>
             </Link>
             <ul className="popover-list" dir={CONFIG.DIR}>
-              <li><NavLink activeClassName="active" to="/user/profile">Edit profile</NavLink></li>
-              <li><NavLink activeClassName="active" to="/transaction-history">Transactions</NavLink></li>
-              <li><NavLink activeClassName="active" to="/charge-account">Charge</NavLink></li>
-              <li><NavLink activeClassName="active" to="/withdraw">With draw</NavLink></li>
-              <li><NavLink activeClassName="active" to="/managment">user managment</NavLink></li>
-              <li><NavLink activeClassName="active" to="/user/logout">logout</NavLink></li>
+              <li><NavLink activeClassName="active" to="/user/profile"><Translate value={"Edit profile"}/></NavLink></li>
+              <li><NavLink activeClassName="active" to="/transaction-history"><Translate value={"Transactions"}/></NavLink></li>
+              <li><NavLink activeClassName="active" to="/charge-account"><Translate value={"Charge"}/>Charge</NavLink></li>
+              <li><NavLink activeClassName="active" to="/withdraw"><Translate value={"With draw"}/></NavLink></li>
+              <li><NavLink activeClassName="active" to="/managment"><Translate value={"user managment"}/></NavLink></li>
+              <li><NavLink activeClassName="active" to="/user/logout"><Translate value={"logout"}/></NavLink></li>
             </ul>
           </div>
           }
