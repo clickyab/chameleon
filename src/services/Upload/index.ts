@@ -18,9 +18,9 @@ import AAA from "../AAA/index";
  */
 export const UPLOAD_MODULES = {
   AVATAR: "avatar",
-  BANNER : "banner",
-  TEMP : "temp",
-  NATIVE : "native",
+  BANNER: "banner",
+  TEMP: "temp",
+  NATIVE: "native",
 };
 
 /**
@@ -49,17 +49,19 @@ export interface UploadState {
 export default class Upload {
   private request: any;
   private file;
+  private fileName;
   private module;
 
   /**
    * @constructor set file and module
    * @param {string} module
    * @param {file} file
+   * @param {string} fileName
    */
-  constructor(module: string, file: any) {
+  constructor(module: string, file: any, fileName?: string) {
     this.file = file;
     this.module = module;
-
+    this.fileName = fileName || null;
   }
 
   /**
@@ -75,7 +77,7 @@ export default class Upload {
 
       // Create form data object
       let formData = new FormData();
-      formData.append("file", this.file);
+      formData.append("file", this.file, this.fileName);
 
       // create request object
       let request = new XMLHttpRequest();
@@ -122,7 +124,7 @@ export default class Upload {
       }, false);
 
       // open and send request
-      request.open("post", `${BASE_PATH}/upload/${this.module}`);
+      request.open("post", `${BASE_PATH}/upload/module/${this.module}`);
       request.setRequestHeader("token", AAA.getInstance().getToken());
       request.send(formData);
 
