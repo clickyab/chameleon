@@ -1,6 +1,7 @@
 import * as React from "react";
 import DataTable from "../DataTable/index";
 import TimeSeriesChart from "../TimeSeriesChart/index";
+import {ITableBtn} from "../DataTable/lib/interfaces";
 
 interface IProps {
   dataTableDefinitionFn: any;
@@ -9,6 +10,7 @@ interface IProps {
   chartDataFn: any;
   name: string;
   dataTableDescription?: JSX.Element;
+  dataTableButtons?: ITableBtn[];
 }
 
 interface IState {
@@ -51,7 +53,8 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
           onQueryChange={this.onQueryChange}
           dataFn={this.props.dataTableDataFn}
           tableDescription={this.props.dataTableDescription}
-          definitionFn={this.props.dataTableDefinitionFn}/>
+          definitionFn={this.props.dataTableDefinitionFn}
+          tableButtons={this.props.dataTableButtons}/>
       </div>
     );
   }

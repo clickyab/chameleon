@@ -38,3 +38,9 @@ export interface IColumnParserParams {
 export interface IActionsFn {
   [key: string]: (value?: string, record?: any, index?: number) => void;
 }
+
+export interface ITableBtn {
+    title: string;
+    icon?: string;
+    onClick: (query: {}) => void;
+}
