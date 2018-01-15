@@ -31,8 +31,8 @@ export let PhonePreview = (item) => {
                                                 <div className="add-item">
                                                     {item !== undefined &&
                                                     <div>
-                                                        <img src={item.img_url} />
-                                                        <p>{item.description}</p>
+                                                        <img src={item.image} />
+                                                        <p>{item.title}</p>
                                                     </div>
                                                     }
                                                     {item === undefined &&

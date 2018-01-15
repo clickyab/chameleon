@@ -34,6 +34,7 @@ interface IProps {
   onSubmit: (params: ISubmitParams) => void;
   onClose: () => void;
   link?: string;
+  imgSrc?: string;
   file?: IFileItem;
 }
 
@@ -216,6 +217,9 @@ class UtmModal extends React.Component<IProps, IState> {
                 }
                 {this.props.file.state &&
                 <img src={`http://staging.crab.clickyab.ae/uploads/` + this.props.file.state.url} alt={this.props.file.name}/>
+                }
+                {this.props.imgSrc &&
+                <img src={this.props.imgSrc}/>
                 }
               </Col>
               }
