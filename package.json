@@ -60,6 +60,7 @@
     "webpack-dev-server": "2.5.1"
   },
   "dependencies": {
+    "@types/react-onclickoutside": "^6.0.2",
     "babel-loader": "7.1.1",
     "babel-polyfill": "6.26.0",
     "classnames": "2.2.5",
@@ -87,6 +88,7 @@
     "react-image-crop": "^3.0.8",
     "react-image-file": "0.1.0",
     "react-materialize": "1.0.9",
+    "react-onclickoutside": "^6.7.0",
     "react-persian-datepicker": "git+https://github.com/alireza-mh/react-persian-datepicker.git",
     "react-redux": "^5.0.5",
     "react-router": "4.1.2",

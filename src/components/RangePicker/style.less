@@ -25,14 +25,16 @@
         position: relative;
         margin: 0;
         &.selected {
+          background: @day-wrapper-selected-color !important;
           button {
             height: 22px;
             width: 22px;
+            border-radius: 0;
           }
         }
         .cal-day-hover {
           background: @day-wrapper-selected-color ;
-          border-radius: unset;
+          border-radius: 0;
         }
         button {
           width: 30px;
@@ -90,6 +92,7 @@
 .wrapper-all-rangePicker{
   width: 590px;
   border: 1px solid #DDDDDD;
+  background: #FFF;
 }
 
   .filter-header{

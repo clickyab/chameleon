@@ -111,7 +111,7 @@
     }
   }
 }
-
+.persian-datepicker {
   .calendarContainer {
     .daysOfWeek {
       border-bottom: none;
@@ -127,21 +127,20 @@
     }
     width: @datepicker-popup-width;
     .dayWrapper {
-      height: @day-wrapper-height ;
-      width: @day-wrapper-height ;
-      line-height:@day-wrapper-height ;
+      height: @day-wrapper-height;
+      width: @day-wrapper-height;
+      line-height: @day-wrapper-height;
       margin: 5px;
       button {
         height: @day-wrapper-height;
-        border-radius: 0;
+        border-radius: 100%;
       }
       &.selected {
         background: @day-wrapper-selected-color !important;
-        height: 24px !important;
-        margin-top: 1px !important
       }
     }
   }
+}
 
 .date-drop-down {
   z-index: 9999 !important;
