@@ -13,7 +13,7 @@
 import * as React from "react";
 import {Table, Row, Checkbox, Col, Switch, Button , Select } from "antd";
 import {DataTableDataParser} from "./lib/parsers";
-import {IActionsFn, IColumn, IData, IDefinition} from "./lib/interfaces";
+import {IActionsFn, IColumn, IData, IDefinition, ITableBtn} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
 import "./style.less";
 import Icon from "../Icon/index";
@@ -71,6 +71,12 @@ interface IProps {
    */
   actionsFn?: IActionsFn;
 
+
+  /**
+   * @params ITableBtn - an array with table buttons definitions
+   */
+  tableButtons?: ITableBtn[];
+
   /**
    * @params onQueryChange - function that called when load data parameters changed
    */
@@ -118,6 +124,7 @@ class DataTable extends React.Component<IProps, IState> {
   customFieldTemp: object = {};
   wrapperDOM: HTMLElement;
   range;
+  quary;
 
   private i18n = I18n.getInstance();
 
@@ -287,6 +294,7 @@ class DataTable extends React.Component<IProps, IState> {
     if (this.props.onQueryChange && callOnQueryChange) {
       this.props.onQueryChange(config);
     }
+    this.quary = config;
 
     this.props.dataFn(config).then((data: IData) => {
 
@@ -548,8 +556,11 @@ class DataTable extends React.Component<IProps, IState> {
       <div ref={(input) => {
         this.wrapperDOM = input;
       }} className="data-table-wrapper">
+        <div className="data-table-header">
         <div className="data-table-description">
           {this.props.tableDescription}
+        </div>
+        <div className="data-table-btns">
           <Button
             className="add-customize-btn"
             onClick={() => {
@@ -558,6 +569,20 @@ class DataTable extends React.Component<IProps, IState> {
             <Icon name={"cif-gear-outline"} className="custom-icon"/>
             <Translate value="Customize table"/>
           </Button>
+          {this.props.tableButtons &&
+          this.props.tableButtons.map((button , index) => {
+             return <Button
+                  key={index}
+                  className="add-customize-btn dynamic-btn"
+                  onClick={(query) => {
+                      button.onClick(query);
+                  }}>
+                  <Icon name={"cif-" + button.icon} className={button.icon}/>
+                  <Translate value={button.title}/>
+              </Button>;
+          })
+          }
+        </div>
         </div>
         {this.state.customizeModal &&
         <Modal title={this.i18n._t("Customize Table").toString()}

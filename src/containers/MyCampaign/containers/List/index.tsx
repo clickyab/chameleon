@@ -56,6 +56,10 @@ class List extends React.Component<IProps, IState> {
               chartDefinitionFn={this.controllerApi.inventoryListDefinitionGet}
               dataTableDefinitionFn={this.controllerApi.inventoryListDefinitionGet}
               dataTableDataFn={this.controllerApi.inventoryListGet}
+              dataTableButtons={[{
+                  title: "alireza",
+                  onClick: (query) => console.log("nothing")
+              }]}
             />
           </div>
         </Col>
