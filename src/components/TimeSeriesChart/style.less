@@ -20,7 +20,7 @@
     }
   }
 }
-.legend-wrapper {
+.chart-header {
   .legend-item {
     display: inline-block;
     min-width: 150px;
@@ -45,8 +45,16 @@
       display: inline-block;
     }
   }
+  .chart-range-picker{
+    display: flex;
+    margin-right: auto;
+  }
 }
-
+[dir="ltr"] .chart-header {
+  .chart-range-picker {
+    margin-left: auto;
+  }
+}
 [dir="rtl"] .legend-item {
   .bullet {
     margin-left: 5px;

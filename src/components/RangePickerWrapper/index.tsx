@@ -50,7 +50,7 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
     private handleChange(value) {
         if (value.type === "custom") {
             let temp = value;
-            temp.type = moment(temp.range.from).format("jYYYY/jM/jD") + this.i18n._t(" to ").toString() + ((temp.range.to) ? moment(temp.range.to).format("jYYYY/jM/jD") : "");
+            temp.type = (temp.range.from.toString() === temp.range.to.toString()) ? moment(temp.range.from).format("jYYYY/jM/jD") : moment(temp.range.from).format("jYYYY/jM/jD") + this.i18n._t(" to ").toString() + ((temp.range.to) ? moment(temp.range.to).format("jYYYY/jM/jD") : "");
             if (this.props.onChange) {
                 this.props.onChange(value);
             }
@@ -62,6 +62,7 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
                 this.props.onChange(value);
             }
         }
+        this.setState({display: false});
     }
     private handleClickOutside(evt) {
         this.setState({display: false});
@@ -71,7 +72,7 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
         return (
             <div className="range-wrapper" >
                 <div className="range-wrapper-input" onClick={this.handleClick.bind(this)}>
-                    <input value={this.i18n._t(this.state.value.type).toString()}/>
+                    <input value={(this.state.value.type) ? this.i18n._t(this.state.value.type).toString() : this.i18n._t("Choose Date").toString()}/>
                 </div>
                 {this.state.display &&
                 <div className="range-inside-wrapper">

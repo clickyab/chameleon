@@ -265,14 +265,15 @@ class DataTable extends React.Component<IProps, IState> {
     let config = {
       p: this.state.page,
       loading: true,
+        data: {data: []}
     };
-    console.log(this.range);
+      this.forceUpdate();
 
     if (this.range && this.range.from) {
-      config["start"] = this.range.from.toISOString();
+      config["from"] = this.range.from.toISOString();
     }
     if (this.range && this.range.to) {
-      config["end"] = this.range.to.toISOString();
+      config["to"] = this.range.to.toISOString();
     }
 
     if (this.state.sort) {
@@ -385,7 +386,11 @@ class DataTable extends React.Component<IProps, IState> {
    */
 
   setColumnsWidth() {
-    const tables = this.wrapperDOM.getElementsByTagName("table");
+      const dataTable = document.getElementById("#data-table-wrapper-id");
+      if (!dataTable || !dataTable.getElementsByTagName("table")) {
+        return null;
+      }
+    const tables = (dataTable.getElementsByTagName("table")) ;
     if (tables.length !== 2) return;
     const bodyTRs = tables[1].getElementsByTagName("tr");
     const bodyTDs = tables[1].getElementsByTagName("tr")[0].getElementsByTagName("td");
@@ -553,9 +558,7 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     return (
-      <div ref={(input) => {
-        this.wrapperDOM = input;
-      }} className="data-table-wrapper">
+      <div id={"data-table-wrapper-id"} className="data-table-wrapper">
         <div className="data-table-header">
         <div className="data-table-description">
           {this.props.tableDescription}

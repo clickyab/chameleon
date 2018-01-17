@@ -5,7 +5,8 @@ import * as echarts from "echarts";
 import "./style.less";
 import I18n from "../../services/i18n/index";
 import theme, {colorPalette} from "./theme";
-import RangePicker, {IRangeObject} from "../RangePicker/index";
+import * as moment from "moment-jalaali";
+import RangePickerWrapper, {IRangeObject} from "../RangePickerWrapper/index";
 
 
 echarts.registerTheme("CampaignTimeSeries", theme);
@@ -38,9 +39,13 @@ interface IProps {
    */
   name: string;
 
-  onChangeRange?: (range: { from: string, to: string }) => void;
+  onChangeRange?: (rangeObj: IRangeObject) => void;
 
   query: any;
+
+  dateRange?: IRangeObject;
+
+  showRangePicker?: boolean;
 }
 
 interface IState {
@@ -269,12 +274,22 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
       },
       yAxis: {},
       series: this.state.api.data.map(d => {
-        return {
-          name: d.title,
-          type: d.type,
-          areaStyle: {normal: {opacity: 0.3 }},
-          data: d.data
-        };
+         if (d.hidden === false || d.hidden === undefined) {
+             return {
+                 name: d.title,
+                 type: d.type,
+                 areaStyle: {normal: {opacity: 0.3}},
+                 data: d.data
+             };
+         }
+         else {
+             return {
+                 name: d.title,
+                 type: d.type,
+                 areaStyle: {normal: {opacity: 0.3}},
+                 data: 0
+             };
+         }
       }),
     };
     this.setState({options});
@@ -285,7 +300,6 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
     return <Col className="legend-item" key={index}>
       <a className={(record.hidden) ? "deactive" : "" } onClick={(e) => {
         e.persist();
-        console.log(record);
         this.chartInc.dispatchAction({type: "legendToggleSelect", name: record.name});
         let tempRecord = record;
         tempRecord.hidden = !record.hidden;
@@ -293,7 +307,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
         tempApi[this.state.api.data.indexOf(record)] = tempRecord;
         this.setState({
             api : tempApi
-        });
+        } , () => {this.getOption(); });
       }}>
         <h4>{sum}</h4>
         <div className="bullet" style={{backgroundColor: colorPalette[index]}}></div>
@@ -304,22 +318,25 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
 
   private changeRange(rangeObject: IRangeObject) {
     if (this.props.onChangeRange) {
-      this.props.onChangeRange(rangeObject.range);
+      this.props.onChangeRange(rangeObject);
     }
   }
 
   public render() {
     return (
       <div>
-        <Row type={"flex"} className="legend-wrapper">
+        <Row type={"flex"} className="chart-header" align="middle">
           <Col>
             {this.state.api.data && this.state.api.data.map(this.renderLegends.bind(this))}
           </Col>
-          <Col>
-            {/*<RangePicker*/}
-              {/*onChange={this.changeRange}*/}
-            {/*/>*/}
-          </Col>
+              {this.props.showRangePicker &&
+              <Col className="chart-range-picker">
+              <RangePickerWrapper
+                  onChange={(range) => this.changeRange(range)}
+                  value={this.props.dateRange}
+              />
+              </Col>
+              }
         </Row>
         <Row>
           <ReactEcharts className={"time-series-chart"}
