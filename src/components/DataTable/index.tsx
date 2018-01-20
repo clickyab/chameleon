@@ -386,7 +386,7 @@ class DataTable extends React.Component<IProps, IState> {
    */
 
   setColumnsWidth() {
-      const dataTable = document.getElementById("#data-table-wrapper-id");
+      const dataTable = document.getElementById("data-table-wrapper-id");
       if (!dataTable || !dataTable.getElementsByTagName("table")) {
         return null;
       }
