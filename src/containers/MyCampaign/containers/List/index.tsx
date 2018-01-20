@@ -52,10 +52,10 @@ class List extends React.Component<IProps, IState> {
             </Row>
             <DataTableChartWrapper
               name="myCampaign"
-              chartDataFn={this.controllerApi.inventoryListGet}
-              chartDefinitionFn={this.controllerApi.inventoryListDefinitionGet}
-              dataTableDefinitionFn={this.controllerApi.inventoryListDefinitionGet}
-              dataTableDataFn={this.controllerApi.inventoryListGet}
+              chartDataFn={this.controllerApi.campaignGraphAllGet}
+              chartDefinitionFn={this.controllerApi.campaignListDefinitionGet}
+              dataTableDefinitionFn={this.controllerApi.campaignListDefinitionGet}
+              dataTableDataFn={this.controllerApi.campaignListGet}
               showRangePicker={true}
               dataTableButtons={[{
                   title: "alireza",

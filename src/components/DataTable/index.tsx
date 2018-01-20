@@ -386,12 +386,16 @@ class DataTable extends React.Component<IProps, IState> {
    */
 
   setColumnsWidth() {
-      const dataTable = document.getElementById("#data-table-wrapper-id");
+      const dataTable = document.getElementById("data-table-wrapper-id");
+      console.log(dataTable);
       if (!dataTable || !dataTable.getElementsByTagName("table")) {
         return null;
       }
     const tables = (dataTable.getElementsByTagName("table")) ;
     if (tables.length !== 2) return;
+    if (!tables[1].getElementsByTagName("tr")[0] || !tables[1].getElementsByTagName("tr")[0].getElementsByTagName("td")) {
+      return null;
+    }
     const bodyTRs = tables[1].getElementsByTagName("tr");
     const bodyTDs = tables[1].getElementsByTagName("tr")[0].getElementsByTagName("td");
     for (let td = 0; td < bodyTDs.length; td++) {
@@ -540,7 +544,7 @@ class DataTable extends React.Component<IProps, IState> {
     this.setState({
       customField: this.customFieldTemp,
       customizeModal: false,
-    });
+    } , () => { setTimeout(this.setColumnsWidth , 200); });
   }
 
   /**
