@@ -75,13 +75,6 @@ class RangePicker extends React.Component<IProps, IState> {
                 type: rangeType.CUSTOM,
             }
         });
-        this.props.onChange({
-            range: {
-                from: days.selectedDayArray[0],
-                to: days.selectedDayArray[1]
-            },
-            type: rangeType.CUSTOM,
-        });
     }
 
     /**
@@ -114,8 +107,8 @@ class RangePicker extends React.Component<IProps, IState> {
 
     private dateFormatter() {
         let days = [];
-        (this.state.value.range.from) ? days[0] = (this.state.value.range.from) : "";
-        (this.state.value.range.to) ? days[1] = (this.state.value.range.to) : "";
+        (this.state.value.range && this.state.value.range.from) ? days[0] = (this.state.value.range.from) : "";
+        (this.state.value.range && this.state.value.range.to) ? days[1] = (this.state.value.range.to) : "";
         this.setState({selectedDay: [...days]});
     }
 
@@ -129,15 +122,6 @@ class RangePicker extends React.Component<IProps, IState> {
      * @param days
      */
     private setRange(days, rangeType?: rangeType) {
-
-        this.props.onChange({
-            range: {
-                from: days[0],
-                to: days[1],
-            },
-            type: rangeType,
-        });
-
         this.setState({
             value: {
                 range: {
@@ -160,7 +144,32 @@ class RangePicker extends React.Component<IProps, IState> {
     private handleMouseEnter(status) {
         this.setState({enterSecond: status});
     }
+    private handleSubmit() {
+        if (this.props.onChange) {
+            if (this.state.value.range && this.state.value.range.to === undefined) {
+                let tempValue = this.state.value;
+                tempValue.range.to = tempValue.range.from;
+                this.props.onChange(this.state.value);
+            }
+            else  {
+                this.props.onChange(this.state.value);
+            }
+        }
+    }
 
+    private handleCancel() {
+        let nullRange = {
+            range: {
+                  from: null,
+                  to: null,
+                   },
+            type: null,
+    };
+        this.setState({value: nullRange });
+        if (this.props.onChange) {
+            this.props.onChange(nullRange);
+        }
+    }
     private renderMonth(date) {
         let monthName;
         if (!this.state.isGregorian) {
@@ -260,12 +269,11 @@ class RangePicker extends React.Component<IProps, IState> {
                 <div className="header-rangePicker">
                     <div className="header-column">
                         <Translate value={"end Date:"}/>
-                        <input className="date-input" type="text" value={((this.state.value).range).to ? moment(((this.state.value).range).to).format("jYYYY/jM/jD") : ""}/>
-                        {console.log("state" , this.state.value)}
+                        <input className="date-input" type="text" value={((this.state.value).range && (this.state.value).range.to) ? moment(((this.state.value).range).to).format("jYYYY/jM/jD") : ""}/>
                     </div>
                     <div className="header-column right">
                         <Translate value={"start Date:"}/>
-                        <input className="date-input" type="text" value={((this.state.value).range).from ? moment(((this.state.value).range).from).format("jYYYY/jM/jD") : ""}/>
+                        <input className="date-input" type="text" value={((this.state.value).range && (this.state.value).range.from) ? moment(((this.state.value).range).from).format("jYYYY/jM/jD") : ""}/>
                     </div>
                     <div className="filter-header"><Translate value={"shortcuts"}/></div>
                 </div>
@@ -304,8 +312,8 @@ class RangePicker extends React.Component<IProps, IState> {
                             </div>
                         </div>
                         <div className="rangePickerFooter">
-                            <div className="submit-btn"><Translate value={"submit"}/></div>
-                            <div className="cancel-btn"><Translate value={"cancel"}/></div>
+                            <div className="submit-btn" onClick={() => this.handleSubmit()}><Translate value={"submit"}/></div>
+                            <div className="cancel-btn" onClick={() => this.handleCancel()}><Translate value={"cancel"}/></div>
                         </div>
                     </div>
                     <div className="filters" key={Math.random()}>

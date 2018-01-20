@@ -98,7 +98,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
             infinite={true}
             name="publisherList"
             onSelectRow={this.onSelectRow.bind(this)}
-            definitionFn={this.controllerApi.inventoryListDefinitionGet}
+            definitionFn={this.controllerApi.campaignBaseIdPut}
             dataFn={this.controllerApi.inventoryListGet}
             actionsFn={{
               "edit": (v, r) => {
@@ -149,6 +149,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
                okText={this.i18n._t("Save").toString()}
                visible={this.state.openArchiveModal}
                mask={true}
+               style={{maxWidth: "370px"}}
                onOk={() => {
 
                  if (this.state.copyListName.length <= 8) {
@@ -173,7 +174,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
                }}
         >
           <Row>
-            <Col span={24}>
+            <Col span={24} className={"mt-1"}>
               <TextField
                 fullWidth={true}
                 errorText={this.state.copyListNameError}

@@ -1,6 +1,8 @@
 import * as React from "react";
 import DataTable from "../DataTable/index";
 import TimeSeriesChart from "../TimeSeriesChart/index";
+import {rangeType , IRangeObject} from "../RangePicker";
+import * as moment from "moment";
 import {ITableBtn} from "../DataTable/lib/interfaces";
 
 interface IProps {
@@ -10,12 +12,13 @@ interface IProps {
   chartDataFn: any;
   name: string;
   dataTableDescription?: JSX.Element;
+  showRangePicker?: boolean;
   dataTableButtons?: ITableBtn[];
 }
 
 interface IState {
   query: any;
-  range?: { from: string, to: string };
+  rangeObj?: IRangeObject;
 }
 
 export default class DataTableChartWrapper extends React.Component<IProps, IState> {
@@ -23,6 +26,12 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
     super(props);
     this.state = {
       query: {},
+      // rangeObj: {range: {
+      //     from: moment(),
+      //     to: moment().add(1, "day"),
+      //     },
+      //     type: rangeType.CUSTOM
+      //     },
     };
 
     this.onQueryChange = this.onQueryChange.bind(this);
@@ -33,8 +42,8 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
     this.setState({query});
   }
 
-  onChangeRange(range: { from: string, to: string }) {
-    this.setState({range});
+  onChangeRange(rangeObj: IRangeObject) {
+    this.setState({rangeObj});
   }
 
 
@@ -46,10 +55,13 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
           name={this.props.name}
           dataFn={this.props.chartDataFn}
           definitionFn={this.props.dataTableDefinitionFn}
-          onChangeRange={this.onChangeRange}/>
+          onChangeRange={this.onChangeRange}
+          dateRange={this.state.rangeObj}
+          showRangePicker={!!this.props.showRangePicker}
+        />
         <DataTable
           name={this.props.name}
-          dateRange={this.state.range}
+          dateRange={(this.state.rangeObj) ? this.state.rangeObj.range : null}
           onQueryChange={this.onQueryChange}
           dataFn={this.props.dataTableDataFn}
           tableDescription={this.props.dataTableDescription}

@@ -107,7 +107,7 @@ class Explore extends React.Component <IProps, IState> {
               }}/>
             </TabPane>
             {this.state.openedList.map(list => (
-              <TabPane tab={list.label} key={list.id.toString()} closable={true}>
+              <TabPane tab={list.name} key={list.id.toString()} closable={true}>
                 <ListOfInventories/>
               </TabPane>)
             )}

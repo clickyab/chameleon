@@ -9,6 +9,9 @@
   .range-inside-wrapper {
     position: absolute;
     top:30px;
+    left: 0;
+    z-index: 9999;
+    direction: ltr;  // Some kind of reverse --> LTR for RTL display
   }
   .range-wrapper-input{
     position: relative;
@@ -30,5 +33,11 @@
       left: 10px;
       top:10px;
     }
+  }
+}
+[dir="ltr"] .range-wrapper {
+  .range-inside-wrapper {
+    right:0;
+    direction: rtl; // Some kind of reverse --> RTL for LTR display
   }
 }
