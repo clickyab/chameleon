@@ -5,6 +5,7 @@ import RangePicker from "../../../components/RangePicker";
 import * as moment from "moment";
 import {setBreadcrumb} from "../../../redux/app/actions/index";
 import RangePickerWrapper from "../../../components/RangePickerWrapper";
+import Currency from "../../../components/Currency";
 
 interface IProps {
     setBreadcrumb: (name: string, title: string, parent: string) => void;
@@ -42,7 +43,7 @@ export default class Dashboard extends React.Component<IProps , IState> {
                 onChange={value => {this.setState({value}) ; console.log(value); }}
                 value={Range}
             />
-      <div>Dashboard</div>
+      <Currency onChange={(e, val , str) => {console.log(str)} }/>
         </div>
     );
   }
