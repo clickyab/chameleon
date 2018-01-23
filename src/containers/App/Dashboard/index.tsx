@@ -43,7 +43,7 @@ export default class Dashboard extends React.Component<IProps , IState> {
                 onChange={value => {this.setState({value}) ; console.log(value); }}
                 value={Range}
             />
-      <Currency onChange={(e, val , str) => {console.log(str)} }/>
+      <Currency onChange={(e, val) => { console.log(val); } }/>
         </div>
     );
   }

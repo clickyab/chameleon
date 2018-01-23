@@ -6,6 +6,7 @@ import {Row, Col} from "antd";
 import "./style.less";
 import Translate from "../../../../../components/i18n/Translate";
 import Icon from "../../../../../components/Icon";
+import {currencyFormatter} from "../../../../../services/Utils/CurrencyFormatter";
 
 interface IProps {
     publisherCount: number;
@@ -50,7 +51,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                         </div>
                         <span className="live-counter-title">
                            <Translate value={"Total Publishers"}/>
-                            <span className="counter">{this.state.publisherCount}</span>
+                            <span className="counter">{currencyFormatter(this.state.publisherCount)}</span>
                         </span>
                     </div>
                 </Col>
@@ -61,7 +62,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                         </div>
                         <span className="live-counter-title">
                            <Translate value={"Average visit per month"}/>
-                            <span className="counter">{this.state.avgViewCount}</span>
+                            <span className="counter">{currencyFormatter(this.state.avgViewCount)}</span>
                         </span>
                     </div>
                 </Col>
@@ -72,7 +73,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                         </div>
                         <span className="live-counter-title">
                            <Translate value={"Number of Exchanges"}/>
-                            <span className="counter">{this.state.exchangeCount}</span>
+                            <span className="counter">{currencyFormatter(this.state.exchangeCount)}</span>
                         </span>
                     </div>
                 </Col>

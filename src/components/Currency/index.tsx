@@ -3,18 +3,21 @@
  * @desc Currency component formats currency on textfields
  */
 import * as React from "react";
-import {TextField} from "material-ui";
+import {TextField , TextFieldProps} from "material-ui";
 import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
 
-interface IProps {
-    onChange?(e: React.FormEvent<{}>, newValue: string , sperateVal: string): void;
+interface IProps extends TextFieldProps {
+    onChange?(e: React.FormEvent<{}>, newValue: string ): void;
+    stringValue?: (value: string) => void;
+    className?: string;
+    currencyLenght?: number;
 }
 interface IState {
     value?: number | string;
 }
 
 
-class Currency extends React.Component<IProps, IState> {
+class Currency extends React.Component<IProps , IState> {
     constructor(props) {
         super(props);
         this.state = { value: props.value ? props.value : ""};
@@ -31,9 +34,14 @@ class Currency extends React.Component<IProps, IState> {
      */
     private handleValue(e, val) {
      let valueNumber = val.replace(/\D|,/g, "");
-     this.setState({value: valueNumber});
-     if (this.props.onChange) {
-         this.props.onChange(e, valueNumber , currencyFormatter(valueNumber));
+     if (!this.props.currencyLenght || this.props.currencyLenght >= valueNumber.length) {
+         this.setState({value: valueNumber});
+         if (this.props.onChange) {
+             this.props.onChange(e, valueNumber);
+         }
+         if (this.props.stringValue) {
+             this.props.stringValue(currencyFormatter(valueNumber));
+         }
      }
     }
     public render() {
