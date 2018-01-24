@@ -41,16 +41,16 @@ sed -i '/throw new Error/{
 }' "api/api.ts"
 
 
-rm -f $SRC_DIR
+rm -rf $SRC_DIR
 cp -a api/. "$SRC_DIR";
-rm -f $SRC_DIR/.gitignore
-rm -f $SRC_DIR/README.md
-rm -f $SRC_DIR/tslint.json
-rm -f $SRC_DIR/package.json
-rm -f $SRC_DIR/.swagger-codegen
-rm -f $SRC_DIR/.swagger-codegen-ignore
-rm -f $SRC_DIR/git_push.sh
-rm -f $SRC_DIR/tsconfig.json
+rm -rf $SRC_DIR/.gitignore
+rm -rf $SRC_DIR/README.md
+rm -rf $SRC_DIR/tslint.json
+rm -rf $SRC_DIR/package.json
+rm -rf $SRC_DIR/.swagger-codegen
+rm -rf $SRC_DIR/.swagger-codegen-ignore
+rm -rf $SRC_DIR/git_push.sh
+rm -rf $SRC_DIR/tsconfig.json
 
 
 echo ""

@@ -61,36 +61,6 @@ interface IState {
   range?: IRangeObject;
 }
 
-let template = {
-  xType: "string | date",
-  dataType: "number | percent",
-  xaxis : ["۱ آبان", "cardign", "chiffon shirt", "pants", "heels", "socks", "shirt", "cardign", "chiffon shirt", "pants", "heels", "socks",
-    "shirt", "cardign", "chiffon shirt", "pants", "heels", "socks", "shirt", "cardign", "chiffon shirt", "pants", "heels", "socks"],
-  data: [
-    {
-      title: "fd  gdf gfd aaa",
-      name: "aaa",
-      type: "bar",
-      hidden: true,
-      data: [100, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20],
-    },
-    {
-      title: "vvv",
-      name: "vvv",
-      type: "line",
-      data: [4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    },
-    {
-      title: "hhh",
-      name: "hhh",
-      type: "line",
-      data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 4, 14, 50, 20, 5, 14, 8, 13, 15, 60, 10, 27]
-    }
-  ]
-};
-
-
-
 class TimeSeriesChart extends React.Component<IProps, IState> {
   i18n = I18n.getInstance();
   queryLocal: any;
@@ -110,20 +80,21 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
     this.state = {
         options: {} ,
         activeIndex: [],
-        chartData : template,
+        chartData : {},
         range: props.dateRange ? props.dateRange : this.defaultRange,
     };
 
     this.changeRange = this.changeRange.bind(this);
   }
 
+  public componentDidMount() {
+      this.loadData();
+  }
   public componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.query) {
       this.queryLocal = nextProps.query;
-       this.loadData();
-        //   this.handleData();
-        console.log("data change", this.state.chartData );
-      this.getOption();
+        this.loadData();
+        this.getOption();
     }
       if (nextProps.dataFn) {
           this.dataLocal = nextProps.dataFn;
@@ -132,11 +103,6 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
       }
   }
 
-  private handleData() {
-    template.data = this.dataLocal.data;
-      console.log("data", template);
-    this.setState({chartData : template});
-  }
   /**
    * Store table definition in local storage
    * @param {IDefinition} definition
@@ -159,25 +125,34 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   }
 
 
-
+private createXaxis(obj) {
+    let xaxis = [];
+    for (let i = 0 ; i < obj.data[0].data.length ; i++ ) {
+       let x = new Date(obj.from);
+        xaxis[i] = moment(x).add(i, "day").format("jYYYY/jM/jD");
+    }
+    let tempData = this.state.chartData;
+    tempData.xaxis = xaxis;
+    this.setState({chartData: tempData});
+}
   /**
-   * Try to load data from API Call and if data's hash response is different with definition's hash, try to load
-   * new definition
+   * Try to load data from API Call
+   * Also there was conflict between send date and date which come from API Call convert add 3:30 for fixing issue
    */
   loadData(callOnQueryChange: boolean = true) {
 
     let config = {};
     this.range = this.state.range.range ;
     if (this.range && this.range.from) {
-      config["from"] = this.range.from.toISOString();
+        config["from"] = moment(this.range.from).add(3, "hours").add(30 , "minutes").toISOString();
     }
     if (this.range && this.range.to) {
-      config["to"] = this.range.to.toISOString();
+        config["to"] = moment(this.range.to).add(3, "hours").add(30, "minutes").toISOString();
     }
-    console.log("config" , config);
-    console.log("raaaange" , this.range);
-    this.props.dataFn(config).then((data: any) => {
-        this.setState({chartData : data});
+    this.props.dataFn(config).then((respond: any) => {
+        let tempData = this.state.chartData;
+        tempData.data = respond.data;
+        this.setState({chartData : tempData} , () => { this.createXaxis(respond); this.getOption(); } );
     });
   }
 
@@ -203,7 +178,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
             const tr = `
                     <tr>
                       <td>${c.marker}</td>
-                      <td>${c.seriesName}</td>
+                      <td>${this.i18n._t(c.seriesName)}</td>
                       <td>${c.value}</td>
                     </tr>
                  `;
@@ -239,7 +214,8 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
         // data: ["a", "b", "c"]
       },
       yAxis: {},
-      series: this.state.chartData.data.map(d => {
+      data: this.state.chartData.data,
+      series: (this.state.chartData.data) ? this.state.chartData.data.map(d => {
          if (d.hidden === false || d.hidden === undefined) {
              return {
                  name: d.title,
@@ -256,14 +232,13 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
                  data: 0
              };
          }
-      }),
+      }) : [],
     };
     this.setState({options});
   }
 
   private renderLegends(record, index) {
-    console.log("record" , record);
-    const sum = record.data.reduce((t, v) => (t + v));
+    const sum =  (record.data.length > 0) ? (record.data.reduce((t, v) => (t + v))) : 0 ;
     return <Col className="legend-item" key={index}>
       <a className={(record.hidden) ? "deactive" : "" } onClick={(e) => {
         e.persist();
@@ -278,12 +253,13 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
       }}>
         <h4>{sum}</h4>
         <div className="bullet" style={{backgroundColor: colorPalette[index]}}></div>
-        <h5 style={{color: colorPalette[index]}}>{record.title}</h5>
+        <h5 style={{color: colorPalette[index]}}>{this.i18n._t(record.title)}</h5>
       </a>
     </Col>;
   }
 
   private changeRange(rangeObject: IRangeObject) {
+    this.setState({range: rangeObject} , () => {this.loadData(); });
     if (this.props.onChangeRange) {
       this.props.onChangeRange(rangeObject);
     }
