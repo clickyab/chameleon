@@ -152,6 +152,9 @@ private createXaxis(obj) {
     this.props.dataFn(config).then((respond: any) => {
         let tempData = this.state.chartData;
         tempData.data = respond.data;
+        tempData.data.sort(function(x , y){
+            return x.order - y.order;
+        });
         this.setState({chartData : tempData} , () => { this.createXaxis(respond); this.getOption(); } );
     });
   }
