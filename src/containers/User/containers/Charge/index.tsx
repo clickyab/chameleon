@@ -6,6 +6,7 @@ import {RouteComponentProps} from "react-router";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
+import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Row, Col, notification} from "antd";
@@ -16,6 +17,7 @@ import CONFIG from "../../../../constants/config" ;
 
 import "./style.less";
 import SelectBox, {ISelectBoxItem} from "../../../Campaign/containers/Naming/Components/SelectBox";
+import Currency from "../../../../components/Currency";
 
 /**
  * @interface IProps
@@ -35,7 +37,6 @@ export interface IState {
     selectedPayment: PAYMENT;
     activeAmount: number | null;
     activeInput: boolean;
-    inputAmount: number | "";
     amountValue: number | null ;
     amountString: string | null;
     isOffer: boolean;
@@ -58,7 +59,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
             selectedPayment: PAYMENT.ONLINE,
             activeAmount: null,
             activeInput: false,
-            inputAmount: "",
             amountValue: null,
             amountString: null,
             isOffer: true,
@@ -96,7 +96,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
         if (!this.disable) {
             this.setState({
                 selectedPayment: value,
-                amountValue: null,
                 activeAmount: null,
             });
         }
@@ -108,7 +107,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
     private handleActiveAmount(index: number , value: number): void {
         this.setState({
            activeAmount: index,
-           inputAmount: "",
            amountValue: value,
         });
     }
@@ -132,10 +130,9 @@ class ChargeContainer extends React.Component<IProps, IState> {
      * @func handleInputChange
      * @desc set amount after each input change
      */
-    private handleInputChange(event) {
+    private handleInputChange(event , value) {
         this.setState({
-            inputAmount:  event.target.value,
-            amountValue:  event.target.value
+            amountValue:  value,
         });
     }
     /**
@@ -157,10 +154,10 @@ class ChargeContainer extends React.Component<IProps, IState> {
      */
     private amountFormatter(amount , currency= "" ) {
         if (amount > 0 && currency !== "" ) {
-            return (parseFloat(amount)).toLocaleString("en-US") + " " + currency;
+            return currencyFormatter(amount) + " " + currency;
         }
         if (amount > 0) {
-            return (parseFloat(amount)).toLocaleString("en-US") ;
+            return currencyFormatter(amount)("en-US") ;
         }
     }
 
@@ -232,17 +229,18 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                     </div>
                                     }
                                     {this.state.activeInput &&
-                                    <TextField
+                                    <Currency
                                         className={"amount-input"}
-                                        hintText={(this.state.inputAmount === "") ?
+                                        currencyLenght={9}
+                                        hintText={(this.state.amountValue === null) ?
                                             <Translate value={"Enter your amount"}/> : null}
                                         onKeyPress={() => {
                                             this.handleAmount();
                                         }}
-                                        onChange={(e) => {
-                                            this.handleInputChange(e);
+                                        onChange={(e, val) => {
+                                            this.handleInputChange(e, val);
                                         }}
-                                        value={this.state.inputAmount}
+                                        value={this.state.amountValue}
                                     />
                                     }
                                 </div>
@@ -250,16 +248,16 @@ class ChargeContainer extends React.Component<IProps, IState> {
                             <Row type="flex" align="middle" className="payment-box">
                                 <Col className="payment-content" span={6}>
                                     <Translate value={"Amount of your charge"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(this.state.amountValue, "Toman")}
+                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(this.state.amountValue, this.i18n._t("Toman").toString())}
                                 </Col>
                                 <Col className="payment-content border" span={6}>
                                     <Translate value={"Amount after 9% tax"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(this.state.amountValue * 1.09, "Toman")}
+                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(Math.ceil(this.state.amountValue * 1.09).toFixed(0), this.i18n._t("Toman").toString())}
                                 </Col>
                                 <Col className="payment-content" span={6}>
                                     <Translate value={"Amount of account"}/>
                                     <span
-                                        className="green">{this.amountFormatter(this.state.amountValue + this.state.accountDeposit, "Toman")}</span>
+                                        className="green">{this.amountFormatter(this.state.amountValue + this.state.accountDeposit, this.i18n._t("Toman").toString())}</span>
                                 </Col>
                                 <Col className="payment-content" span={6}>
                                     <RaisedButton
@@ -287,14 +285,15 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 </Col>
                                 <Col span={6}>
                                     <div className={"receipt-wrapper"}>
-                                    <TextField
+                                    <Currency
                                         className={"receipt-input"}
+                                        currencyLenght={10}
                                         floatingLabelFixed={true}
                                         floatingLabelText={"Amount of deposits"}
-                                        onChange={(e) => {
-                                            this.handleInputChange(e);
+                                        onChange={(e , value) => {
+                                            this.handleInputChange(e, value);
                                         }}
-                                        value={this.state.inputAmount}
+                                        value={this.state.amountValue}
                                     />
                                     <span className={"receipt-currency"}><Translate value={"Toman"}/></span>
                                     </div>
@@ -307,7 +306,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 </Col>
                                 <Col className="payment-content border" span={6}>
                                     <Translate value={"Amount after decrease 9% of tax"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(this.state.amountValue * 0.91, "Toman")}
+                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(Math.floor(this.state.amountValue * 0.91).toFixed(0), "Toman")}
                                 </Col>
                                 <Col className="payment-content" span={8}>
                                     <Translate value={"Amount of account after deposits approval"}/>
@@ -337,9 +336,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                             className={"receipt-input"}
                                             floatingLabelFixed={true}
                                             floatingLabelText={"10 number of your coupon"}
-                                            onChange={(e) => {
-                                                this.handleInputCoupon(e);
-                                            }}
                                             value={this.state.couponInput}
                                         />
                                     </div>

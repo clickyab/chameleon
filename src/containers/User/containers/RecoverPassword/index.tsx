@@ -154,7 +154,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       this.props.setUser(data.account);
       this.props.setIsLogin();
       this.props.history.push("/");
-      message.success("You are successfully login");
+      message.success(this.i18n._t("You are successfully login"));
 
     }).catch(err => {
       message.error(err.error.text);

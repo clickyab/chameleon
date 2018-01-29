@@ -14,8 +14,7 @@ import "./style.less";
 import Translate from "../../../../components/i18n/Translate";
 import Icon from "../../../../components/Icon";
 import {setBreadcrumb} from "../../../../redux/app/actions";
-
-const numeral = require("numeral");
+import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 
 const FormItem = Form.Item;
 
@@ -101,7 +100,7 @@ class Details extends React.Component<IProps, IState> {
                     <div className={"dialog-wrapper"} style={{marginRight: this.state.progress + "%" }}>
                       <div className={"dialog"}>
                       {this.i18n._t("Spent")}
-                      <h6>{numeral(9500).format("0,0")} {this.i18n._t("_currency_")}</h6>
+                      <h6>{currencyFormatter(9500)} {this.i18n._t("_currency_")}</h6>
                       </div>
                     </div>
                   </Col>
@@ -119,7 +118,7 @@ class Details extends React.Component<IProps, IState> {
                   <Col span={5} className="progress-end-text-wrapper">
                     <div className="progress-end-text">
                     <div className="title"><Translate value={"Campaign Budget"}/></div>
-                    <div className="description">{numeral(95000).format("0,0")} {this.i18n._t("_currency_")}</div>
+                    <div className="description">{currencyFormatter(95000)} {this.i18n._t("_currency_")}</div>
                     </div>
                   </Col>
                   </Row>
@@ -128,27 +127,27 @@ class Details extends React.Component<IProps, IState> {
                   <Col span={16}>
                     <Row type={"flex"} className={"statistic"}>
                       <Col className={"stat"} span={4}>
-                        <h5>{numeral(406937).format("0,0")}</h5>
+                        <h5>{currencyFormatter(406937)}</h5>
                         <small>{this.i18n._t("visit")}</small>
                       </Col>
                       <Col className={"stat"} span={4}>
-                        <h5>{numeral(406937).format("0,0")}</h5>
+                        <h5>{currencyFormatter(406937)}</h5>
                         <small>{this.i18n._t("visit")}</small>
                       </Col>
                       <Col className={"stat"} span={4}>
-                        <h5>{numeral(406937).format("0,0")}</h5>
+                        <h5>{currencyFormatter(406937)}</h5>
                         <small>{this.i18n._t("visit")}</small>
                       </Col>
                       <Col className={"stat"} span={4}>
-                        <h5>{numeral(406937).format("0,0")}</h5>
+                        <h5>{currencyFormatter(406937)}</h5>
                         <small>{this.i18n._t("visit")}</small>
                       </Col>
                       <Col className={"stat"} span={4}>
-                        <h5>{numeral(406937).format("0,0")}</h5>
+                        <h5>{currencyFormatter(406937)}</h5>
                         <small>{this.i18n._t("visit")}</small>
                       </Col>
                       <Col className={"stat"} span={4}>
-                        <h5>{numeral(406937).format("0,0")}</h5>
+                        <h5>{currencyFormatter(406937)}</h5>
                         <small>{this.i18n._t("visit")}</small>
                       </Col>
                     </Row>
