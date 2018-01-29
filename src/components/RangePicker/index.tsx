@@ -45,7 +45,7 @@ class RangePicker extends React.Component<IProps, IState> {
         this.state = {
             value: props.value ? props.value : moment(),
             selectedDay: [],
-            currentMonth: moment(props.value),
+            currentMonth: moment(props.value.range.from),
             isGregorian: props.isGregorian ? props.isGregorian : false,
             enterSecond: false,
         };

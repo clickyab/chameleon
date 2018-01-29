@@ -2,7 +2,6 @@ import * as React from "react";
 import DataTable from "../DataTable/index";
 import TimeSeriesChart from "../TimeSeriesChart/index";
 import {rangeType , IRangeObject} from "../RangePicker";
-import * as moment from "moment";
 import {ITableBtn} from "../DataTable/lib/interfaces";
 
 interface IProps {
@@ -26,12 +25,6 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
     super(props);
     this.state = {
       query: {},
-      // rangeObj: {range: {
-      //     from: moment(),
-      //     to: moment().add(1, "day"),
-      //     },
-      //     type: rangeType.CUSTOM
-      //     },
     };
 
     this.onQueryChange = this.onQueryChange.bind(this);
