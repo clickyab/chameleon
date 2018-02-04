@@ -4,6 +4,7 @@ import SidebarMenu from "../../sidebar/index";
 import {PrivateFooter} from "./footer/index";
 import "./style.less";
 import PrivateBreadcrumb from "./Breadcrumb/index";
+import {localStorageAdd} from "../../../../services/Utils/LocalStorageWrapper";
 import Icon from "../../../../components/Icon/index";
 import CONFIG from "../../../../constants/config";
 
@@ -24,11 +25,12 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
     this.toggle = this.toggle.bind(this);
 
     this.state = {
-      collapsed: false,
+      collapsed: localStorage.getItem("menuCollapsed") === "true",
     };
   }
 
   private toggle() {
+    localStorageAdd("menuCollapsed", !this.state.collapsed);
     this.setState({
       collapsed: !this.state.collapsed,
     });

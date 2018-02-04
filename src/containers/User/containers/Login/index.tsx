@@ -18,6 +18,7 @@ import "./style.less";
 import PhoneInput from "../../../../components/PhoneInput/index";
 import CONFIG from "../../../../constants/config";
 import Resend from "../RecoverPassword/Resend/index";
+import {localStorageRemove} from "../../../../services/Utils/LocalStorageWrapper";
 
 const FormItem = Form.Item;
 
@@ -90,7 +91,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
 
-          localStorage.removeItem(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
+          localStorageRemove(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
 
           // redirect to dashboard
           this.props.history.push("/dashboard");
