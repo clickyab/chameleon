@@ -8,6 +8,7 @@ import theme, {colorPalette} from "./theme";
 import * as moment from "moment-jalaali";
 import RangePickerWrapper, {IRangeObject} from "../RangePickerWrapper/index";
 import {rangeType} from "../RangePicker";
+import {localStorageAdd} from "../../services/Utils/LocalStorageWrapper";
 
 
 echarts.registerTheme("CampaignTimeSeries", theme);
@@ -108,7 +109,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
    * @param {IDefinition} definition
    */
   private storeDefinition(definition: IDefinition) {
-    localStorage.setItem(`TIME_SERIES_DEFINITION_${this.props.name}`, JSON.stringify(definition));
+    localStorageAdd(`TIME_SERIES_DEFINITION_${this.props.name}`, JSON.stringify(definition));
   }
 
   /**

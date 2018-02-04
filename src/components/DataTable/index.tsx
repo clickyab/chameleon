@@ -21,6 +21,7 @@ import {ReactNode} from "react";
 import Modal from "../../components/Modal/index";
 import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
+import {localStorageAdd} from "../../services/Utils/LocalStorageWrapper";
 import CONFIG from "../../constants/config";
 import * as moment from "moment-jalaali";
 
@@ -178,7 +179,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @param {IDefinition} definition
    */
   storeDefinition(definition: IDefinition) {
-    localStorage.setItem(`TABLE_DEFINITION_${this.props.name}`, JSON.stringify(definition));
+      localStorageAdd(`TABLE_DEFINITION_${this.props.name}`, definition);
   }
 
 
@@ -187,7 +188,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @param {any} definition
    */
   storeCustom(customField) {
-    localStorage.setItem(`TABLE_CUSTOM_${this.props.name}`, JSON.stringify(customField));
+      localStorageAdd(`TABLE_CUSTOM_${this.props.name}`, customField);
   }
 
   /**
@@ -552,6 +553,8 @@ class DataTable extends React.Component<IProps, IState> {
    */
   public render() {
 
+    // variable to skip first column of DataTable on customize Modal
+    let skipFirst = 0;
     if (!this.state.definition || !this.state.data) return <h4><Translate value={"Loading..."}/></h4>;
 
     if (!this.parser) {
@@ -611,6 +614,10 @@ class DataTable extends React.Component<IProps, IState> {
                 className={`${(CONFIG.DIR === "rtl") ? "checkbox-rtl" : ""}`}>
                 {this.state.definition.columns.map((key, index) => {
                   if (key.visible) {
+                    if (skipFirst === 0 ) {
+                      skipFirst++ ;
+                      return null;
+                    }
                     return (
                       <Col key={index} span={12}>
                         <Checkbox key={index} value={key.name}>{key.title}</Checkbox>
