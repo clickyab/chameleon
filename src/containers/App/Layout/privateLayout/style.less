@@ -45,7 +45,7 @@
   position: fixed !important;
   right: 0 !important;
   z-index: 999;
-  box-shadow: -10px 0 10px rgba(0,0,0,.1);
+  box-shadow: -10px 0px 10px rgba(0,0,0,.1);
 }
 
 .sidebar-wrapper-ltr {
@@ -96,6 +96,18 @@
       filter: blur(3px);
       background: @primary-color;
       border-radius: 100% ;
+    }
+    i {
+      margin-right: -4px;
+    }
+    button {
+      i {
+        margin-right: auto ;
+      }
+    }
+    &:before{
+      content: "";
+      position: absolute;
     }
     i {
       margin-right: -4px;
@@ -158,7 +170,7 @@
 }
 
 .menu-list {
-  width: 100%;
+  width: 85%;
   margin: 0 auto;
 }
 
