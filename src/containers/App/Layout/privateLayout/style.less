@@ -1,8 +1,7 @@
 @import "../../theme";
 
 .header {
-  padding: 10px 0 !important;
-  margin: 0 16px;
+  padding: 10px 16px !important;
   text-align: right;
   height: auto !important;
   line-height: inherit !important;
@@ -36,7 +35,7 @@
 
 .content {
   min-height: 500px;
-  margin: 0 16px;
+  padding: 0 16px;
   background: #fff;
 }
 
@@ -46,6 +45,7 @@
   position: fixed !important;
   right: 0 !important;
   z-index: 999;
+  box-shadow: -10px 0px 10px rgba(0,0,0,.1);
 }
 
 .sidebar-wrapper-ltr {
@@ -79,7 +79,23 @@
 .sidebar {
   direction: rtl;
   .ant-menu-item-selected {
+    position: relative;
+    color: #334750 !important;
+    border-right: 4px solid @primary-color !important;
+    border-radius: 0;
     background-color: @sidebar-list-hover !important;
+    &:before{
+      content: "";
+      position: absolute;
+    }
+    i {
+      margin-right: -4px;
+    }
+    button {
+      i {
+        margin-right: auto ;
+      }
+    }
   }
   li {
     height: 36px;
@@ -95,7 +111,7 @@
   }
   .sidbar-menu-icon {
     font-size: 20px;
-    margin-left: 25px;
+    margin-left: 15px;
     margin-top: 2px;
     float: right;
   }
@@ -103,7 +119,7 @@
 
 .logo-sidebar {
   font-size: 25px;
-  color: white;
+  color: @primary-color;
   margin-top: 20px;
   margin-bottom: 20px;
   text-align: center;
@@ -133,23 +149,21 @@
 }
 
 .menu-list {
-  width: 85%;
+  width: 100%;
   margin: 0 auto;
-  .sidebar {
-    .ant-menu-item-active {
-      color: white !important;
-      box-shadow: 0 1px #2E4C7D;
-      transition: box 0.3s ease-In;
-    }
-  }
 }
 
 .badge {
   float: left;
   margin-top: 11px;
   direction: ltr;
+  sup{
+    background: #9A9A9A;
+  }
   p {
-    color: @sidebar-badge;
+    color: #FFF;
+    font-family: @font-family;
+    font-size: 12px;
     line-height: 1.8;
   }
 }
@@ -161,13 +175,31 @@
   color: @sidebar-menu-item !important;
   border-color: @sidebar-menu-item !important;
   border: 2px solid !important;
-  border-radius: 2px !important;
+  border-radius: 4px !important;
+}
+.ant-layout-sider{
+  .campaignButton {
+    border: 0 solid transparent !important;
+    .ghostButton {
+      i {
+        font-size: 12px;
+      }
+    }
+  }
 }
 
-.campaignButton {
-  padding: 0 !important;
-  margin-bottom: 20px !important;
-}
+  .ant-layout-sider-collapsed {
+    .ant-menu.ant-menu-vertical.sidebar{
+      width: 60px !important;
+      span{
+        display: none;
+      }
+    }
+    .campaignButton {
+      border: 0 solid transparent !important;
+    }
+  }
+
 
 .pFooter {
   list-style-type: disc;
@@ -198,16 +230,42 @@
 
 //Menu item color for sidebar
 
-.ant-menu-item {
-  font-weight: bold;
-  color: @sidebar-menu-item !important;
-}
+
 
 .ant-menu.ant-menu-vertical.sidebar.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root > .campaignButton {
-  padding: 0 !important;
+  padding: 0 16px !important;
   margin-bottom: 20px !important;
+  .ghostButton {
+    padding: 0;
+    height: 28px !important;
+    i {
+      position: relative;
+      top: 2px;
+      font-size: 14px;
+    }
+  }
 }
-
+// need this much nested style for specification and avoid important
+.ant-layout-sider{
+  .ant-layout-sider-children {
+    .ant-menu-dark {
+      .ant-menu-item {
+        &.campaign-menu-item {
+          font-weight: bold;
+          color: @sidebar-menu-item;
+          padding-right:20px !important; ;
+          padding-left:20px !important;
+        }
+        &.ant-menu-item-active{
+          &.campaign-menu-item {
+            font-weight: bold;
+            color: #334750;
+          }
+        }
+      }
+    }
+  }
+}
 .ant-layout-sider-children {
   height: auto !important;
 }
@@ -244,4 +302,10 @@
   .ant-col-offset-10 {
     margin-left: 0;
   }
+}
+.dir-rtl{
+  direction: rtl;
+}
+.dir-ltr{
+  direction: ltr;
 }

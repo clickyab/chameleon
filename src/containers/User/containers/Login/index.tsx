@@ -74,7 +74,8 @@ class PublicLoginForm extends React.Component<IProps, IState> {
         message.error(this.i18n._t("Please fill all fields."));
         return;
       }
-
+      // // TODO remove line below needed for debug purpose only
+      // this.props.setIsLogin();
       const userApi = new UserApi();
       userApi.userLoginPost({
         payloadData: {

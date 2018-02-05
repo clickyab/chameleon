@@ -51,13 +51,13 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
           <Content className="content">
             {this.props.children}
           </Content>
-          <PrivateFooter/>
         </Layout>
           <Sider
               trigger={null}
               collapsible
               collapsed={this.state.collapsed}
-              width="300"
+              width="160"
+              collapsedWidth="60"
               className={"sidebar-wrapper-" + CONFIG.DIR}
           >
               <SidebarMenu collapsed={this.state.collapsed}/>
