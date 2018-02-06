@@ -11,7 +11,7 @@ let storageObj: object = {} ;
  * @param value of the item
  */
 export function localStorageAdd(name, value) {
-    if (typeof value === "object") {
+    if (value !== null && typeof value === "object") {
         localStorage.setItem(name, JSON.stringify(value));
         storageObj[name] =  JSON.stringify(value);
     }
@@ -39,7 +39,7 @@ export function initialLocalStorage() {
     // ToDo get object from API
     for (let key in storageObj) {
         if (!storageObj.hasOwnProperty(key)) continue;
-        if (typeof storageObj[key] === "object") {
+        if (storageObj[key] !== null && typeof storageObj[key] === "object") {
             localStorage.setItem(key, JSON.stringify(storageObj[key]));
         }
         else {
