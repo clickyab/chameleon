@@ -4,6 +4,7 @@ import SidebarMenu from "../../sidebar/index";
 import {PrivateFooter} from "./footer/index";
 import "./style.less";
 import PrivateBreadcrumb from "./Breadcrumb/index";
+import UserAction from "../../../User/UserAction";
 import {localStorageAdd} from "../../../../services/Utils/LocalStorageWrapper";
 import Icon from "../../../../components/Icon/index";
 import CONFIG from "../../../../constants/config";
@@ -47,6 +48,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
                   onClick={this.toggle}
               />
             <PrivateBreadcrumb/>
+            <UserAction/>
           </Header>
           <Content className="content">
             {this.props.children}
