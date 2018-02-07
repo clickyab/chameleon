@@ -48,7 +48,7 @@ class UserAction extends React.Component<IProps, IState> {
     }
    render() {
         return(
-            <div className="user-action">
+            <div dir={CONFIG.DIR} className="user-action">
                 <div className={"user-action-icon-wrapper"}>
                 <Icon name={"cif-dashboard"}/>
                 <Badge className={"user-action-badge"} count={9} />

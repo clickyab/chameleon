@@ -21,7 +21,8 @@ import {connect} from "react-redux";
 import {showWarningOnce} from "tslint/lib/error";
 import AreaMap from "../../../../components/AreaMap/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
-import {DEVICE_TYPES, WEB_TYPES} from "../Type/index" ;
+import {DEVICE_TYPES} from "../Type/index" ;
+import StickyFooter from "../../components/StickyFooter";
 
 const Option = Select.Option;
 
@@ -252,7 +253,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
+    this.props.history.push(`/campaign/naming/${this.props.match.params.id}`);
   }
 
   private handleSubmit(e) {
@@ -282,7 +283,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
       }
     }).then(data => {
       this.props.setCurrentCampaign(data as OrmCampaign);
-      this.props.history.push(`/campaign/select-publisher/${data.id}`);
+      this.props.history.push(`/campaign/budget/${data.id}`);
     }).catch((error) => {
       notification.error({
         message: this.i18n._t("Campaign update failed!").toString(),
@@ -734,27 +735,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     }
                   </Col>
                 </Row>
-
-                <Row type="flex" align="middle">
-                  <Col span={5}>
-                    <RaisedButton
-                      onClick={this.handleBack.bind(this)}
-                      label={<Translate value="Back"/>}
-                      primary={false}
-                      className="button-back-step"
-                      icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-                    />
-                  </Col>
-                  <Col>
-                    <RaisedButton
-                      onClick={this.handleSubmit.bind(this)}
-                      label={<Translate value="Next Step"/>}
-                      primary={true}
-                      className="button-next-step"
-                      icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-                    />
-                  </Col>
-                </Row>
+              <StickyFooter nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} />
               </Form>
             </div>
           </div>

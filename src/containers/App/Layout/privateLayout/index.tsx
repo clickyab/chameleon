@@ -39,7 +39,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: "100vh" }} >
         <Layout className={(this.state.collapsed) ? "layout-collapsed" + "-" + CONFIG.DIR : "layout-open" + "-" + CONFIG.DIR}>
           <Header className="header">
               <Icon

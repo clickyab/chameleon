@@ -5,10 +5,15 @@ import Translate from "../../../../../../components/i18n/Translate";
 
 const Option = Select.Option;
 
+/**
+ * @interface IProps
+ * @param first{boolean} first one should have header
+ */
 interface IProps {
   from?: string;
   to?: string;
   onChange: (from, to) => void;
+  first: boolean;
 }
 
 interface IState {
@@ -71,13 +76,13 @@ export default class TimePeriod extends React.Component<IProps, IState> {
     return (
       <Row type="flex">
         <Col className="time-period">
-          <div className="text-center"><Translate value={"start time"}/></div>
+            {this.props.first && <div className="text-center"><Translate value={"start time"}/></div>}
           <Select dropdownClassName={"time-period-dropdown"} value={this.state.from.toString()} onChange={this.handleChangeFrom.bind(this)}>
             {this.renderOptions(false)}
           </Select>
         </Col>
         <Col className="time-period">
-          <div className="text-center"><Translate value={"end time"}/></div>
+          {this.props.first && <div className="text-center"><Translate value={"end time"}/></div>}
           <Select  dropdownClassName={"time-period-dropdown"} value={this.state.to.toString()} onChange={this.handleChangeTo.bind(this)}>
             {this.renderOptions(true)}
           </Select>

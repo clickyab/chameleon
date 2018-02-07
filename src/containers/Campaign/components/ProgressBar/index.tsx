@@ -121,10 +121,10 @@ private checkCurrentCampaign(): boolean {
         return this.props.history.push(`${this.props.match.path}/type${suffix}`);
       case STEPS.NAMING:
         return this.props.history.push(`${this.props.match.path}/naming${suffix}`);
+        case STEPS.TARGETING:
+            return this.props.history.push(`${this.props.match.path}/targeting${suffix}`);
       case STEPS.BUDGET:
         return this.props.history.push(`${this.props.match.path}/budget${suffix}`);
-      case STEPS.TARGETING:
-        return this.props.history.push(`${this.props.match.path}/targeting${suffix}`);
       case STEPS.SELECT_PUBLISHER:
         return this.props.history.push(`${this.props.match.path}/select-publisher${suffix}`);
       case STEPS.UPLOAD:
@@ -151,18 +151,18 @@ private checkCurrentCampaign(): boolean {
               <Translate value="Campaign Name"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET)} active={stepIndex === STEPS.BUDGET}
-                completed={stepIndex > STEPS.BUDGET}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)} disabled={this.checkCurrentCampaign()}>
-              <Translate value="Budget and Finance"/>
-            </StepButton>
-          </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.TARGETING)} active={stepIndex === STEPS.TARGETING}
                 completed={stepIndex > STEPS.TARGETING}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.TARGETING)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Targeting"/>
             </StepButton>
           </Step>
+            <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET)} active={stepIndex === STEPS.BUDGET}
+                  completed={stepIndex > STEPS.BUDGET}>
+                <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)} disabled={this.checkCurrentCampaign()}>
+                    <Translate value="Budget and Finance"/>
+                </StepButton>
+            </Step>
           <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER)}
                 active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)} disabled={this.checkCurrentCampaign()}>

@@ -15,7 +15,7 @@ import CONFIG from "../../../../constants/config";
 import Tooltip from "../../../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
-import {DEVICE_TYPES, WEB_TYPES} from "../Type/index" ;
+import {DEVICE_TYPES} from "../Type/index" ;
 
 const Option = Select.Option;
 
@@ -45,12 +45,13 @@ interface IState {
   subscribers: string[];
   subscriber: string;
   currentCampaign?: OrmCampaign;
+  networkType?: NETWORK_TYPE;
 }
 
+enum NETWORK_TYPE {CLICKYAB= "clickyab" , EXCHANGE = "exchange"};
 export enum IPricing {
   CPC = "cpc",
   CPM = "cpm",
-  CPV = "cpv",
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -65,6 +66,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
       subscribers: [],
       subscriber: "",
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
+      networkType: NETWORK_TYPE.CLICKYAB,
     };
   }
 
@@ -133,7 +135,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
   }
 
   private handleBack() {
-    this.props.history.push(`/campaign/naming/${this.props.match.params.id}`);
+    this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`);
   }
 
   private handleSubscribersChange(value) {
@@ -221,6 +223,38 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 </Row>
               </Col>
             </Row>
+              <Row type="flex" align="middle" gutter={16}>
+                  <Col span={4}>
+                      <Tooltip/>
+                      <label><Translate value="display network"/></label>
+                  </Col>
+                  <Col span={10} offset={10}>
+                      <Row type="flex" align="middle">
+                          <Col span={8}>
+                              <SelectField className={"select-list-rtl select-network-type"}
+                                           onChange={(a, b, value) => {
+                                               this.setState({
+                                                   networkType: value,
+                                               });
+                                               if (value === NETWORK_TYPE.CLICKYAB) {
+                                                 this.setState({
+                                                     pricing: IPricing.CPC,
+                                                 });
+                                               }
+                                               else {
+                                                   this.setState({
+                                                       pricing: IPricing.CPM,
+                                                   });
+                                               }
+                                           }}
+                                           value={this.state.networkType}>
+                                  <MenuItem value={NETWORK_TYPE.CLICKYAB} primaryText={this.i18n._t("clickyab")}/>
+                                  <MenuItem value={NETWORK_TYPE.EXCHANGE} primaryText={this.i18n._t("exchange")}/>
+                              </SelectField>
+                          </Col>
+                      </Row>
+                  </Col>
+              </Row>
 
             <Row type="flex" align="middle" gutter={16}>
               <Col span={4}>
@@ -230,37 +264,28 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 </label>
               </Col>
               <Col span={10} offset={10}>
-                {this.state.currentCampaign.type !== WEB_TYPES.VIDEO &&
                 <FormItem className="form-radio">
                   {getFieldDecorator("cost_type", {
                     initialValue: this.state.currentCampaign.cost_type,
                   })(
                     <RadioButtonGroup defaultSelected={this.state.pricing}
+                                      valueSelected={this.state.pricing}
                                       className="campaign-radio-group" name="pricing"
                                       onChange={this.handleChangePricing.bind(this)}>
                       <RadioButton className="campaign-radio-button"
                                    value={IPricing.CPC}
                                    label={this.i18n._t("CPC (per click)")}
+                                   disabled={this.state.networkType === NETWORK_TYPE.EXCHANGE}
                       />
                       <RadioButton className="campaign-radio-button"
                                    value={IPricing.CPM}
                                    label={this.i18n._t("CPM (per 10,000 views)")}
+                                   disabled={this.state.networkType === NETWORK_TYPE.CLICKYAB}
                       />
                     </RadioButtonGroup>
                   )}
                 </FormItem>
-                }
-                {this.state.currentCampaign.type === WEB_TYPES.VIDEO &&
-                <FormItem className="form-radio">
-                <RadioButtonGroup defaultSelected={this.state.pricing}
-                                  className="campaign-radio-group" name="pricing">
-                  <RadioButton className="campaign-radio-button"
-                               value={IPricing.CPV}
-                               label={this.i18n._t("CPV (per video view)")}
-                  />
-                </RadioButtonGroup>
-                </FormItem>
-                }
+                  { console.log("type != clickyab" , this.state.networkType !== NETWORK_TYPE.CLICKYAB)}
               </Col>
             </Row>
 

@@ -1,0 +1,121 @@
+@import "../../../App/theme";
+
+.sticky-footer{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  right: 0;
+  background: #EFF1F5;
+  .footer-content{
+    padding-right: @sidebar-close-width + 30px;
+    padding-left: 30px;
+    .footer-collapsed{
+      padding-right: @sidebar-open-width + 30px;
+    }
+  }
+  .button-next-step{
+    float: left;
+  }
+  .button-back-step{
+    float: right;
+  }
+}
+
+[dir="ltr"]{
+  .sticky-footer{
+    .footer-content{
+      padding-left: @sidebar-close-width + 30px;
+      padding-right: 30px;
+      .footer-collapsed{
+        padding-left: @sidebar-open-width + 30px;
+      }
+    }
+    .button-next-step{
+      float: right;
+    }
+    .button-back-step{
+      float: left;
+    }
+  }
+}
+
+.button-next-step {
+  margin-top: 15px !important;
+  height: @campaign-button-height;
+  min-width: 105px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0 1px 4px !important;
+  font-size: 14px !important;
+  margin-bottom: 10px;
+  button:disabled {
+    background: #B6BBC2 !important;
+    cursor: not-allowed !important;
+    span{
+      color:white ;
+    }
+    div {
+      height: @campaign-button-height !important;
+    }
+  }
+  button {
+    min-width: 105px;
+    height: @campaign-button-height !important;
+    line-height: @campaign-button-height !important;
+    div {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      span {
+        padding: 0 !important;
+      }
+      > div {
+        height: @campaign-button-height !important;
+        padding: 0px 15px !important;
+      }
+    }
+  }
+}
+
+.button-back-step {
+  .button-next-step;
+  background: rgba(255,255,255,0) !important;
+  button {
+    background: rgba(255,255,255,0) !important;
+    div {
+      background-color: transparent !important;
+      > div {
+        display: flex;
+        align-items: center;
+        span , i{
+          color: #7794A0 !important;
+        }
+        span{
+          order:1;
+        }
+        i{
+          margin-left: 5px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+div[dir="rtl"] {
+  .button-next-step {
+    button:disabled {
+      div  {
+        display: flex;
+        direction: ltr;
+        align-content: center;
+        justify-content: center;
+      }
+    }
+    button {
+      div > div {
+        display: flex;
+        direction: ltr;
+        align-content: center;
+        justify-content: center;
+      }
+    }
+  }
+}

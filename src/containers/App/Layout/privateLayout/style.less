@@ -304,6 +304,12 @@
   .ant-menu-item-selected{
     border : 0 solid transparent !important;
     border-left: 4px solid @primary-color !important;
+    &.campaignButton {
+      border : 0 solid transparent !important;
+      &:before {
+        content: unset;
+      }
+    }
     &:before{
       content: "";
       position: absolute;
