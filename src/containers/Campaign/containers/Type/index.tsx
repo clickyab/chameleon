@@ -22,6 +22,7 @@ import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import {isUndefined} from "util";
 import {Link} from "react-router-dom";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
+import StickyFooter from "../../components/StickyFooter";
 
 /**
  * @interface IOwnProps
@@ -56,8 +57,6 @@ interface IState {
   currentCampaign?: OrmCampaign;
   internalStep: INTERNAL_STEPS;
   selectedType?: DEVICE_TYPES;
-  selectedWebType?: WEB_TYPES;
-  selectedApplicationType?: APPLICATION_TYPES;
 }
 
 /**
@@ -66,8 +65,6 @@ interface IState {
  */
 enum INTERNAL_STEPS {
   SELECT_DEVICE_TYPE,
-  SELECT_DESKTOP_TYPE,
-  SELECT_APPLICATION_TYPE,
 }
 
 /**
@@ -79,15 +76,6 @@ export enum DEVICE_TYPES {
   APPLICATION = "app",
 }
 
-/**
- * @enum WEB_TYPES
- * @desc Web Types
- */
-export enum WEB_TYPES {
-  BANNER = "banner",
-  CONTENT = "native",
-  VIDEO = "vast",
-}
 
 
 /**
@@ -129,31 +117,6 @@ class TypeComponent extends React.Component <IProps, IState> {
   ];
 
   /**
-   * Desktop ad types items
-   * @type {[{title: string; value: WEB_TYPES; icon: any} , {title: string; value: WEB_TYPES; icon: any} , {title: string; value: WEB_TYPES; icon: any}]}
-   */
-  desktopTypes: ISelectBoxItem[] = [
-    {
-      title: this.i18n._t("Banner").toString(),
-      value: WEB_TYPES.BANNER,
-      icon: <Icon name="cif-banner-campaign-outline" className={"campaign-icon"}/>,
-      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
-    },
-    {
-      title: this.i18n._t("Content").toString(),
-      value: WEB_TYPES.CONTENT,
-      icon: <Icon name="cif-native-campaign-outline" className={"campaign-icon"}/>,
-      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
-    },
-    {
-      title: this.i18n._t("Video").toString(),
-      value: WEB_TYPES.VIDEO,
-      icon: <Icon name="cif-video-campaign-outline" className={"campaign-icon"}/>,
-      hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
-    }
-  ];
-
-  /**
    * Application types items
    * @type {[{title: string; value: APPLICATION_TYPES; icon: any}]}
    */
@@ -178,8 +141,6 @@ class TypeComponent extends React.Component <IProps, IState> {
     this.state = {
       internalStep: INTERNAL_STEPS.SELECT_DEVICE_TYPE,
       selectedType: props.currentCampaign ? props.currentCampaign.kind as DEVICE_TYPES : null,
-      selectedApplicationType: props.currentCampaign ? props.currentCampaign.type as APPLICATION_TYPES : null,
-      selectedWebType: props.currentCampaign ? props.currentCampaign.type as WEB_TYPES : null,
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
     };
   }
@@ -200,8 +161,6 @@ class TypeComponent extends React.Component <IProps, IState> {
           this.setState({
             currentCampaign: campaign,
             selectedType: campaign ? campaign.kind as DEVICE_TYPES : null,
-            selectedApplicationType: campaign ? campaign.type as APPLICATION_TYPES : null,
-            selectedWebType: campaign ? campaign.type as WEB_TYPES : null,
           });
         });
     } else {
@@ -233,56 +192,15 @@ class TypeComponent extends React.Component <IProps, IState> {
     }
   }
 
-  /**
-   * @func handle submit device type selection and render select desktop or application ad type
-   */
+
   private handleSelectDeviceType() {
-    const step: INTERNAL_STEPS = (this.state.selectedType === DEVICE_TYPES.WEB) ?
-      INTERNAL_STEPS.SELECT_DESKTOP_TYPE : INTERNAL_STEPS.SELECT_APPLICATION_TYPE;
-    this.setState({
-      internalStep: step,
-    });
-  }
-
-
-  /**
-   * @func handle change web type of ad
-   * @param {WEB_TYPES} value
-   */
-  private handleChangeWebType(value: WEB_TYPES) {
-    if (!this.disable) {
-      this.setState({
-        selectedWebType: value,
-      });
-    }
-  }
-
-
-  private handleSelectWebType() {
-    this.submit();
-  }
-
-  /**
-   * @func handle change application type of ad
-   * @param {APPLICATION_TYPES} value
-   */
-  private handleChangeApplicationType(value: APPLICATION_TYPES) {
-    if (!this.disable) {
-      this.setState({
-        selectedApplicationType: value,
-      });
-    }
-  }
-
-
-  private handleSelectApplicationType() {
     this.submit();
   }
 
   private submit() {
     let campaign: OrmCampaign = {};
     campaign.kind = this.state.selectedType;
-    campaign.type = this.state.selectedType === DEVICE_TYPES.APPLICATION ? this.state.selectedApplicationType : this.state.selectedWebType;
+    campaign.type = "native";
 
     if (isUndefined(campaign.status)) {
       const date = new Date();
@@ -314,68 +232,8 @@ class TypeComponent extends React.Component <IProps, IState> {
                      onChange={this.handleChangeDevicesType.bind(this)}
                      disable={this.disable}
                      className={`center-select-box device-type ${this.disable ? "select-box-disable" : ""}`}/>
-          <RaisedButton
-            onClick={this.handleSelectDeviceType.bind(this)}
-            label={<Translate value="Next Step"/>}
-            primary={true}
-            disabled={!this.state.selectedType}
-            className="button-next-step type-btn"
-            icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-          />
+          <StickyFooter disable={!this.state.selectedType} nextAction={this.handleSelectDeviceType.bind(this)} />
         </Row>
-        }
-        {this.state.internalStep === INTERNAL_STEPS.SELECT_DESKTOP_TYPE &&
-        <div>
-          <Row className="campaign-type">
-            <SelectBox items={this.desktopTypes} initialSelect={this.state.selectedWebType}
-                       className={`center-select-box desktop-type ${this.disable ? "select-box-disable" : ""}`}
-                       disable={this.disable}
-                       onChange={this.handleChangeWebType.bind(this)}/>
-          </Row>
-          <Row type="flex" justify="center">
-            <RaisedButton
-              onClick={this.handleSelectWebType.bind(this)}
-              label={<Translate value="Next Step"/>}
-              primary={true}
-              disabled={!this.state.selectedWebType}
-              className="button-next-step type-btn"
-              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-            />
-          </Row>
-          <Row type="flex" justify="center">
-           <span className="campain-back-link"
-                 onClick={this.handleBack.bind(this)}>
-            <Translate value={"Choose wrong campaign type?"}/>
-          </span>
-          </Row>
-        </div>
-        }
-        {this.state.internalStep === INTERNAL_STEPS.SELECT_APPLICATION_TYPE &&
-        <div>
-          <Row className="campaign-type">
-            <SelectBox items={this.applicationTypes}
-                       initialSelect={this.state.selectedApplicationType}
-                       disable={this.disable}
-                       className={`center-select-box app-type  ${this.disable ? "select-box-disable" : ""}`}
-                       onChange={this.handleChangeApplicationType.bind(this)}/>
-          </Row>
-          <Row type="flex" justify="center">
-            <RaisedButton
-              onClick={this.handleSelectApplicationType.bind(this)}
-              label={<Translate value="Next Step"/>}
-              primary={true}
-              disabled={!this.state.selectedApplicationType}
-              className="button-next-step type-btn"
-              icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-            />
-          </Row>
-          <Row type="flex" justify="center">
-            <span className="campain-back-link"
-                  onClick={this.handleBack.bind(this)}>
-            <Translate value={"Choosed wrong campaign type?"}/>
-          </span>
-          </Row>
-        </div>
         }
       </div>
     );

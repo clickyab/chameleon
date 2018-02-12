@@ -4,6 +4,7 @@ import SidebarMenu from "../../sidebar/index";
 import {PrivateFooter} from "./footer/index";
 import "./style.less";
 import PrivateBreadcrumb from "./Breadcrumb/index";
+import UserAction from "../../../User/UserAction";
 import {localStorageAdd} from "../../../../services/Utils/LocalStorageWrapper";
 import Icon from "../../../../components/Icon/index";
 import CONFIG from "../../../../constants/config";
@@ -38,7 +39,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: "100vh" }} >
         <Layout className={(this.state.collapsed) ? "layout-collapsed" + "-" + CONFIG.DIR : "layout-open" + "-" + CONFIG.DIR}>
           <Header className="header">
               <Icon
@@ -47,17 +48,18 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
                   onClick={this.toggle}
               />
             <PrivateBreadcrumb/>
+            <UserAction/>
           </Header>
           <Content className="content">
             {this.props.children}
           </Content>
-          <PrivateFooter/>
         </Layout>
           <Sider
               trigger={null}
               collapsible
               collapsed={this.state.collapsed}
-              width="300"
+              width="160"
+              collapsedWidth="60"
               className={"sidebar-wrapper-" + CONFIG.DIR}
           >
               <SidebarMenu collapsed={this.state.collapsed}/>

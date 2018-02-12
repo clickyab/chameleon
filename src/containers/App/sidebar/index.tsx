@@ -2,7 +2,6 @@ import * as React from "react";
 import {withRouter} from "react-router";
 import {Badge, Button, Layout, Menu} from "antd";
 import I18n from "../../../services/i18n/index";
-import UserBox from "./UserBox/index";
 import Icon from "../../../components/Icon/index";
 import CONFIG from "../../../constants/config";
 
@@ -81,10 +80,9 @@ class SidebarMenu extends React.Component<IProps, IState> {
             {this.props.collapsed &&
             <Badge className="dot-badge" dot={true} count={14}/>}
             {!this.props.collapsed &&
-            <Badge style={{backgroundColor: "#a0bfee"}} className="badge" count={14}/>}
+            <Badge  className="badge" count={14}/>}
           </Menu.Item>
         </Menu>
-        <UserBox collapse={this.props.collapsed}/>
       </div>
     );
   }

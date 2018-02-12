@@ -21,6 +21,7 @@ import {
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
+import StickyFooter from "../../components/StickyFooter";
 
 const FormItem = Form.Item;
 
@@ -211,8 +212,8 @@ class NamingComponent extends React.Component <IProps, IState> {
                     payloadData: campaign as ControllersCampaignStatus,
                 }).then(data => {
                     this.props.setCurrentCampaign(data as OrmCampaign);
-                    this.props.history.push(`/campaign/budget/${data.id}`);
-                    this.props.setCurrentStep(STEPS.BUDGET);
+                    this.props.history.push(`/campaign/targeting/${data.id}`);
+                    this.props.setCurrentStep(STEPS.TARGETING);
                     notification.success({
                         message: this.i18n._t("Campaign updated successfully"),
                         className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
@@ -231,7 +232,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                 }).then(data => {
                     this.props.setSelectedCampaignId(data.id);
                     this.props.setCurrentCampaign(data as OrmCampaign);
-                    this.props.history.push(`budget/${data.id}`);
+                    this.props.history.push(`targeting/${data.id}`);
                 }).catch((error) => {
                     notification.error({
                         message: this.i18n._t("Create campaign failed!"),
@@ -318,6 +319,31 @@ class NamingComponent extends React.Component <IProps, IState> {
                                     />
                                 )}
                             </FormItem>
+                        </Col>
+                        <Col span={5}>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle">
+                        <Col span={4}>
+                            <Tooltip/>
+                            <label><Translate value={"TLD Domain"}/></label>
+                        </Col>
+                        <Col span={12}>
+                            <FormItem>
+                                {getFieldDecorator("domain", {
+                                    initialValue: this.state.currentCampaign.title,
+                                    rules: [{
+                                        required: true,
+                                        message: this.i18n._t("Please input your TLD Domain")
+                                    }],
+                                })(
+                                    <TextField
+                                        hintText={this.i18n._t("TLD Domain")}
+                                        fullWidth={true}
+                                    />
+                                )}
+                            </FormItem>
+                            <span className={"tld-description"}>{this.i18n._t("Please enter domain of company that you are making campaign for. exp: mydomain.com")}</span>
                         </Col>
                         <Col span={5}>
                         </Col>
@@ -410,7 +436,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                             this.state.timePeriods.map((p, index) => (
                                 <Row type="flex" className="time-period-row" key={index} align={"middle"}>
                                     <Col span={8}>
-                                        <TimePeriod from={p.from} to={p.to} onChange={(from, to) => {
+                                        <TimePeriod first={index === 0} from={p.from} to={p.to} onChange={(from, to) => {
                                             this.onTimePeriodChange(index, from, to);
                                         }}/>
                                     </Col>
@@ -431,26 +457,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                             }
                         </Col>
                     </Row>
-                    <Row type="flex" align="middle">
-                        <Col span={4}>
-                            <RaisedButton
-                                onClick={this.handleBack.bind(this)}
-                                label={<Translate value="Back"/>}
-                                primary={false}
-                                className="button-back-step"
-                                icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-                            />
-                        </Col>
-                        <Col>
-                            <RaisedButton
-                                onClick={this.handleSubmit.bind(this)}
-                                label={<Translate value="Next Step"/>}
-                                primary={true}
-                                className="button-next-step"
-                                icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-                            />
-                        </Col>
-                    </Row>
+                    <StickyFooter nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} backBtn={true}/>
                 </Form>
             </div>
         );

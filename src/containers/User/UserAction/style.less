@@ -1,0 +1,36 @@
+@import "../../App/theme.less";
+.user-action {
+  display: flex;
+  margin-right: auto;
+  .user-action-icon-wrapper {
+    margin: 0 15px;
+    position: relative;
+    cursor: pointer;
+    .user-action-badge {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      sup {
+        background: @primary-color;
+        padding: 0;
+        height: 15px;
+        min-width: 15px;
+        line-height: 1.8;
+        font-family: @font-family;
+        p{
+          font-size: 11px;
+        }
+      }
+    }
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+[dir ="ltr"] {
+  &.user-action {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
