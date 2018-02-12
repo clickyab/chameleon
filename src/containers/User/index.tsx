@@ -7,7 +7,7 @@ import PublicLoginContainer from "./containers/Login";
 import RegisterForm from "./containers/Register";
 import LogoutContainer from "./containers/Logout";
 import {UserUserPayload} from "../../api/api";
-import UserArea from "./components/UserArea";
+import UserArea from "../Campaign/components/UserArea";
 import PublicRecoverPassword from "./containers/RecoverPassword/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 
