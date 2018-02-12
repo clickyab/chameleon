@@ -16,6 +16,7 @@ import Tooltip from "../../../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import {DEVICE_TYPES} from "../Type/index" ;
+import StickyFooter from "../../components/StickyFooter";
 
 const Option = Select.Option;
 
@@ -285,7 +286,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
                     </RadioButtonGroup>
                   )}
                 </FormItem>
-                  { console.log("type != clickyab" , this.state.networkType !== NETWORK_TYPE.CLICKYAB)}
               </Col>
             </Row>
 
@@ -344,26 +344,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 <span className="subscriber-description"><Translate value={"Email of people that you want to notice in case of budget deficiency and recharge of account "} /></span>
               </Col>
             </Row>
-            <Row type="flex" align="middle" gutter={16}>
-              <Col span={4}>
-                <RaisedButton
-                  onClick={this.handleBack.bind(this)}
-                  label={<Translate value="Back"/>}
-                  primary={false}
-                  className="button-back-step"
-                  icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-                />
-              </Col>
-              <Col>
-                <RaisedButton
-                  onClick={this.handleSubmit.bind(this)}
-                  label={<Translate value="Next Step"/>}
-                  primary={true}
-                  className="button-next-step"
-                  icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
-                />
-              </Col>
-            </Row>
+            <StickyFooter backAction={this.handleBack.bind(this)} nextAction={this.handleSubmit.bind(this)}/>
           </Form>
           </Col>
             <Col span={6}>

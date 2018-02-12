@@ -22,6 +22,7 @@ interface IProps {
     nextAction: any;
     nextTitle?: string;
     backAction?: any;
+    disable?: boolean;
 }
 
 /**
@@ -55,6 +56,7 @@ class StickyFooter extends React.Component<IProps> {
                        onClick={this.props.nextAction}
                        label={`${this.i18n._t("Next Step")}${(this.props.nextTitle) ? " - " + this.i18n._t(this.props.nextTitle) : "" }`}
                        primary={true}
+                       disabled={this.props.disable}
                        className="button-next-step"
                        icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
                    />

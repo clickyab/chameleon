@@ -232,7 +232,7 @@ class TypeComponent extends React.Component <IProps, IState> {
                      onChange={this.handleChangeDevicesType.bind(this)}
                      disable={this.disable}
                      className={`center-select-box device-type ${this.disable ? "select-box-disable" : ""}`}/>
-          <StickyFooter nextAction={this.handleSelectDeviceType.bind(this)} />
+          <StickyFooter disable={!this.state.selectedType} nextAction={this.handleSelectDeviceType.bind(this)} />
         </Row>
         }
       </div>
