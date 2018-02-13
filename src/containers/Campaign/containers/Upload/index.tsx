@@ -78,7 +78,9 @@ class UploadComponent extends React.Component <IProps, IState> {
         e.preventDefault();
     }
     private handleTemplate(e) {
-        JSON.parse(e.dataTransfer.getData("template"));
+        this.setState({
+           template: JSON.parse(e.dataTransfer.getData("template"))
+        });
     }
 
   /**

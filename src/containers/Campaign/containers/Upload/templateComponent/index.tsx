@@ -29,19 +29,29 @@ export class AdTemplate extends React.Component<IProps, IState> {
     constructor(props) {
         super(props);
         this.state = {
-            template : props.template ? props.template : TEMPLATE.NONE
+            template: props.template ? props.template : TEMPLATE.NONE
         };
     }
 
-    private handleActiveTemp(index: TEMPLATE , event?) {
-        this.setState({
-            template: index
-        });
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.template) {
+            this.setState({
+                template: nextProps.template
+            });
+        }
+    }
+
+    private handleActiveTemp(index: TEMPLATE, event?) {
         if (event) {
             event.dataTransfer.setData("template", JSON.stringify(index));
         }
-        console.log("test");
+        else {
+            this.setState({
+                template: index
+            });
+        }
     }
+
     render() {
         return (
             <div className="template-wrapper">
@@ -49,28 +59,32 @@ export class AdTemplate extends React.Component<IProps, IState> {
                 <div draggable={true}
                      className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                      onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}
-                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e) }>
+                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>
                     <Banner/>
                 </div>
-                <div draggable={true} className={`template-type${this.state.template === TEMPLATE.VAST ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" :  ""}`}
+                <div draggable={true}
+                     className={`template-type${this.state.template === TEMPLATE.VAST ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                      onClick={() => this.handleActiveTemp(TEMPLATE.VAST)}
-                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VAST, e) }>
+                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VAST, e)}>
                     <Vast/>
                 </div>
-                <div draggable={true} className={`template-type${this.state.template === TEMPLATE.AD_CONTENT ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" :  ""}`}
+                <div draggable={true}
+                     className={`template-type${this.state.template === TEMPLATE.AD_CONTENT ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                      onClick={() => this.handleActiveTemp(TEMPLATE.AD_CONTENT)}
-                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.AD_CONTENT, e) }>
+                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.AD_CONTENT, e)}>
                     <AdContent/>
                 </div>
-                <div draggable={true} className={`template-type${this.state.template === TEMPLATE.VIDEO_IN_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" :  ""}`}
+                <div draggable={true}
+                     className={`template-type${this.state.template === TEMPLATE.VIDEO_IN_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                      onClick={() => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER)}
-                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER, e) }>
-                    <VideoInBanner />
+                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER, e)}>
+                    <VideoInBanner/>
                 </div>
-                <div draggable={true} className={`template-type${this.state.template === TEMPLATE.DYNAMIC_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" :  ""}`}
+                <div draggable={true}
+                     className={`template-type${this.state.template === TEMPLATE.DYNAMIC_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                      onClick={() => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER)}
-                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER, e) }>
-                    <DynamicBanner />
+                     onDragStart={(e) => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER, e)}>
+                    <DynamicBanner/>
                 </div>
             </div>
         );
