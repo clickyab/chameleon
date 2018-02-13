@@ -1,0 +1,62 @@
+@import "../../../../App/theme";
+// Full height --> 100vh - ((103px progress bar) + (47px header)
+.template-wrapper{
+  background: #FFF;
+  width: 125px;
+  padding:23px;
+  text-align: center;
+  border-left:1px solid #DFE0E6;
+  height: calc(~"100vh - 150px");
+  z-index: 999;
+  .title{
+    font-size: 15px;
+    color: #334750;
+    font-weight: 500;
+  }
+  .template-type{
+    margin-top: 20px;
+    cursor: pointer;
+    &.active{
+        position: relative;
+      &:after, &:before {
+        left: -31%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+
+      &:after {
+        border-color: rgba(255, 255, 255, 0);
+        border-left-color: #FFF;
+        border-width: 8px;
+        margin-top: -8px;
+      }
+      &:before {
+        border-color: rgba(223, 224, 230, 0);
+        border-left-color: #DFE0E6;
+        border-width: 9px;
+        margin-top: -9px;
+      }
+      .primary{
+        fill: @primary-color !important;
+      }
+      .light-primary{
+        fill :  #A4E0FC !important;
+      }
+      .dark-primary{
+        fill: #76C4E8 !important;
+      }
+    }
+    &.disable{
+      opacity: .2;
+      cursor: not-allowed;
+    }
+    svg{
+      display: block;
+    }
+  }
+}

@@ -3,18 +3,17 @@
  */
 import * as React from "react";
 import {connect} from "react-redux";
-import {withRouter} from "react-router";
-import {Form} from "antd";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
-import UplaodBannerVideo from "./BannerVideo";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Native from "./Native";
-import {DEVICE_TYPES , WEB_TYPES} from "../Type";
+import {AdTemplate, TEMPLATE} from "./templateComponent";
+import StickyFooter from "../../components/StickyFooter";
+import Translate from "../../../../components/i18n/Translate";
 
 
 interface IProps {
@@ -27,6 +26,7 @@ interface IProps {
   selectedCampaignId: number | null;
   match: any;
   history: any;
+  template?: TEMPLATE;
 }
 
 /**
@@ -35,6 +35,7 @@ interface IProps {
  */
 interface IState {
   currentCampaign: OrmCampaign;
+  template: TEMPLATE;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -49,6 +50,7 @@ class UploadComponent extends React.Component <IProps, IState> {
     super(props);
     this.state = {
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
+      template: props.template ? props.template : TEMPLATE.NONE
     };
   }
 
@@ -69,6 +71,15 @@ class UploadComponent extends React.Component <IProps, IState> {
     }
   }
 
+    /**
+     * @func handleDragOver Important drop wont fire without this
+     */
+    private handleDragOver(e) {
+        e.preventDefault();
+    }
+    private handleTemplate(e) {
+        JSON.parse(e.dataTransfer.getData("template"));
+    }
 
   /**
    * @func render
@@ -76,13 +87,14 @@ class UploadComponent extends React.Component <IProps, IState> {
    * @returns {any}
    */
   public render() {
-    return (<div>
-        {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.BANNER  || this.state.currentCampaign.type === WEB_TYPES.VIDEO) &&
-        <UplaodBannerVideo currentCampaign={this.state.currentCampaign}/>
-        }
-        {this.state.currentCampaign && (this.state.currentCampaign.type === WEB_TYPES.CONTENT) &&
-        <Native currentCampaign={this.state.currentCampaign} />
-        }
+    return (<div className="upload-wrapper">
+          <AdTemplate template={this.state.template} />
+          <div className={"template-drag-drop"} onDragOver={this.handleDragOver}  onDrop={(e) => {this.handleTemplate(e); }} >
+            <div className="vcenter">
+            <Translate value={"Please select your add type from right and drag and drop it over here"}/>
+            </div>
+          </div>
+          <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
       </div>
     );
   }

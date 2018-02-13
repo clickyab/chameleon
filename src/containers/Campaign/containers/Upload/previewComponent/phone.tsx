@@ -8,7 +8,7 @@ import Icon from "../../../../../components/Icon";
 export let PhonePreview = (item) => {
     return (
         <svg viewBox="0 0 250 509" version="1.1">
-            <g id="Advertiser---Create-Campaign" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Advertiser---Create-Campaign" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="XLarge-(Large-Desktop)" transform="translate(-277.000000, -355.000000)" fill="#EEEFF0">
                     <g id="step-6---if-camp-type-=-web" transform="translate(-19.000000, 124.000000)">
                         <g id="if-campaign-type-native" transform="translate(0.000000, 83.000000)">
