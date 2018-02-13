@@ -23,7 +23,7 @@ import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import {DEVICE_TYPES, WEB_TYPES} from "../Type";
+import {DEVICE_TYPES} from "../Type";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -115,7 +115,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         this.setState({
             currentCampaign: this.props.currentCampaign,
             adSize: (this.props.currentCampaign.kind === DEVICE_TYPES.APPLICATION) ? AppSize :
-                ((this.props.currentCampaign.type === WEB_TYPES.VIDEO) ? VideoSize : BannerSize),
+                ((this.props.currentCampaign.type === "video") ? VideoSize : BannerSize),
         }, function () {
             this.loadBanners();
         });

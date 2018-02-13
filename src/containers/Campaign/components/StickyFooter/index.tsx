@@ -23,6 +23,7 @@ interface IProps {
     nextTitle?: string;
     backAction?: any;
     disable?: boolean;
+    customClass?: string;
 }
 
 /**
@@ -41,7 +42,7 @@ class StickyFooter extends React.Component<IProps> {
    }
    render() {
        return(
-           <div dir={CONFIG.DIR} className="sticky-footer">
+           <div dir={CONFIG.DIR} className={`sticky-footer ${this.props.customClass ? this.props.customClass : ""}`}>
                <div className={`footer-content ${this.menuCollapsed ? "footer-collapsed" : ""}`}>
                {this.props.backBtn !== false && this.props.backAction &&
                <RaisedButton
