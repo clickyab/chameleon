@@ -2,43 +2,11 @@
 @import "../../../../../node_modules/react-image-crop/dist/ReactCrop.css";
 @import "../../../App/theme";
 
-.upload-textfield {
-  width: 480px;
-  direction: ltr;
-  font-size: 15px !important;
-  @media (max-width: 1390px) {
-    font-size: 12px !important;
-  }
-}
 
-.url-label {
-  color: #5E6670;
-  font-weight: 500;
-  font-size: 15px;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.add-utm-btn {
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  margin-right: 10px;
-  padding: 0 10px;
-  .utm-icon {
-    font-size: 16px;
-    line-height: 16px;
-    position: relative;
-    top: 1px;
-  }
-  span {
-    margin: 0 5px;
-  }
-}
 
 .ant-upload.ant-upload-drag {
-  border-radius: 0;
-  border: 3px dashed @light-gray-color !important;
+  border-radius: 0 !important;
+  border: 2px dashed @light-gray-color !important;
   height: 380px !important;
   &:hover{
     border: 3px dashed @primary-color !important;
@@ -156,19 +124,17 @@
 
 .upload-process-wrapper {
   margin-bottom: 30px;
-  .ant-card-body {
-    display: flex;
-    align-items: center;
-    padding: 0;
+  border: 1px solid #DFE0E6;
+  padding: 0 3px;
     .image-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 80px;
-      width: 80px;
-      padding: 10px;
+      padding: 10px 7px;
+      border-bottom: 1px solid #DFE0E6;
       cursor: pointer;
       transition: all ease-In .4s;
+      position: relative;
       background: rgba(255, 255, 255, 0);
       img {
         display: inline-block;
@@ -187,17 +153,22 @@
           align-items: center;
           justify-content: center;
           position: absolute;
-          height: 80px;
-          width: 80px;
+          top:0;
+          bottom: 0;
+          left: 0;
+          right: 0;
           background: rgba(255, 255, 255, .95);
           transition: all ease-In .4s;
+          i{
+            position: relative;
+            top:5px;
+          }
           * {
             display: block;
           }
         }
       }
     }
-  }
   .upload-process-content {
     padding-right: 10px;
   }
@@ -214,7 +185,10 @@
     color: #C9CCD1;
   }
 }
-
+.edit-overlay{
+  width: calc(~"400% + 60px");
+  background: #D8DADE;
+}
 .utm-img-column {
   padding: 20px;
   display: flex;
@@ -327,8 +301,13 @@
 
 .dragger-content {
   color: #DBDDE1;
+  .upload-image-link{
+    display: inline;
+    color: @primary-color;
+  }
   span {
-    display: block;
+    margin: 0 2px;
+    display: inline-block;
     font-size: 14px;
   }
   h2 {
@@ -353,18 +332,6 @@
   }
 }
 
-.url-row {
-  height: 30px;
-  margin-bottom: 0;
-  &-item {
-    margin-bottom: 10px;
-    .select-other-url-form {
-      &.ant-form-item {
-        margin: 0 !important;
-      }
-    }
-  }
-}
 
 .native-item-wrapper {
   padding-bottom: 20px;
@@ -439,7 +406,7 @@
   }
 }
 
-.item-desc-num {
+.item-desc-num , .item-desc-num-input {
   position: absolute;
   top: 18px;
   left: 1px;
@@ -454,6 +421,12 @@
   &.red {
     color: red;
   }
+}
+.item-desc-num-input{
+  top: 33px;
+  left: 1px;
+  padding-top: 0;
+  bottom: auto;
 }
 
 .native-item-icon {
@@ -648,7 +621,7 @@
     border-radius: 4px;
     width: 100%;
     text-align: center;
-    height: calc(~"100vh - 245px");
+    min-height: calc(~"100vh - 245px");
     position: relative;
     .vcenter{
       position: relative;
@@ -660,5 +633,64 @@
     right: 150px;
     z-index: 998;
   }
+}
+.upload-content{
+  width: 100%;
+  padding: 20px;
+  .title{
+    h2 {
+      color: #000;
+      font-size: 19px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    p{
+      color: #000;
+      font-size: 19px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+  }
+  .upload-setting {
+    padding-top: 30px;
+    .upload-title-setting {
+      color: #000;
+      font-size: 19px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+  }
+  .image-drag-upload{
+    font-size: 13px;
+    color: #2E3246;
+  }
+  .drag-description{
+    margin: 5px;
+    padding-bottom: 55px;
+    border-bottom: 1px solid #DFE0E6;
+  }
+  .upload-column-border{
+    border-left: 1px solid #DFE0E6;
+  }
+}
+.input-campaign{
+  border: 1px solid #D8DADE;
+  padding: 0 10px;
+  &::placeholder{
+    color: #A4AAB2;
+    padding: 0 10px;
+  }
+}
+.span-block{
+  display: block;
+}
+.link{
+  color: @primary-color;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.input-title{
+  font-size: 13px;
+  color: #000;
 }
 
