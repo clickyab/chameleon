@@ -91,7 +91,7 @@ input:-webkit-autofill {
   outline: 1px solid slategrey;
 }
 
-// Set defualt direction for only english Elements
+// Set default direction for only english Elements
 input[type="email"]{
   direction: ltr;
 }
@@ -193,5 +193,24 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
   .generate-space(@n, (@i + 1 ));
 }
 [dir="rtl"] label{
-  transform-origin: right top 0px !important;
+  transform-origin: right top 0 !important;
+}
+.ant-btn {
+  &.btn-general {
+    height: 35px;
+    border: 0 solid;
+    border-radius: 2px;
+    &.btn-submit{
+      background: #00ABFB;
+      color:#FFF;
+      &:hover{
+        background: #00ABFB;
+        color:#FFF;
+      }
+    }
+    &.btn-cancel{
+      border : 1px solid #00ABFB;
+      color: #00ABFB;
+    }
+  }
 }

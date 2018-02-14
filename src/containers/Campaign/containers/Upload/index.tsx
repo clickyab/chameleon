@@ -11,6 +11,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Native from "./Native";
+import UploadBannerVideo from "./BannerVideo";
 import {AdTemplate, TEMPLATE} from "./templateComponent";
 import StickyFooter from "../../components/StickyFooter";
 import Translate from "../../../../components/i18n/Translate";
@@ -77,12 +78,17 @@ class UploadComponent extends React.Component <IProps, IState> {
     private handleDragOver(e) {
         e.preventDefault();
     }
-    private handleTemplate(e) {
+
+    private handleTemplateEvent(e) {
         this.setState({
-           template: JSON.parse(e.dataTransfer.getData("template"))
+            template: JSON.parse(e.dataTransfer.getData("template"))
         });
     }
-
+    private handleTemplate(template) {
+        this.setState({
+            template: template
+        });
+    }
   /**
    * @func render
    * @desc render component
@@ -90,13 +96,20 @@ class UploadComponent extends React.Component <IProps, IState> {
    */
   public render() {
     return (<div className="upload-wrapper">
-          <AdTemplate template={this.state.template} />
-          <div className={"template-drag-drop"} onDragOver={this.handleDragOver}  onDrop={(e) => {this.handleTemplate(e); }} >
-            <div className="vcenter">
-            <Translate value={"Please select your add type from right and drag and drop it over here"}/>
+          <AdTemplate template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
+            {this.state.template === TEMPLATE.BANNER &&
+            <div className={"template-drag-drop"}
+                 onDragOver={this.handleDragOver}
+                 onDrop={(e) => {this.handleTemplateEvent(e); }}>
+                <div className="vcenter">
+                    <Translate value={"Please select your add type from right and drag and drop it over here"}/>
+                </div>
+            <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
             </div>
-          </div>
-          <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
+            }
+            {this.state.template === TEMPLATE.NONE && this.state.currentCampaign &&
+                <UploadBannerVideo currentCampaign={this.state.currentCampaign} />
+            }
       </div>
     );
   }

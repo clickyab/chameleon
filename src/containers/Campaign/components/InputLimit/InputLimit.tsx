@@ -6,6 +6,7 @@ interface IState {
 
 interface IProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>{
     limit?: number;
+    customOnChange?: (event) => void;
 }
 export default class InputLimit extends React.Component<IProps , IState> {
     constructor(props) {
@@ -18,13 +19,16 @@ export default class InputLimit extends React.Component<IProps , IState> {
         if (this.props.limit) {
             if (e.target.value.length <= this.props.limit) {
                 this.setState({value: e.target.value});
+                if (this.props.customOnChange) {
+                    this.props.customOnChange(e);
+                }
             }
         }
     }
     render() {
-        let {limit , ...rest} = this.props;
+        let {limit , customOnChange , ...rest} = this.props;
         return (
-            <div>
+            <div className="input-limit-wrapper">
             <input  onChange={(e) => {this.handleValueChange(e); }} {...rest} value={this.state.value} />
                 {this.state.value &&
                 <span

@@ -21,17 +21,27 @@
   border: 1px solid @map-border-color;
   border-left: transparent;
   font-size: @map-font-size;
+}
 .checkbox {
+  &.stick{
+    div > div {
+      margin-right: 0 !important;
+    }
+  }
   div > div > div > svg {
     .checkbox-size();
     fill: #DBDDE1 !important;
   }
   &-checked {
+    &.stick{
+      div > div {
+        margin-right: 0 !important;
+      }
+    }
     div > div > div > svg {
       .checkbox-size();
     }
   }
-}
 
   ::-webkit-scrollbar {
     width: 5px;
