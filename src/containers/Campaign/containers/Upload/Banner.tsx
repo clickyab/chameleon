@@ -25,6 +25,7 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import {DEVICE_TYPES} from "../Type";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
+import {UTMInfo} from "./UtmForm";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -42,7 +43,7 @@ export interface IFileItem {
     width?: number;
     height?: number;
     cta?: string;
-    link?: string;
+    edited?: boolean;
 }
 
 interface IProps {
@@ -63,7 +64,6 @@ interface IProps {
 interface IState {
     currentCampaign: OrmCampaign;
     files: IFileItem[];
-    setLinkForAllBanners: boolean;
     openImageModal: boolean;
     previewImage?: IFileItem;
     editFile?: IFileItem;
@@ -101,7 +101,6 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         this.state = {
             currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
             files: [],
-            setLinkForAllBanners: false,
             openImageModal: false,
             urlType: URL_TYPE.BAZAAR,
             otherUrlType: OTHER_URL_TYPE.TAPSTREAM,
@@ -133,11 +132,6 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         if (Object.keys(utms).length === 1) {
             this.setState({
                 globalUtm: utms[Object.keys(utms)[0]],
-                setLinkForAllBanners: false,
-            });
-        } else {
-            this.setState({
-                setLinkForAllBanners: true,
             });
         }
     }
@@ -159,7 +153,9 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                         status: UPLOAD_STATUS.FINISHED,
                         progress: 100,
                         url: item.src,
-                    }
+                    },
+                    // TODO
+                    cta: "",
                 };
                 files.push(file);
             });
@@ -299,18 +295,6 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         return false;
     }
 
-    /**
-     * @func handleChangeLinkSettings
-     * @desc Set state for setting link for all banners or not
-     * @param e
-     * @param setAll
-     */
-    private handleChangeLinkSettings(e: any, setAll) {
-        this.setState({
-            setLinkForAllBanners: setAll,
-        });
-    }
-
     private imageEdit(file?: IFileItem, index?) {
         if (this.state.fileSelected !== index) {
             this.setState({
@@ -344,13 +328,12 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         let banners = [];
         this.state.files.map((file) => {
             banners.push({
-                utm: !this.state.setLinkForAllBanners ? this.state.globalUtm : file.utm,
+                utm: file.utm,
                 src: file.state.url,
                 id: file.id.toString().indexOf("tmp_") === 0 ? null : file.id,
             });
         });
 
-        console.log(banners);
         const controllerApi = new ControllersApi();
         controllerApi.adBannerTypeIdPost({
             bannerType: UPLOAD_MODULES.BANNER,
@@ -364,10 +347,28 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         });
 
     }
-
-    private handleFormData(file, item) {
-        file.cta = item.CTA;
-        file.link = item.URL;
+    /**
+     * @func handleFlag
+     * @desc On keyPress it will be called and set edited flag for banner (banner will not get general values from general form)
+     * set state will be used for reRendering
+     * @param item , file , index
+     */
+    private handleFlag(item, file, index) {
+        let fileItem: IFileItem[] = this.state.files;
+        fileItem[index].edited = item;
+        this.setState({
+            files: fileItem
+        });
+    }
+    /**
+     * @func handleFormData
+     * @desc will change file values (state will set after submission)
+     * @param file , index, item
+     */
+    private handleFormData(file, index, item) {
+        let fileItem: IFileItem[] = this.state.files;
+        fileItem[index].cta = item.CTA;
+        fileItem[index].utm = item.URL;
     }
     /**
      * @func onUtmModalSubmit
@@ -390,7 +391,25 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
             });
         }
     }
-
+    /**
+     * @func handleBannerData
+     * @desc fill values of banner with general form if it has not been edited
+     * @param item{UTMInfo}
+     */
+private handleBannerData(item: UTMInfo) {
+    this.state.files.map((file: IFileItem, index) => {
+    let fileItem: IFileItem[] = this.state.files;
+        if (!file.edited) {
+            fileItem[index].cta = item.CTA;
+        }
+        if (!file.edited) {
+            fileItem[index].utm = item.URL;
+        }
+        this.setState({
+            files: fileItem
+        });
+    });
+}
     /**
      * @func render
      * @desc render component
@@ -432,8 +451,8 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                                         <Row className="upload-setting">
                                             <span className="upload-title-setting span-block"><Translate value={"URL and uploaded banners setting"}/></span>
                                             <FormItem>
-                                                {console.log("global" , this.state.globalUtm)}
-                                                <UtmForm global={true} onSubmit={(params) => this.onUtmFormSubmit(params)}
+                                                <UtmForm global={true} onSubmit={(params) => {this.onUtmFormSubmit(params); }}
+                                                         onChange={(item) => {this.handleBannerData(item);  }}
                                                          link={this.state.globalUtm}/>
                                             </FormItem>
                                         </Row>
@@ -469,7 +488,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                                                             <Button onClick={() => {
                                                                 this.imageEdit(file, index);
                                                             }}
-                                                                    className="btn-edit"
+                                                                    className="btn-edit flex-start"
                                                             >
                                                                 <Icon name={"cif-edit"}/>
                                                             </Button>
@@ -488,9 +507,12 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
                                                     </div>
                                                     {this.state.fileSelected === index &&
                                                     <div className={`edit-overlay transformX-${(index % 4)}`}>
-                                                        <FormItem><UtmForm onSubmit={(params) => this.onUtmFormSubmit(params)} onChange={(item) => this.handleFormData(file, item)}
-                                                                           link={!this.state.setLinkForAllBanners ? this.state.globalUtm : this.state.editFile.utm}
+                                                        <FormItem><UtmForm onSubmit={(params) => this.onUtmFormSubmit(params)}
+                                                                           onChange={(item) => this.handleFormData(file, index,  item)}
+                                                                           customOnKeyPress={(item) => this.handleFlag(item, file, index)}
+                                                                           link={file.utm}
                                                                            cta={file.cta}
+                                                                           shouldUpdate={file.edited}
                                                         />
                                                         </FormItem></div>
                                                     }

@@ -11,7 +11,7 @@ import I18n from "../../../../services/i18n/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import Image from "react-image-file";
-import {IFileItem} from "./BannerVideo";
+import {IFileItem} from "./Banner";
 import "./style.less";
 
 const FormItem = Form.Item;

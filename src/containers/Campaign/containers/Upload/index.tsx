@@ -11,7 +11,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Native from "./Native";
-import UploadBannerVideo from "./BannerVideo";
+import UploadBannerVideo from "./Banner";
 import {AdTemplate, TEMPLATE} from "./templateComponent";
 import StickyFooter from "../../components/StickyFooter";
 import Translate from "../../../../components/i18n/Translate";

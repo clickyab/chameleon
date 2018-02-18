@@ -4,7 +4,7 @@ import InputLimit from "../../components/InputLimit/InputLimit";
 import {Row, Col, notification} from "antd";
 import I18n from "../../../../services/i18n/index";
 import {Checkbox} from "material-ui";
-import {IFileItem} from "./BannerVideo";
+import {IFileItem} from "./Banner";
 import CONFIG from "../../../../constants/config";
 
 
@@ -24,8 +24,11 @@ interface ISubmitParams {
     link: string;
     name: string;
 }
-
-interface UTMInfo {
+/**
+ * @interface UTMInfo
+ * @desc define interface for UTM
+ */
+export interface UTMInfo {
     CTA: string;
     URL: string;
     campaign: string;
@@ -48,6 +51,8 @@ interface IProps {
     global?: boolean;
     name?: string;
     cta?: string;
+    customOnKeyPress?: (item: boolean) => void;
+    shouldUpdate?: boolean;
 }
 export default class UtmForm extends React.Component<IProps, IState> {
     private i18n = I18n.getInstance();
@@ -67,6 +72,25 @@ export default class UtmForm extends React.Component<IProps, IState> {
             utmAll : this.Data,
             name: props.name ? props.name : "",
         };
+    }
+
+    public componentWillUnmount() {
+        if (this.props.onSubmit) {
+            this.props.onSubmit({
+                name: this.state.name,
+                link: this.state.utmAll.URL,
+            });
+        }
+    }
+    public componentWillReceiveProps(nextProps) {
+       if (!nextProps.shouldUpdate) {
+           if (nextProps.cta) {
+               this.handleData(nextProps.cta, UTM_INPUT.CTA);
+           }
+           if (nextProps.link) {
+               this.handleData(nextProps.link, UTM_INPUT.URL);
+           }
+       }
     }
     /**
      * @func handleSubmit
@@ -164,32 +188,26 @@ export default class UtmForm extends React.Component<IProps, IState> {
             return prevState;
         });
     }
+    private handleKeyPress() {
+        if (this.props.customOnKeyPress) {
+            this.props.customOnKeyPress(true);
+        }
+    }
+    /**
+     * @func showUTMdetails
+     * @desc Show/Hide Utm Detail
+     */
     private showUTMdetails() {
         this.setState({
             showUTMdetails : !this.state.showUTMdetails
         });
     }
-    private handleData(item , type: UTM_INPUT) {
-            switch (type) {
-                case UTM_INPUT.CTA:
-                    this.Data.CTA = item.target.value;
-                    break;
-                case UTM_INPUT.URL:
-                    this.Data.URL = item.target.value;
-                    break;
-                case UTM_INPUT.campaign:
-                    this.Data.campaign = item.target.value;
-                    break;
-                case UTM_INPUT.source:
-                    this.Data.source = item.target.value;
-                    break;
-                case UTM_INPUT.content:
-                    this.Data.content = item.target.value;
-                    break;
-                case UTM_INPUT.medium:
-                    this.Data.medium = item.target.value;
-                    break;
-        }
+    /**
+     * @func handleData
+     * @desc handle Data after every onChange
+     */
+    private handleData(value , type: UTM_INPUT) {
+           this.Data[type] = value;
         if (this.props.onChange) {
             this.props.onChange(this.Data);
         }
@@ -200,32 +218,39 @@ export default class UtmForm extends React.Component<IProps, IState> {
     render() {
         return(
             <div>
+                <Row type={"flex"} gutter={10}>
                 {!this.props.global &&
-                <div>
-                    <span className="span-block input-title"><Translate value="Name"/></span>
+                    <Col span={12}>
+                    <span className="span-block input-title"><Translate value="Name for your banner"/></span>
                     <InputLimit
-                        placeholder={this.i18n._t("Name") as string}
+                        placeholder={this.i18n._t("Name for your banner") as string}
                         className="input-campaign full-width mb-2"
                         limit={10}
                         value={this.state.name}
                         customOnChange={(e) => this.setState({name: e.target.value})}
+                        onKeyPress={() => this.handleKeyPress()}
                     />
-                </div>
+                    </Col>
                 }
+                <Col span={!this.props.global ? 12 : 24}>
                 <span className="span-block input-title"><Translate value="Text of Call to Action"/></span>
                 <InputLimit
                     placeholder={this.i18n._t("example: online shopping") as string}
                     className="input-campaign full-width mb-2"
                     limit={10}
                     value={this.state.utmAll.CTA}
-                    customOnChange={(e) => this.handleData(e, UTM_INPUT.CTA)}
+                    customOnChange={(e) => this.handleData(e.target.value, UTM_INPUT.CTA)}
+                    onKeyPress={() => this.handleKeyPress()}
                 />
+                </Col>
+                </Row>
                 <span className="span-block input-title"><Translate value="URL*"/></span>
                 <input
                     placeholder={this.i18n._t("http://domain.com") as string}
                     className="input-campaign full-width mb-2 dir-ltr"
                     value={this.state.utmAll.URL}
-                    onChange={(e) => {this.handleData(e, UTM_INPUT.URL); this.setParamsValues(e.target.value); }}
+                    onChange={(e) => {this.handleData(e.target.value, UTM_INPUT.URL); this.setParamsValues(e.target.value); }}
+                    onKeyPress={() => this.handleKeyPress()}
                 />
                 <Checkbox className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
                           checked={this.state.showUTMdetails}
@@ -241,7 +266,8 @@ export default class UtmForm extends React.Component<IProps, IState> {
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
                             value={this.state.utmAll.source}
-                            onChange={(e) => {this.handleData(e, UTM_INPUT.source); this.onFormChange("utm_source", e.target.value);  } }
+                            onChange={(e) => {this.handleData(e.target.value, UTM_INPUT.source); this.onFormChange("utm_source", e.target.value);  } }
+                            onKeyPress={() => this.handleKeyPress()}
                         />
                         <span className="span-block input-title"><Translate
                             value="utm_medium"/></span>
@@ -249,7 +275,8 @@ export default class UtmForm extends React.Component<IProps, IState> {
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
                             value={this.state.utmAll.medium}
-                            onChange={(e) => {this.handleData(e, UTM_INPUT.medium); this.onFormChange("utm_medium", e.target.value); }}
+                            onChange={(e) => {this.handleData(e.target.value, UTM_INPUT.medium); this.onFormChange("utm_medium", e.target.value); }}
+                            onKeyPress={() => this.handleKeyPress()}
                         />
                     </Col>
                     <Col span={12}>
@@ -258,14 +285,18 @@ export default class UtmForm extends React.Component<IProps, IState> {
                         <input
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
-                            onChange={(e) => {this.handleData(e, UTM_INPUT.campaign); this.onFormChange("utm_campaign", e.target.value); }}
+                            value={this.state.utmAll.campaign}
+                            onChange={(e) => {this.handleData(e.target.value, UTM_INPUT.campaign); this.onFormChange("utm_campaign", e.target.value); }}
+                            onKeyPress={() => this.handleKeyPress()}
                         />
                         <span className="span-block input-title"><Translate
                             value="utm_content"/></span>
                         <input
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
-                            onChange={(e) => {this.handleData(e, UTM_INPUT.content) ; this.onFormChange("utm_content", e.target.value); }}
+                            onChange={(e) => {this.handleData(e.target.value, UTM_INPUT.content) ; this.onFormChange("utm_content", e.target.value); }}
+                            onKeyPress={() => this.handleKeyPress()}
+                            value={this.state.utmAll.content}
                         />
                     </Col>
                 </Row>

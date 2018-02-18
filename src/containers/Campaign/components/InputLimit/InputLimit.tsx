@@ -15,6 +15,13 @@ export default class InputLimit extends React.Component<IProps , IState> {
             value: props.value ? props.value : ""
         };
     }
+    public componentWillReceiveProps(nextProps) {
+        if (nextProps.value) {
+            this.setState({
+                value: nextProps.value
+            });
+        }
+    }
     public handleValueChange(e) {
         if (this.props.limit) {
             if (e.target.value.length <= this.props.limit) {
