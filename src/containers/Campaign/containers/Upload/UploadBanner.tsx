@@ -88,7 +88,7 @@ enum URL_TYPE {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class UploadBannerVideo extends React.Component <IProps, IState> {
+class UploadBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
 
     /**
@@ -130,9 +130,10 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
             utms[file.utm] = file.utm;
         });
         if (Object.keys(utms).length === 1) {
-            this.setState({
-                globalUtm: utms[Object.keys(utms)[0]],
-            });
+            // TODO what this part do
+            // this.setState({
+            //     globalUtm: utms[Object.keys(utms)[0]],
+            // });
         }
     }
 
@@ -371,7 +372,7 @@ class UploadBannerVideo extends React.Component <IProps, IState> {
         fileItem[index].utm = item.URL;
     }
     /**
-     * @func onUtmModalSubmit
+     * @func onUtmFormSubmit
      * @desc Handle params that receive from utm modal
      * @param params
      */
@@ -580,4 +581,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default Form.create<IProps>()(withRouter(UploadBannerVideo as any));
+export default Form.create<IProps>()(withRouter(UploadBanner as any));

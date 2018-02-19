@@ -4,7 +4,7 @@ import InputLimit from "../../components/InputLimit/InputLimit";
 import {Row, Col, notification} from "antd";
 import I18n from "../../../../services/i18n/index";
 import {Checkbox} from "material-ui";
-import {IFileItem} from "./Banner";
+import {IFileItem} from "./UploadBanner";
 import CONFIG from "../../../../constants/config";
 
 
