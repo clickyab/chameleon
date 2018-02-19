@@ -18,7 +18,7 @@ export const enum TEMPLATE {
 
 interface IProps {
     template: TEMPLATE;
-    onchange?: () => void;
+    onChange?: (index) => void;
 }
 
 interface IState {
@@ -49,6 +49,9 @@ export class AdTemplate extends React.Component<IProps, IState> {
             this.setState({
                 template: index
             });
+            if (this.props.onChange) {
+                this.props.onChange(index);
+            }
         }
     }
 

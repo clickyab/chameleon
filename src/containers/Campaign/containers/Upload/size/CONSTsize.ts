@@ -1,4 +1,4 @@
-const BanelSize = [
+const BannerSize = [
   {
     width: 300,
     height: 250,
@@ -53,4 +53,4 @@ const BanelSize = [
   },
 ];
 
-export default BanelSize;
+export default BannerSize;

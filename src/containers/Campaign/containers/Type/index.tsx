@@ -200,7 +200,7 @@ class TypeComponent extends React.Component <IProps, IState> {
   private submit() {
     let campaign: OrmCampaign = {};
     campaign.kind = this.state.selectedType;
-    campaign.type = "native";
+    campaign.type = "banner";
 
     if (isUndefined(campaign.status)) {
       const date = new Date();

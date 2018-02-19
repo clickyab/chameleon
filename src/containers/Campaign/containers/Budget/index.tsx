@@ -123,7 +123,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
           className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
           description: "",
         });
-        this.props.history.push(`/campaign/targeting/${data.id}`);
+        this.props.history.push(`/campaign/select-publisher/${data.id}`);
       }).catch((error) => {
         notification.error({
           message: this.i18n._t("Submit Budget failed!").toString(),
