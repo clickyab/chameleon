@@ -60,6 +60,8 @@
     "webpack-dev-server": "2.5.1"
   },
   "dependencies": {
+    "@flowjs/flow.js": "^2.13.0",
+    "@types/flowjs": "0.0.30",
     "@types/react-onclickoutside": "^6.0.2",
     "babel-loader": "7.1.1",
     "babel-polyfill": "6.26.0",

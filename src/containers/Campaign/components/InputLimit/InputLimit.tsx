@@ -16,7 +16,7 @@ export default class InputLimit extends React.Component<IProps , IState> {
         };
     }
     public componentWillReceiveProps(nextProps) {
-        if (nextProps.value) {
+        if (nextProps.value || nextProps.value === "") {
             this.setState({
                 value: nextProps.value
             });

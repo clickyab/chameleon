@@ -4,7 +4,7 @@ import InputLimit from "../../components/InputLimit/InputLimit";
 import {Row, Col, notification} from "antd";
 import I18n from "../../../../services/i18n/index";
 import {Checkbox} from "material-ui";
-import {IFileItem} from "./Banner";
+import {IFileItem} from "./UploadBanner";
 import CONFIG from "../../../../constants/config";
 
 
@@ -84,10 +84,10 @@ export default class UtmForm extends React.Component<IProps, IState> {
     }
     public componentWillReceiveProps(nextProps) {
        if (!nextProps.shouldUpdate) {
-           if (nextProps.cta) {
+           if (nextProps.cta || nextProps.cta === "") {
                this.handleData(nextProps.cta, UTM_INPUT.CTA);
            }
-           if (nextProps.link) {
+           if (nextProps.link || nextProps.link === "") {
                this.handleData(nextProps.link, UTM_INPUT.URL);
            }
        }
