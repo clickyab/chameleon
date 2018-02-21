@@ -14,7 +14,6 @@ import CONFIG from "../../../../constants/config";
 import {default as UploadService, UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import FileSizeConvertor from "../../../../services/Utils/FileSizeConvertor";
-import { RaisedButton, Checkbox} from "material-ui";
 import "./style.less";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
@@ -61,7 +60,7 @@ interface IProps {
  * @interface IState
  * @desc define state object
  */
-interface IState {
+export interface IStateUpload {
     currentCampaign: OrmCampaign;
     files: IFileItem[];
     openImageModal: boolean;
@@ -69,26 +68,11 @@ interface IState {
     editFile?: IFileItem;
     globalUtm ?: string;
     adSize?: any;
-    urlType?: URL_TYPE;
-    otherUrlType?: OTHER_URL_TYPE;
     fileSelected?: number | null;
-}
-enum OTHER_URL_TYPE {
-   TAPSTREAM = "tapstream",
-}
-
-enum URL_TYPE {
-    BAZAAR = "bazaar",
-    PLAY_STORE = "playStore",
-    MARKET = "market",
-    PHONE = "phone",
-    URL = "url",
-    INSTAGRAM = "instagram",
-    OTHER = "other",
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class UploadBanner extends React.Component <IProps, IState> {
+class UploadBanner extends React.Component <IProps, IStateUpload> {
     private i18n = I18n.getInstance();
 
     /**
@@ -102,8 +86,6 @@ class UploadBanner extends React.Component <IProps, IState> {
             currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
             files: [],
             openImageModal: false,
-            urlType: URL_TYPE.BAZAAR,
-            otherUrlType: OTHER_URL_TYPE.TAPSTREAM,
             fileSelected: null,
             adSize: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
                 ((this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION) ? AppSize : BannerSize)

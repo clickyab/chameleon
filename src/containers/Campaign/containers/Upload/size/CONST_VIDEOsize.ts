@@ -1,7 +1,7 @@
 const videoSize = [
   {
-    width: 800,
-    height: 440,
+    width: 640,
+    height: 360,
   }
 ];
 

@@ -12,6 +12,7 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Native from "./Native";
 import UploadBanner from "./UploadBanner";
+import UploadVideo from "./UploadVideo";
 import {AdTemplate, TEMPLATE} from "./templateComponent";
 import StickyFooter from "../../components/StickyFooter";
 import Translate from "../../../../components/i18n/Translate";
@@ -108,7 +109,7 @@ class UploadComponent extends React.Component <IProps, IState> {
             </div>
             }
             {this.state.template === TEMPLATE.NONE && this.state.currentCampaign &&
-                <UploadBanner currentCampaign={this.state.currentCampaign} />
+                <UploadVideo currentCampaign={this.state.currentCampaign} />
             }
       </div>
     );
