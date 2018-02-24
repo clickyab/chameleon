@@ -11,7 +11,6 @@ import CONFIG from "../../../../constants/config";
 import {withRouter} from "react-router";
 import UtmForm from "./UtmForm";
 import Rating from "../../components/Rating";
-import CurrencySelector from "../../components/CurrencySelector";
 const FormItem = Form.Item;
 
 /**
@@ -25,7 +24,7 @@ interface ISubmitParams {
 
 export interface InputInfo {
     title: string;
-    type: "textfield" | "limiter" | "url" | "rating" | "currency-selector";
+    type: "textfield" | "limiter" | "url" | "rating";
     placeholder?: string;
     limit?: number;
     required?: boolean;
@@ -84,7 +83,7 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                                     })(
                                         <input
                                             placeholder={this.i18n._t(value.placeholder) as string}
-                                            className={`input-campaign  full-width + ${value.className ? value.className : ""}`}
+                                            className={`input-campaign full-width + ${value.className ? value.className : ""}`}
                                         />
                                     )}
                                 </FormItem>
@@ -130,18 +129,6 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                                     <Rating allowHalf className={"rating-utm"}/>
                                 )}
                             </FormItem>
-                            </Col>;
-                        }
-                        else if (value.type === "currency-selector") {
-                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
-                                <FormItem>
-                                    {getFieldDecorator(value.title, {
-                                        initialValue: "",
-                                        rules: [{required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
-                                    })(
-                                        <CurrencySelector placeholder={this.i18n._t(value.placeholder) as string}/>
-                                    )}
-                                </FormItem>
                             </Col>;
                         }
                 })}

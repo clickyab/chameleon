@@ -19,6 +19,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
+import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {UTMInfo} from "./UtmForm";
 import {Checkbox} from "material-ui";
 
@@ -65,6 +66,38 @@ interface IState extends IStateUpload {
 class UploadVideoInBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
     private disableUpload: boolean = false;
+    private FormObject: InputInfo[] = [{
+        title: "name",
+        type: "textfield",
+        placeholder: "name place holder",
+        required: true,
+    },
+        {
+            title: "url",
+            type: "url",
+            placeholder: "",
+            required: true,
+        },
+        {
+            title: "rating",
+            type: "rating",
+            required: true,
+        },
+        {
+            title: "Alireza",
+            type: "textfield",
+            halfSize: true,
+            required: true,
+            optional: true
+        },
+        {
+            title: "Alireza2",
+            type: "textfield",
+            halfSize: true,
+            required: true,
+            optional: true
+        }
+    ];
 
     /**
      * @constructor
@@ -381,11 +414,13 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             });
         });
     }
-private showUTMdetails() {
+
+    private showUTMdetails() {
         this.setState({
             showUTMdetails: !this.state.showUTMdetails
         });
-}
+    }
+
     /**
      * @func render
      * @desc render component
@@ -469,44 +504,7 @@ private showUTMdetails() {
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">
-                            <span className="upload-title-setting span-block"><Translate
-                                value={"URL and uploaded banners setting"}/></span>
-                            <FormItem>
-                                <span className="span-block input-title"><Translate value="Title"/></span>
-                                <InputLimit
-                                    placeholder={this.i18n._t("Title for display under image or ...") as string}
-                                    className="input-campaign full-width mb-2"
-                                    limit={50}
-                                />
-                                <span className="span-block input-title"><Translate value="Description"/></span>
-                                <InputLimit
-                                    multiLine
-                                    className="input-campaign full-width mb-2 textarea-campaign"
-                                    limit={150}
-                                />
-                                <span className="span-block input-title"><Translate value="Text of Call to Action"/></span>
-                                <InputLimit
-                                    placeholder={this.i18n._t("example: Online shopping ...") as string}
-                                    className="input-campaign full-width mb-2"
-                                    limit={13}
-                                />
-                                <span className="span-block input-title"><Translate value="Phone number"/></span>
-                                <input
-                                    placeholder={this.i18n._t("+98 -----------") as string}
-                                    className="input-campaign full-width mb-2 dir-ltr"
-                                    type="number"
-                                />
-                                <span className="span-block input-title"><Translate value="URL*"/></span>
-                                <input
-                                    placeholder={this.i18n._t("http://domain.com") as string}
-                                    className="input-campaign full-width mb-2"
-                                />
-                                <Checkbox className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
-                                          checked={this.state.showUTMdetails}
-                                          label={this.i18n._t("Setting UTM parameters")}
-                                          onClick={() => this.showUTMdetails()}
-                                />
-                            </FormItem>
+                            <UTMDynamicForm inputObject={this.FormObject} />
                         </Row>
                     </Col>
                     <Row type="flex" align="middle" className="full-width">

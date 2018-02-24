@@ -433,16 +433,16 @@ private handleBannerData(item: UTMInfo) {
                                         <span className="span-block"><Translate value={"allowed extentions: GIF/PNG/JPG"}/></span>
                                         </div>
                                     </Col>
-                                        <Row className="upload-setting">
+                                        <Col span={24} className="upload-setting">
                                             <span className="upload-title-setting span-block"><Translate value={"URL and uploaded banners setting"}/></span>
                                             <FormItem>
                                                 <UtmForm global={true} onSubmit={(params) => {this.onUtmFormSubmit(params); }}
                                                          onChange={(item) => {this.handleBannerData(item);  }}
                                                          link={this.state.globalUtm}/>
                                             </FormItem>
-                                        </Row>
+                                        </Col>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col span={16}>
                                         <Row type="flex" gutter={20}>
                                             {this.state.files.map((file, index) => (
                                                 <Col key={file.id} span={6}>
