@@ -34,7 +34,7 @@ export default class InputLimit extends React.Component<IProps , IState> {
         }
     }
     render() {
-        let {limit , customOnChange , ...rest} = this.props;
+        let {limit, multiLine , customOnChange , ...rest} = this.props;
         return (
             <div className="input-limit-wrapper">
                 {!this.props.multiLine &&

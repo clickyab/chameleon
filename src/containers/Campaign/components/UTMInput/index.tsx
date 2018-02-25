@@ -201,7 +201,6 @@ export default class UTMInput extends React.Component<IProps, IState> {
     render() {
         return(
         <div>
-            <Row type={"flex"}>
                 <span className="span-block input-title"><Translate value="URL*"/></span>
                 <input
                     placeholder={this.i18n._t("http://domain.com") as string}
@@ -274,7 +273,6 @@ export default class UTMInput extends React.Component<IProps, IState> {
                     </Col>
                 </Row>
                 }
-            </Row>
         </div>);
     }
 }
