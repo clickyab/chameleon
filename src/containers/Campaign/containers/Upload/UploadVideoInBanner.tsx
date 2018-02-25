@@ -84,16 +84,10 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             required: true,
         },
         {
-            title: "Alireza",
-            type: "textfield",
-            halfSize: true,
-            required: true,
-            optional: true
-        },
-        {
             title: "Alireza2",
-            type: "textfield",
+            type: "currency-selector",
             halfSize: true,
+            offset: true,
             required: true,
             optional: true
         }
