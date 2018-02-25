@@ -19,6 +19,7 @@ import "./style.less";
 import SelectBox, {ISelectBoxItem} from "../../../Campaign/containers/Naming/Components/SelectBox";
 import Currency from "../../../../components/Currency";
 
+const FormItem = Form.Item;
 /**
  * @interface IProps
  * @desc define Prop object
@@ -130,9 +131,9 @@ class ChargeContainer extends React.Component<IProps, IState> {
      * @func handleInputChange
      * @desc set amount after each input change
      */
-    private handleInputChange(event , value) {
+    private handleInputChange(value) {
         this.setState({
-            amountValue:  value,
+            amountValue: value,
         });
     }
     /**
@@ -162,10 +163,11 @@ class ChargeContainer extends React.Component<IProps, IState> {
     }
 
     render() {
+        const {getFieldDecorator} = this.props.form;
         return (
             <div className={(CONFIG.DIR === "rtl") ? "charge-container-rtl" : "charge-container"}>
                 <Row type="flex">
-                    <Col span={16}>
+                    <Col span={17}>
                         <Row>
                             <span className="circle-number">1</span>
                             <Translate value={"Ways to charge your account"}/>
@@ -229,19 +231,25 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                     </div>
                                     }
                                     {this.state.activeInput &&
+                                        <FormItem className="reset-margin">
+                                            {getFieldDecorator("bankAmount", {
+                                                initialValue: this.state.amountValue,
+                                                rules: [{required: true , message: this.i18n._t("This field is required")}],
+                                            })(
                                     <Currency
-                                        className={"amount-input"}
+                                        className={"input-campaign amount-input"}
                                         currencyLenght={9}
-                                        hintText={(this.state.amountValue === null) ?
-                                            <Translate value={"Enter your amount"}/> : null}
+                                        placeholder={(this.state.amountValue === null) ?
+                                            this.i18n._t("Enter your amount") as string : ""}
                                         onKeyPress={() => {
                                             this.handleAmount();
                                         }}
-                                        onChange={(e, val) => {
-                                            this.handleInputChange(e, val);
+                                        onChange={(e) => {
+                                            this.handleInputChange(e);
                                         }}
                                         value={this.state.amountValue}
-                                    />
+                                    />)}
+                                        </FormItem>
                                     }
                                 </div>
                             </Row>
@@ -275,26 +283,36 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 <span className="circle-number">2</span>
                                 <Translate value={"Receipt information"}/>
                             </Row>
-                            <Row type="flex" align="middle" gutter={40}>
-                                <Col span={6}>
-                                <TextField
-                                    className={"receipt-input"}
-                                    floatingLabelFixed={true}
-                                    floatingLabelText={"Follow up transaction number"}
-                                />
+                            <Row type="flex" align="middle" className={"mt-1"} gutter={40}>
+                                <Col span={7}>
+                                    <span className="span-block input-title">{this.i18n._t("Follow up transaction number")}</span>
+                                    <FormItem className={"reset-margin"}>
+                                        {getFieldDecorator("TransactionNumber", {
+                                            initialValue: "",
+                                            rules: [{required: true , message: this.i18n._t("This field is required")}],
+                                        })(
+                                <input
+                                    className={"input-campaign receipt-input"}
+                                />)}
+                                    </FormItem>
                                 </Col>
                                 <Col span={6}>
+                                        <span className="span-block input-title">{this.i18n._t("Amount")}</span>
                                     <div className={"receipt-wrapper"}>
+                                        <FormItem className={"reset-margin"}>
+                                            {getFieldDecorator("bankAmount", {
+                                                initialValue: this.state.amountValue,
+                                                rules: [{required: true , message: this.i18n._t("This field is required")}],
+                                            })(
                                     <Currency
-                                        className={"receipt-input"}
+                                        className={"receipt-input input-campaign"}
                                         currencyLenght={10}
-                                        floatingLabelFixed={true}
-                                        floatingLabelText={"Amount of deposits"}
-                                        onChange={(e , value) => {
-                                            this.handleInputChange(e, value);
+                                        onChange={(value) => {
+                                            this.handleInputChange(value);
                                         }}
                                         value={this.state.amountValue}
-                                    />
+                                    />)}
+                                        </FormItem>
                                     <span className={"receipt-currency"}><Translate value={"Toman"}/></span>
                                     </div>
                                 </Col>
@@ -330,14 +348,19 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 <Translate value={"Receipt information"}/>
                             </Row>
                             <Row type="flex" align="middle" gutter={40}>
-                                <Col span={8}>
-                                    <div className={"receipt-wrapper"}>
-                                        <TextField
-                                            className={"receipt-input"}
-                                            floatingLabelFixed={true}
-                                            floatingLabelText={"10 number of your coupon"}
+                                <Col span={8} className="mt-1">
+                                    <div>
+                                        <span className="span-block input-title">{this.i18n._t("10 number of your coupon")}</span>
+                                        <FormItem>
+                                            {getFieldDecorator("bankAmount", {
+                                                initialValue: this.state.couponInput,
+                                                rules: [{required: true , message: this.i18n._t("This field is required")}],
+                                            })(
+                                        <input
+                                            className={"receipt-input input-campaign"}
                                             value={this.state.couponInput}
-                                        />
+                                        />)}
+                                        </FormItem>
                                     </div>
                                 </Col>
                             </Row>
@@ -362,7 +385,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                         </div>
                         }
                     </Col>
-                    <Col span={8}>
+                    <Col span={7}>
                     </Col>
                 </Row>
             </div>

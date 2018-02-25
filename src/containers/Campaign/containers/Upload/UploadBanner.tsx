@@ -414,7 +414,8 @@ private handleBannerData(item: UTMInfo) {
                     <Col span={24} className="full-width">
                             <Form>
                                 <Row type={"flex"} gutter={66}>
-                                    <Col span={12} className="upload-column-border">
+                                    <Col span={8} className="upload-column-border">
+                                        <Col span={24} className={"column-border-bottom"}>
                                         <span className="image-drag-upload"><Translate value={"Image*"}/></span>
                                         <Dragger
                                             beforeUpload={this.uploadFile.bind(this)}
@@ -431,16 +432,17 @@ private handleBannerData(item: UTMInfo) {
                                         <span className="span-block"><Translate value={"maximum size: 200KB"}/></span>
                                         <span className="span-block"><Translate value={"allowed extentions: GIF/PNG/JPG"}/></span>
                                         </div>
-                                        <Row className="upload-setting">
+                                    </Col>
+                                        <Col span={24} className="upload-setting">
                                             <span className="upload-title-setting span-block"><Translate value={"URL and uploaded banners setting"}/></span>
                                             <FormItem>
                                                 <UtmForm global={true} onSubmit={(params) => {this.onUtmFormSubmit(params); }}
                                                          onChange={(item) => {this.handleBannerData(item);  }}
                                                          link={this.state.globalUtm}/>
                                             </FormItem>
-                                        </Row>
+                                        </Col>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col span={16}>
                                         <Row type="flex" gutter={20}>
                                             {this.state.files.map((file, index) => (
                                                 <Col key={file.id} span={6}>

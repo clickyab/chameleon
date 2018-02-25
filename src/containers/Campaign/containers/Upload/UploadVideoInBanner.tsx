@@ -10,19 +10,18 @@ import {IStateUpload} from "./UploadBanner";
 import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS , FlowUpload} from "../../../../services/Upload/index";
+import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS, FlowUpload} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
-import Modal from "../../../../components/Modal/index";
-import Icon from "../../../../components/Icon/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import {DEVICE_TYPES} from "../Type";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
+import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {UTMInfo} from "./UtmForm";
+import {Checkbox} from "material-ui";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -60,12 +59,39 @@ interface IProps {
  */
 interface IState extends IStateUpload {
     disableDragger: boolean;
+    showUTMdetails: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class UploadVideo extends React.Component <IProps, IState> {
+class UploadVideoInBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
     private disableUpload: boolean = false;
+    private FormObject: InputInfo[] = [{
+        title: "name",
+        type: "textfield",
+        placeholder: "name place holder",
+        required: true,
+    },
+        {
+            title: "url",
+            type: "url",
+            placeholder: "",
+            required: true,
+        },
+        {
+            title: "rating",
+            type: "rating",
+            required: true,
+        },
+        {
+            title: "Alireza2",
+            type: "currency-selector",
+            halfSize: true,
+            offset: true,
+            required: true,
+            optional: true
+        }
+    ];
 
     /**
      * @constructor
@@ -80,6 +106,7 @@ class UploadVideo extends React.Component <IProps, IState> {
             openImageModal: false,
             fileSelected: null,
             disableDragger: false,
+            showUTMdetails: false,
             adSize: VideoSize,
         };
         let otherPlaceholder: string;
@@ -382,6 +409,12 @@ class UploadVideo extends React.Component <IProps, IState> {
         });
     }
 
+    private showUTMdetails() {
+        this.setState({
+            showUTMdetails: !this.state.showUTMdetails
+        });
+    }
+
     /**
      * @func render
      * @desc render component
@@ -401,56 +434,73 @@ class UploadVideo extends React.Component <IProps, IState> {
                 </div>
                 <Row type="flex" gutter={16}>
                     <Col span={24} className={"column-border-bottom"}>
-                        <Row type={"flex"} gutter={16}>
-                    <Col span={8} offset={16}>
-                        <FormItem>
-                            <span className="span-block input-title"><Translate value="Choose name for Ad*"/></span>
-                            {getFieldDecorator("adName", {
-                                rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
-                            })(
-                            <InputLimit
-                                placeholder={this.i18n._t("Name for Creative") as string}
-                                className="input-campaign full-width"
-                                limit={10}
-                            />)}
-                        </FormItem>
-                    </Col>
+                        <Row gutter={16}>
+                            <Col span={8} offset={16}>
+                                <FormItem>
+                                    <span className="span-block input-title"><Translate
+                                        value="Choose name for Ad*"/></span>
+                                    {getFieldDecorator("adName", {
+                                        rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
+                                    })(
+                                        <InputLimit
+                                            placeholder={this.i18n._t("Name for Creative") as string}
+                                            className="input-campaign full-width"
+                                            limit={10}
+                                        />)}
+                                </FormItem>
+                            </Col>
                         </Row>
+                    </Col>
+                    <Col span={16} offset={8}>
+                        <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
                     </Col>
                     <Col span={24} className={"column-border-bottom"}>
-                    <Col span={8} offset={16}>
-                        <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
-                        <span className="image-drag-upload"><Translate value={"video or image*"}/></span>
-                        <Dragger
-                            beforeUpload={this.uploadFile.bind(this)}
-                            className="banner-dragger-comp"
-                            disabled={this.state.disableDragger}
-                        >
-                            <div className="dragger-content">
-                                <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                                <Translate value={"Drag your image over here or"}/>
-                            </div>
-                        </Dragger>
-                        <div className="drag-description">
-                            <Translate value={"Minimum size of video / image 640x360px"}/>
-                            <span className="span-block"><Translate value={"image aspect ratio: 1.9:1"}/></span>
-                            <span className="span-block"><Translate value={"allowed extentions: MP4"}/></span>
-                        </div>
-                    </Col>
-                    </Col>
-                        <Row className="upload-setting">
-                            <span className="upload-title-setting span-block">
-                                <Translate value={"URL and uploaded banners setting"}/></span>
-                            <FormItem>
-                                <UtmForm global={true} onSubmit={(params) => {
-                                    this.onUtmFormSubmit(params);
-                                }}
-                                         onChange={(item) => {
-                                             this.handleVideoData(item);
-                                         }}
-                                         link={this.state.globalUtm}/>
-                            </FormItem>
+                        <Row type={"flex"} gutter={16}>
+                            <Col span={8}>
+                                <span className="image-drag-upload"><Translate value={"video*"}/></span>
+                                <Dragger
+                                    beforeUpload={this.uploadFile.bind(this)}
+                                    className="banner-dragger-comp"
+                                    disabled={this.state.disableDragger}
+                                >
+                                    <div className="dragger-content">
+                                        <span className="upload-image-link"><Translate value={"upload it"}/></span>
+                                        <Translate value={"Drag your video over here or"}/>
+                                    </div>
+                                </Dragger>
+                                <div className="drag-description">
+                                    <Translate value={"Minimum size of video 640x360px"}/>
+                                    <span className="span-block"><Translate value={"allowed extentions: MP4"}/></span>
+                                </div>
+                            </Col>
+                            <Col span={8}>
+                                <span className="image-drag-upload"><Translate
+                                    value={"video poster(wide with 16:9 aspect ratio)*"}/></span>
+                                <Dragger
+                                    beforeUpload={this.uploadFile.bind(this)}
+                                    className="banner-dragger-comp"
+                                    disabled={this.state.disableDragger}
+                                >
+                                    <div className="dragger-content">
+                                        <span className="upload-image-link"><Translate value={"upload it"}/></span>
+                                        <Translate value={"Drag your image over here or"}/>
+                                    </div>
+                                </Dragger>
+                                <div className="drag-description">
+                                    <Translate value={"Minimum size of image 640x360px"}/>
+                                    <span className="span-block"><Translate value={"image aspect ratio: 1.9:1"}/></span>
+                                    <span className="span-block"><Translate value={"allowed extentions: MP4"}/></span>
+                                </div>
+                            </Col>
+                            <Col span={8}>
+                            </Col>
                         </Row>
+                    </Col>
+                    <Col span={8}>
+                        <Row className="upload-setting">
+                            <UTMDynamicForm inputObject={this.FormObject} />
+                        </Row>
+                    </Col>
                     <Row type="flex" align="middle" className="full-width">
                         <Button className="btn-general btn-submit ml-1"
                                 onClick={this.handleSubmit.bind(this)}
@@ -487,4 +537,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default Form.create<IProps>()(withRouter(UploadVideo as any));
+export default Form.create<IProps>()(withRouter(UploadVideoInBanner as any));
