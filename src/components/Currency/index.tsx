@@ -1,13 +1,12 @@
 /**
  * @file Currency Component
- * @desc Currency component formats currency on textfields
+ * @desc Currency component formats currency on input
  */
 import * as React from "react";
 import {TextField , TextFieldProps} from "material-ui";
 import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
 
-interface IProps extends TextFieldProps {
-    onChange?(e: React.FormEvent<{}>, newValue: string ): void;
+export interface IProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     stringValue?: (value: string) => void;
     className?: string;
     currencyLenght?: number;
@@ -32,12 +31,12 @@ class Currency extends React.Component<IProps , IState> {
      * @param val value of textfield
      * @desc only let user to type number type, remove ","  and set value and onChange
      */
-    private handleValue(e, val) {
-     let valueNumber = val.replace(/\D|,/g, "");
+    private handleValue(e) {
+     let valueNumber = e.target.value.replace(/\D|,/g, "");
      if (!this.props.currencyLenght || this.props.currencyLenght >= valueNumber.length) {
          this.setState({value: valueNumber});
          if (this.props.onChange) {
-             this.props.onChange(e, valueNumber);
+             this.props.onChange(valueNumber);
          }
          if (this.props.stringValue) {
              this.props.stringValue(currencyFormatter(valueNumber));
@@ -45,11 +44,10 @@ class Currency extends React.Component<IProps , IState> {
      }
     }
     public render() {
+        const {currencyLenght, stringValue, ...rest} = this.props;
         return(
-            <div>
-            <TextField {...this.props} value={this.state.value ? currencyFormatter(this.state.value) : ""}
-                       onChange={(e, value) => this.handleValue(e, value) } />
-            </div>
+            <input {...rest} value={this.state.value ? currencyFormatter(this.state.value) : ""}
+                       onChange={(e) => this.handleValue(e) } />
         );
     }
 }

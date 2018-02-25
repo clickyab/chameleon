@@ -1,0 +1,23 @@
+.currency-selector{
+  display: flex;
+  .input-campaign{
+    height: 35px;
+    width: 50%;
+  }
+  .selector{
+    background: #FFF;
+    border: 1px solid #D8DADE;
+    border-right: 0;
+    width: 50%;
+    direction: rtl;
+  }
+}
+[dir="ltr"] {
+  .currency-selector {
+    .selector {
+      direction: ltr;
+      border-right: 1px solid #D8DADE;
+      border-left: 0;
+    }
+  }
+}

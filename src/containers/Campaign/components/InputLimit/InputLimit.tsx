@@ -4,7 +4,7 @@ interface IState {
     value: string;
 }
 
-interface IProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>{
+interface IProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     limit?: number;
     customOnChange?: (event) => void;
     multiLine?: boolean;
