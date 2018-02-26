@@ -59,7 +59,6 @@ interface IProps {
  */
 interface IState extends IStateUpload {
     disableDragger: boolean;
-    showUTMdetails: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -67,29 +66,23 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
     private disableUpload: boolean = false;
     private FormObject: InputInfo[] = [{
-        title: "name",
-        type: "textfield",
-        placeholder: "name place holder",
+        title: "Title",
+        type: "limiter",
+        limit: 50,
+        placeholder: "Ad title",
         required: true,
     },
-        {
-            title: "url",
-            type: "url",
-            placeholder: "",
+         {
+            title: "Call to Action text",
+            type: "limiter",
+            limit: 15,
+            placeholder: "example: online shopping",
             required: true,
         },
         {
-            title: "rating",
-            type: "rating",
+            title: "URL",
+            type: "url" ,
             required: true,
-        },
-        {
-            title: "Alireza2",
-            type: "currency-selector",
-            halfSize: true,
-            offset: true,
-            required: true,
-            optional: true
         }
     ];
 
@@ -106,7 +99,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             openImageModal: false,
             fileSelected: null,
             disableDragger: false,
-            showUTMdetails: false,
             adSize: VideoSize,
         };
         let otherPlaceholder: string;
@@ -409,12 +401,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
         });
     }
 
-    private showUTMdetails() {
-        this.setState({
-            showUTMdetails: !this.state.showUTMdetails
-        });
-    }
-
     /**
      * @func render
      * @desc render component
@@ -498,7 +484,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">
-                            <UTMDynamicForm inputObject={this.FormObject} />
+                            <UTMDynamicForm form={this.props.form} inputObject={this.FormObject} />
                         </Row>
                     </Col>
                     <Row type="flex" align="middle" className="full-width">
@@ -519,7 +505,7 @@ interface IOwnProps {
     match ?: any;
     history?: any;
 }
-
+// TODO API should Implement
 function mapStateToProps(state: RootState, ownProps: IOwnProps) {
     return {
         currentStep: state.campaign.currentStep,
