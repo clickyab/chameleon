@@ -74,9 +74,9 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
     render() {
         const {getFieldDecorator} = this.props.form;
         return(
-                <Form>
+                <Form className={"utm-dynamic-drive"}>
                 {this.props.inputObject && this.props.inputObject.filter(item => (this.state.showMoreOption || !item.optional)).map((value: InputInfo, index) => {
-                        if (value.type === "textfield" && value.required) {
+                        if (value.type === "textfield") {
                             return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
                             <FormItem>
                                     <span className="span-block input-title">{this.i18n._t(value.title)}</span>
