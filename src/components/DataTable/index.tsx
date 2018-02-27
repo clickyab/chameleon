@@ -11,13 +11,13 @@
  *
  */
 import * as React from "react";
-import {Table, Row, Checkbox, Col, Switch, Button , Select } from "antd";
+import {ReactNode} from "react";
+import {Button, Checkbox, Col, Input, Row, Select, Switch, Table} from "antd";
 import {DataTableDataParser} from "./lib/parsers";
-import {IActionsFn, IColumn, IData, IDefinition, ITableBtn} from "./lib/interfaces";
+import {IActionsFn, IData, IDefinition, ITableBtn} from "./lib/interfaces";
 import {PaginationProps} from "antd/lib/pagination";
 import "./style.less";
 import Icon from "../Icon/index";
-import {ReactNode} from "react";
 import Modal from "../../components/Modal/index";
 import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
@@ -101,7 +101,7 @@ interface IState {
   sort?: string;
   order?: "descend" | "ascend" | null;
   filters?: {};
-  searches?: {};
+  searches?: string;
   loading: boolean;
   selectedRows: object[];
   selectedKeys: string[];
@@ -139,7 +139,7 @@ class DataTable extends React.Component<IProps, IState> {
       loading: true,
       page: 1,
       filters: {},
-      searches: {},
+      searches: "",
       customizeModal: false,
       customField: customField,
       pageSize: 10,
@@ -170,16 +170,17 @@ class DataTable extends React.Component<IProps, IState> {
   }
 
   private selectPageSize(value) {
-      this.setState({
-          pageSize: parseInt(value)
-      });
+    this.setState({
+      pageSize: parseInt(value)
+    });
   }
+
   /**
    * Store table definition in local storage
    * @param {IDefinition} definition
    */
   storeDefinition(definition: IDefinition) {
-      localStorageAdd(`TABLE_DEFINITION_${this.props.name}`, definition);
+    localStorageAdd(`TABLE_DEFINITION_${this.props.name}`, definition);
   }
 
 
@@ -188,7 +189,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @param {any} definition
    */
   storeCustom(customField) {
-      localStorageAdd(`TABLE_CUSTOM_${this.props.name}`, customField);
+    localStorageAdd(`TABLE_CUSTOM_${this.props.name}`, customField);
   }
 
   /**
@@ -266,9 +267,9 @@ class DataTable extends React.Component<IProps, IState> {
     let config = {
       p: this.state.page,
       loading: true,
-        data: {data: []}
+      data: {data: []}
     };
-      this.forceUpdate();
+    this.forceUpdate();
 
     if (this.range && this.range.from) {
       config["from"] = this.range.from.toISOString();
@@ -288,9 +289,7 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     if (this.state.searches) {
-      Object.keys(this.state.searches).map((s) => {
-        config[s] = this.state.searches[s];
-      });
+      config["search"] = this.state.searches;
     }
 
     if (this.props.onQueryChange && callOnQueryChange) {
@@ -387,11 +386,11 @@ class DataTable extends React.Component<IProps, IState> {
    */
 
   setColumnsWidth() {
-      const dataTable = document.getElementById("data-table-wrapper-id");
-      if (!dataTable || !dataTable.getElementsByTagName("table")) {
-        return null;
-      }
-    const tables = (dataTable.getElementsByTagName("table")) ;
+    const dataTable = document.getElementById("data-table-wrapper-id");
+    if (!dataTable || !dataTable.getElementsByTagName("table")) {
+      return null;
+    }
+    const tables = (dataTable.getElementsByTagName("table"));
     if (tables.length !== 2) return;
     if (!tables[1].getElementsByTagName("tr")[0] || !tables[1].getElementsByTagName("tr")[0].getElementsByTagName("td")) {
       return null;
@@ -455,15 +454,17 @@ class DataTable extends React.Component<IProps, IState> {
       pageSize: this.state.pageSize,
       showTotal: (total, range) => {
         return <div className={"pagination-description"}>
-            <Translate value={"Number of record show on page"}/>
-            <Select className={"pagesize-selector"} defaultValue="10" style={{ width: 50 }} onChange={(value) => this.selectPageSize(value)} >
-                <Option value="10">10</Option>
-                <Option value="20">20</Option>
-                <Option value="30">30</Option>
-                <Option value="50">50</Option>
-            </Select>
-          <Translate value="(Show %s from %s)" params={[this.state.page , Math.ceil(this.state.data.total / this.state.pageSize)]}/>
-        </div> ;
+          <Translate value={"Number of record show on page"}/>
+          <Select className={"pagesize-selector"} defaultValue="10" style={{width: 50}}
+                  onChange={(value) => this.selectPageSize(value)}>
+            <Option value="10">10</Option>
+            <Option value="20">20</Option>
+            <Option value="30">30</Option>
+            <Option value="50">50</Option>
+          </Select>
+          <Translate value="(Show %s from %s)"
+                     params={[this.state.page, Math.ceil(this.state.data.total / this.state.pageSize)]}/>
+        </div>;
       },
       onChange: (page, pageSize) => {
         this.setState({
@@ -506,15 +507,15 @@ class DataTable extends React.Component<IProps, IState> {
    * @param {string} column
    * @param {string} value
    */
-  onSearch(column: string, value: string) {
+  onSearch(value: string) {
     let searches = this.state.searches;
     let data = this.state.data;
     data.page = 1;
     data.data = [];
     if (value) {
-      searches[column] = value;
+      searches = value;
     } else {
-      delete searches[column];
+      searches = "";
     }
     this.setState({
       searches: searches,
@@ -544,7 +545,9 @@ class DataTable extends React.Component<IProps, IState> {
     this.setState({
       customField: this.customFieldTemp,
       customizeModal: false,
-    } , () => { setTimeout(this.setColumnsWidth , 200); });
+    }, () => {
+      setTimeout(this.setColumnsWidth, 200);
+    });
   }
 
   /**
@@ -566,32 +569,36 @@ class DataTable extends React.Component<IProps, IState> {
     return (
       <div id={"data-table-wrapper-id"} className="data-table-wrapper">
         <div className="data-table-header">
-        <div className="data-table-description">
-          {this.props.tableDescription}
-        </div>
-        <div className="data-table-btns">
-          <Button
-            className="add-customize-btn"
-            onClick={() => {
-              this.openCustomizeModal();
-            }}>
-            <Icon name={"cif-gear-outline"} className="custom-icon"/>
-            <Translate value="Customize table"/>
-          </Button>
-          {this.props.tableButtons &&
-          this.props.tableButtons.map((button , index) => {
-             return <Button
-                  key={index}
-                  className="add-customize-btn dynamic-btn"
-                  onClick={(query) => {
-                      button.onClick(query);
-                  }}>
-                  <Icon name={"cif-" + button.icon} className={button.icon}/>
-                  <Translate value={button.title}/>
+          <div className="data-table-search">
+            {/*{this.props.tableDescription}*/}
+            <Icon name={"cif-magnifier"} fontsize={16} className="custom-icon"/>
+            <Input size="large"
+                   onChange={(value) => {
+                     this.onSearch(value.target.value);
+                   }}
+                   placeholder={this.i18n._t("Search").toString()}/>
+          </div>
+          <div className="data-table-btns">
+            <Button
+              className="add-customize-btn"
+              onClick={() => {
+                this.openCustomizeModal();
+              }}>
+              <Icon name={"cif-gear-outline"} className="custom-icon"/>
+            </Button>
+            {this.props.tableButtons &&
+            this.props.tableButtons.map((button, index) => {
+              return <Button
+                key={index}
+                className="add-customize-btn dynamic-btn"
+                onClick={(query) => {
+                  button.onClick(query);
+                }}>
+                <Icon name={"cif-" + button.icon} fontsize={16} className={button.icon}/>
               </Button>;
-          })
-          }
-        </div>
+            })
+            }
+          </div>
         </div>
         {this.state.customizeModal &&
         <Modal title={this.i18n._t("Customize Table").toString()}
@@ -614,8 +621,8 @@ class DataTable extends React.Component<IProps, IState> {
                 className={`${(CONFIG.DIR === "rtl") ? "checkbox-rtl" : ""}`}>
                 {this.state.definition.columns.map((key, index) => {
                   if (key.visible) {
-                    if (skipFirst === 0 ) {
-                      skipFirst++ ;
+                    if (skipFirst === 0) {
+                      skipFirst++;
                       return null;
                     }
                     return (
@@ -652,14 +659,14 @@ class DataTable extends React.Component<IProps, IState> {
           onChange={this.handleTableChange.bind(this)}
           className="campaign-data-table"
         />
-          <div className={(this.infiniteLoader) ? "table-total-number" : "mt-2"}>
-              {this.infiniteLoader &&
-              <div>
-                  <Icon name={"cif-target"}/>
-                  <Translate value={"%s result"} params={[this.state.data.total]}/>
-              </div>
-              }
+        <div className={(this.infiniteLoader) ? "table-total-number" : "mt-2"}>
+          {this.infiniteLoader &&
+          <div>
+            <Icon name={"cif-target"}/>
+            <Translate value={"%s result"} params={[this.state.data.total]}/>
           </div>
+          }
+        </div>
       </div>
     );
   }
