@@ -23,6 +23,7 @@ import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {UTMInfo} from "./UtmForm";
 import {Checkbox} from "material-ui";
 import {default as UploadService} from "../../../../services/Upload";
+import Icon from "../../../../components/Icon";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -63,6 +64,10 @@ interface IState extends IStateUpload {
     disableDraggerLogo: boolean;
     manageImageItem?: any;
     showCropModal: boolean;
+    fileUrlOriginal: string;
+    logoUrlOriginal: string;
+    fileUrlCropped: string;
+    logoUrlCropped: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -74,8 +79,6 @@ class UploadAdContent extends React.Component <IProps, IState> {
     };
     private disableUpload: boolean = false;
     private tmpImg: Blob;
-    private fileUrl: string;
-    private logoUrl: string;
     private imageType: IMG_TYPE;
     private FormObject: InputInfo[] = [{
         title: "Title",
@@ -127,6 +130,10 @@ class UploadAdContent extends React.Component <IProps, IState> {
             disableDraggerImage: false,
             disableDraggerLogo: false,
             showCropModal: false,
+            fileUrlOriginal: "",
+            logoUrlOriginal: "",
+            fileUrlCropped: "",
+            logoUrlCropped: "",
         };
         let otherPlaceholder: string;
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
@@ -245,7 +252,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                           this.setState(prevState => {
                               prevState.showCropModal = true;
                               this.imageType = IMG_TYPE.IMAGE;
-                              this.fileUrl = URL.createObjectURL(fileItemObject.fileObject);
+                              prevState.fileUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
                               prevState.disableDraggerImage = false;
                               this.disableUpload = false;
                               return prevState;
@@ -267,7 +274,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
               this.setState(prevState => {
                   prevState.showCropModal = true;
                   this.imageType = IMG_TYPE.LOGO;
-                  this.logoUrl = URL.createObjectURL(file);
+                  prevState.logoUrlOriginal = URL.createObjectURL(file);
                   prevState.disableDraggerLogo = false;
                   this.disableUpload = false;
                   return prevState;
@@ -297,10 +304,10 @@ class UploadAdContent extends React.Component <IProps, IState> {
         }
         this.setState((prevState => {
             if (this.imageType === IMG_TYPE.IMAGE) {
-                this.fileUrl = URL.createObjectURL(this.tmpImg);
+                prevState.fileUrlCropped = URL.createObjectURL(this.tmpImg);
             }
             else {
-                this.logoUrl = URL.createObjectURL(this.tmpImg);
+                prevState.logoUrlCropped = URL.createObjectURL(this.tmpImg);
             }
             prevState.showCropModal = false;
             this.tmpImg = null;
@@ -393,6 +400,18 @@ class UploadAdContent extends React.Component <IProps, IState> {
         });
     }
 
+    private handleReset(e, item) {
+        e.stopPropagation();
+        this.setState({[item]: null});
+        console.log("here");
+    }
+    private handleEdit(e, type: IMG_TYPE) {
+        e.stopPropagation();
+        this.imageType = type;
+        this.setState({
+            showCropModal: true,
+        });
+    }
     /**
      * @func render
      * @desc render component
@@ -441,14 +460,22 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                     className="banner-dragger-comp"
                                     disabled={this.state.disableDraggerImage}
                                 >
-                                    {!this.fileUrl && !this.state.showCropModal &&
+                                    {!this.state.fileUrlCropped &&
                                     <div className="dragger-content">
                                         <span className="upload-image-link"><Translate value={"upload it"}/></span>
                                         <Translate value={"Drag your image over here or"}/>
                                     </div>
                                     }
-                                    {this.fileUrl && !this.state.showCropModal &&
-                                    <div className="upload-thumb-container"><img src={this.fileUrl}/></div>
+                                    {this.state.fileUrlCropped &&
+                                    <div className="upload-thumb-container">
+                                        <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.IMAGE)}>
+                                            <Icon name="cif-edit"  />
+                                        </div>
+                                        <div className="remove-upload" onClick={(e) => this.handleReset(e , "fileUrlCropped")}>
+                                            <Icon name="cif-close"  />
+                                        </div>
+                                        <img src={this.state.fileUrlCropped}/>
+                                    </div>
                                     }
                                 </Dragger>
                                 <div className="drag-description">
@@ -464,14 +491,22 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                     beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.LOGO)}
                                     className="banner-dragger-comp"
                                     disabled={this.state.disableDraggerLogo}
-                                > {!this.logoUrl && !this.state.showCropModal &&
+                                > {!this.state.logoUrlCropped &&
                                 <div className="dragger-content">
                                     <span className="upload-image-link"><Translate value={"upload it"}/></span>
                                     <Translate value={"Drag your Logo over here or"}/>
                                 </div>
                                 }
-                                    {this.logoUrl && !this.state.showCropModal &&
-                                        <div className="upload-thumb-container"><img src={this.logoUrl}/></div>
+                                    {this.state.logoUrlCropped &&
+                                        <div className="upload-thumb-container">
+                                            <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
+                                                <Icon name="cif-edit"  />
+                                            </div>
+                                            <div className="remove-upload" onClick={(e) => this.handleReset(e , "logoUrlCropped")}>
+                                                <Icon name="cif-close"  />
+                                            </div>
+                                            <img src={this.state.logoUrlCropped}/>
+                                        </div>
                                     }
                                 </Dragger>
                                 <div className="drag-description">
@@ -497,7 +532,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                     </Row>
                 </Row>
-                {(this.fileUrl || this.logoUrl) && this.state.showCropModal &&
+                {(this.state.fileUrlOriginal || this.state.logoUrlOriginal) && this.state.showCropModal &&
                 <Modal
                     maskClosable={false}
                     closable={false}
@@ -506,7 +541,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     onOk={this.cropImg}
                     footer={<Button type={"primary"} onClick={this.cropImg}>{this.i18n._t("Crop")}</Button>}>
                     <div>
-                        <Cropper source={this.imageType === IMG_TYPE.IMAGE ? this.fileUrl : this.logoUrl }
+                        <Cropper source={this.imageType === IMG_TYPE.IMAGE ? this.state.fileUrlOriginal : this.state.logoUrlOriginal }
                                  aspect={170 / 105}
                                  onChange={(img: Blob) => {
                                      this.tmpImg = img;
