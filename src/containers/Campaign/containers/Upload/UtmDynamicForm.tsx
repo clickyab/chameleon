@@ -25,6 +25,7 @@ interface ISubmitParams {
 
 export interface InputInfo {
     title: string;
+    name: string;
     type: "textfield" | "limiter" | "url" | "rating" | "currency-selector";
     number?: boolean;
     placeholder?: string;
@@ -37,6 +38,7 @@ export interface InputInfo {
     halfSize?: boolean;
     offset?: boolean;
     rules?: object;
+    currancyType?: string;
 }
 interface IState {
     value: any;
@@ -77,16 +79,16 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                 <Form className={"utm-dynamic-drive"}>
                 {this.props.inputObject && this.props.inputObject.filter(item => (this.state.showMoreOption || !item.optional)).map((value: InputInfo, index) => {
                         if (value.type === "textfield") {
-                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
+                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.name}>
                             <FormItem>
-                                    <span className="span-block input-title">{this.i18n._t(value.title)}</span>
-                                    {getFieldDecorator(value.title, {
+                                    <span className="span-block input-title">{value.title}</span>
+                                    {getFieldDecorator(value.name, {
                                         initialValue: value.value,
                                         rules: [ value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                     })(
                                         <input
                                             type={value.number ? "number" : "text"}
-                                            placeholder={this.i18n._t(value.placeholder) as string}
+                                            placeholder={value.placeholder}
                                             className={`input-campaign  full-width + ${value.className ? value.className : ""}`}
                                         />
                                     )}
@@ -94,15 +96,15 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             </Col>;
                         }
                         else if (value.type === "limiter") {
-                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
+                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.name}>
                             <FormItem>
-                                    <span className="span-block input-title">{this.i18n._t(value.title)}</span>
-                                    {getFieldDecorator(value.title, {
+                                    <span className="span-block input-title">{value.title}</span>
+                                    {getFieldDecorator(value.name, {
                                         initialValue: value.value,
                                         rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                     })(
                                         <InputLimit
-                                            placeholder={this.i18n._t(value.placeholder) as string}
+                                            placeholder={value.placeholder}
                                             className={`input-campaign full-width + ${value.className ? value.className : ""}`}
                                             limit={value.limit}
                                             multiLine={value.multiLine}
@@ -112,9 +114,9 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             </Col>;
                         }
                         else if (value.type === "url") {
-                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
+                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.name}>
                             <FormItem>
-                                    {getFieldDecorator(value.title, {
+                                    {getFieldDecorator(value.name, {
                                         initialValue: value.value,
                                         rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                     })(
@@ -124,9 +126,10 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             </Col>;
                         }
                         else if (value.type === "rating") {
-                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
+                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.name}>
                             <FormItem>
-                                {getFieldDecorator(value.title, {
+                                <span className="span-block input-title">{value.title}</span>
+                                {getFieldDecorator(value.name, {
                                     initialValue: 3,
                                     rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                 })(
@@ -136,13 +139,15 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             </Col>;
                         }
                         else if (value.type === "currency-selector") {
-                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.title}>
+                            return <Col span={value.halfSize ? 12 : 24} offset={value.offset ? 12 : 0} className={value.halfSize ? "field-half-size" : ""} key={value.name}>
                                 <FormItem>
-                                    {getFieldDecorator(value.title, {
+                                    {console.log("currancy" , value.currancyType)}
+                                    <span className="span-block input-title">{value.title}</span>
+                                    {getFieldDecorator(value.name, {
                                         initialValue: "",
                                         rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                     })(
-                                        <CurrencySelector placeholder={this.i18n._t(value.placeholder) as string}/>
+                                        <CurrencySelector type={value.currancyType} placeholder={value.placeholder}/>
                                     )}
                                 </FormItem>
                             </Col>;

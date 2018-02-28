@@ -72,7 +72,7 @@ export default class CurrencySelector extends React.Component<IProps, IState> {
                           onChange={(item) => this.handleCurrency(item)}/>
                 <select className="selector" value={this.state.type} onChange={this.handleType.bind(this)}>
                     {Object.values(this.CurrencyTypes).map((item, index) => {
-                        return <option key={index} value={item["symbol"]}>{item["symbol_native"]}</option>;
+                        return <option key={index}  value={item["symbol"]}>{item["symbol_native"]}</option>;
                     })}
                 </select>
             </div>

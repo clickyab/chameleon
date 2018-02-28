@@ -1,8 +1,7 @@
 /**
- * @file Upload Ad Content
+ * @file Upload Dynamic Banner
  */
 import * as React from "react";
-import Image from "react-image-file";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {IStateUpload} from "./UploadBanner";
@@ -20,8 +19,6 @@ import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
 import Cropper from "../../../../components/Cropper/Index";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
-import {UTMInfo} from "./UtmForm";
-import {Checkbox} from "material-ui";
 import {default as UploadService} from "../../../../services/Upload";
 import Icon from "../../../../components/Icon";
 
@@ -54,7 +51,7 @@ interface IProps {
     match?: any;
     history?: any;
 }
-const enum IMG_TYPE {LOGO , IMAGE}
+const enum IMG_TYPE {LOGO , IMAGE , ICON}
 /**
  * @interface IState
  * @desc define state object
@@ -62,32 +59,40 @@ const enum IMG_TYPE {LOGO , IMAGE}
 interface IState extends IStateUpload {
     disableDraggerImage: boolean;
     disableDraggerLogo: boolean;
+    disableDraggerIcon: boolean;
     manageImageItem?: any;
     showCropModal: boolean;
     fileUrlOriginal: string;
     logoUrlOriginal: string;
+    iconUrlOriginal: string;
     fileUrlCropped: string;
     logoUrlCropped: string;
+    iconUrlCropped: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 class UploadAdContent extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
-    private minSize = {
+    private minSizeIcon = {
+        width: 512,
+        height: 512,
+    };
+    private minLogoSize = {
         width: 627,
         height: 627,
     };
     private disableUpload: boolean = false;
     private tmpImg: Blob;
     private imageType: IMG_TYPE;
-    private FormObject: InputInfo[] = [{
+    private FormObject: InputInfo[] = [
+        {
         title: this.i18n._t("Title") as string,
         name: "title",
         type: "limiter",
         limit: 50,
-        placeholder: this.i18n._t("your title will display below image") as string,
+        placeholder: "your title will display below image",
         required: true,
-    },
+        },
         {
             title: this.i18n._t("Description") as string,
             name: "description",
@@ -102,15 +107,13 @@ class UploadAdContent extends React.Component <IProps, IState> {
             name: "cta",
             type: "limiter",
             limit: 15,
-            placeholder: this.i18n._t("example: online shopping") as string,
+            placeholder: "example: online shopping",
+            required: true,
         },
         {
-            title: this.i18n._t("Contact number") as string,
-            name: "phone",
-            type: "textfield",
-            number: true,
-            placeholder: this.i18n._t("+98----------") as string,
-            className: "dir-ltr"
+            title: this.i18n._t("Rating") as string,
+            name: "rating",
+            type: "rating",
         },
         {
             title: this.i18n._t("URL") as string,
@@ -118,6 +121,43 @@ class UploadAdContent extends React.Component <IProps, IState> {
             type: "url",
             placeholder: "",
             required: true,
+        },
+        {
+            title: this.i18n._t("price") as string,
+            name: "price",
+            type: "currency-selector",
+            placeholder: "45,000",
+            currancyType: "IRR",
+            halfSize: true,
+            offset: true,
+            optional: true,
+        },
+        {
+            title: this.i18n._t("Final price with discount") as string,
+            name: "finalPrice",
+            type: "currency-selector",
+            placeholder: "20,000",
+            currancyType: "IRR",
+            halfSize: true,
+            offset: true,
+            optional: true,
+        },
+        {
+            title: this.i18n._t("Number of downloads") as string,
+            name: "download",
+            type: "textfield",
+            placeholder: "1500",
+            number: true,
+            halfSize: true,
+            offset: true,
+            optional: true,
+        },
+        {
+            title: this.i18n._t("Contact number") as string,
+            name: "phone",
+            type: "textfield",
+            number: true,
+            className: "dir-ltr"
         }
     ];
 
@@ -134,11 +174,14 @@ class UploadAdContent extends React.Component <IProps, IState> {
             openImageModal: false,
             disableDraggerImage: false,
             disableDraggerLogo: false,
+            disableDraggerIcon: false,
             showCropModal: false,
             fileUrlOriginal: "",
             logoUrlOriginal: "",
+            iconUrlOriginal: "",
             fileUrlCropped: "",
             logoUrlCropped: "",
+            iconUrlCropped: "",
         };
         let otherPlaceholder: string;
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
@@ -208,10 +251,16 @@ class UploadAdContent extends React.Component <IProps, IState> {
      * @param file
      * @returns {<boolean>}
      */
-    private checkImageSize(file: IFileItem): boolean {
-        console.log(file);
-        if (file.height >= this.minSize.height && file.width >= this.minSize.width ) {
-            return true;
+    private checkImageSize(file: IFileItem , type: IMG_TYPE): boolean {
+        if (type === IMG_TYPE.ICON) {
+            if (file.height >= this.minSizeIcon.height && file.width >= this.minSizeIcon.width) {
+                return true;
+            }
+        }
+        if (type === IMG_TYPE.LOGO) {
+            if (file.height >= this.minLogoSize.height && file.width >= this.minLogoSize.width) {
+                return true;
+            }
         }
         else {
          return false;
@@ -253,7 +302,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
               });
               this.setImageSize(fileItem)
                   .then((fileItemObject) => {
-                      if (this.checkImageSize(fileItemObject)) {
+                      if (this.checkImageSize(fileItemObject , type)) {
                           this.setState(prevState => {
                               prevState.showCropModal = true;
                               this.imageType = IMG_TYPE.IMAGE;
@@ -276,14 +325,51 @@ class UploadAdContent extends React.Component <IProps, IState> {
               this.setState({
                   disableDraggerLogo: true
               });
-              this.setState(prevState => {
-                  prevState.showCropModal = true;
-                  this.imageType = IMG_TYPE.LOGO;
-                  prevState.logoUrlOriginal = URL.createObjectURL(file);
-                  prevState.disableDraggerLogo = false;
-                  this.disableUpload = false;
-                  return prevState;
+              this.setImageSize(fileItem)
+                  .then((fileItemObject) => {
+                      if (this.checkImageSize(fileItemObject , type)) {
+                          this.setState(prevState => {
+                              prevState.showCropModal = true;
+                              this.imageType = IMG_TYPE.LOGO;
+                              prevState.logoUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
+                              prevState.disableDraggerLogo = false;
+                              this.disableUpload = false;
+                              return prevState;
+                          });
+                      }
+                      else {
+                          notification.error({
+                              message: this.i18n._t("File Size").toString(),
+                              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                              description: this.i18n._t("This file size isn't acceptable!").toString(),
+                          });
+                      }
+                  });
+          }
+          if ( type === IMG_TYPE.ICON) {
+              this.setState({
+                  disableDraggerIcon: true
               });
+              this.setImageSize(fileItem)
+                  .then((fileItemObject) => {
+                      if (this.checkImageSize(fileItemObject , type)) {
+                          this.setState(prevState => {
+                              prevState.showCropModal = true;
+                              this.imageType = IMG_TYPE.ICON;
+                              prevState.iconUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
+                              prevState.disableDraggerIcon = false;
+                              this.disableUpload = false;
+                              return prevState;
+                          });
+                      }
+                      else {
+                          notification.error({
+                              message: this.i18n._t("File Size").toString(),
+                              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                              description: this.i18n._t("This file size isn't acceptable!").toString(),
+                          });
+                      }
+                  });
           }
       }
       else {
@@ -311,17 +397,16 @@ class UploadAdContent extends React.Component <IProps, IState> {
             if (this.imageType === IMG_TYPE.IMAGE) {
                 prevState.fileUrlCropped = URL.createObjectURL(this.tmpImg);
             }
-            else {
+            if (this.imageType === IMG_TYPE.LOGO) {
                 prevState.logoUrlCropped = URL.createObjectURL(this.tmpImg);
+            }
+            if (this.imageType === IMG_TYPE.ICON) {
+                prevState.iconUrlCropped = URL.createObjectURL(this.tmpImg);
             }
             prevState.showCropModal = false;
             this.tmpImg = null;
             return prevState;
         }));
-    }
-    private handleBack() {
-        this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
-        this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
     }
 
     private handleSubmit() {
@@ -383,26 +468,6 @@ class UploadAdContent extends React.Component <IProps, IState> {
                 globalUtm: params.link,
             });
         }
-    }
-
-    /**
-     * @func handleVideoData
-     * @desc fill values of banner with general form if it has not been edited
-     * @param item{UTMInfo}
-     */
-    private handleVideoData(item: UTMInfo) {
-        this.state.files.map((file: IFileItem, index) => {
-            let fileItem: IFileItem[] = this.state.files;
-            if (!file.edited) {
-                fileItem[index].cta = item.CTA;
-            }
-            if (!file.edited) {
-                fileItem[index].utm = item.URL;
-            }
-            this.setState({
-                files: fileItem
-            });
-        });
     }
 
     private handleReset(e, item) {
@@ -484,14 +549,45 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                     }
                                 </Dragger>
                                 <div className="drag-description">
-                                    <span className="span-block"><Translate value={"Minimum size of image 627x627px"}/></span>
-                                    <span className="span-block"><Translate value={"Minimum size: 200KB"}/></span>
+                                    <span className="span-block"><Translate value={"Allowed size: 480x320px"}/></span>
+                                    <span className="span-block"><Translate value={"Image ratio: 1.9:1"}/></span>
                                     <span className="span-block"><Translate value={"allowed extensions: JPG/PNG/GIF"}/></span>
                                 </div>
                             </Col>
                             <Col span={5}>
                                 <span className="image-drag-upload"><Translate
-                                    value={"Logo"}/></span>
+                                    value={"Icon"}/></span>
+                                <Dragger
+                                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.ICON)}
+                                    className="banner-dragger-comp"
+                                    disabled={this.state.disableDraggerLogo}
+                                > {!this.state.iconUrlCropped &&
+                                <div className="dragger-content">
+                                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
+                                    <Translate value={"Drag your Icon over here or"}/>
+                                </div>
+                                }
+                                    {this.state.iconUrlCropped &&
+                                        <div className="upload-thumb-container">
+                                            <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
+                                                <Icon name="cif-edit"  />
+                                            </div>
+                                            <div className="remove-upload" onClick={(e) => this.handleReset(e , "iconUrlCropped")}>
+                                                <Icon name="cif-close"  />
+                                            </div>
+                                            <img src={this.state.iconUrlCropped}/>
+                                        </div>
+                                    }
+                                </Dragger>
+                                <div className="drag-description">
+                                    <span className="span-block"><Translate value={"Minimum size: 512x512px"}/></span>
+                                    <span className="span-block"><Translate value={"Image ratio: 1:1"}/></span>
+                                    <span className="span-block"><Translate value={"allowed extensions: PNG"}/></span>
+                                </div>
+                            </Col>
+                            <Col span={5}>
+                                    <span className="image-drag-upload"><Translate
+                                        value={"Logo"}/></span>
                                 <Dragger
                                     beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.LOGO)}
                                     className="banner-dragger-comp"
@@ -503,23 +599,24 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                 </div>
                                 }
                                     {this.state.logoUrlCropped &&
-                                        <div className="upload-thumb-container">
-                                            <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
-                                                <Icon name="cif-edit"  />
-                                            </div>
-                                            <div className="remove-upload" onClick={(e) => this.handleReset(e , "logoUrlCropped")}>
-                                                <Icon name="cif-close"  />
-                                            </div>
-                                            <img src={this.state.logoUrlCropped}/>
+                                    <div className="upload-thumb-container">
+                                        <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
+                                            <Icon name="cif-edit"  />
                                         </div>
+                                        <div className="remove-upload" onClick={(e) => this.handleReset(e , "logoUrlCropped")}>
+                                            <Icon name="cif-close"  />
+                                        </div>
+                                        <img src={this.state.logoUrlCropped}/>
+                                    </div>
                                     }
                                 </Dragger>
                                 <div className="drag-description">
-                                    <span className="span-block"><Translate value={"Minimum size: 200KB"}/></span>
-                                    <span className="span-block"><Translate value={"allowed extensions: JPG/PNG/GIF"}/></span>
+                                    <span className="span-block"><Translate value={"Minimum size: 627x627px"}/></span>
+                                    <span className="span-block"><Translate value={"Image ratio: 1:1"}/></span>
+                                    <span className="span-block"><Translate value={"allowed extensions: PNG"}/></span>
                                 </div>
                             </Col>
-                            <Col span={8}>
+                            <Col span={3}>
                             </Col>
                         </Row>
                     </Col>
@@ -537,7 +634,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                     </Row>
                 </Row>
-                {(this.state.fileUrlOriginal || this.state.logoUrlOriginal) && this.state.showCropModal &&
+                {(this.state.fileUrlOriginal || this.state.logoUrlOriginal || this.state.iconUrlOriginal) && this.state.showCropModal &&
                 <Modal
                     maskClosable={false}
                     closable={false}
@@ -546,8 +643,8 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     onOk={this.cropImg}
                     footer={<Button type={"primary"} onClick={this.cropImg}>{this.i18n._t("Crop")}</Button>}>
                     <div>
-                        <Cropper source={this.imageType === IMG_TYPE.IMAGE ? this.state.fileUrlOriginal : this.state.logoUrlOriginal }
-                                 aspect={170 / 105}
+                        <Cropper source={this.imageType === IMG_TYPE.IMAGE ? this.state.fileUrlOriginal : this.imageType === IMG_TYPE.LOGO ? this.state.logoUrlOriginal : this.state.iconUrlOriginal }
+                                 aspect={this.imageType === IMG_TYPE.IMAGE ? (1.9 / 1) : 1}
                                  onChange={(img: Blob) => {
                                      this.tmpImg = img;
                                  }}/>

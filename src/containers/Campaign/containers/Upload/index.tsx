@@ -18,6 +18,7 @@ import StickyFooter from "../../components/StickyFooter";
 import Translate from "../../../../components/i18n/Translate";
 import UploadVideoInBanner from "./UploadVideoInBanner";
 import UploadAdContent from "./UploadAdContent";
+import UploadDynamicBanner from "./UploadDynamicBanner";
 
 
 interface IProps {
@@ -111,7 +112,7 @@ class UploadComponent extends React.Component <IProps, IState> {
             </div>
             }
             {this.state.template === TEMPLATE.NONE && this.state.currentCampaign &&
-                <UploadAdContent currentCampaign={this.state.currentCampaign} />
+                <UploadDynamicBanner currentCampaign={this.state.currentCampaign} />
             }
       </div>
     );
