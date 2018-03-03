@@ -66,21 +66,24 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
     private disableUpload: boolean = false;
     private FormObject: InputInfo[] = [{
-        title: "Title",
+        title: this.i18n._t("Title") as string,
+        name: "title",
         type: "limiter",
         limit: 50,
-        placeholder: "Ad title",
+        placeholder: this.i18n._t("Ad title") as string,
         required: true,
     },
          {
-            title: "Call to Action text",
+            title: this.i18n._t("Call to Action text") as string,
+            name: "cta",
             type: "limiter",
             limit: 15,
-            placeholder: "example: online shopping",
+            placeholder: this.i18n._t("example: online shopping") as string,
             required: true,
         },
         {
-            title: "URL",
+            title: this.i18n._t("URL") as string,
+            name: "url",
             type: "url" ,
             required: true,
         }
