@@ -19,6 +19,7 @@ import Translate from "../../../../components/i18n/Translate";
 import UploadVideoInBanner from "./UploadVideoInBanner";
 import UploadAdContent from "./UploadAdContent";
 import UploadDynamicBanner from "./UploadDynamicBanner";
+import UploadUniversalApp from "./UploadUniversalApp";
 
 
 interface IProps {
@@ -112,7 +113,7 @@ class UploadComponent extends React.Component <IProps, IState> {
             </div>
             }
             {this.state.template === TEMPLATE.NONE && this.state.currentCampaign &&
-                <UploadDynamicBanner currentCampaign={this.state.currentCampaign} />
+                <UploadUniversalApp currentCampaign={this.state.currentCampaign} />
             }
       </div>
     );
