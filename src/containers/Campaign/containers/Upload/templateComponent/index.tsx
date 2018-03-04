@@ -22,7 +22,7 @@ export const enum TEMPLATE {
 interface IProps {
     template: TEMPLATE;
     onChange?: (index) => void;
-    campaignType: CAMPAIGN_TYPE | string;
+    campaignType: CAMPAIGN_TYPE ;
 }
 
 interface IState {

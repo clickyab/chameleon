@@ -19,6 +19,7 @@ import Translate from "../../../../components/i18n/Translate";
 import UploadVideoInBanner from "./UploadVideoInBanner";
 import UploadAdContent from "./UploadAdContent";
 import UploadDynamicBanner from "./UploadDynamicBanner";
+import UploadUniversalApp from "./UploadUniversalApp";
 
 
 interface IProps {
@@ -100,7 +101,7 @@ class UploadComponent extends React.Component <IProps, IState> {
    */
   public render() {
     return (<div className="upload-wrapper">
-          <AdTemplate campaignType={this.props.currentCampaign.kind} template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
+          <AdTemplate campaignType={this.props.currentCampaign.kind as CAMPAIGN_TYPE} template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
             {this.state.template === TEMPLATE.NONE &&
             <div className={"template-drag-drop"}
                  onDragOver={this.handleDragOver}
@@ -125,6 +126,9 @@ class UploadComponent extends React.Component <IProps, IState> {
             }
             {this.state.template === TEMPLATE.DYNAMIC_BANNER && this.state.currentCampaign &&
             <UploadDynamicBanner currentCampaign={this.state.currentCampaign} />
+            }
+            {this.state.template === TEMPLATE.UNIVERSAL_APP && this.state.currentCampaign &&
+            <UploadUniversalApp currentCampaign={this.state.currentCampaign} />
             }
       </div>
     );

@@ -227,22 +227,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
         const hasThisVideoSize = this.state.adSize.findIndex((b) => {
             return (b.height === file.height && b.width === file.width);
         });
-        console.log(hasThisVideoSize >= 0);
         return (hasThisVideoSize >= 0);
-    }
-
-    /**
-     * @func removeFile
-     * @desc remove file from state.files array
-     * @param {number} id
-     */
-    private removeFile(id: number | string): void {
-        let files: IFileItem[] = this.state.files;
-        const indexOfFile = files.findIndex((f) => (f.id === id));
-        files.splice(indexOfFile, 1);
-        this.setState({
-            files,
-        }, this.updateVideoSizeObject);
     }
 
     /**
@@ -315,11 +300,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             });
         }
         return false;
-    }
-
-    private handleBack() {
-        this.props.setCurrentStep(STEPS.SELECT_PUBLISHER);
-        this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
     }
 
     private handleSubmit() {

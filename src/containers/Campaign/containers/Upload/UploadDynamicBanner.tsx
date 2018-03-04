@@ -71,7 +71,7 @@ interface IState extends IStateUpload {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class UploadAdContent extends React.Component <IProps, IState> {
+class UploadDynamicBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
     private minSizeIcon = {
         width: 512,
@@ -183,7 +183,6 @@ class UploadAdContent extends React.Component <IProps, IState> {
             logoUrlCropped: "",
             iconUrlCropped: "",
         };
-        let otherPlaceholder: string;
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
         this.cropImg = this.cropImg.bind(this);
     }
@@ -265,20 +264,6 @@ class UploadAdContent extends React.Component <IProps, IState> {
         else {
          return false;
         }
-    }
-
-    /**
-     * @func removeFile
-     * @desc remove file from state.files array
-     * @param {number} id
-     */
-    private removeFile(id: number | string): void {
-        let files: IFileItem[] = this.state.files;
-        const indexOfFile = files.findIndex((f) => (f.id === id));
-        files.splice(indexOfFile, 1);
-        this.setState({
-            files,
-        });
     }
 
   /**
@@ -432,21 +417,6 @@ class UploadAdContent extends React.Component <IProps, IState> {
         });
 
     }
-
-    /**
-     * @func handleFlag
-     * @desc On keyPress it will be called and set edited flag for banner (banner will not get general values from general form)
-     * set state will be used for reRendering
-     * @param item , file , index
-     */
-    private handleFlag(item, file, index) {
-        let fileItem: IFileItem[] = this.state.files;
-        fileItem[index].edited = item;
-        this.setState({
-            files: fileItem
-        });
-    }
-
 
     /**
      * @func onUtmFormSubmit
@@ -678,4 +648,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default Form.create<IProps>()(withRouter(UploadAdContent as any));
+export default Form.create<IProps>()(withRouter(UploadDynamicBanner as any));

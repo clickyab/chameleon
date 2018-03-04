@@ -91,7 +91,6 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                 ((this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION) ? AppSize : BannerSize)
                 : BannerSize,
         };
-        let otherPlaceholder: string ;
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
     }
 
