@@ -11,6 +11,7 @@ var outPath = path.join(__dirname, "./dist");
 // plugins
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var OfflinePlugin = require("offline-plugin");
 
 module.exports = {
   context: sourcePath,
@@ -126,6 +127,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "index.html",
     }),
+    new OfflinePlugin()
   ],
   resolve: {
     extensions: [".js", ".ts", ".tsx"],
