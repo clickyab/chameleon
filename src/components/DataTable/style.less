@@ -197,7 +197,9 @@
 }
 
 .data-table-wrapper {
-  margin: 0 -15px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
 
   table {
     border-radius: 0 !important;
@@ -214,6 +216,7 @@
     margin-left: auto;
     margin-bottom: 0px;
     width: 100%;
+    padding-right: 15px;
 
     input, input:focus {
       box-shadow: none;
