@@ -100,7 +100,7 @@ class UploadComponent extends React.Component <IProps, IState> {
    */
   public render() {
     return (<div className="upload-wrapper">
-          <AdTemplate campaignType={CAMPAIGN_TYPE.APP} template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
+          <AdTemplate campaignType={this.props.currentCampaign.kind} template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
             {this.state.template === TEMPLATE.NONE &&
             <div className={"template-drag-drop"}
                  onDragOver={this.handleDragOver}
