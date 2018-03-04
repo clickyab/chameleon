@@ -13,7 +13,7 @@ import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Native from "./Native";
 import UploadBanner from "./UploadBanner";
 import UploadVideo from "./UploadVideo";
-import {AdTemplate, TEMPLATE} from "./templateComponent";
+import {AdTemplate, TEMPLATE, CAMPAIGN_TYPE} from "./templateComponent";
 import StickyFooter from "../../components/StickyFooter";
 import Translate from "../../../../components/i18n/Translate";
 import UploadVideoInBanner from "./UploadVideoInBanner";
@@ -100,8 +100,8 @@ class UploadComponent extends React.Component <IProps, IState> {
    */
   public render() {
     return (<div className="upload-wrapper">
-          <AdTemplate template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
-            {this.state.template === TEMPLATE.BANNER &&
+          <AdTemplate campaignType={CAMPAIGN_TYPE.APP} template={this.state.template} onChange={(temp) => this.handleTemplate(temp) } />
+            {this.state.template === TEMPLATE.NONE &&
             <div className={"template-drag-drop"}
                  onDragOver={this.handleDragOver}
                  onDrop={(e) => {this.handleTemplateEvent(e); }}>
@@ -111,8 +111,20 @@ class UploadComponent extends React.Component <IProps, IState> {
             <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
             </div>
             }
-            {this.state.template === TEMPLATE.NONE && this.state.currentCampaign &&
-                <UploadDynamicBanner currentCampaign={this.state.currentCampaign} />
+            {this.state.template === TEMPLATE.BANNER && this.state.currentCampaign &&
+            <UploadBanner currentCampaign={this.state.currentCampaign} />
+            }
+            {this.state.template === TEMPLATE.VAST && this.state.currentCampaign &&
+            <UploadVideo currentCampaign={this.state.currentCampaign} />
+            }
+            {this.state.template === TEMPLATE.VIDEO_IN_BANNER && this.state.currentCampaign &&
+            <UploadVideoInBanner currentCampaign={this.state.currentCampaign} />
+            }
+            {this.state.template === TEMPLATE.AD_CONTENT && this.state.currentCampaign &&
+            <UploadAdContent currentCampaign={this.state.currentCampaign} />
+            }
+            {this.state.template === TEMPLATE.DYNAMIC_BANNER && this.state.currentCampaign &&
+            <UploadDynamicBanner currentCampaign={this.state.currentCampaign} />
             }
       </div>
     );
