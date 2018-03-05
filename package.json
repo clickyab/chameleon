@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --debug --devtool cheap-module-source-map --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 3000 --host 0.0.0.0",
     "build": "webpack -p --progress --colors",
-    "i18n": "tsc  ./bin/i18n-extractor.ts  && node ./bin/i18n-extractor.js --out=./dictionary --lang=en-US",
+    "i18n": "tsc  ./bin/i18n-extractor.ts --skipLibCheck  && node ./bin/i18n-extractor.js --out=./dictionary --lang=en-US",
     "syncTranslation": "node ./bin/sync-translation.js --resource=./dictionary --out=./dictionary --lang=fa,en",
     "swagger": "./bin/api-codegen.sh",
     "cypress:open": "cypress open"
