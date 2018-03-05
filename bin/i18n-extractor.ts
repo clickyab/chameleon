@@ -40,7 +40,7 @@ class I18nExtractor {
    * @type {{FUNCTION: RegExp; TAG: RegExp}}
    */
   private PATTERNS = {
-    FUNCTION: /_t\(["](.*?)["]\)/ig,
+    FUNCTION: /_t\(["](.*?)["]\)?/ig,
     TAG: /<Translate.*?value=.*["](.*?)["].*?>/ig,
   };
 
