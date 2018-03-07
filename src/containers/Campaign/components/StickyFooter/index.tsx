@@ -9,6 +9,8 @@ import Translate from "../../../../components/i18n/Translate";
 import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
 import I18n from "../../../../services/i18n";
+import {RootState} from "../../../../redux/reducers";
+import {connect} from "react-redux";
 
 /**
  * @interface IProps
@@ -24,26 +26,40 @@ interface IProps {
     backAction?: any;
     disable?: boolean;
     customClass?: string;
+    menuCollapse?: boolean;
+}
+interface IState {
+    collapse: boolean;
 }
 
 /**
  * @calss StickyFooter class
  * @desc render forward and back buttons
  */
-class StickyFooter extends React.Component<IProps> {
+@connect(mapStateToProps)
+class StickyFooter extends React.Component<IProps, IState> {
     /**
      * i18n instance
      * @type {I18n}
      */
     i18n = I18n.getInstance();
-    menuCollapsed = localStorage.getItem("menuCollapsed");
    constructor(props) {
        super(props);
+       this.state = {
+           collapse : props.menuCollapse
+       };
+   }
+    componentWillReceiveProps(nexProps) {
+            if (nexProps.menuCollapse === true) {
+              this.setState({collapse: true});
+           } else {
+               this.setState({collapse: false});
+           }
    }
    render() {
        return(
            <div dir={CONFIG.DIR} className={`sticky-footer ${this.props.customClass ? this.props.customClass : ""}`}>
-               <div className={`footer-content ${this.menuCollapsed ? "footer-collapsed" : ""}`}>
+               <div className={`footer-content ${this.state.collapse ? "footer-collapsed" : ""}`}>
                {this.props.backBtn !== false && this.props.backAction &&
                <RaisedButton
                    onClick={this.props.backAction}
@@ -65,5 +81,16 @@ class StickyFooter extends React.Component<IProps> {
            </div>
        );
    }
+}
+/**
+ * @func map Redux store state as component's props
+ * @param {RootState} state
+ * @param  ownProps
+ * @returns {{menuCollapse: boolean}}
+ */
+function mapStateToProps(state: RootState, ownProps) {
+    return {
+        menuCollapse: state.app.menuCollapse,
+    };
 }
 export default StickyFooter;

@@ -684,17 +684,23 @@
     border-left: 1px solid #DFE0E6;
   }
 }
+
 .textarea-campaign{
-  height: 90px;
-  min-height: 90px;
+  height: 90px ;
+  min-height: 90px ;
   max-height: 90px;
+  border: 1px solid #D8DADE ;
 }
-.input-campaign{
-  border: 1px solid #D8DADE;
-  padding: 0 10px;
-  &::placeholder{
-    color: #A4AAB2;
-    padding: 0 10px;
+.ant-input {
+  &.input-campaign {
+    height: 35px ;
+    border-radius: 0 ;
+    border: 1px solid #D8DADE ;
+    padding: 0 10px ;
+    &::placeholder {
+      color: #A4AAB2 ;
+      padding: 0 10px ;
+    }
   }
 }
 .span-block{

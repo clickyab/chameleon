@@ -4,7 +4,7 @@ import {withRouter} from "react-router";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
-import {Col, Form, notification, Row, Spin} from "antd";
+import {Col, Form, notification, Row, Spin, Input} from "antd";
 import {MenuItem, RadioButton, RadioButtonGroup, RaisedButton, SelectField, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -22,6 +22,7 @@ import {
 import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import StickyFooter from "../../components/StickyFooter";
+import InputLimit from "../../components/InputLimit/InputLimit";
 
 const FormItem = Form.Item;
 
@@ -303,7 +304,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                             <Tooltip/>
                             <label><Translate value={"Campaign Name"}/></label>
                         </Col>
-                        <Col span={15}>
+                        <Col span={12}>
                             <FormItem>
                                 {getFieldDecorator("name", {
                                     initialValue: this.state.currentCampaign.title,
@@ -313,9 +314,10 @@ class NamingComponent extends React.Component <IProps, IState> {
                                         message: this.i18n._t("Please input your Campaign Name!(should contain minimum character of 8 )")
                                     }],
                                 })(
-                                    <TextField
-                                        hintText={this.i18n._t("Your Campaign Name")}
-                                        fullWidth={true}
+                                    <InputLimit
+                                        limit={100}
+                                        placeholder={this.i18n._t("Your Campaign Name") as string}
+                                        className="input-campaign"
                                     />
                                 )}
                             </FormItem>
@@ -329,7 +331,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                             <label><Translate value={"TLD Domain"}/></label>
                         </Col>
                         <Col span={12}>
-                            <FormItem>
+                            <FormItem className="have-description">
                                 {getFieldDecorator("domain", {
                                     initialValue: this.state.currentCampaign.title,
                                     rules: [{
@@ -337,9 +339,9 @@ class NamingComponent extends React.Component <IProps, IState> {
                                         message: this.i18n._t("Please input your TLD Domain")
                                     }],
                                 })(
-                                    <TextField
-                                        hintText={this.i18n._t("TLD Domain")}
-                                        fullWidth={true}
+                                    <Input
+                                        placeholder={this.i18n._t("http://domain.com OR https://domain.com") as string}
+                                        className="input-campaign dir-ltr"
                                     />
                                 )}
                             </FormItem>

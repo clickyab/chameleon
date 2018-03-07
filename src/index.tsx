@@ -7,8 +7,8 @@ import {store} from "./redux/store";
 import App from "./containers/App";
 import {LocaleProvider} from "antd";
 const antLocale =  require("./Translate/antTranslate");
-import * as OfflinePluginRuntime from "offline-plugin/runtime";
-OfflinePluginRuntime.install();
+// import * as OfflinePluginRuntime from "offline-plugin/runtime";
+// OfflinePluginRuntime.install();
 
 import injectTapEventPlugin = require("react-tap-event-plugin");
 

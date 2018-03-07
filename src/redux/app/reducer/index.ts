@@ -9,6 +9,7 @@ const initialState: AppStoreState = {
   isLogin: !!AAA.getInstance().getToken(),
   user: null,
   breadcrumb: [],
+  menuCollapse: false,
 };
 
 
@@ -40,7 +41,18 @@ export default handleActions<AppStoreState, any>({
       isLogin: false,
     };
   },
-
+  [Actions.SET_MENU_COLLAPSE]: (state, action) => {
+        return {
+            ...state,
+            menuCollapse: true,
+        };
+    },
+  [Actions.UNSET_MENU_COLLAPSE]: (state, action) => {
+        return {
+            ...state,
+            menuCollapse: false,
+        };
+    },
   [Actions.SET_BREADCRUMB]: (state, action) => {
     if (action.payload.parent === null) {
       return {

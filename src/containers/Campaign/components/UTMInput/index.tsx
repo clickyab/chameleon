@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Row, Col} from "antd";
+import {Row, Col, Input} from "antd";
 import Translate from "../../../../components/i18n/Translate";
 import {Checkbox} from "material-ui";
 import {IFileItem} from "../../containers/Upload/UploadBanner";
@@ -202,7 +202,7 @@ export default class UTMInput extends React.Component<IProps, IState> {
         return(
         <div>
                 <span className="span-block input-title"><Translate value="URL*"/></span>
-                <input
+                <Input
                     placeholder={this.i18n._t("http://domain.com") as string}
                     className="input-campaign full-width mb-2 dir-ltr"
                     value={this.state.value}
@@ -210,7 +210,7 @@ export default class UTMInput extends React.Component<IProps, IState> {
                         this.handleData(e.target.value, UTM_INPUT.URL);
                         this.setParamsValues(e.target.value);
                     }}
-                    onKeyPress={() => this.handleKeyPress()}
+                    onKeyDown={() => this.handleKeyPress()}
                 />
                 <Checkbox className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
                           checked={this.state.showUTMdetails}
@@ -222,7 +222,7 @@ export default class UTMInput extends React.Component<IProps, IState> {
                     <Col span={12}>
                         <span className="span-block input-title"><Translate
                             value="utm_source"/></span>
-                        <input
+                        <Input
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
                             value={this.state.utmAll.source}
@@ -230,11 +230,11 @@ export default class UTMInput extends React.Component<IProps, IState> {
                                 this.handleData(e.target.value, UTM_INPUT.source);
                                 this.onFormChange("utm_source", e.target.value);
                             }}
-                            onKeyPress={() => this.handleKeyPress()}
+                            onKeyDown={() => this.handleKeyPress()}
                         />
                         <span className="span-block input-title"><Translate
                             value="utm_medium"/></span>
-                        <input
+                        <Input
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
                             value={this.state.utmAll.medium}
@@ -242,13 +242,13 @@ export default class UTMInput extends React.Component<IProps, IState> {
                                 this.handleData(e.target.value, UTM_INPUT.medium);
                                 this.onFormChange("utm_medium", e.target.value);
                             }}
-                            onKeyPress={() => this.handleKeyPress()}
+                            onKeyDown={() => this.handleKeyPress()}
                         />
                     </Col>
                     <Col span={12}>
                         <span className="span-block input-title"><Translate
                             value="utm_campaign"/></span>
-                        <input
+                        <Input
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
                             value={this.state.utmAll.campaign}
@@ -256,18 +256,18 @@ export default class UTMInput extends React.Component<IProps, IState> {
                                 this.handleData(e.target.value, UTM_INPUT.campaign);
                                 this.onFormChange("utm_campaign", e.target.value);
                             }}
-                            onKeyPress={() => this.handleKeyPress()}
+                            onKeyDown={() => this.handleKeyPress()}
                         />
                         <span className="span-block input-title"><Translate
                             value="utm_content"/></span>
-                        <input
+                        <Input
                             placeholder={this.i18n._t("clickyab") as string}
                             className="input-campaign full-width mb-2"
                             onChange={(e) => {
                                 this.handleData(e.target.value, UTM_INPUT.content);
                                 this.onFormChange("utm_content", e.target.value);
                             }}
-                            onKeyPress={() => this.handleKeyPress()}
+                            onKeyDown={() => this.handleKeyPress()}
                             value={this.state.utmAll.content}
                         />
                     </Col>

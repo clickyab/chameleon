@@ -2,14 +2,14 @@ import * as React from "react";
 import DataTable from "../../../../components/DataTable/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
-import {Row, Form, Col, notification, Button, Checkbox, Switch, Spin} from "antd";
+import {Row, Form, Col, notification, Button, Checkbox, Switch, Spin, Input} from "antd";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
 import Modal from "../../../../components/Modal/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import {MenuItem, RadioButton, RadioButtonGroup, SelectField, RaisedButton, TextField} from "material-ui";
+import {MenuItem, RadioButton, RadioButtonGroup, SelectField, RaisedButton} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -335,10 +335,9 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                 <Col span={14} offset={6}>
                                     <Row type="flex" gutter={16}>
                                         <Col span={12}>
-                                            <TextField
-                                                fullWidth={true}
-                                                onChange={(e, value) => {
-                                                    this.setState({listName: value});
+                                            <Input
+                                                onChange={(e) => {
+                                                    this.setState({listName: e.target.value});
                                                 }}
                                                 defaultValue={this.state.listName}
                                             />

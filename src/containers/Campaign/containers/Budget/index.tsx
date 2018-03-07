@@ -4,7 +4,7 @@ import {withRouter} from "react-router";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
-import {Form} from "antd";
+import {Form, Input} from "antd";
 import {Row, Col, notification, Spin} from "antd";
 import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedButton} from "material-ui";
 import I18n from "../../../../services/i18n/index";
@@ -49,7 +49,7 @@ interface IState {
   networkType?: NETWORK_TYPE;
 }
 
-enum NETWORK_TYPE {CLICKYAB= "clickyab" , EXCHANGE = "exchange"};
+enum NETWORK_TYPE {CLICKYAB= "clickyab" , EXCHANGE = "exchange"}
 export enum IPricing {
   CPC = "cpc",
   CPM = "cpm",
@@ -173,23 +173,21 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={10} offset={10}>
                 <Row type="flex" align="middle" gutter={16}>
-                  <Col span={8}>
+                  <Col span={10}>
                     <FormItem>
                       {getFieldDecorator("budget", {
                         initialValue: this.state.currentCampaign.budget,
                         rules: [{required: true, message: this.i18n._t("Please input maximum campaign's budget!")}],
                       })(
-                        <TextField
-                          className="campaign-textfield"
-                          hintText={this.i18n._t("Maximum Campaign's budget")}
+                        <Input
+                          className="input-campaign campaign-textfield"
+                          placeholder={this.i18n._t("Maximum Campaign's budget") as string}
                           type="number"
-                          step={5}
-                          fullWidth={true}
                         />
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={16} className="currency">
+                  <Col span={14} className="currency">
                     {this.i18n._t("Currency_Name")}
                   </Col>
                 </Row>
@@ -202,23 +200,22 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 <label><Translate value="Daily Budget"/></label>
               </Col>
               <Col span={10} offset={10}>
-                <Row type="flex" align="middle">
-                  <Col span={8}>
+                <Row type="flex" align="middle" gutter={16}>
+                  <Col span={10}>
                     <FormItem>
                       {getFieldDecorator("daily_limit", {
                         initialValue: this.state.currentCampaign.daily_limit,
                         rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
                       })(
-                        <TextField
-                          className="campaign-textfield"
-                          hintText={this.i18n._t("Daily Campaign's budget")}
+                        <Input
+                          className="input-campaign campaign-textfield"
+                          placeholder={this.i18n._t("Daily Campaign's budget") as string}
                           type="number"
-                          fullWidth={true}
                         />
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={16} className="currency">
+                  <Col span={14} className="currency">
                     {this.i18n._t("Currency_Name")}
                   </Col>
                 </Row>
@@ -295,23 +292,22 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 <label><Translate value="Click price"/></label>
               </Col>
               <Col span={10} offset={10}>
-                <Row type="flex" align="middle">
-                  <Col span={8}>
+                <Row type="flex" align="middle" gutter={16}>
+                  <Col span={10}>
                     <FormItem>
                       {getFieldDecorator("max_bid", {
                         initialValue: this.state.currentCampaign.max_bid,
                         rules: [{required: true, message: this.i18n._t("Please input click's price!")}],
                       })(
-                        <TextField
-                          className="campaign-textfield"
-                          hintText={this.i18n._t("click price")}
+                        <Input
+                          className="input-campaign campaign-textfield"
+                          placeholder={this.i18n._t("click price") as string}
                           type="number"
-                          fullWidth={true}
                         />
                       )}
                     </FormItem>
                   </Col>
-                  <Col span={16} className="currency">
+                  <Col span={14} className="currency">
                     {this.i18n._t("Currency_Name")}
                   </Col>
                   <span className="per-click-description"><Translate value={"Minimum price per click is get-from-server"} /></span>
