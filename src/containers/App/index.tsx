@@ -16,6 +16,7 @@ import MyCampaignContainer from "../MyCampaign/index";
 import CheckMail from "../User/containers/CheckMail";
 import {UserApi} from "../../api/api";
 import ExploreContainer from "../Explore/index";
+import BackofficeContainer from "../Backoffice";
 
 
 interface IProps {
@@ -88,6 +89,7 @@ class App extends React.Component<IProps, IState> {
             <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
             <PrivateRoute path={`/my/campaign`} component={MyCampaignContainer}/>
             <PrivateRoute path={`/explore`} component={ExploreContainer}/>
+            <PrivateRoute path={`/backoffice`} component={BackofficeContainer}/>
             <Route exact path={`/`} component={this.state.isLogin ? Dashboard : CheckMail}/>
           </Switch>
         </LayoutSwitcher>
