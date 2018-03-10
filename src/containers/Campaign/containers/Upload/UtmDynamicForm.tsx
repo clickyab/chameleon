@@ -2,7 +2,7 @@ import * as React from "react";
 import Translate from "../../../../components/i18n/Translate";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UTMInput from "../../components/UTMInput";
-import {Row, Col, notification} from "antd";
+import {Row, Col, notification, Input} from "antd";
 import I18n from "../../../../services/i18n/index";
 import {Checkbox} from "material-ui";
 import {IFileItem} from "./UploadBanner";
@@ -86,7 +86,7 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                                         initialValue: value.value,
                                         rules: [ value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                     })(
-                                        <input
+                                        <Input
                                             type={value.number ? "number" : "text"}
                                             placeholder={value.placeholder}
                                             className={`input-campaign  full-width + ${value.className ? value.className : ""}`}

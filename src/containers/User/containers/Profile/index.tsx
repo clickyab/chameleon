@@ -5,7 +5,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Form, Row, Col, notification} from "antd";
+import {Form, Row, Col, notification, Input} from "antd";
 import {TextField, RaisedButton} from "material-ui";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
@@ -141,6 +141,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                           <Row gutter={16} type="flex" align="top">
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Name"/></span>
                                       {getFieldDecorator("first_name", {
                                           initialValue: this.state.user.first_name,
                                           rules: [{
@@ -148,15 +149,15 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                               message: this.i18n._t("Please input your Submit Name!")
                                           }],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Name")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
                               </Col>
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Last name"/></span>
                                       {getFieldDecorator("last_name", {
                                           initialValue: this.state.user.last_name,
                                           rules: [{
@@ -164,9 +165,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                               message: this.i18n._t("Please input your last name!")
                                           }],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Last name")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
@@ -177,6 +177,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                align="top">
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Email"/></span>
                                       {getFieldDecorator("email", {
                                           initialValue: this.props.user.email,
                                           rules: [{
@@ -184,9 +185,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                               message: this.i18n._t("Please input your Submit Email!")
                                           }],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Email")}
+                                          <Input
+                                              className="input-campaign"
                                               disabled={true}
                                           />)}
                                   </FormItem>
@@ -195,10 +195,10 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                               </Col>
                               <Col span={12}>
                                   <FormItem>
-                                      <TextField
-                                          value={"********"}
-                                          fullWidth={true}
-                                          floatingLabelText={this.i18n._t("Password")}
+                                      <span className="input-title"><Translate value="Password"/></span>
+                                      <Input
+                                          placeholder={"********"}
+                                          className={"input-campaign"}
                                           type="password"
                                           disabled={this.state.isDisable}
                                       />
@@ -234,6 +234,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                           <Row gutter={16} type="flex" align="top">
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="National ID"/></span>
                                       {getFieldDecorator("ssn", {
                                           initialValue: this.state.user.ssn,
                                           rules: [{
@@ -241,9 +242,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                               message: this.i18n._t("Please input your National ID!")
                                           }],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("National ID")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
@@ -263,6 +263,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                           <Row gutter={16} type="flex" align="top">
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Mobile"/></span>
                                       {getFieldDecorator("cell_phone", {
                                           initialValue: this.state.user.cellphone,
                                           rules: [{
@@ -270,15 +271,15 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                               message: this.i18n._t("Please input your mobile number!")
                                           }],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Mobile")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
                               </Col>
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Postal Code"/></span>
                                       {getFieldDecorator("postal_code", {
                                           initialValue: this.state.user.postal_code,
                                           rules: [{
@@ -286,9 +287,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                               message: this.i18n._t("Please input your postal code!")
                                           }],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Postal Code")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
@@ -297,25 +297,25 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                           <Row gutter={16} type="flex" align="top">
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Phone"/></span>
                                       {getFieldDecorator("land_line", {
                                           initialValue: this.state.user.land_line,
                                           rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Phone")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
                               </Col>
                               <Col span={12}>
                                   <FormItem>
+                                      <span className="input-title"><Translate value="Address"/></span>
                                       {getFieldDecorator("address", {
                                           initialValue: this.state.user.address,
                                       })(
-                                          <TextField
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Address")}
+                                          <Input
+                                              className="input-campaign"
                                               onChange={() => this.handleButton()}
                                           />
                                       )}
@@ -366,6 +366,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                               <Row gutter={16} type="flex" align="top">
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Name"/></span>
                                           {getFieldDecorator("first_name", {
                                               initialValue: this.state.user.first_name,
                                               rules: [{
@@ -373,15 +374,15 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your Submit Name!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Name")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
                                   </Col>
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Last name"/></span>
                                           {getFieldDecorator("last_name", {
                                               initialValue: this.state.user.last_name,
                                               rules: [{
@@ -389,9 +390,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your last name!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Last name")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
@@ -402,6 +402,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                    align="top">
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Email"/></span>
                                           {getFieldDecorator("email", {
                                               initialValue: this.props.user.email,
                                               rules: [{
@@ -409,9 +410,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your Submit Email!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Email")}
+                                              <Input
+                                                  className="input-campaign"
                                                   disabled={true}
                                               />)}
                                       </FormItem>
@@ -420,10 +420,10 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                   </Col>
                                   <Col span={12}>
                                       <FormItem>
-                                          <TextField
+                                          <span className="input-title"><Translate value="Email"/></span>
+                                          <Input
                                               value={"********"}
-                                              fullWidth={true}
-                                              floatingLabelText={this.i18n._t("Password")}
+                                              className="input-campaign"
                                               type="password"
                                               disabled={this.state.isDisable}
                                           />
@@ -443,6 +443,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                               <Row gutter={16} type="flex" align="top">
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Mobile"/></span>
                                           {getFieldDecorator("cell_phone", {
                                               initialValue: this.state.user.cellphone,
                                               rules: [{
@@ -450,28 +451,28 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your mobile number!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Mobile")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
                                   </Col>
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Phone"/></span>
                                           {getFieldDecorator("land_line", {
                                               initialValue: this.state.user.land_line,
                                               rules: [{required: true, message: this.i18n._t("Please input your phone!")}],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Phone")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
                                   </Col>
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Corporation Name"/></span>
                                           {getFieldDecorator("legal_name", {
                                               initialValue: this.state.user.legal_name,
                                               rules: [{
@@ -479,9 +480,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your Submit Corporation Name!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Corporation Name")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
@@ -501,6 +501,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                               <Row gutter={16} type="flex" align="top">
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Register Code"/></span>
                                           {getFieldDecorator("register_code", {
                                               initialValue: this.state.user.legal_register,
                                               rules: [{
@@ -508,15 +509,15 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your register code!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Register Code")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
                                   </Col>
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Postal Code"/></span>
                                           {getFieldDecorator("postal_code", {
                                               initialValue: this.state.user.postal_code,
                                               rules: [{
@@ -524,9 +525,8 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your postal code!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Postal Code")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
@@ -535,6 +535,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                               <Row gutter={16} type="flex" align="top">
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Economic code"/></span>
                                           {getFieldDecorator("economic_code", {
                                               initialValue: this.props.user.economic_code,
                                               rules: [{
@@ -542,21 +543,20 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                                   message: this.i18n._t("Please input your Submit Economic code!")
                                               }],
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Economic code")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>
                                   </Col>
                                   <Col span={12}>
                                       <FormItem>
+                                          <span className="input-title"><Translate value="Address"/></span>
                                           {getFieldDecorator("address", {
                                               initialValue: this.state.user.address,
                                           })(
-                                              <TextField
-                                                  fullWidth={true}
-                                                  floatingLabelText={this.i18n._t("Address")}
+                                              <Input
+                                                  className="input-campaign"
                                                   onChange={() => this.handleButton()}
                                               />
                                           )}
@@ -601,7 +601,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
     return (
         <div>
-            {this.state.isCorporation ? CoprationProfile() : UserProfile() }
+            {!this.state.isCorporation ? CoprationProfile() : UserProfile() }
         </div>
     );
   }

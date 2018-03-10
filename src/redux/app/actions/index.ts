@@ -11,3 +11,6 @@ export const unsetIsLogin = createAction(Actions.UNSET_IS_LOGIN);
 
 export const setBreadcrumb = createAction<IBreadCrumbItem>(Actions.SET_BREADCRUMB);
 export const unsetBreadcrumb = createAction<string>(Actions.UNSET_BREADCRUMB);
+
+export const setMenuCollapse = createAction(Actions.SET_MENU_COLLAPSE);
+export const unsetMenuCollapse = createAction(Actions.UNSET_MENU_COLLAPSE);

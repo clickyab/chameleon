@@ -1,21 +1,25 @@
 import * as React from "react" ;
+import {Input} from "antd";
+import {InputProps} from "antd/lib/input/Input";
 
 interface IState {
     value: string;
 }
 
-interface IProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+interface IProps extends InputProps {
     limit?: number;
     customOnChange?: (event) => void;
     multiLine?: boolean;
 }
-export default class InputLimit extends React.Component<IProps , IState> {
+
+export default class InputLimit extends React.Component<IProps, IState> {
     constructor(props) {
         super(props);
         this.state = {
             value: props.value ? props.value : ""
         };
     }
+
     public componentWillReceiveProps(nextProps) {
         if (nextProps.value || nextProps.value === "") {
             this.setState({
@@ -23,6 +27,7 @@ export default class InputLimit extends React.Component<IProps , IState> {
             });
         }
     }
+
     public handleValueChange(e) {
         if (this.props.limit) {
             if (e.target.value.length <= this.props.limit) {
@@ -33,19 +38,24 @@ export default class InputLimit extends React.Component<IProps , IState> {
             }
         }
     }
+
     render() {
-        let {limit, multiLine , customOnChange , ...rest} = this.props;
+        let {limit, multiLine, customOnChange, ...rest} = this.props;
         return (
             <div className="input-limit-wrapper">
                 {!this.props.multiLine &&
-                <input onChange={(e) => {this.handleValueChange(e); }} {...rest} value={this.state.value} />
+                <Input onChange={(e) => {
+                    this.handleValueChange(e);
+                }} {...rest} value={this.state.value}/>
                 }
                 {this.props.multiLine &&
-                    <textarea onChange={(e) => {this.handleValueChange(e); }} value={this.state.value}  className={this.props.className}>
+                <textarea onChange={(e) => {
+                    this.handleValueChange(e);
+                }} value={this.state.value} className={this.props.className}>
                     </textarea>
                 }
                 {this.state.value &&
-                <span className={`item-desc-num-input ${ (this.state.value.length < limit - 5 ) ? "green" : "red"}`}>
+                <span className={`item-desc-num-input ${ (this.state.value.length < limit - 5) ? "green" : "red"}`}>
                  {limit - this.state.value.length}
                  </span>
                 }

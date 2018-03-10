@@ -8,10 +8,12 @@
   background: #EFF1F5;
   z-index: 99;
   .footer-content{
-    padding-right: @sidebar-close-width + 30px;
+    transition: all ease-in 0.2s;
+    padding-right: @sidebar-open-width + 30px;
     padding-left: 30px;
-    .footer-collapsed{
-      padding-right: @sidebar-open-width + 30px;
+    &.footer-collapsed{
+      transition: all ease-in 0.2s;
+      padding-right: @sidebar-close-width + 30px;
     }
   }
   .button-next-step{
@@ -25,10 +27,12 @@
 [dir="ltr"]{
   .sticky-footer{
     .footer-content{
-      padding-left: @sidebar-close-width + 30px;
+      transition: all ease-in 0.2s;
+      padding-left: @sidebar-open-width + 30px;
       padding-right: 30px;
-      .footer-collapsed{
-        padding-left: @sidebar-open-width + 30px;
+      &.footer-collapsed{
+        transition: all ease-in 0.2s;
+        padding-left: @sidebar-close-width + 30px;
       }
     }
     .button-next-step{

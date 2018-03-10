@@ -1,5 +1,5 @@
 import * as React from "react";
-import DatePicker2 from "react-datepicker2";
+import DatePicker2 from "react-datepicker-cy";
 import "./style.less";
 import * as moment from "moment-jalaali";
 import MonthComboBox from "./MonthComboBox" ;

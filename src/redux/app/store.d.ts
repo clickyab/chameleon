@@ -10,4 +10,5 @@ declare type AppStoreState = {
   user: null | UserResponseLoginOKAccount;
   isLogin: boolean;
   breadcrumb: IBreadCrumbItem[];
+  menuCollapse: boolean;
 };
