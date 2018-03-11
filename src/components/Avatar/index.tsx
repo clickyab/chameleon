@@ -163,7 +163,7 @@ export default class Avatar extends React.Component<IProps, IState> {
                    style={(this.props.radius) ? {height: this.state.cx * 2 , width: this.state.cx * 2} : null }
         />}
         {!this.props.user.avatar &&
-        <AntAvatar src={this.handleGravatar(this.props.user.email, 100)} size={this.props.size}
+        <AntAvatar src={this.handleGravatar(this.props.user.email, 150)} size={this.props.size}
                    style={(this.props.radius) ? {height: this.state.cx * 2 , width: this.state.cx * 2} : null}/>}
       </div>
     );

@@ -4,7 +4,8 @@ import {RootState} from "../../redux/reducers/index";
 import {connect} from "react-redux";
 import {UserUserPayload} from "../../api/api";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
-import AddClient from "./containers/AddClient";
+import AddClient from "./containers/AddUser";
+import Profile from "./containers/Profile";
 
 interface IProps extends RouteComponentProps<void> {
     routes: any;
@@ -33,6 +34,7 @@ export default class BackofficeContainer extends React.Component<IProps, IState>
                 {console.log("props", this.props)}
                 <Switch>
                     <PrivateRoute path={`${match.url}/user/add`} component={AddClient}/>
+                    <PrivateRoute path={`${match.url}/profile`} component={Profile}/>
                 </Switch>
             </div>
         );

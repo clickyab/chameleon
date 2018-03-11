@@ -12,11 +12,13 @@ import {
   LocationApi, LocationCountries, LocationProvinces, LocationCities, LocationCountriesInner,
   LocationProvincesInner, LocationCitiesInner
 } from "../../api/api";
-import {Row, Col} from "antd";
-import {SelectField, MenuItem} from "material-ui";
+import {Row, Col, Select, Form} from "antd";
 import I18n from "../../services/i18n/index";
-import CONFIG from "../../constants/config";
 import "./style.less";
+import Translate from "../i18n/Translate";
+
+const FormItem = Form.Item;
+const Option = Select.Option;
 
 /**
  * define component props
@@ -41,6 +43,10 @@ interface IProps {
    * @param {function} onChange return selected locations id after each change
    */
   onChange?: (countryId: number, provinceId: number, cityId: number) => {};
+  /**
+   * @param {boolean} disable fields or not
+   */
+  disabled?: boolean;
 }
 
 interface IState {
@@ -109,10 +115,10 @@ export default class LocationSelect extends React.Component<IProps, IState> {
     this.loadCountries()
       .then(() => {
         if (!!this.props.cityId) {
-          this.setProvince(null, -1, this.props.provinceId)
+          this.setProvince(this.props.provinceId)
             .then(() => {
               if (this.props.cityId) {
-                this.setCity(null, -1, this.props.cityId);
+                this.setCity(this.props.cityId);
               }
             });
         }
@@ -182,13 +188,12 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * set selected province and load provinces base on selected province.
    * Call `setCity` with first item, if `selectedFirstItem` set as true.
    *
-   * @param event
    * @param {number} index
    * @param {number} provinceId
    * @param {boolean} selectFirstItem
    * @returns {Promise<LocationCities>}
    */
-  private setProvince(event, index: number, provinceId: number, selectFirstItem?: boolean) {
+  private setProvince(provinceId: number, selectFirstItem?: boolean) {
     const province = this.state.provinces.find((c) => (c.id === provinceId));
     return this.api.locationCitiesProvincesIdGet({provincesId: province.id.toString()})
       .then((cities) => {
@@ -196,6 +201,9 @@ export default class LocationSelect extends React.Component<IProps, IState> {
           province,
           cities,
         });
+        if (cities[0]) {
+          this.setState({city: cities[0]});
+        }
       });
   }
 
@@ -205,7 +213,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
    * @param {number} index
    * @param {number} cityId
    */
-  private setCity(event, index: number, cityId: number) {
+  private setCity(cityId: number) {
     const city = this.state.cities.find((c) => (c.id === cityId));
     this.setState({
       city,
@@ -229,37 +237,33 @@ export default class LocationSelect extends React.Component<IProps, IState> {
   public render() {
     return (
       <Row type="flex" align="bottom" gutter={16}>
-        {/*<Col span={8}>*/}
-        {/*<SelectField style={{width: 120}}*/}
-        {/*onChange={this.setCountry.bind(this)}*/}
-        {/*value={this.state.country ? this.state.country.id : null}>*/}
-        {/*{this.state.countries.map((country) => {*/}
-        {/*return (<MenuItem key={`c_${country.id}`} value={country.id} primaryText={country.name}/>);*/}
-        {/*})}*/}
-        {/*</SelectField>*/}
-        {/*</Col>*/}
         <Col span={12} className="location-select-column">
-          <SelectField className={(CONFIG.DIR === "rtl") ? "location-select-rtl" : "location-select"}
-                       floatingLabelText={this.i18n._t("Province")}
-                       fullWidth={true}
-                       value={this.state.province ? this.state.province.id : null}
-                       onChange={this.setProvince.bind(this)}>
-            {this.state.provinces.map((province) => {
-              return (
-                <MenuItem key={`p_${province.id}`} value={province.id} primaryText={province.name}/>);
-            })}
-          </SelectField>
+          <FormItem>
+            <span className="input-title"><Translate value="Province"/></span>
+            <Select className={"select-input"} dropdownClassName={"select-dropdown"}
+                    value={(this.state.province ? this.state.province.id : "").toString()}
+                    onChange={(value) => this.setProvince(parseInt(value as string))}
+                    disabled={this.props.disabled}
+            >
+              {this.state.provinces.map((province) => {
+                return (
+                  <Option key={`p_${province.id}`} value={province.id.toString()}>{province.name}</Option>);
+              })}
+            </Select>
+          </FormItem>
         </Col>
         <Col span={12} className="location-select-column">
-          <SelectField className={(CONFIG.DIR === "rtl") ? "location-select-rtl" : "location-select"}
-                       floatingLabelText={this.i18n._t("City")}
-                       fullWidth={true}
-                       onChange={this.setCity.bind(this)}
-                       value={this.state.city ? this.state.city.id : null}>
-            {this.state.cities.map((city) => {
-              return (<MenuItem key={`ci_${city.id}`} value={city.id} primaryText={city.name}/>);
-            })}
-          </SelectField>
+          <FormItem>
+            <span className="input-title"><Translate value="City"/></span>
+            <Select className={"select-input"} dropdownClassName={"select-dropdown"}
+                    value={(this.state.city ? this.state.city.id : "").toString()}
+                    onChange={(value) => this.setCity(parseInt(value as string))}
+                    disabled={this.props.disabled}>
+              {this.state.cities.map((city) => {
+                return (<Option key={`ci_${city.id}`} value={city.id.toString()}>{city.name}</Option>);
+              })}
+            </Select>
+          </FormItem>
         </Col>
       </Row>
     );
