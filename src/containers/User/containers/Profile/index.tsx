@@ -601,7 +601,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
 
     return (
         <div>
-            {!this.state.isCorporation ? CoprationProfile() : UserProfile() }
+            {this.state.isCorporation ? CoprationProfile() : UserProfile() }
         </div>
     );
   }
