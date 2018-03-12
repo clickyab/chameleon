@@ -1,6 +1,5 @@
 .backoffice-content{
   padding: 30px;
-  padding-bottom: 0;
 }
 .select-input{
   .ant-select-selection__placeholder{
@@ -21,6 +20,11 @@
         content:"\E04B" ;
       }
     }
+  }
+}
+.select-dropdown{
+  .ant-select-dropdown-menu-item{
+    text-align: right;
   }
 }
 .input-description{
@@ -73,6 +77,9 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  .ant-btn {
+    height: 35px;
+  }
   > button {
     margin: 0 5px;
     &:first-child{
@@ -106,4 +113,16 @@ div[dir="ltr"] {
 }
 .content{
   border-top: 1px solid #DFE0E6;
+}
+.border-top{
+  border-top: 1px solid #DFE0E6;
+}
+.border-left{
+  border-left: 1px solid #DFE0E6;
+}
+.border-right{
+  border-right: 1px solid #DFE0E6;
+}
+.border-bottom{
+  border-bottom: 1px solid #DFE0E6;
 }

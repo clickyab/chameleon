@@ -1,0 +1,67 @@
+@import "../../../App/theme.less";
+
+.user-area-information {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+
+.info-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 15px 20px;
+  > div {
+    flex: 1;
+  }
+}
+
+//God damn button need -2px to align perfectly with sibling element
+.edit-user-wrapper {
+  display: flex;
+  align-items: center;
+  button {
+    margin: 0 5px;
+    height: 25px;
+    top: -2px;
+  }
+}
+
+.button-text {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+}
+
+.advance-info {
+  padding: 30px 30px;
+  margin: 0 !important;
+  background: #F6F6F6;
+}
+
+.user-edit-wrapper {
+  padding: 0 30px;
+}
+
+.change-to-corporation {
+  color: @primary-color;
+  cursor: pointer;
+  display: block;
+  margin-top: 40px;
+  padding: 0 30px;
+}
+
+.btn-active-edit {
+  i {
+    margin-left: 5px;
+  }
+}
+
+div[dir="ltr"] {
+  .btn-active-edit {
+    i {
+      margin-right: 5px;
+    }
+  }
+}

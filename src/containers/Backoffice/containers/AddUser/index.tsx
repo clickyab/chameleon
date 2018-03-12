@@ -8,7 +8,7 @@ import "./style.less";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
-const enum ACCOUNT_TYPE {ADVERTIZER = "Advertiser" , PUBLISHER = "Publisher" , SUPPORTER = "Support"}
+export const enum ACCOUNT_TYPE {ADVERTIZER = "Advertiser" , PUBLISHER = "Publisher" , SUPPORTER = "Support"}
 
 interface IProps {
     form: any;
@@ -27,7 +27,7 @@ class AddUser extends React.Component<IProps, IState> {
             <div dir={CONFIG.DIR} className="backoffice-content">
                 <Row className="backoffice-title mb-3" type={"flex"}>
                     <Col>
-                        <h2 className={"black"}><Translate value="Create new user account"/></h2>
+                        <h2><Translate value="Create new user account"/></h2>
                         <p><Translate
                             value="Fill below form and register your user. informations will be sent automatically after registration "/>
                         </p>
@@ -35,7 +35,7 @@ class AddUser extends React.Component<IProps, IState> {
                 </Row>
                 <Row type="flex">
                     <Col span={24} className={"mb-2"}>
-                        <h4 className={"black"}><Translate value={"User Login information"}/></h4>
+                        <h4><Translate value={"User Login information"}/></h4>
                     </Col>
                     <Col span={18}>
                         <Row gutter={16} align={"middle"} type={"flex"} className={"mb-2"}>
