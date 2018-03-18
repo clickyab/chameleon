@@ -7,12 +7,8 @@ import {Row, Switch, Col} from "antd";
 import I18n from "../../../../services/i18n/index";
 import {Select} from "antd";
 import CONFIG from "../../../../constants/config";
-import {
-  ControllersApi, ControllersWhiteBlackLists, ControllersWhiteBlackListsInner,
-  OrmCampaign
-} from "../../../../api/api";
+import {ControllersApi, ControllersWhiteBlackLists, ControllersWhiteBlackListsInner, OrmCampaign} from "../../../../api/api";
 import DataTable from "../../../../components/DataTable/index";
-
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
@@ -98,7 +94,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
             infinite={true}
             name="publisherList"
             onSelectRow={this.onSelectRow.bind(this)}
-            definitionFn={this.controllerApi.campaignBaseIdPut}
+            definitionFn={this.controllerApi.inventoryListDefinitionGet}
             dataFn={this.controllerApi.inventoryListGet}
             actionsFn={{
               "edit": (v, r) => {

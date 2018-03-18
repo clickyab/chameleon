@@ -40,7 +40,7 @@ export interface IActionsFn {
 }
 
 export interface ITableBtn {
-    title: string;
+    title?: string;
     icon?: string;
     onClick: (query: {}) => void;
 }

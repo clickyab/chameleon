@@ -83,6 +83,8 @@ interface IProps {
    */
   onQueryChange?: (query: any) => void;
 
+  disableSearch?: boolean;
+
   dateRange ?: {
     from: moment.type,
     to: moment.type,
@@ -301,7 +303,7 @@ class DataTable extends React.Component<IProps, IState> {
 
       // TODO:: remove me
       data.data = data.data.map(d => {
-        d["_actions"] = "edit, archive, copy";
+        d["_actions"] = "edit, archive, copy, Approve/Reject";
         return d;
       });
 
@@ -569,6 +571,7 @@ class DataTable extends React.Component<IProps, IState> {
     return (
       <div id={"data-table-wrapper-id"} className="data-table-wrapper">
         <div className="data-table-header">
+          {this.props.disableSearch === undefined &&
           <div className="data-table-search">
             {/*{this.props.tableDescription}*/}
             <Icon name={"cif-magnifier"} fontsize={16} className="custom-icon"/>
@@ -578,6 +581,7 @@ class DataTable extends React.Component<IProps, IState> {
                    }}
                    placeholder={this.i18n._t("Search").toString()}/>
           </div>
+            }
           <div className="data-table-btns">
             <Button
               className="add-customize-btn"

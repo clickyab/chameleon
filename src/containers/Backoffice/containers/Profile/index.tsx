@@ -174,8 +174,8 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
           </Col>
           <Col span={12}>
             <FormItem>
-                            <span className="input-title require">
-                                <Translate value="Account type"/></span>
+              <span className="input-title require">
+                <Translate value="Account type"/></span>
               {getFieldDecorator("account_type", {
                 initialValue: this.props.user.economic_code,
                 rules: [{
@@ -213,8 +213,8 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
           </Col>
           <Col span={12}>
             <FormItem>
-                                            <span className="input-title require"><Translate
-                                              value="User manager"/></span>
+              <span className="input-title require"><Translate
+                value="User manager"/></span>
               {getFieldDecorator("account_type", {
                 initialValue: this.props.user.economic_code,
                 rules: [{
@@ -465,8 +465,8 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
                 </Col>
                 {OtherInfo()}
                 <Row>
-                                    <span className={"change-to-corporation"}><Translate
-                                      value={"+ Do you want to change user from real to corporation? click here"}/></span>
+                  <span className={"change-to-corporation"}><Translate
+                    value={"+ Do you want to change user from real to corporation? click here"}/></span>
                 </Row>
               </Col>
             </Row>
@@ -590,8 +590,8 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
                     </Col>
                     <Col span={12}>
                       <FormItem>
-                                                <span className="input-title require"><Translate
-                                                  value="Mobile of contact point"/></span>
+                        <span className="input-title require"><Translate
+                          value="Mobile of contact point"/></span>
                         {getFieldDecorator("cell_phone", {
                           initialValue: this.state.user.cellphone,
                           rules: [{

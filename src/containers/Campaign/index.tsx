@@ -46,7 +46,7 @@ export default class CampaignContainer extends React.Component <IProps, IState> 
       <div dir={CONFIG.DIR}>
         <Row type="flex" align="middle" justify="center" className="progress-bar-wrapper">
           <Col span={16}>
-          <ProgressBar/>
+            <ProgressBar/>
           </Col>
         </Row>
         <Row>

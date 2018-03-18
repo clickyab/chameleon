@@ -58,7 +58,7 @@ class List extends React.Component<IProps, IState> {
               dataTableDataFn={this.controllerApi.campaignListGet}
               showRangePicker={true}
               dataTableButtons={[{
-                  title: "alireza",
+                  icon: "cif-edit",
                   onClick: (query) => console.log("nothing")
               }]}
             />
