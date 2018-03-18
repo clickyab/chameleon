@@ -6,6 +6,7 @@ import {UserUserPayload} from "../../api/api";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import AddClient from "./containers/AddUser";
 import Profile from "./containers/Profile";
+import WhiteLabel from "./containers/WhiteLabel";
 
 interface IProps extends RouteComponentProps<void> {
     routes: any;
@@ -35,6 +36,7 @@ export default class BackofficeContainer extends React.Component<IProps, IState>
                 <Switch>
                     <PrivateRoute path={`${match.url}/user/add`} component={AddClient}/>
                     <PrivateRoute path={`${match.url}/profile`} component={Profile}/>
+                    <PrivateRoute path={`${match.url}/whitelabel/add`} component={WhiteLabel}/>
                 </Switch>
             </div>
         );
