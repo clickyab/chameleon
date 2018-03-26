@@ -42,7 +42,6 @@ export default class Dashboard extends React.Component<IProps , IState> {
         <div>
             <RangePickerWrapper
                 onChange={value => {this.setState({value}) ; console.log(value); }}
-                value={Range}
             />
       <Currency onChange={(e) => { console.log(e); } }/>
         </div>

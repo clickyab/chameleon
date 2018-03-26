@@ -45,7 +45,7 @@ class RangePicker extends React.Component<IProps, IState> {
         this.state = {
             value: props.value ? props.value : moment(),
             selectedDay: [],
-            currentMonth: moment(props.value.range.from),
+            currentMonth: props.value ? moment(props.value.range.from) : moment(),
             isGregorian: props.isGregorian ? props.isGregorian : false,
             enterSecond: false,
         };
@@ -296,9 +296,9 @@ class RangePicker extends React.Component<IProps, IState> {
                             />
                             </div>
                             <div className="calendar-wrapper second">
-                            {this.renderMonth(moment(this.state.currentMonth).add(1, "month"))}
+                            {this.renderMonth(moment(this.state.currentMonth).add(1, monthFormat))}
                             <Calendar isGregorian={false}
-                                      defaultMonth={moment(this.state.currentMonth).add(1, "month")}
+                                      defaultMonth={moment(this.state.currentMonth).add(1, monthFormat)}
                                       inputFormat="jYYYY/jM/jDD"
                                       calendarClass={"persian-calendar-range second-picker"}
                                       onNextMonth={(value) => this.onNextMonth(value)}
@@ -352,7 +352,12 @@ class RangePicker extends React.Component<IProps, IState> {
                         </div>
                         <div className="date-filter">
           <span onClick={() => {
-              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat), moment()], rangeType.LAST_TREE_MONTH);
+            if (isGregorian) {
+              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat).add(moment().date(), "day"), moment()], rangeType.LAST_TREE_MONTH);
+            }
+            else {
+              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat).add(moment().jDate() - 1 , "day"), moment()], rangeType.LAST_TREE_MONTH);
+            }
           }}>
             <Translate value={"last tree month"}/></span>
                         </div>
