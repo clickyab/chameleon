@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Calendar} from "react-datepicker-cy";
+import {Calendar} from "react-datepicker-cy/src";
 import "./style.less";
 import * as moment from "moment-jalaali";
 import I18n from "../../services/i18n/index";
