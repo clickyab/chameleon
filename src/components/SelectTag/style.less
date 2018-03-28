@@ -4,9 +4,6 @@
 
 .hidden {
   display: none !important;
-  &-tag {
-    display: none !important;
-  }
 }
 .select-title{
   margin-top: -10px;
@@ -33,7 +30,6 @@
     top:2px;
   }
 }
-
 .select-label{
   margin-bottom: -15px;
 }
@@ -111,4 +107,27 @@ span[role="menuitem"] {
 .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item:after{
   content: "\e012" !important;
   font-family: clickyabdashboard !important;
+}
+.select-tag-animation-enter {
+  opacity: 0.01;
+  transform: scale(0);
+  transition: all;
+}
+
+.select-tag-animation-enter.select-tag-animation-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: 700ms;
+}
+
+.select-tag-animation-leave {
+  opacity: 1;
+  transform: scale(1);
+  transition: 700ms;
+}
+
+.select-tag-animation-leave.select-tag-animation-leave-active {
+  opacity: 0.01;
+  transform: scale(0);
+  transition: 700ms;
 }

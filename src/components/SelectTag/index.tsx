@@ -5,6 +5,7 @@ import CONFIG from "../../constants/config";
 import "./style.less";
 import Translate from "../i18n/Translate/index";
 import Icon from "../Icon/index";
+import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
 const Option = Select.Option;
 export interface IData {
@@ -94,6 +95,8 @@ export default class SelectTag extends React.Component<IProps, IStates> {
   private handleRemove(dataValue) {
     let temp = this.state.value;
     temp.splice(temp.indexOf(dataValue), 1);
+    this.arrayView.splice(this.arraydata.indexOf(dataValue), 1);
+    this.arraydata.splice(this.arraydata.indexOf(dataValue), 1);
     this.setState({value: temp});
     if (this.props.OnChange) {
       this.props.OnChange(temp);
@@ -126,20 +129,32 @@ export default class SelectTag extends React.Component<IProps, IStates> {
      return children;
   }
 
+  public arrayView = [];
+  public arraydata = [];
   /**
    * @function Create tag from data array argument
    * @param {array} data
    */
   private handleTags(data) {
-    return data.map((data, i) => (
-      <div key={i} className={(this.state.value.indexOf(data.value) > -1) ? "show-tag" : "hidden-tag"}
-           data-value={data.value}>
-        <span className="tag">{data.name}</span>
-        <span className="close" onClick={() => {
-          this.handleRemove(data.value);
-        }}><Icon name={"cif-closelong"}/></span>
-      </div>
-    ));
+    return (<ReactCSSTransitionGroup transitionName="select-tag-animation" transitionEnterTimeout={400} transitionLeaveTimeout={150}>
+      {data.map((data, i) => {
+      if (this.state.value.indexOf(data.value) > -1 && this.arraydata.indexOf(data.value) === -1) {
+         this.arrayView.push(<div key={i} className={"show-tag"}
+                    data-value={data.value}>
+          <span className="tag">{data.name}</span>
+          <span className="close" onClick={() => {
+            this.handleRemove(data.value);
+          }}><Icon name={"cif-closelong"}/></span>
+        </div>);
+         this.arraydata.push(data.value);
+      }
+      else {
+        return null;
+      }
+    })}
+        {this.arrayView}
+      </ReactCSSTransitionGroup>
+    );
   }
 
 
