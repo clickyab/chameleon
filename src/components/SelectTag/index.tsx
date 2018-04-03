@@ -1,11 +1,13 @@
 import * as React from "react";
-import {MenuItem, SelectField} from "material-ui";
+import {Select} from "antd";
 import I18n from "../../services/i18n/index";
 import CONFIG from "../../constants/config";
 import "./style.less";
 import Translate from "../i18n/Translate/index";
 import Icon from "../Icon/index";
+import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
+const Option = Select.Option;
 export interface IData {
   value: any;
   name: string;
@@ -49,10 +51,17 @@ export default class SelectTag extends React.Component<IProps, IStates> {
    * @function handle change of selected values
    * @param value
    */
-  private handleChange(event, index, value) {
-    this.setState({value});
-    if (this.props.OnChange) {
-      this.props.OnChange(value);
+
+  private handleChange(value) {
+    let temp = value;
+    if (temp[temp.length - 1] === "-1") {
+      this.handleSelectAll();
+    }
+    else {
+      this.setState({value: temp});
+      if (this.props.OnChange) {
+        this.props.OnChange(value);
+      }
     }
   }
 
@@ -67,6 +76,16 @@ export default class SelectTag extends React.Component<IProps, IStates> {
       this.props.OnChange(temp);
     }
   }
+  private handleValue(data) {
+    let temp = this.state.value;
+      if (this.state.value.indexOf(data.value) > -1) {
+        temp.push(data.value);
+      }
+      this.setState({value: temp});
+      if (this.props.OnChange) {
+        this.props.OnChange(temp);
+      }
+  }
 
   /**
    * @function handle Removing selected item after tag close icon clicked
@@ -76,6 +95,8 @@ export default class SelectTag extends React.Component<IProps, IStates> {
   private handleRemove(dataValue) {
     let temp = this.state.value;
     temp.splice(temp.indexOf(dataValue), 1);
+    this.arrayView.splice(this.arraydata.indexOf(dataValue), 1);
+    this.arraydata.splice(this.arraydata.indexOf(dataValue), 1);
     this.setState({value: temp});
     if (this.props.OnChange) {
       this.props.OnChange(temp);
@@ -87,49 +108,69 @@ export default class SelectTag extends React.Component<IProps, IStates> {
   }
 
   menuItems() {
+  let children = [];
     let Data = this.props.data;
-    return Data.map((data) => (
-      <MenuItem
-        key={data.value}
-        className={(this.state.value.indexOf(data.value) > -1) ? "hidden" : "show"}
-        insetChildren={true}
-        checked={this.state.value.indexOf(data.value) > -1}
-        value={data.value}
-        primaryText={data.name}
-      />
-    ));
+      if (this.props.allOption && !this.state.selectAll) {
+        children.push(<Option
+          key={-1}
+          value={"-1"}
+        >{"select All"}</Option>);
+      }
+     Data.map((data) => {
+       if (this.state.value.indexOf(data.value) === -1) {
+         children.push(
+           <Option
+             key={data.value}
+             value={data.value}
+           >{data.name}</Option>
+         );
+       }
+    });
+     return children;
   }
 
+  public arrayView = [];
+  public arraydata = [];
   /**
    * @function Create tag from data array argument
    * @param {array} data
    */
   private handleTags(data) {
-    return data.map((data, i) => (
-      <div key={i} className={(this.state.value.indexOf(data.value) > -1) ? "show-tag" : "hidden-tag"}
-           data-value={data.value}>
-        <span className="tag">{data.name}</span>
-        <span className="close" onClick={() => {
-          this.handleRemove(data.value);
-        }}><Icon name={"cif-closelong"}/></span>
-      </div>
-    ));
+    return (<ReactCSSTransitionGroup transitionName="select-tag-animation" transitionEnterTimeout={400} transitionLeaveTimeout={150}>
+      {data.map((data, i) => {
+      if (this.state.value.indexOf(data.value) > -1 && this.arraydata.indexOf(data.value) === -1) {
+         this.arrayView.push(<div key={i} className={"show-tag"}
+                    data-value={data.value}>
+          <span className="tag">{data.name}</span>
+          <span className="close" onClick={() => {
+            this.handleRemove(data.value);
+          }}><Icon name={"cif-closelong"}/></span>
+        </div>);
+         this.arraydata.push(data.value);
+      }
+      else {
+        return null;
+      }
+    })}
+        {this.arrayView}
+      </ReactCSSTransitionGroup>
+    );
   }
 
 
-  selectionRenderer = (value) => {
+  selectionRenderer = (value): string => {
     switch (value.length) {
       case 0:
-        return "";
+        return this.props.placeholder as string;
       case 1:
         if (value[0] === -1) {
-          return <Translate value={"All %s selected"} params={[this.props.type]}/>;
+          return this.i18n._t("All %s selected" , {params: [this.props.type]}) as string;
         }
         return this.props.data[0].name;
       case this.props.data.length:
-        return <Translate value={"All %s selected"} params={[this.props.type]}/>;
+        return this.i18n._t("All %s selected" , {params: [this.props.type]}) as string;
       default:
-        return <Translate value={"%s selected %s"} params={[this.props.type, value.length]}/>;
+        return this.i18n._t("%s selected %s" , {params: [this.props.type, value.length]}) as string;
     }
   }
 
@@ -141,26 +182,15 @@ export default class SelectTag extends React.Component<IProps, IStates> {
           <Translate value={"select %s"} params={[this.props.type]}/>
         </div>}
         <div className="select-tag">
-          <SelectField className={`${(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}`}
-                       hintText={this.i18n._t(this.props.placeholder)}
-                       selectionRenderer={this.selectionRenderer}
-                       multiple={true}
-                       value={this.state.value}
-                       onChange={this.handleChange.bind(this)}
-                       disabled={this.props.data.length === this.state.value.length}
+          <Select className={`${(CONFIG.DIR === "rtl") ? "select-tag-ant-rtl" : "select-tag"}`}
+                  value={this.state.value}
+                  onChange={(value) => this.handleChange(value)}
+                  placeholder={this.selectionRenderer(this.state.value) as string}
+                  mode={"multiple"}
+                  dropdownClassName={"select-tag-dropdown"}
           >
-            {this.props.allOption &&
-            <MenuItem
-              key={-1}
-              className="show"
-              insetChildren={true}
-              value={-1}
-              primaryText={"Select everything"}
-              checked={this.state.selectAll}
-              onClick={this.handleSelectAll.bind(this)}
-            />}
             {this.menuItems()}
-          </SelectField>
+          </Select>
           <div>
             {this.props.type &&
             <div className="select-title">

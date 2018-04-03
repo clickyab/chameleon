@@ -4,9 +4,6 @@
 
 .hidden {
   display: none !important;
-  &-tag {
-    display: none !important;
-  }
 }
 .select-title{
   margin-top: -10px;
@@ -33,7 +30,6 @@
     top:2px;
   }
 }
-
 .select-label{
   margin-bottom: -15px;
 }
@@ -60,4 +56,78 @@ span[role="menuitem"] {
       }
     }
   }
+}
+
+.select-tag-ant-rtl{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: @select-tag-width !important;
+  position: relative;
+  &:after{
+    content: "\e04b";
+    position: absolute;
+    left: 10px;
+    top: 2px;
+    font-family: clickyabdashboard;
+  }
+  .ant-select-selection{
+    border-radius: 2px ;
+    border: 1px solid #D8DADE ;
+    padding: 0 10px ;
+    width: @select-tag-width !important;
+  }
+  .ant-select-selection--multiple{
+    min-height: 35px;
+    max-height: 35px;
+    width: @select-tag-width !important;
+  }
+  .ant-select-selection__rendered{
+    margin-right: -5px;
+    width: @select-tag-width !important;
+    .ant-select-selection__placeholder{
+      display: block !important;
+      text-align: right;
+      line-height: 27px;
+      height: 35px;
+      color: #000;
+    }
+    // Didn't remove ul with display:block since dropDown outside click works with this element
+    ul {
+      opacity: 0;
+      height: 0 !important;
+      width: 0 !important;
+      li{
+        opacity: 0;
+        height: 0 !important;
+        width: 0 !important;
+      }
+    }
+  }
+}
+.ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item:after{
+  content: "\e012" !important;
+  font-family: clickyabdashboard !important;
+}
+.select-tag-animation-enter {
+  opacity: 0.01;
+  transform: scale(0);
+  transition: all;
+}
+
+.select-tag-animation-enter.select-tag-animation-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: 700ms;
+}
+
+.select-tag-animation-leave {
+  opacity: 1;
+  transform: scale(1);
+  transition: 700ms;
+}
+
+.select-tag-animation-leave.select-tag-animation-leave-active {
+  opacity: 0.01;
+  transform: scale(0);
+  transition: 700ms;
 }
