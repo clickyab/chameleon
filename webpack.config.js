@@ -66,6 +66,13 @@ module.exports = {
       //   loader: 'svg-inline-loader'
       // },
       { test: /\.(eot|ttf|woff)$/, loader: "file-loader" },
+      { test: /\.(js)$/,
+          loader: "babel-loader",
+          options: {
+            babelrc: false,
+            presets: ["es2015", "stage-0", "react"]
+        },
+      },
       {
         test: /\.less$/,
         use: [
