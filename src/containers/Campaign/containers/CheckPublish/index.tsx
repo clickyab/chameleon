@@ -14,6 +14,7 @@ import STEPS from "../../steps";
 import map from "../../../../components/IranMap/map";
 import I18n from "../../../../services/i18n/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
+import {CAMPAIGN_STATUS} from "../Type";
 
 // campaign status
 enum STATUS {ACTIVE, DEACTIVE, ARCHIVE}
@@ -38,15 +39,13 @@ interface IProps {
 }
 
 interface IState {
-  status: boolean;
+  status: CAMPAIGN_STATUS;
   type?: DEVICE_TYPES;
-  webType?: WEB_TYPES;
-  applicationType?: APPLICATION_TYPES;
   title: string;
   startDate: string;
   endDate: string;
   totalBudget: number;
-  dailyLimit: number;
+  dailyBudget: number;
   costType: string;
   locations: string[];
   devices: string[];
@@ -94,16 +93,14 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      status: props.currentCampaign ? props.currentCampaign.status : null,
+      status: props.currentCampaign ? props.currentCampaign.status as CAMPAIGN_STATUS : null,
       type: props.currentCampaign ? props.currentCampaign.kind as DEVICE_TYPES : null,
-      applicationType: props.currentCampaign ? props.currentCampaign.type as APPLICATION_TYPES : null,
-      webType: props.currentCampaign ? props.currentCampaign.type as WEB_TYPES : null,
       title: props.currentCampaign ? props.currentCampaign.title : null,
       startDate: props.currentCampaign ? props.currentCampaign.start_at : null,
       endDate: props.currentCampaign ? props.currentCampaign.end_at : null,
-      totalBudget: props.currentCampaign ? props.currentCampaign.budget : null,
-      dailyLimit: props.currentCampaign ? props.currentCampaign.daily_limit : null,
-      costType: props.currentCampaign ? props.currentCampaign.cost_type : null,
+      totalBudget: props.currentCampaign ? props.currentCampaign.total_budget : null,
+      dailyBudget: props.currentCampaign ? props.currentCampaign.daily_budget : null,
+      costType: props.currentCampaign ? props.currentCampaign.strategy : null,
       locations: [],
       devices: [],
       iabs: [],
@@ -126,23 +123,21 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           this.props.setBreadcrumb("campaignTitle", campaign.title, "checkPublisher");
           this.props.setCurrentCampaign(campaign as OrmCampaign);
           this.setState({
-            status: campaign.status,
+            status: campaign.status as CAMPAIGN_STATUS,
             type: campaign.kind as DEVICE_TYPES,
-            applicationType: campaign.type as APPLICATION_TYPES,
-            webType: campaign.type as WEB_TYPES,
             title: campaign.title,
-            startDate: campaign.start_at,
+            startDate: campaign.created_at,
             endDate: campaign.end_at,
-            totalBudget: campaign.budget,
-            dailyLimit: campaign.daily_limit,
-            costType: campaign.cost_type,
+            totalBudget: campaign.total_budget,
+            dailyBudget: campaign.daily_budget,
+            costType: campaign.strategy,
             locations: campaign.attributes.region,
             devices: campaign.attributes.device,
             iabs: campaign.attributes.iab,
             currentCampaign: campaign,
           });
-          if (campaign.white_black_id) {
-            api.inventoryPresetIdGet({id: campaign.white_black_id.toString()})
+          if (campaign.inventory_id) {
+            api.inventoryPresetIdGet({id: campaign.inventory_id.toString()})
               .then((list) => {
                 this.setState({
                   listLabel: list.label,
@@ -229,12 +224,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.type === DEVICE_TYPES.WEB &&
-                `${this.state.type}(${this.state.webType})`
-                }
-                {this.state.type === DEVICE_TYPES.APPLICATION &&
-                `${this.state.type}(${this.state.applicationType})`
-                }
+                  {this.state.type}
               </Col>
               <Col span={8}>
                 <label><Translate value={"campaign type"}/></label>
@@ -295,7 +285,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <b>{this.state.dailyLimit}</b>
+                <b>{this.state.dailyBudget}</b>
                 <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>
@@ -375,10 +365,10 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.currentCampaign.white_black_type &&
+                {this.state.currentCampaign.inventory_type &&
                 <Translate value={"White List"}/>
                 }
-                {!this.state.currentCampaign.white_black_type &&
+                {!this.state.currentCampaign.inventory_type &&
                 <Translate value={"Black List"}/>
                 }
 

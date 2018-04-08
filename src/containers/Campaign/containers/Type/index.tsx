@@ -66,7 +66,10 @@ interface IState {
 enum INTERNAL_STEPS {
   SELECT_DEVICE_TYPE,
 }
-
+export enum CAMPAIGN_STATUS {
+  START = "start",
+  PAUSE = "pause"
+}
 /**
  * @enum DEVICE_TYPES
  * @desc Device Types
@@ -200,11 +203,10 @@ class TypeComponent extends React.Component <IProps, IState> {
   private submit() {
     let campaign: OrmCampaign = {};
     campaign.kind = this.state.selectedType;
-    campaign.type = "banner";
 
     if (isUndefined(campaign.status)) {
       const date = new Date();
-      campaign.status = true;
+      campaign.status = CAMPAIGN_STATUS.START;
       campaign.start_at = date.toDateString();
     }
 

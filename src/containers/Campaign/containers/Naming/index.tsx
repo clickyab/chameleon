@@ -4,7 +4,7 @@ import {withRouter} from "react-router";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
-import {Col, Form, notification, Row, Spin, Input} from "antd";
+import {Col, Form, notification, Row, Spin, Input , Select} from "antd";
 import {MenuItem, RadioButton, RadioButtonGroup, RaisedButton, SelectField, TextField} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -12,6 +12,7 @@ import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
 import PersianDatePicker from "../../../../components/datePicker/index";
 import Tooltip from "../../../../components/Tooltip/index";
+import {CAMPAIGN_STATUS} from "../Type/index";
 import "./style.less";
 import {
     ControllersApi,
@@ -25,6 +26,7 @@ import StickyFooter from "../../components/StickyFooter";
 import InputLimit from "../../components/InputLimit/InputLimit";
 
 const FormItem = Form.Item;
+const Option  = Select.Option;
 
 interface IOwnProps {
     match?: any;
@@ -47,8 +49,9 @@ interface IProps {
 interface IState {
     allDay: boolean;
     allTime: boolean;
-    status: boolean;
+    status: CAMPAIGN_STATUS;
     currentCampaign: OrmCampaign;
+    tld: string;
     schedule ?: OrmCampaignSchedule;
     timePeriods: any[];
     minRange: string;
@@ -64,7 +67,8 @@ class NamingComponent extends React.Component <IProps, IState> {
         this.state = {
             allDay: true,
             allTime: true,
-            status: false,
+            status: props.currentCampaign && props.currentCampaign.status === CAMPAIGN_STATUS.START ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE,
+            tld: props.currentCampaign && props.currentCampaign.tld ? props.currentCampaign.tld as string : "",
             currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
             timePeriods: [{from: 0, to: 23}],
             minRange: null,
@@ -160,7 +164,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         });
     }
 
-    private handleChangeStatus(event, index: number, status: boolean) {
+    private handleChangeStatus(status: CAMPAIGN_STATUS) {
         let campaign = this.state.currentCampaign;
         campaign.status = status;
         this.setState({
@@ -195,6 +199,7 @@ class NamingComponent extends React.Component <IProps, IState> {
             let campaign: ControllersCreateCampaignPayload = this.state.currentCampaign as ControllersCreateCampaignPayload;
             campaign.title = values.name;
             campaign.start_at = values.start_at;
+            campaign.tld = values.domain;
 
             if (this.state.allDay) {
                 campaign.end_at = null;
@@ -290,12 +295,13 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                         <Col span={20} className="form-select-column">
                             <FormItem>
-                                <SelectField className={(CONFIG.DIR === "rtl") ? "select-list-rtl" : "select-list"}
+                                <Select className={"select-input status-input"}
                                              value={this.state.currentCampaign.status}
+                                             dropdownClassName={"select-dropdown"}
                                              onChange={this.handleChangeStatus.bind(this)}>
-                                    <MenuItem key={`n_active`} value={true} primaryText={this.i18n._t("Active")}/>
-                                    <MenuItem key={`n_inactive`} value={false} primaryText={this.i18n._t("Inactive")}/>
-                                </SelectField>
+                                    <Option key={`n_active`} value={CAMPAIGN_STATUS.START}><Translate value={"Active"}/></Option>
+                                    <Option key={`n_inactive`} value={CAMPAIGN_STATUS.PAUSE}><Translate value={"Inactive"}/></Option>
+                                </Select>
                             </FormItem>
                         </Col>
                     </Row>
@@ -325,7 +331,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         <Col span={5}>
                         </Col>
                     </Row>
-                    <Row type="flex" align="middle">
+                    <Row type="flex" align="middle" className={"mb-3"}>
                         <Col span={4}>
                             <Tooltip/>
                             <label><Translate value={"TLD Domain"}/></label>
@@ -345,7 +351,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                     />
                                 )}
                             </FormItem>
-                            <span className={"tld-description"}>{this.i18n._t("Please enter domain of company that you are making campaign for. exp: mydomain.com")}</span>
+                            <span className={"tld-description"}><Translate value={"Please enter domain of company that you are making campaign for. exp: mydomain.com"}/></span>
                         </Col>
                         <Col span={5}>
                         </Col>

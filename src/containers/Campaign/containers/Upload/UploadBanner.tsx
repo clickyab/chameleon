@@ -98,8 +98,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
     public componentDidMount() {
         this.setState({
             currentCampaign: this.props.currentCampaign,
-            adSize: (this.props.currentCampaign.kind === DEVICE_TYPES.APPLICATION) ? AppSize :
-                ((this.props.currentCampaign.type === "video") ? VideoSize : BannerSize),
+            adSize: BannerSize
         }, function () {
             this.loadBanners();
         });

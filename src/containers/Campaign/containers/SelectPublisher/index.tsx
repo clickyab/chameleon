@@ -88,9 +88,9 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             id: this.props.match.params.id,
         }).then(campaign => {
             let listType: List;
-            if (campaign.white_black_id !== 0) {
+            if (campaign.inventory_id !== 0) {
                 listType = List.NEW;
-            } else if (!campaign.exchange && campaign.white_black_id === 0) {
+            } else if (!campaign.exchange && campaign.inventory_id === 0) {
                 listType = List.PREVIOUS;
             } else {
                 listType = List.PREVIOUS;
@@ -105,7 +105,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             this.props.setBreadcrumb("campaignTitle", campaign.title, "selectPublisher");
             this.setState({
                 currentCampaign: campaign,
-                listID: campaign.white_black_id,
+                listID: campaign.inventory_id,
                 listName: this.i18n._t("%s Publishers", {params: [campaign.title]}).toString(),
             });
         });
@@ -155,7 +155,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         let params = {
             id: this.state.currentCampaign.id.toString(),
             payloadData: {
-                exchange: true,
+                exchange: "all",
                 list_id: 0,
                 white_typ: this.state.whiteList,
             }

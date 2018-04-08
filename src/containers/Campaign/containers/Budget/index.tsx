@@ -63,7 +63,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      pricing: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ? props.currentCampaign.cost_type as IPricing : IPricing.CPC,
+      pricing: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ? props.currentCampaign.strategy as IPricing : IPricing.CPC,
       subscribers: [],
       subscriber: "",
       currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
@@ -111,10 +111,10 @@ class BudgetComponent extends React.Component <IProps, IState> {
         id: this.state.currentCampaign.id.toString(),
         payloadData: {
           max_bid: parseInt(values.max_bid),
-          daily_limit: parseInt(values.daily_limit),
-          budget: parseInt(values.budget),
-          cost_type: values.cost_type,
-          notify_email: values.notify_email,
+          daily_budget: parseInt(values.daily_budget),
+          total_budget: parseInt(values.total_budget),
+          strategy: values.strategy,
+          notify_users: values.notify_users,
         }
       }).then(data => {
         this.props.setCurrentCampaign(data as OrmCampaign);
@@ -176,7 +176,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                   <Col span={10}>
                     <FormItem>
                       {getFieldDecorator("budget", {
-                        initialValue: this.state.currentCampaign.budget,
+                        initialValue: this.state.currentCampaign.total_budget,
                         rules: [{required: true, message: this.i18n._t("Please input maximum campaign's budget!")}],
                       })(
                         <Input
@@ -204,7 +204,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                   <Col span={10}>
                     <FormItem>
                       {getFieldDecorator("daily_limit", {
-                        initialValue: this.state.currentCampaign.daily_limit,
+                        initialValue: this.state.currentCampaign.daily_budget,
                         rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
                       })(
                         <Input
@@ -264,7 +264,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               <Col span={10} offset={10}>
                 <FormItem className="form-radio">
                   {getFieldDecorator("cost_type", {
-                    initialValue: this.state.currentCampaign.cost_type,
+                    initialValue: this.state.currentCampaign.strategy,
                   })(
                     <RadioButtonGroup defaultSelected={this.state.pricing}
                                       valueSelected={this.state.pricing}
@@ -323,7 +323,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               <Col span={16}>
                 <FormItem className="campaign-tag">
                   {getFieldDecorator("notify_email", {
-                    initialValue: this.state.currentCampaign.notify_email ? this.state.currentCampaign.notify_email : [],
+                    initialValue: (this.state.currentCampaign.receivers) ? this.state.currentCampaign.receivers : [],
                   })(
                     <Select
                       showSearch={false}

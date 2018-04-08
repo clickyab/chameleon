@@ -12,12 +12,24 @@
 .time-period-add{
 }
 .tld-description{
-  display: block;
-  margin-top: 3px;
-  margin-bottom: 10px;
+  position: absolute;
+  bottom: -10px;
+  z-index: 9;
 }
 .have-description{
   .ant-form-explain{
     margin-bottom: 5px !important;
+  }
+}
+.select-input {
+  &.status-input {
+    width: 85px;
+  }
+}
+.has-error{
+  .ant-form-explain{
+    background: #FFF;
+    position: relative;
+    z-index: 10;
   }
 }
