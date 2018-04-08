@@ -15,6 +15,7 @@ import "./style.less";
 import LocationSelect from "../../../../components/LocationSelect/index";
 import Gender from "../../../../components/Gender/index";
 import ChangePassword from "./components/ChangePassword/index";
+import {validateID} from "../../../../services/Utils/CustomValidations";
 
 const FormItem = Form.Item;
 
@@ -240,7 +241,12 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                           rules: [{
                                               required: true,
                                               message: this.i18n._t("Please input your National ID!")
-                                          }],
+                                          },
+                                            {
+                                            validator: validateID,
+                                              message : this.i18n._t("Invalid national ID")
+                                          }
+                                          ],
                                       })(
                                           <Input
                                               className="input-campaign"

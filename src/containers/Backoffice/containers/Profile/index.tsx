@@ -16,6 +16,7 @@ import Gender from "../../../../components/Gender/index";
 import ChangePassword from "./components/ChangePassword/index";
 import Avatar from "../../../../components/Avatar";
 import {ACCOUNT_TYPE} from "../AddUser";
+import {validateID} from "../../../../services/Utils/CustomValidations";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -213,8 +214,8 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
           </Col>
           <Col span={12}>
             <FormItem>
-                                            <span className="input-title require"><Translate
-                                              value="User manager"/></span>
+               <span className="input-title require"><Translate
+                 value="User manager"/></span>
               {getFieldDecorator("account_type", {
                 initialValue: this.props.user.economic_code,
                 rules: [{
@@ -239,8 +240,14 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
           <Col span={12}>
             <FormItem>
               <span className="input-title"><Translate value="Postal code"/></span>
-              {getFieldDecorator("postal_code", {
-                initialValue: this.state.user.postal_code,
+              {getFieldDecorator("ssn",  {
+                initialValue: this.state.user.ssn,
+                rules: [
+                  {
+                    validator: validateID,
+                    message : this.i18n._t("Invalid national ID")
+                  }
+                ],
               })(
                 <Input
                   className="input-campaign"
@@ -590,8 +597,8 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
                     </Col>
                     <Col span={12}>
                       <FormItem>
-                                                <span className="input-title require"><Translate
-                                                  value="Mobile of contact point"/></span>
+                      <span className="input-title require"><Translate
+                            value="Mobile of contact point"/></span>
                         {getFieldDecorator("cell_phone", {
                           initialValue: this.state.user.cellphone,
                           rules: [{
