@@ -439,8 +439,8 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         <Row gutter={16}>
                             <Col span={8} offset={16}>
                                 <FormItem>
-                                    <span className="span-block input-title"><Translate
-                                        value="Choose name for Ad*"/></span>
+                                    <span className="span-block input-title require"><Translate
+                                        value="Choose name for Ad"/></span>
                                     {getFieldDecorator("adName", {
                                         rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
                                     })(
@@ -459,7 +459,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <span className="image-drag-upload"><Translate value={"wide image*"}/></span>
+                                <span className="image-drag-upload require"><Translate value={"wide image"}/></span>
                                 <Dragger
                                     beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.IMAGE)}
                                     className="banner-dragger-comp"

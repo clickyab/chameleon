@@ -182,12 +182,12 @@ export default class SelectTag extends React.Component<IProps, IStates> {
           <Translate value={"select %s"} params={[this.props.type]}/>
         </div>}
         <div className="select-tag">
-          <Select className={`${(CONFIG.DIR === "rtl") ? "select-tag-ant-rtl" : "select-tag"}`}
+          <Select className={"select-input campaign-select select-tag-ant-rtl"}
                   value={this.state.value}
                   onChange={(value) => this.handleChange(value)}
                   placeholder={this.selectionRenderer(this.state.value) as string}
+                  dropdownClassName={"select-input-dropdown"}
                   mode={"multiple"}
-                  dropdownClassName={"select-tag-dropdown"}
           >
             {this.menuItems()}
           </Select>
