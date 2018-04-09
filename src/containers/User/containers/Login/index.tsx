@@ -18,7 +18,7 @@ import "./style.less";
 import PhoneInput from "../../../../components/PhoneInput/index";
 import CONFIG from "../../../../constants/config";
 import Resend from "../RecoverPassword/Resend/index";
-import {localStorageRemove} from "../../../../services/Utils/LocalStorageWrapper";
+import ServerStore from "../../../../services/ServerStore";
 
 const FormItem = Form.Item;
 
@@ -64,7 +64,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
   }
 
   public handlePassBtn(value) {
-    (value.length > 5 ) ? this.setState({disablePassBtn: false}) : this.setState({disablePassBtn: true});
+    (value.length > 5) ? this.setState({disablePassBtn: false}) : this.setState({disablePassBtn: true});
   }
 
   private submitLogin(e) {
@@ -89,10 +89,13 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           this.props.setUser(data.account);
           this.props.setIsLogin();
 
+          ServerStore.getInstance().setItems(data.account.attributes);
+          console.log(ServerStore.getInstance());
+
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
 
-          localStorageRemove(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
+          ServerStore.getInstance().removeItem(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
 
           // redirect to dashboard
           this.props.history.push("/dashboard");

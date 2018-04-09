@@ -8,7 +8,7 @@ import theme, {colorPalette} from "./theme";
 import * as moment from "moment-jalaali";
 import RangePickerWrapper, {IRangeObject} from "../RangePickerWrapper/index";
 import {rangeType} from "../RangePicker";
-import {localStorageAdd} from "../../services/Utils/LocalStorageWrapper";
+import ServerStore from "../../services/ServerStore";
 
 
 echarts.registerTheme("CampaignTimeSeries", theme);
@@ -109,7 +109,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
    * @param {IDefinition} definition
    */
   private storeDefinition(definition: IDefinition) {
-    localStorageAdd(`TIME_SERIES_DEFINITION_${this.props.name}`, JSON.stringify(definition));
+    ServerStore.getInstance().setItem(`TIME_SERIES_DEFINITION_${this.props.name}`, JSON.stringify(definition));
   }
 
   /**
@@ -117,12 +117,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
    * @returns {IDefinition}
    */
   private restoreDefinition(): IDefinition | null {
-    const def = localStorage.getItem(`TABALE_DEFINITION_${this.props.name}`);
-    if (def) {
-      return JSON.parse(def);
-    } else {
-      return null;
-    }
+    return ServerStore.getInstance().getItem(`TABALE_DEFINITION_${this.props.name}`);
   }
 
 

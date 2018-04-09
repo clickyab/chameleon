@@ -21,9 +21,9 @@ import Icon from "../Icon/index";
 import Modal from "../../components/Modal/index";
 import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
-import {localStorageAdd} from "../../services/Utils/LocalStorageWrapper";
 import CONFIG from "../../constants/config";
 import * as moment from "moment-jalaali";
+import ServerStore from "./../../services/ServerStore";
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
@@ -83,7 +83,7 @@ interface IProps {
    */
   onQueryChange?: (query: any) => void;
 
-  dateRange ?: {
+  dateRange?: {
     from: moment.type,
     to: moment.type,
   };
@@ -126,13 +126,14 @@ class DataTable extends React.Component<IProps, IState> {
   wrapperDOM: HTMLElement;
   range;
   quary;
+  serverStore = ServerStore.getInstance();
 
   private i18n = I18n.getInstance();
 
   constructor(props: IProps) {
     super(props);
-    const customFieldsObject = localStorage.getItem(`TABLE_CUSTOM_${this.props.name}`);
-    let customField = customFieldsObject ? JSON.parse(customFieldsObject) : {};
+    const customFieldsObject = this.serverStore.getItem(`TABLE_CUSTOM_${this.props.name}`);
+    let customField = customFieldsObject ? customFieldsObject : {};
     this.state = {
       selectedRows: [],
       selectedKeys: [],
@@ -180,7 +181,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @param {IDefinition} definition
    */
   storeDefinition(definition: IDefinition) {
-    localStorageAdd(`TABLE_DEFINITION_${this.props.name}`, definition);
+    this.serverStore.setItem(`TABLE_DEFINITION_${this.props.name}`, definition);
   }
 
 
@@ -189,7 +190,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @param {any} definition
    */
   storeCustom(customField) {
-    localStorageAdd(`TABLE_CUSTOM_${this.props.name}`, customField);
+    this.serverStore.setItem(`TABLE_CUSTOM_${this.props.name}`, customField);
   }
 
   /**
@@ -197,13 +198,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {IDefinition}
    */
   restoreDefinition(): IDefinition | null {
-    const def = localStorage.getItem(`CHART_DEFINITION_${this.props.name}`);
-    if (def) {
-      return JSON.parse(def);
-    } else {
-
-      return null;
-    }
+    return this.serverStore.getItem(`CHART_DEFINITION_${this.props.name}`);
   }
 
   /**

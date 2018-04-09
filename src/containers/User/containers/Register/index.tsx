@@ -1,7 +1,6 @@
 ///<reference path="../../../../../node_modules/@types/react-router/index.d.ts"/>
 import * as React from "react";
 import {RouteComponentProps, withRouter} from "react-router";
-import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
@@ -18,7 +17,7 @@ import "./style.less";
 import PhoneInput from "../../../../components/PhoneInput/index";
 import CONFIG from "../../../../constants/config";
 import Resend from "../RecoverPassword/Resend/index";
-import {localStorageRemove} from "../../../../services/Utils/LocalStorageWrapper";
+import ServerStore from "../../../../services/ServerStore";
 
 const FormItem = Form.Item;
 
@@ -135,7 +134,7 @@ class RegisterForm extends React.Component<IProps, IState> {
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, true);
 
-          localStorageRemove(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
+          ServerStore.getInstance().removeItem(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL");
 
           // redirect to dashboard
           this.props.history.push("/dashboard");
