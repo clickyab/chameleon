@@ -244,7 +244,7 @@ export default class UtmForm extends React.Component<IProps, IState> {
                 />
                 </Col>
                 </Row>
-                <span className="span-block input-title"><Translate value="URL*"/></span>
+                <span className="span-block input-title require"><Translate value="URL"/></span>
                 <Input
                     placeholder={this.i18n._t("http://domain.com") as string}
                     className="input-campaign full-width mb-2 dir-ltr"

@@ -28,9 +28,9 @@ const Option = Select.Option;
 
 const FormItem = Form.Item;
 
-enum INetworkType { "ISP_Cell", "ISP", "Cell" }
+enum INetworkType { ISP_Cell = "ISP_Cell", ISP = "ISP", Cell = "Cell" }
 
-enum ILocationType { "GM", "IRAN_MAP", "ALL", "FOREIGN" }
+enum ILocationType { GM = "GM", IRAN_MAP = "IRAN_MAP", ALL = "ALL", FOREIGN = "FOREIGN" }
 
 
 interface IOwnProps {
@@ -68,7 +68,7 @@ interface IState {
   locations: string[];
   showOtherNetwork: boolean;
   NetworkType: INetworkType;
-  locationType: ILocationType;
+  locationType: ILocationType | string;
   showISP: boolean;
   isps: string[];
   showCellar: boolean;
@@ -245,7 +245,28 @@ class TargetingComponent extends React.Component <IProps, IState> {
     }
 
   }
-
+  private handleNetworkChange(value) {
+    this.setState({NetworkType: value});
+    switch (value) {
+      case INetworkType.ISP_Cell:
+        this.setState({
+          showISP: true,
+          showCellar: true,
+        });
+        break;
+      case INetworkType.ISP:
+        this.setState({
+          showISP: true,
+          showCellar: false
+        });
+        break;
+      case INetworkType.Cell:
+        this.setState({
+          showISP: false,
+          showCellar: true,
+        });
+    }
+}
   private updateDevices(selectedDevices) {
     this.setState({
       devices: selectedDevices,
@@ -564,24 +585,24 @@ class TargetingComponent extends React.Component <IProps, IState> {
                   </Col>
                   <Col span={19}>
                     <div className="mt-1">
-                      <SelectField className={"select-list-rtl select-geolocation"}
-                                   onChange={(a, b, value) => {
+                      <Select className={"select-input campaign-select"}
+                              dropdownClassName={"select-dropdown"}
+                                   onChange={(value) => {
                                      this.setState({
-                                       locationType: value,
+                                       locationType: value as string,
                                      });
                                    }}
-                                   value={this.state.locationType}>
-                        <MenuItem value={ILocationType.ALL} primaryText={this.i18n._t("Select all")}/>
+                                   value={(this.state.locationType) as string}>
+                        <Option value={ILocationType.ALL}>{this.i18n._t("Select all")}</Option>
                         {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
-                        <MenuItem value={ILocationType.GM} primaryText={this.i18n._t("Select via geoloacation")}/>
+                        <Option value={ILocationType.GM} >{this.i18n._t("Select via geoloacation")}</Option>
                         }
                         {this.state.currentCampaign.kind === DEVICE_TYPES.WEB &&
-                        <MenuItem value={ILocationType.IRAN_MAP}
-                                  primaryText={this.i18n._t("Select specific area in iran")}/>
+                        <Option value={ILocationType.IRAN_MAP}
+                        >{this.i18n._t("Select specific area in iran")}</Option>
                         }
-                        <MenuItem value={ILocationType.FOREIGN}
-                                  primaryText={this.i18n._t("All without Iran")}/>
-                      </SelectField>
+                        <Option value={ILocationType.FOREIGN}>{this.i18n._t("All without Iran")}</Option>
+                      </Select>
                     </div>
                     {this.state.locationType === ILocationType.IRAN_MAP &&
                     <div className="component-wrapper">
@@ -652,53 +673,16 @@ class TargetingComponent extends React.Component <IProps, IState> {
                       <label className="network-select-label">
                         <Translate value={"Connection type"}/>
                       </label>
-                      <SelectField
-                        className={(CONFIG.DIR === "rtl") ? "select-tag-rtl" : "select-tag"}
+                      <Select
+                        className={"select-input campaign-select"}
+                        dropdownClassName={"select-dropdown"}
                         value={this.state.NetworkType}
-                        onChange={(event, index, value: INetworkType) => {
-                          this.setState({NetworkType: value});
-                        }}
-                        hintText={this.i18n._t("Network Type")}>
-                        <MenuItem
-                          key={-1}
-                          className="show"
-                          insetChildren={true}
-                          value={INetworkType.ISP_Cell}
-                          primaryText={this.i18n._t("ISP and Cellular").toString()}
-                          onClick={() => {
-                            this.setState({
-                              showISP: true,
-                              showCellar: true,
-                            });
-                          }}
-                        />
-                        <MenuItem
-                          key={0}
-                          className="show"
-                          insetChildren={true}
-                          value={INetworkType.ISP}
-                          primaryText={this.i18n._t("ISP").toString()}
-                          onClick={() => {
-                            this.setState({
-                              showISP: true,
-                              showCellar: false,
-                            });
-                          }}
-                        />
-                        <MenuItem
-                          key={1}
-                          className="show"
-                          insetChildren={true}
-                          value={INetworkType.Cell}
-                          primaryText={this.i18n._t("Cellular").toString()}
-                          onClick={() => {
-                            this.setState({
-                              showISP: false,
-                              showCellar: true,
-                            });
-                          }}
-                        />
-                      </SelectField>
+                        onChange={(value: INetworkType) => this.handleNetworkChange(value)}
+                        placeholder={this.i18n._t("Network Type") as string}>
+                        <Option key={-1}  value={INetworkType.ISP_Cell}>{this.i18n._t("ISP and Cellular").toString()}</Option>
+                        <Option key={0}   value={INetworkType.ISP} >{this.i18n._t("ISP").toString()}</Option>
+                        <Option key={1}   value={INetworkType.Cell}>{this.i18n._t("Cellular").toString()}</Option>
+                      </Select>
                     </div>
                     }
                     {this.state.showISP && this.state.showOtherNetwork &&

@@ -49,7 +49,7 @@ interface IState {
   networkType?: NETWORK_TYPE;
 }
 
-enum NETWORK_TYPE {CLICKYAB= "clickyab" , EXCHANGE = "exchange"}
+enum NETWORK_TYPE {CLICKYAB= "clickyab" , EXCHANGE = "all_except_clickyab" , ALL = "all"}
 export enum IPricing {
   CPC = "cpc",
   CPM = "cpm",
@@ -114,7 +114,8 @@ class BudgetComponent extends React.Component <IProps, IState> {
           daily_budget: parseInt(values.daily_budget),
           total_budget: parseInt(values.total_budget),
           strategy: values.strategy,
-          notify_users: values.notify_users,
+          exchange: values.exchange,
+       //   receivers: values.receivers,
         }
       }).then(data => {
         this.props.setCurrentCampaign(data as OrmCampaign);
@@ -139,6 +140,28 @@ class BudgetComponent extends React.Component <IProps, IState> {
     this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`);
   }
 
+  private handleAdNetworkChange(value) {
+    this.setState({
+      networkType: value,
+    });
+    switch (value) {
+      case NETWORK_TYPE.CLICKYAB:
+        this.setState({
+          pricing: IPricing.CPC,
+        });
+      break;
+      case NETWORK_TYPE.EXCHANGE:
+        this.setState({
+          pricing: IPricing.CPM,
+        });
+      break;
+      case NETWORK_TYPE.ALL:
+        this.setState({
+          pricing: IPricing.CPM,
+        });
+      break;
+    }
+}
   private handleSubscribersChange(value) {
     this.setState({
       subscriber: value,
@@ -175,7 +198,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 <Row type="flex" align="middle" gutter={16}>
                   <Col span={10}>
                     <FormItem>
-                      {getFieldDecorator("budget", {
+                      {getFieldDecorator("total_budget", {
                         initialValue: this.state.currentCampaign.total_budget,
                         rules: [{required: true, message: this.i18n._t("Please input maximum campaign's budget!")}],
                       })(
@@ -203,7 +226,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 <Row type="flex" align="middle" gutter={16}>
                   <Col span={10}>
                     <FormItem>
-                      {getFieldDecorator("daily_limit", {
+                      {getFieldDecorator("daily_budget", {
                         initialValue: this.state.currentCampaign.daily_budget,
                         rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
                       })(
@@ -226,30 +249,26 @@ class BudgetComponent extends React.Component <IProps, IState> {
                       <Tooltip/>
                       <label><Translate value="display network"/></label>
                   </Col>
-                  <Col span={10} offset={10}>
-                      <Row type="flex" align="middle">
-                          <Col span={8}>
-                              <SelectField className={"select-list-rtl select-network-type"}
-                                           onChange={(a, b, value) => {
-                                               this.setState({
-                                                   networkType: value,
-                                               });
-                                               if (value === NETWORK_TYPE.CLICKYAB) {
-                                                 this.setState({
-                                                     pricing: IPricing.CPC,
-                                                 });
-                                               }
-                                               else {
-                                                   this.setState({
-                                                       pricing: IPricing.CPM,
-                                                   });
-                                               }
-                                           }}
-                                           value={this.state.networkType}>
-                                  <MenuItem value={NETWORK_TYPE.CLICKYAB} primaryText={this.i18n._t("clickyab")}/>
-                                  <MenuItem value={NETWORK_TYPE.EXCHANGE} primaryText={this.i18n._t("exchange")}/>
-                              </SelectField>
+                  <Col span={10} offset={10} >
+                      <Row type="flex" align="middle" gutter={16}>
+                          <Col span={10}>
+                            <FormItem>
+                              {getFieldDecorator("exchange", {
+                                initialValue: this.state.networkType,
+                                rules: [{required: true, message: this.i18n._t("Please input daily campaign's budget!")}],
+                              })(
+                              <Select className={"select-input"}
+                                      dropdownClassName={"select-dropdown"}
+                                      onChange={(value) => this.handleAdNetworkChange(value)}>
+                                <Option value={NETWORK_TYPE.CLICKYAB}><Translate value={"clickyab"}/></Option>
+                                <Option value={NETWORK_TYPE.EXCHANGE}><Translate value={"exchange"}/></Option>
+                                <Option value={NETWORK_TYPE.ALL}><Translate value={"All"}/></Option>
+                              </Select>
+                              )}
+                            </FormItem>
                           </Col>
+                        <Col span={14} className="currency">
+                        </Col>
                       </Row>
                   </Col>
               </Row>
@@ -263,7 +282,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={10} offset={10}>
                 <FormItem className="form-radio">
-                  {getFieldDecorator("cost_type", {
+                  {getFieldDecorator("strategy", {
                     initialValue: this.state.currentCampaign.strategy,
                   })(
                     <RadioButtonGroup defaultSelected={this.state.pricing}
@@ -322,7 +341,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
               </Col>
               <Col span={16}>
                 <FormItem className="campaign-tag">
-                  {getFieldDecorator("notify_email", {
+                  {getFieldDecorator("receivers", {
                     initialValue: (this.state.currentCampaign.receivers) ? this.state.currentCampaign.receivers : [],
                   })(
                     <Select

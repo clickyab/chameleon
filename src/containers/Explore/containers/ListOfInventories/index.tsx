@@ -98,7 +98,7 @@ class ListOfInventories extends React.Component <IProps, IState> {
             infinite={true}
             name="publisherList"
             onSelectRow={this.onSelectRow.bind(this)}
-            definitionFn={this.controllerApi.campaignBaseIdPut}
+            definitionFn={this.controllerApi.inventoryListDefinitionGet}
             dataFn={this.controllerApi.inventoryListGet}
             actionsFn={{
               "edit": (v, r) => {

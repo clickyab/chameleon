@@ -426,7 +426,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <span className="image-drag-upload"><Translate value={"video*"}/></span>
+                                <span className="image-drag-upload require"><Translate value={"video"}/></span>
                                 <Dragger
                                     beforeUpload={this.uploadFile.bind(this)}
                                     className="banner-dragger-comp"
@@ -443,8 +443,8 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                                 </div>
                             </Col>
                             <Col span={8}>
-                                <span className="image-drag-upload"><Translate
-                                    value={"video poster(wide with 16:9 aspect ratio)*"}/></span>
+                                <span className="image-drag-upload require"><Translate
+                                    value={"video poster(wide with 16:9 aspect ratio)"}/></span>
                                 <Dragger
                                     beforeUpload={this.uploadFile.bind(this)}
                                     className="banner-dragger-comp"

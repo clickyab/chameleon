@@ -494,7 +494,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <span className="image-drag-upload"><Translate value={"wide image*"}/></span>
+                                <span className="image-drag-upload require"><Translate value={"wide image"}/></span>
                                 <Dragger
                                     beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.IMAGE)}
                                     className="banner-dragger-comp"
@@ -599,7 +599,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                         <Button className="btn-general btn-submit ml-1"
                                 onClick={this.handleSubmit.bind(this)}
                         >
-                            <Translate value={"Save and creat new ad"}/>
+                            <Translate value={"Save and create new ad"}/>
                         </Button>
                         <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                     </Row>

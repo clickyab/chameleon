@@ -24,6 +24,7 @@ import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import StickyFooter from "../../components/StickyFooter";
 import InputLimit from "../../components/InputLimit/InputLimit";
+import moment = require("moment");
 
 const FormItem = Form.Item;
 const Option  = Select.Option;
@@ -103,7 +104,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         let parsedSchedule = [];
         Object.keys(schedule)
             .map((key, index) => {
-                if (schedule[key]) {
+                if (schedule[key] !== null && schedule[key] !== "") {
                     schedule[key].split(",")
                         .forEach(row => {
                             let itemRow = parsedSchedule[parseInt(row)];
@@ -122,7 +123,7 @@ class NamingComponent extends React.Component <IProps, IState> {
 
     private setStateForTimePeriods() {
         let schedule: OrmCampaignSchedule = {};
-        for (let i = 0; i < 23; i++) {
+        for (let i = 0; i <= 23; i++) {
             schedule[`h` + (`0` + i).slice(-2)] = "";
         }
 
@@ -211,7 +212,6 @@ class NamingComponent extends React.Component <IProps, IState> {
 
             const controllerApi = new ControllersApi();
 
-            console.log("insert end-at", campaign.end_at);
             if (this.props.match.params.id) {
                 controllerApi.campaignBaseIdPut({
                     id: this.state.currentCampaign.id.toString(),
@@ -391,17 +391,17 @@ class NamingComponent extends React.Component <IProps, IState> {
                                             }],
                                         })(
                                             <PersianDatePicker onChange={this.handleRange.bind(this)}
-                                                               minValue={this.state.currentCampaign.start_at}/>
+                                                               minValue={moment().add(-1 , "day").format()}/>
                                         )}
                                     </FormItem>
                                 </Col>
                                 {!this.state.allDay &&
                                 <Col span={12}>
-                                    {console.log("end at ", this.state.currentCampaign.end_at)}
-                                    {console.log("minRange ", this.state.minRange)}
                                     <FormItem>
                                         {getFieldDecorator("end_at", {
-                                            initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at : this.state.minRange,
+                                            initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at
+                                              : (this.state.currentCampaign.start_at > this.state.minRange) ? moment(this.state.currentCampaign.start_at).add(1, "day").format()
+                                              : this.state.minRange,
                                             rules: [{
                                                 required: true,
                                                 message: this.i18n._t("Please select stop date!")
