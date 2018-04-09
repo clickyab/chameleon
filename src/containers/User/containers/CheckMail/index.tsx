@@ -14,7 +14,6 @@ import Icon from "../../../../components/Icon/index";
 import CONFIG from "../../../../constants/config";
 
 import "./style.less";
-import {localStorageAdd} from "../../../../services/Utils/LocalStorageWrapper";
 
 const FormItem = Form.Item;
 
@@ -72,7 +71,7 @@ class CheckMail extends React.Component<IProps, IState> {
           api.userMailCheckPost({
             payloadData: {email: values.email},
           }).then((data) => {
-            localStorageAdd(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL", values.email);
+            localStorage.setItem(CONFIG.COOKIES_PREFIX + "CHECKED_MAIL", values.email);
             if (data.current_domain) {
               this.props.history.push("/user/login");
             } else if (data.domains.length > 0) {

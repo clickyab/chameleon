@@ -12,6 +12,7 @@ var outPath = path.join(__dirname, "./dist");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 //var OfflinePlugin = require("offline-plugin");
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   context: sourcePath,
@@ -75,32 +76,10 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: [
-          require.resolve("style-loader"),
-          require.resolve("css-loader"),
-          {
-            loader: require.resolve("postcss-loader"),
-            options: {
-              ident: "postcss", // https://webpack.js.org/guides/migrating/#complex-options
-              plugins: () => [
-                require("postcss-flexbugs-fixes"),
-                autoprefixer({
-                  browsers: [
-                    ">1%",
-                    "last 4 versions",
-                    "Firefox ESR",
-                    "not ie < 9", // React doesn"t support IE8 anyway
-                  ],
-                  flexbox: "no-2009",
-                }),
-              ],
-            },
-          },
-          {
-            loader: require.resolve("less-loader"),
-            options: {},
-          }
-        ],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'less-loader']
+        }),
       },
       {
         test: /\.png$/,
@@ -121,9 +100,10 @@ module.exports = {
     publicPath: "/",
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       filename: "vendor.bundle.js",
-      minChunks: Infinity,
+      minChunks: 3,
       name: "vendor",
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
