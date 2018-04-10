@@ -137,30 +137,30 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
         controllerApi.campaignGetIdAdGet({
             id: this.state.currentCampaign.id.toString(),
         }).then((list) => {
-            let files: IFileItem[] = [];
-            list.map((item) => {
-                let file: IFileItem = {
-                    id: item.id,
-                    utm: item.target,
-                    height: item.height,
-                    width: item.width,
-                    name: `${this.state.currentCampaign.title} ${item.width}x${item.width}`,
-                    state: {
-                        status: UPLOAD_STATUS.FINISHED,
-                        progress: 100,
-                        url: item.src,
-                    },
-                    // TODO
-                    cta: "",
-                };
-                files.push(file);
-            });
-            this.setState({
-                files
-            }, () => {
-                this.updateVideoSizeObject();
-                this.checkAndSetUtm();
-            });
+            // let files: IFileItem[] = [];
+            // list.map((item) => {
+            //     let file: IFileItem = {
+            //         id: item.id,
+            //         utm: item.target,
+            //         height: item.height,
+            //         width: item.width,
+            //         name: `${this.state.currentCampaign.title} ${item.width}x${item.width}`,
+            //         state: {
+            //             status: UPLOAD_STATUS.FINISHED,
+            //             progress: 100,
+            //             url: item.src,
+            //         },
+            //         // TODO
+            //         cta: "",
+            //     };
+            //     files.push(file);
+            // });
+            // this.setState({
+            //     files
+            // }, () => {
+            //     this.updateVideoSizeObject();
+            //     this.checkAndSetUtm();
+            // });
         });
     }
 
@@ -313,17 +313,17 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             });
         });
 
-        const controllerApi = new ControllersApi();
-        controllerApi.adBannerTypeIdPost({
-            bannerType: UPLOAD_MODULES.VIDEO,
-            id: this.state.currentCampaign.id.toString(),
-            payloadData: {
-                banners
-            }
-        }).then(() => {
-            this.loadVideo();
-            this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
-        });
+        // const controllerApi = new ControllersApi();
+        // controllerApi.adBannerTypeIdPost({
+        //     bannerType: UPLOAD_MODULES.VIDEO,
+        //     id: this.state.currentCampaign.id.toString(),
+        //     payloadData: {
+        //         banners
+        //     }
+        // }).then(() => {
+        //     this.loadVideo();
+        //     this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
+        // });
 
     }
 

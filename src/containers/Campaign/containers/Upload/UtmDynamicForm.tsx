@@ -162,4 +162,4 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
     }
 
 }
-export default Form.create<IProps>()(UtmDynamicForm);
+export default UtmDynamicForm;
