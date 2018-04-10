@@ -335,16 +335,16 @@ class UploadAdContent extends React.Component <IProps, IState> {
             });
         });
 
-        const controllerApi = new ControllersApi();
-        controllerApi.adBannerTypeIdPost({
-            bannerType: UPLOAD_MODULES.VIDEO,
-            id: this.state.currentCampaign.id.toString(),
-            payloadData: {
-                banners
-            }
-        }).then(() => {
-            this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
-        });
+        // const controllerApi = new ControllersApi();
+        // controllerApi.adBannerTypeIdPost({
+        //     bannerType: UPLOAD_MODULES.VIDEO,
+        //     id: this.state.currentCampaign.id.toString(),
+        //     payloadData: {
+        //         banners
+        //     }
+        // }).then(() => {
+        //     this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
+        // });
 
     }
 

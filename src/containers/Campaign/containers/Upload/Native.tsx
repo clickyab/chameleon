@@ -126,21 +126,21 @@ class NativeComponent extends React.Component <IProps, IState> {
     controllerApi.campaignGetIdAdGet({
       id: this.state.currentCampaign.id.toString(),
     }).then((list) => {
-      this.setState({
-        nativeItems: list.map(ad => {
-          let inputData: NativeAd = {
-            id: ad.id.toString(),
-            image: "http://staging.crab.clickyab.ae/uploads/" + ad.src,
-            preViewImg: "http://staging.crab.clickyab.ae/uploads/" + ad.src,
-            url: ad.target,
-            description: "",
-            title: ad.attr.native.title,
-            site_name: "",
-            loading: false,
-          };
-          return inputData;
-        }),
-      });
+      // this.setState({
+      //   nativeItems: list.map(ad => {
+      //     let inputData: NativeAd = {
+      //       id: ad.id.toString(),
+      //       image: "http://staging.crab.clickyab.ae/uploads/" + ad.src,
+      //       preViewImg: "http://staging.crab.clickyab.ae/uploads/" + ad.src,
+      //       url: ad.target,
+      //       description: "",
+      //       title: ad.attr.native.title,
+      //       site_name: "",
+      //       loading: false,
+      //     };
+      //     return inputData;
+      //   }),
+      // });
     });
   }
 
@@ -217,15 +217,15 @@ class NativeComponent extends React.Component <IProps, IState> {
           ads.push(adObj);
         });
 
-        this.controllersApi.adBannerTypeIdPost({
-          id: this.state.currentCampaign.id.toString(),
-          bannerType: UPLOAD_MODULES.NATIVE,
-          payloadData: {
-            banners: ads
-          }
-        }).then(() => {
-          this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
-        });
+        // this.controllersApi.adBannerTypeIdPost({
+        //   id: this.state.currentCampaign.id.toString(),
+        //   bannerType: UPLOAD_MODULES.NATIVE,
+        //   payloadData: {
+        //     banners: ads
+        //   }
+        // }).then(() => {
+        //   this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
+        // });
       });
   }
 
