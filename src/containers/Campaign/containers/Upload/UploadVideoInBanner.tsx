@@ -22,6 +22,7 @@ import UtmForm from "./UtmForm";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {UTMInfo} from "./UtmForm";
 import {Checkbox} from "material-ui";
+import UploadFile, {FILE_TYPE, MODULE} from "../../components/UploadFile";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -105,7 +106,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             adSize: VideoSize,
         };
         let otherPlaceholder: string;
-        this.changeFileProgressState = this.changeFileProgressState.bind(this);
     }
 
     public showEditHelper: boolean = true;
@@ -114,193 +114,10 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
         this.setState({
             currentCampaign: this.props.currentCampaign,
             adSize: VideoSize,
-        }, function () {
-            this.loadVideo();
         });
     }
 
-    checkAndSetUtm() {
-        let utms = {};
-        this.state.files.map(file => {
-            utms[file.utm] = file.utm;
-        });
-        if (Object.keys(utms).length === 1) {
-            // TODO what this part do
-            // this.setState({
-            //     globalUtm: utms[Object.keys(utms)[0]],
-            // });
-        }
-    }
 
-    loadVideo() {
-        const controllerApi = new ControllersApi();
-        controllerApi.campaignGetIdAdGet({
-            id: this.state.currentCampaign.id.toString(),
-        }).then((list) => {
-            // let files: IFileItem[] = [];
-            // list.map((item) => {
-            //     let file: IFileItem = {
-            //         id: item.id,
-            //         utm: item.target,
-            //         height: item.height,
-            //         width: item.width,
-            //         name: `${this.state.currentCampaign.title} ${item.width}x${item.width}`,
-            //         state: {
-            //             status: UPLOAD_STATUS.FINISHED,
-            //             progress: 100,
-            //             url: item.src,
-            //         },
-            //         // TODO
-            //         cta: "",
-            //     };
-            //     files.push(file);
-            // });
-            // this.setState({
-            //     files
-            // }, () => {
-            //     this.updateVideoSizeObject();
-            //     this.checkAndSetUtm();
-            // });
-        });
-    }
-
-    /**
-     * @func
-     * @desc handle change of file uploading progress
-     * @param {number} id
-     * @param {UploadState} state
-     */
-    private changeFileProgressState(id: number | string, state: UploadState): void {
-        let files: IFileItem[] = this.state.files;
-        const indexOfFile = files.findIndex((f) => (f.id === id));
-
-        files[indexOfFile].state = state;
-        this.setState({
-            files,
-        });
-    }
-
-    private updateVideoSizeObject() {
-        let newObject = [];
-        this.state.adSize.map((size) => {
-            const validSizes = this.state.files.filter(file => {
-                return file.width === size.width && file.height === size.height;
-            });
-            newObject.push({
-                ...size,
-                active: validSizes.length > 0,
-            });
-        });
-        this.setState({
-            adSize: newObject
-        });
-        this.forceUpdate();
-    }
-
-    /**
-     * @func
-     * @desc Check Video size of file before upload
-     * @param file
-     * @returns {Promise<boolean>}
-     */
-    private setVideoSize(file: IFileItem): Promise<IFileItem> {
-        return new Promise((res, rej) => {
-            const vid = document.createElement("video");
-            vid.onloadedmetadata = function () {
-                file.width = vid.videoWidth;
-                file.height = vid.videoHeight;
-                res(file);
-
-                vid.remove();
-            };
-            vid.src = window.URL.createObjectURL(file.fileObject);
-        });
-    }
-
-    /**
-     * @func
-     * @desc Check Video size of file before upload
-     * @param file
-     * @returns {Promise<boolean>}
-     */
-    private checkVideoSize(file: IFileItem): boolean {
-        const hasThisVideoSize = this.state.adSize.findIndex((b) => {
-            return (b.height === file.height && b.width === file.width);
-        });
-        return (hasThisVideoSize >= 0);
-    }
-
-    /**
-     * @func uploadFile
-     * @desc check file size and upload file by upload service
-     * @param file
-     * @returns {boolean}
-     */
-    private uploadFile(file) {
-        if (!this.disableUpload) {
-            this.setState({
-                disableDragger: true
-            });
-            this.disableUpload = true;
-            const id = "tmp_" + Date.now();
-            let fileItem = {
-                id,
-                fileObject: file,
-                name: file.name,
-            };
-            const uploader = new FlowUpload(UPLOAD_MODULES.VIDEO, file);
-            this.setVideoSize(fileItem)
-                .then((fileItemObject) => {
-                    if (this.checkVideoSize(fileItemObject)) {
-
-                        this.setState({
-                            files: [...this.state.files, fileItemObject]
-                        }, () => {
-                            this.updateVideoSizeObject();
-                            uploader.upload((state) => {
-                                this.changeFileProgressState(id, state);
-                            }).then((state) => {
-                                this.changeFileProgressState(id, state);
-                                this.setState({
-                                    disableDragger: false
-                                });
-                                this.disableUpload = false;
-                            }).catch((err) => {
-                                this.setState({
-                                    disableDragger: false
-                                });
-                                this.disableUpload = false;
-
-                                console.log(err);
-                                // fixme:: handle error
-                                notification.error({
-                                    message: this.i18n._t("Error").toString(),
-                                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                                    description: this.i18n._t("Error in upload progress!").toString(),
-                                });
-                            });
-                        });
-                    } else {
-                        this.setState({
-                            disableDragger: false
-                        });
-                        notification.error({
-                            message: this.i18n._t("File Size").toString(),
-                            className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                            description: this.i18n._t("This file size isn't acceptable!").toString(),
-                        });
-                    }
-                });
-        }
-        else {
-            notification.error({
-                message: this.i18n._t("One File").toString(),
-                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                description: this.i18n._t("Only One File can be Uploaded").toString(),
-            });
-        }
-        return false;
-    }
 
     private handleSubmit() {
 
@@ -313,17 +130,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             });
         });
 
-        // const controllerApi = new ControllersApi();
-        // controllerApi.adBannerTypeIdPost({
-        //     bannerType: UPLOAD_MODULES.VIDEO,
-        //     id: this.state.currentCampaign.id.toString(),
-        //     payloadData: {
-        //         banners
-        //     }
-        // }).then(() => {
-        //     this.loadVideo();
-        //     this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
-        // });
 
     }
 
@@ -364,25 +170,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
         }
     }
 
-    /**
-     * @func handleVideoData
-     * @desc fill values of banner with general form if it has not been edited
-     * @param item{UTMInfo}
-     */
-    private handleVideoData(item: UTMInfo) {
-        this.state.files.map((file: IFileItem, index) => {
-            let fileItem: IFileItem[] = this.state.files;
-            if (!file.edited) {
-                fileItem[index].cta = item.CTA;
-            }
-            if (!file.edited) {
-                fileItem[index].utm = item.URL;
-            }
-            this.setState({
-                files: fileItem
-            });
-        });
-    }
 
     /**
      * @func render
@@ -426,40 +213,20 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <span className="image-drag-upload require"><Translate value={"video"}/></span>
-                                <Dragger
-                                    beforeUpload={this.uploadFile.bind(this)}
-                                    className="banner-dragger-comp"
-                                    disabled={this.state.disableDragger}
-                                >
-                                    <div className="dragger-content">
-                                        <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                                        <Translate value={"Drag your video over here or"}/>
-                                    </div>
-                                </Dragger>
-                                <div className="drag-description">
-                                    <Translate value={"Minimum size of video 640x360px"}/>
-                                    <span className="span-block"><Translate value={"allowed extentions: MP4"}/></span>
-                                </div>
+                              <UploadFile label={"video"}
+                                          required={true}
+                                          exactDimension={{width: 640 , height: 360}}
+                                          fileType={[FILE_TYPE.VID_MP4]}
+                                          uploadModule={MODULE.VIDEO}
+                              />
                             </Col>
                             <Col span={8}>
-                                <span className="image-drag-upload require"><Translate
-                                    value={"video poster(wide with 16:9 aspect ratio)"}/></span>
-                                <Dragger
-                                    beforeUpload={this.uploadFile.bind(this)}
-                                    className="banner-dragger-comp"
-                                    disabled={this.state.disableDragger}
-                                >
-                                    <div className="dragger-content">
-                                        <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                                        <Translate value={"Drag your image over here or"}/>
-                                    </div>
-                                </Dragger>
-                                <div className="drag-description">
-                                    <Translate value={"Minimum size of image 640x360px"}/>
-                                    <span className="span-block"><Translate value={"image aspect ratio: 1.9:1"}/></span>
-                                    <span className="span-block"><Translate value={"allowed extentions: MP4"}/></span>
-                                </div>
+                              <UploadFile label={"video poster(wide with 16:9 aspect ratio)"}
+                                          minDimension={{width: 640 , height: 360}}
+                                          required={true}
+                                          fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
+                                          uploadModule={MODULE.IMAGE}
+                              />
                             </Col>
                             <Col span={8}>
                             </Col>
