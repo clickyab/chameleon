@@ -5,7 +5,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {IStateUpload} from "./UploadBanner";
-import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin, Modal} from "antd";
+import {Upload, Row, Col, notification, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
 import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS, FlowUpload} from "../../../../services/Upload/index";
@@ -16,8 +16,6 @@ import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
-import UtmForm from "./UtmForm";
-import Cropper from "../../../../components/Cropper/Index";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {default as UploadService} from "../../../../services/Upload";
 import Icon from "../../../../components/Icon";
@@ -304,6 +302,9 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">
+                                <span className="upload-title-setting span-block">
+                                <Translate value={"Detail information and preview"}/>
+                                </span>
                             <UTMDynamicForm form={this.props.form} inputObject={this.FormObject} />
                         </Row>
                     </Col>
