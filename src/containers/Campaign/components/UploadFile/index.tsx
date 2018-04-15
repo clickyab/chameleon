@@ -243,7 +243,7 @@ class UploadFile extends React.Component<IProps, IState> {
             if (dimensionCheck && formatCheck) {
               this.setState(prevState => {
                 prevState.imgUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                if (this.props.exactDimension || file.fileObject.type === FILE_TYPE.IMG_GIF) {
+                if (this.props.exactDimension || file.type === FILE_TYPE.IMG_GIF) {
                   prevState.imgUrlCropped = URL.createObjectURL(fileItemObject.fileObject);
                 }
                 else {

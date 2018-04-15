@@ -192,6 +192,53 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
   }
   .generate-space(@n, (@i + 1 ));
 }
+.generate-minus-space(@n, @i: 0) when (@i =< @n  ) {
+  .m {
+    &tn-@{i} {
+      margin-top: -(@i * @space);
+    }
+    &rn-@{i} {
+      margin-right: -(@i * @space);
+    }
+    &bn-@{i} {
+      margin-bottom: -(@i * @space);
+    }
+    &ln-@{i} {
+      margin-left: -(@i * @space);
+    }
+    &xn-@{i} {
+      margin-left: -(@i * @space);
+      margin-right: -(@i * @space);
+    }
+    &yn-@{i} {
+      margin-top: -(@i * @space);
+      margin-bottom: -(@i * @space);
+    }
+  }
+  .p {
+    &tn-@{i} {
+      padding-top: -(@i * @space);
+    }
+    &rn-@{i} {
+      padding-right: -(@i * @space);
+    }
+    &bn-@{i} {
+      padding-bottom: -(@i * @space);
+    }
+    &ln-@{i} {
+      padding-left: -(@i * @space);
+    }
+    &xn-@{i} {
+      padding-left: -(@i * @space);
+      padding-right: -(@i * @space);
+    }
+    &yn-@{i} {
+      padding-top: -(@i * @space);
+      padding-bottom: -(@i * @space);
+    }
+  }
+  .generate-minus-space(@n, (@i + 1 ));
+}
 [dir="rtl"] label{
   transform-origin: right top 0 !important;
 }
