@@ -2,7 +2,7 @@ import * as React from "react";
 import Translate from "../../../../components/i18n/Translate";
 import Dragger from "antd/es/upload/Dragger";
 import {notification} from "antd";
-import {FlowUpload, UploadState} from "../../../../services/Upload";
+import UploadService, {FlowUpload, UPLOAD_MODULES, UploadState} from "../../../../services/Upload";
 import CONFIG from "../../../../constants/config";
 import {IFileItem} from "../../containers/Upload/UploadUniversalApp";
 import I18n from "../../../../services/i18n";
@@ -11,10 +11,11 @@ import Button from "antd/es/button/button";
 import Cropper from "../../../../components/Cropper/Index";
 import Icon from "../../../../components/Icon";
 import "./style.less";
+import Progress from "antd/es/progress/progress";
 
 export const enum FILE_TYPE {IMG_JPG = "image/jpeg", IMG_PNG = "image/png", IMG_GIF = "image/gif", VID_MP4 = "video/mp4"}
 
-export const enum MODULE {IMAGE = "image", VIDEO = "video"}
+export const enum MODULE {IMAGE = "banner", VIDEO = "video"}
 
 interface IDimension {
     width: number;
@@ -43,6 +44,7 @@ interface IState {
     videoFile: any;
     showCropModal: boolean;
     imageType?: string;
+    progress: number;
 }
 
 class UploadFile extends React.Component<IProps, IState> {
@@ -50,6 +52,7 @@ class UploadFile extends React.Component<IProps, IState> {
     private disableUpload: boolean = false;
     private ratio: IDimension = {width: 1, height: 1};
     private tmpImg: Blob;
+    id = "tmp_" + Date.now() + Math.random();
 
     constructor(props: IProps) {
         super(props);
@@ -60,6 +63,7 @@ class UploadFile extends React.Component<IProps, IState> {
             value: "",
             showCropModal: false,
             videoFile: null,
+            progress: 0,
         };
         this.setRatio();
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
@@ -69,11 +73,6 @@ class UploadFile extends React.Component<IProps, IState> {
     private setRatio() {
         if (this.props.ratio) {
             this.ratio = this.props.ratio;
-        } else {
-            if (this.props.minDimension) {
-                this.ratio.width = this.props.minDimension.width / Math.max(this.props.minDimension.width, this.props.minDimension.height);
-                this.ratio.height = this.props.minDimension.height / Math.max(this.props.minDimension.width, this.props.minDimension.height);
-            }
         }
     }
 
@@ -91,12 +90,10 @@ class UploadFile extends React.Component<IProps, IState> {
         }
         this.setState((prevState => {
             prevState.imgUrlCropped = URL.createObjectURL(this.tmpImg);
+            this.uploadImage(this.id, this.tmpImg);
             prevState.value = URL.createObjectURL(this.tmpImg);
             prevState.showCropModal = false;
             this.tmpImg = null;
-            if (this.props.onChange) {
-                this.props.onChange(URL.createObjectURL(this.tmpImg));
-            }
             return prevState;
         }));
     }
@@ -143,13 +140,40 @@ class UploadFile extends React.Component<IProps, IState> {
      * @param {UploadState} state
      */
     private changeFileProgressState(id: number | string, state: UploadState): void {
-        // let files: IFileItem[] = this.state.files;
-        // const indexOfFile = files.findIndex((f) => (f.id === id));
-        //
-        // files[indexOfFile].state = state;
-        // this.setState({
-        //   files,
-        // });
+        console.log("state.progress", state.progress);
+        this.setState({
+            progress: state.progress,
+        });
+    }
+
+    private uploadImage(id: string, file: any) {
+        const uploader = new UploadService(this.props.uploadModule, file, file.name);
+        uploader.upload((state) => {
+            this.changeFileProgressState(id, state);
+        }).then((state) => {
+            this.changeFileProgressState(id, state);
+            console.log(state);
+            if (this.props.onChange) {
+                this.props.onChange(state.url);
+            }
+            this.setState({
+                disableDragger: false
+            });
+            this.disableUpload = false;
+        }).catch((err) => {
+            this.setState({
+                disableDragger: false
+            });
+            this.disableUpload = false;
+
+            console.log(err);
+            // fixme:: handle error
+            notification.error({
+                message: this.i18n._t("Error").toString(),
+                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                description: this.i18n._t("Error in upload progress!").toString(),
+            });
+        });
     }
 
     /**
@@ -221,13 +245,12 @@ class UploadFile extends React.Component<IProps, IState> {
      */
     private uploadFile(file, type) {
         if (!this.disableUpload) {
-            const id = "tmp_" + Date.now();
             let fileItem = {
-                id,
+                id: this.id,
                 fileObject: file,
                 name: file.name,
             };
-            if (this.props.uploadModule !== MODULE.VIDEO) {
+            if (file.type !== FILE_TYPE.VID_MP4) {
                 this.setState({
                     disableDragger: true,
                 });
@@ -240,6 +263,7 @@ class UploadFile extends React.Component<IProps, IState> {
                             this.setState(prevState => {
                                 prevState.imgUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
                                 if (this.props.exactDimension || file.type === FILE_TYPE.IMG_GIF) {
+                                    this.uploadImage(this.id, fileItemObject.fileObject);
                                     prevState.imgUrlCropped = URL.createObjectURL(fileItemObject.fileObject);
                                 }
                                 else {
@@ -280,9 +304,9 @@ class UploadFile extends React.Component<IProps, IState> {
                                 videoFile: fileItemObject
                             }, () => {
                                 uploader.upload((state) => {
-                                    this.changeFileProgressState(id, state);
+                                    this.changeFileProgressState(this.id, state);
                                 }).then((state) => {
-                                    this.changeFileProgressState(id, state);
+                                    this.changeFileProgressState(this.id, state);
                                     this.setState({
                                         disableDragger: false
                                     });
@@ -344,7 +368,10 @@ class UploadFile extends React.Component<IProps, IState> {
                     className="banner-dragger-comp"
                     disabled={this.state.disableDragger}
                 >
-                    {!this.state.imgUrlCropped &&
+                    {this.state.progress > 0 &&
+                    <Progress type={"line"} percent={parseInt((this.state.progress).toString())} width={100}/>
+                    }
+                    {this.state.progress === 0 && !this.state.imgUrlCropped &&
                     <div className="dragger-content">
                         {!this.props.customDragDisc &&
                         <div>
