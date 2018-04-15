@@ -21,6 +21,7 @@ import Cropper from "../../../../components/Cropper/Index";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {default as UploadService} from "../../../../services/Upload";
 import Icon from "../../../../components/Icon";
+import UploadFile, {MODULE , FILE_TYPE} from "../../components/UploadFile";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -51,23 +52,13 @@ interface IProps {
     match?: any;
     history?: any;
 }
-const enum IMG_TYPE {LOGO , IMAGE , ICON}
 /**
  * @interface IState
  * @desc define state object
  */
 interface IState extends IStateUpload {
-    disableDraggerImage: boolean;
-    disableDraggerLogo: boolean;
-    disableDraggerIcon: boolean;
     manageImageItem?: any;
     showCropModal: boolean;
-    fileUrlOriginal: string;
-    logoUrlOriginal: string;
-    iconUrlOriginal: string;
-    fileUrlCropped: string;
-    logoUrlCropped: string;
-    iconUrlCropped: string;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -81,9 +72,10 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
         width: 627,
         height: 627,
     };
-    private disableUpload: boolean = false;
-    private tmpImg: Blob;
-    private imageType: IMG_TYPE;
+    private exactWideImageSize = {
+      width: 480,
+      height: 320,
+    };
     private FormObject: InputInfo[] = [
         {
         title: this.i18n._t("Title") as string,
@@ -172,19 +164,8 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
             currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
             files: [],
             openImageModal: false,
-            disableDraggerImage: false,
-            disableDraggerLogo: false,
-            disableDraggerIcon: false,
             showCropModal: false,
-            fileUrlOriginal: "",
-            logoUrlOriginal: "",
-            iconUrlOriginal: "",
-            fileUrlCropped: "",
-            logoUrlCropped: "",
-            iconUrlCropped: "",
         };
-        this.changeFileProgressState = this.changeFileProgressState.bind(this);
-        this.cropImg = this.cropImg.bind(this);
     }
 
     public componentDidMount() {
@@ -204,194 +185,6 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
             //     globalUtm: utms[Object.keys(utms)[0]],
             // });
         }
-    }
-
-
-    /**
-     * @func
-     * @desc handle change of file uploading progress
-     * @param {number} id
-     * @param {UploadState} state
-     */
-    private changeFileProgressState(id: number | string, state: UploadState): void {
-        let files: IFileItem[] = this.state.files;
-        const indexOfFile = files.findIndex((f) => (f.id === id));
-
-        files[indexOfFile].state = state;
-        this.setState({
-            files,
-        });
-    }
-
-
-    /**
-     * @func
-     * @desc Check Image size of file before upload
-     * @param file
-     * @returns {Promise<boolean>}
-     */
-    private setImageSize(file: IFileItem): Promise<IFileItem> {
-        return new Promise((res, rej) => {
-            const img = document.createElement("img");
-            img.onload = function () {
-                file.width = img.width;
-                file.height = img.height;
-                res(file);
-
-                img.remove();
-            };
-            img.src = window.URL.createObjectURL(file.fileObject);
-        });
-    }
-
-    /**
-     * @func
-     * @desc Check Image Content size of file before upload
-     * @param file
-     * @returns {<boolean>}
-     */
-    private checkImageSize(file: IFileItem , type: IMG_TYPE): boolean {
-        if (type === IMG_TYPE.ICON) {
-            if (file.height >= this.minSizeIcon.height && file.width >= this.minSizeIcon.width) {
-                return true;
-            }
-        }
-        if (type === IMG_TYPE.LOGO) {
-            if (file.height >= this.minLogoSize.height && file.width >= this.minLogoSize.width) {
-                return true;
-            }
-        }
-        else {
-         return false;
-        }
-    }
-
-  /**
-   * @func uploadFile
-   * @desc assign Object Url of file to ad
-   * @param file
-   * @returns {boolean}
-   */
-  private uploadFile(file, type) {
-      console.log("disable", this.disableUpload);
-      if (!this.disableUpload) {
-          const id = "tmp_" + Date.now();
-          let fileItem = {
-              id,
-              fileObject: file,
-              name: file.name,
-          };
-          if (type === IMG_TYPE.IMAGE) {
-              this.setState({
-                  disableDraggerImage: true
-              });
-              this.setImageSize(fileItem)
-                  .then((fileItemObject) => {
-                      if (this.checkImageSize(fileItemObject , type)) {
-                          this.setState(prevState => {
-                              prevState.showCropModal = true;
-                              this.imageType = IMG_TYPE.IMAGE;
-                              prevState.fileUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                              prevState.disableDraggerImage = false;
-                              this.disableUpload = false;
-                              return prevState;
-                          });
-                      }
-                      else {
-                          notification.error({
-                              message: this.i18n._t("File Size").toString(),
-                              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                              description: this.i18n._t("This file size isn't acceptable!").toString(),
-                          });
-                      }
-                  });
-          }
-          if ( type === IMG_TYPE.LOGO) {
-              this.setState({
-                  disableDraggerLogo: true
-              });
-              this.setImageSize(fileItem)
-                  .then((fileItemObject) => {
-                      if (this.checkImageSize(fileItemObject , type)) {
-                          this.setState(prevState => {
-                              prevState.showCropModal = true;
-                              this.imageType = IMG_TYPE.LOGO;
-                              prevState.logoUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                              prevState.disableDraggerLogo = false;
-                              this.disableUpload = false;
-                              return prevState;
-                          });
-                      }
-                      else {
-                          notification.error({
-                              message: this.i18n._t("File Size").toString(),
-                              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                              description: this.i18n._t("This file size isn't acceptable!").toString(),
-                          });
-                      }
-                  });
-          }
-          if ( type === IMG_TYPE.ICON) {
-              this.setState({
-                  disableDraggerIcon: true
-              });
-              this.setImageSize(fileItem)
-                  .then((fileItemObject) => {
-                      if (this.checkImageSize(fileItemObject , type)) {
-                          this.setState(prevState => {
-                              prevState.showCropModal = true;
-                              this.imageType = IMG_TYPE.ICON;
-                              prevState.iconUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                              prevState.disableDraggerIcon = false;
-                              this.disableUpload = false;
-                              return prevState;
-                          });
-                      }
-                      else {
-                          notification.error({
-                              message: this.i18n._t("File Size").toString(),
-                              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                              description: this.i18n._t("This file size isn't acceptable!").toString(),
-                          });
-                      }
-                  });
-          }
-      }
-      else {
-          notification.error({
-              message: this.i18n._t("One File").toString(),
-              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-              description: this.i18n._t("Only One File can be Uploaded").toString(),
-          });
-      }
-      return false;
-  }
-    /**
-     * @func cropImg
-     * @desc handle crop image
-     */
-    private cropImg() {
-        if (!this.tmpImg) {
-            notification.error({
-                message: this.i18n._t("Crop Image").toString(),
-                description: this.i18n._t("Please crop image!").toString(),
-            });
-            return;
-        }
-        this.setState((prevState => {
-            if (this.imageType === IMG_TYPE.IMAGE) {
-                prevState.fileUrlCropped = URL.createObjectURL(this.tmpImg);
-            }
-            if (this.imageType === IMG_TYPE.LOGO) {
-                prevState.logoUrlCropped = URL.createObjectURL(this.tmpImg);
-            }
-            if (this.imageType === IMG_TYPE.ICON) {
-                prevState.iconUrlCropped = URL.createObjectURL(this.tmpImg);
-            }
-            prevState.showCropModal = false;
-            this.tmpImg = null;
-            return prevState;
-        }));
     }
 
     private handleSubmit() {
@@ -440,18 +233,6 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
         }
     }
 
-    private handleReset(e, item) {
-        e.stopPropagation();
-        this.setState({[item]: null});
-        console.log("here");
-    }
-    private handleEdit(e, type: IMG_TYPE) {
-        e.stopPropagation();
-        this.imageType = type;
-        this.setState({
-            showCropModal: true,
-        });
-    }
     /**
      * @func render
      * @desc render component
@@ -494,97 +275,28 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <span className="image-drag-upload require"><Translate value={"wide image"}/></span>
-                                <Dragger
-                                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.IMAGE)}
-                                    className="banner-dragger-comp"
-                                    disabled={this.state.disableDraggerImage}
-                                >
-                                    {!this.state.fileUrlCropped &&
-                                    <div className="dragger-content">
-                                        <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                                        <Translate value={"Drag your image over here or"}/>
-                                    </div>
-                                    }
-                                    {this.state.fileUrlCropped &&
-                                    <div className="upload-thumb-container">
-                                        <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.IMAGE)}>
-                                            <Icon name="cif-edit"  />
-                                        </div>
-                                        <div className="remove-upload" onClick={(e) => this.handleReset(e , "fileUrlCropped")}>
-                                            <Icon name="cif-close"  />
-                                        </div>
-                                        <img src={this.state.fileUrlCropped}/>
-                                    </div>
-                                    }
-                                </Dragger>
-                                <div className="drag-description">
-                                    <span className="span-block"><Translate value={"Allowed size: 480x320px"}/></span>
-                                    <span className="span-block"><Translate value={"Image ratio: 1.9:1"}/></span>
-                                    <span className="span-block"><Translate value={"allowed extensions: JPG/PNG/GIF"}/></span>
-                                </div>
+                              <UploadFile label={"wide image"}
+                                          fileType={[FILE_TYPE.IMG_JPG , FILE_TYPE.IMG_PNG , FILE_TYPE.IMG_GIF]}
+                                          exactDimension={this.exactWideImageSize}
+                                          uploadModule={MODULE.IMAGE}
+                                          required={true}
+                              />
                             </Col>
                             <Col span={5}>
-                                <span className="image-drag-upload"><Translate
-                                    value={"Icon"}/></span>
-                                <Dragger
-                                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.ICON)}
-                                    className="banner-dragger-comp"
-                                    disabled={this.state.disableDraggerLogo}
-                                > {!this.state.iconUrlCropped &&
-                                <div className="dragger-content">
-                                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                                    <Translate value={"Drag your Icon over here or"}/>
-                                </div>
-                                }
-                                    {this.state.iconUrlCropped &&
-                                        <div className="upload-thumb-container">
-                                            <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
-                                                <Icon name="cif-edit"  />
-                                            </div>
-                                            <div className="remove-upload" onClick={(e) => this.handleReset(e , "iconUrlCropped")}>
-                                                <Icon name="cif-close"  />
-                                            </div>
-                                            <img src={this.state.iconUrlCropped}/>
-                                        </div>
-                                    }
-                                </Dragger>
-                                <div className="drag-description">
-                                    <span className="span-block"><Translate value={"Minimum size: 512x512px"}/></span>
-                                    <span className="span-block"><Translate value={"Image ratio: 1:1"}/></span>
-                                    <span className="span-block"><Translate value={"allowed extensions: PNG"}/></span>
-                                </div>
+                              <UploadFile label={"Icon"}
+                                          fileType={[FILE_TYPE.IMG_PNG]}
+                                          minDimension={this.minSizeIcon}
+                                          ratio={{width: 1 , height: 1}}
+                                          uploadModule={MODULE.IMAGE}
+                              />
                             </Col>
                             <Col span={5}>
-                                    <span className="image-drag-upload"><Translate
-                                        value={"Logo"}/></span>
-                                <Dragger
-                                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.LOGO)}
-                                    className="banner-dragger-comp"
-                                    disabled={this.state.disableDraggerLogo}
-                                > {!this.state.logoUrlCropped &&
-                                <div className="dragger-content">
-                                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                                    <Translate value={"Drag your Logo over here or"}/>
-                                </div>
-                                }
-                                    {this.state.logoUrlCropped &&
-                                    <div className="upload-thumb-container">
-                                        <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
-                                            <Icon name="cif-edit"  />
-                                        </div>
-                                        <div className="remove-upload" onClick={(e) => this.handleReset(e , "logoUrlCropped")}>
-                                            <Icon name="cif-close"  />
-                                        </div>
-                                        <img src={this.state.logoUrlCropped}/>
-                                    </div>
-                                    }
-                                </Dragger>
-                                <div className="drag-description">
-                                    <span className="span-block"><Translate value={"Minimum size: 627x627px"}/></span>
-                                    <span className="span-block"><Translate value={"Image ratio: 1:1"}/></span>
-                                    <span className="span-block"><Translate value={"allowed extensions: PNG"}/></span>
-                                </div>
+                              <UploadFile label={"Logo"}
+                                          fileType={[FILE_TYPE.IMG_PNG]}
+                                          minDimension={this.minLogoSize}
+                                          ratio={{width: 1 , height: 1}}
+                                          uploadModule={MODULE.IMAGE}
+                              />
                             </Col>
                             <Col span={3}>
                             </Col>
@@ -592,7 +304,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">
-                            <UTMDynamicForm inputObject={this.FormObject} />
+                            <UTMDynamicForm form={this.props.form} inputObject={this.FormObject} />
                         </Row>
                     </Col>
                     <Row type="flex" align="middle" className="full-width">
@@ -604,23 +316,6 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                         <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                     </Row>
                 </Row>
-                {(this.state.fileUrlOriginal || this.state.logoUrlOriginal || this.state.iconUrlOriginal) && this.state.showCropModal &&
-                <Modal
-                    maskClosable={false}
-                    closable={false}
-                    title={this.i18n._t("Crop image").toString()}
-                    visible={this.state.showCropModal}
-                    onOk={this.cropImg}
-                    footer={<Button type={"primary"} onClick={this.cropImg}>{this.i18n._t("Crop")}</Button>}>
-                    <div>
-                        <Cropper source={this.imageType === IMG_TYPE.IMAGE ? this.state.fileUrlOriginal : this.imageType === IMG_TYPE.LOGO ? this.state.logoUrlOriginal : this.state.iconUrlOriginal }
-                                 aspect={this.imageType === IMG_TYPE.IMAGE ? (1.9 / 1) : 1}
-                                 onChange={(img: Blob) => {
-                                     this.tmpImg = img;
-                                 }}/>
-                    </div>
-                </Modal>
-                }
                 </div>
         );
     }

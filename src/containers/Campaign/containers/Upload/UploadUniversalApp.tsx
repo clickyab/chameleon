@@ -5,10 +5,10 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter, RouteComponentProps} from "react-router";
 import {IStateUpload} from "./UploadBanner";
-import {Upload, Row, Col, notification, Button, Form, Spin, Modal} from "antd";
+import {Upload, Row, Col, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS, FlowUpload} from "../../../../services/Upload/index";
+import {UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -16,10 +16,8 @@ import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
-import Cropper from "../../../../components/Cropper/Index";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
-import {default as UploadService} from "../../../../services/Upload";
-import Icon from "../../../../components/Icon";
+import UploadFile, {MODULE} from "../../components/UploadFile";
 
 
 const Dragger = Upload.Dragger;
@@ -40,8 +38,6 @@ export interface IFileItem {
   cta: string;
   edited: boolean;
 }
-
-const enum IMG_TYPE {LOGO, IMAGE_VER, IMAGE_HOR, ICON, VIDEO}
 
 const enum FILE_TYPE {IMG_JPG = "image/jpeg", IMG_PNG = "image/png", IMG_GIF = "image/gif", VID_MP4 = "video/mp4"}
 
@@ -65,23 +61,8 @@ interface IProps extends RouteComponentProps<any> {
  * @desc define state object
  */
 interface IState extends IStateUpload {
-  disableDraggerImageVer: boolean;
-  disableDraggerImageHor: boolean;
-  disableDraggerVideo: boolean;
-  disableDraggerLogo: boolean;
-  disableDraggerIcon: boolean;
-  manageImageItem?: any;
   showCropModal: boolean;
   moreUploadOption: boolean;
-  imgVerUrlOriginal: string;
-  imgHorUrlOriginal: string;
-  logoUrlOriginal: string;
-  iconUrlOriginal: string;
-  imgVerUrlCropped: string;
-  imgHorUrlCropped: string;
-  logoUrlCropped: string;
-  iconUrlCropped: string;
-  videoFile: any;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -107,9 +88,6 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
     width: 480,
     height: 320,
   };
-  private disableUpload: boolean = false;
-  private tmpImg: Blob;
-  private imageType: IMG_TYPE;
   private FormObject: InputInfo[] = [
     {
       title: this.i18n._t("Title") as string,
@@ -199,24 +177,8 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
       files: [],
       moreUploadOption: false,
       openImageModal: false,
-      disableDraggerImageVer: false,
-      disableDraggerImageHor: false,
-      disableDraggerVideo: false,
-      disableDraggerLogo: false,
-      disableDraggerIcon: false,
       showCropModal: false,
-      imgVerUrlOriginal: "",
-      logoUrlOriginal: "",
-      imgHorUrlOriginal: "",
-      iconUrlOriginal: "",
-      imgVerUrlCropped: "",
-      imgHorUrlCropped: "",
-      logoUrlCropped: "",
-      iconUrlCropped: "",
-      videoFile: null,
     };
-    this.changeFileProgressState = this.changeFileProgressState.bind(this);
-    this.cropImg = this.cropImg.bind(this);
   }
 
   public componentDidMount() {
@@ -239,317 +201,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
   }
 
 
-  /**
-   * @func
-   * @desc handle change of file uploading progress
-   * @param {number} id
-   * @param {UploadState} state
-   */
-  private changeFileProgressState(id: number | string, state: UploadState): void {
-    // let files: IFileItem[] = this.state.files;
-    // const indexOfFile = files.findIndex((f) => (f.id === id));
-    //
-    // files[indexOfFile].state = state;
-    // this.setState({
-    //   files,
-    // });
-  }
 
-
-  /**
-   * @func
-   * @desc Check Image size of file before upload
-   * @param file
-   * @returns {Promise<boolean>}
-   */
-  private setImageSize(file: IFileItem): Promise<IFileItem> {
-    return new Promise((res, rej) => {
-      const img = document.createElement("img");
-      img.onload = function () {
-        file.width = img.width;
-        file.height = img.height;
-        res(file);
-
-        img.remove();
-      };
-      img.src = window.URL.createObjectURL(file.fileObject);
-    });
-  }
-
-  /**
-   * @func
-   * @desc Check Video size of file before upload
-   * @param file
-   * @returns {Promise<boolean>}
-   */
-  private setVideoSize(file: IFileItem): Promise<IFileItem> {
-    return new Promise((res, rej) => {
-      const vid = document.createElement("video");
-      vid.onloadedmetadata = function () {
-        file.width = vid.videoWidth;
-        file.height = vid.videoHeight;
-        res(file);
-
-        vid.remove();
-      };
-      vid.src = window.URL.createObjectURL(file.fileObject);
-    });
-  }
-
-  /**
-   * @func
-   * @desc Check Media Content size of file before upload
-   * @param file
-   * @returns {<boolean>}
-   */
-  private checkMediaSize(file: IFileItem, type: IMG_TYPE): boolean {
-    if (type === IMG_TYPE.IMAGE_HOR) {
-      if (file.height >= this.minImageHorizentalSize.height && file.width >= this.minImageHorizentalSize.width) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.IMAGE_VER) {
-      if (file.height === this.minImageVerticalSize.height && file.width === this.minImageVerticalSize.width) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.ICON) {
-      if (file.height >= this.minSizeIcon.height && file.width >= this.minSizeIcon.width) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.LOGO) {
-      if (file.height >= this.minLogoSize.height && file.width >= this.minLogoSize.width) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.VIDEO) {
-      if (file.height === this.minVideoSize.height && file.width === this.minVideoSize.width) {
-        return true;
-      }
-    }
-    else {
-      return false;
-    }
-  }
-
-  /**
-   * @func
-   * @desc Check Media Content format of file before upload
-   * @param file
-   * @returns {<boolean>}
-   */
-  private checkMediaFormat(file: IFileItem, type: IMG_TYPE): boolean {
-    if (type === IMG_TYPE.IMAGE_HOR) {
-      if (file.fileObject.type === FILE_TYPE.IMG_JPG || file.fileObject.type === FILE_TYPE.IMG_GIF || file.fileObject.type === FILE_TYPE.IMG_PNG) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.IMAGE_VER) {
-      if (file.fileObject.type === FILE_TYPE.IMG_JPG || file.fileObject.type === FILE_TYPE.IMG_GIF || file.fileObject.type === FILE_TYPE.IMG_PNG) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.ICON) {
-      if (file.fileObject.type === FILE_TYPE.IMG_PNG) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.LOGO) {
-      if (file.fileObject.type === FILE_TYPE.IMG_PNG) {
-        return true;
-      }
-    }
-    if (type === IMG_TYPE.VIDEO) {
-      if (file.fileObject.type === FILE_TYPE.VID_MP4) {
-        return true;
-      }
-    }
-    else {
-      return false;
-    }
-  }
-
-  /**
-   * @func uploadFile
-   * @desc assign Object Url of file to ad
-   * @param file
-   * @returns {boolean}
-   */
-  private uploadFile(file, type) {
-    console.log("disable", this.disableUpload);
-    if (!this.disableUpload) {
-      const id = "tmp_" + Date.now();
-      let fileItem = {
-        id,
-        fileObject: file,
-        name: file.name,
-      };
-      if (type !== IMG_TYPE.VIDEO) {
-        if (type === IMG_TYPE.IMAGE_HOR) {
-          this.setState({
-            disableDraggerImageHor: true
-          });
-        } else if (type === IMG_TYPE.IMAGE_VER) {
-          this.setState({
-            disableDraggerImageVer: true
-          });
-        } else if (type === IMG_TYPE.ICON) {
-          this.setState({
-            disableDraggerIcon: true
-          });
-        }
-        else if (type === IMG_TYPE.LOGO) {
-          this.setState({
-            disableDraggerLogo: true
-          });
-        }
-        this.setImageSize(fileItem as IFileItem)
-          .then((fileItemObject) => {
-            let sizeCheck = this.checkMediaSize(fileItemObject, type);
-            let formatCheck = this.checkMediaFormat(fileItemObject, type);
-            if (sizeCheck && formatCheck) {
-              this.setState(prevState => {
-                this.imageType = type;
-                if (type === IMG_TYPE.IMAGE_HOR) {
-                  prevState.imgHorUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                  prevState.disableDraggerImageHor = false;
-                } else if (type === IMG_TYPE.IMAGE_VER) {
-                  prevState.imgVerUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                  prevState.disableDraggerImageVer = false;
-                } else if (type === IMG_TYPE.ICON) {
-                  prevState.iconUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                  prevState.disableDraggerIcon = false;
-                }
-                else if (type === IMG_TYPE.LOGO) {
-                  prevState.logoUrlOriginal = URL.createObjectURL(fileItemObject.fileObject);
-                  prevState.disableDraggerLogo = false;
-                }
-                this.disableUpload = false;
-                return prevState;
-              });
-            } else {
-              if (type === IMG_TYPE.IMAGE_HOR) {
-                this.setState({disableDraggerImageHor: false});
-              } else if (type === IMG_TYPE.IMAGE_VER) {
-                this.setState({disableDraggerImageVer: false});
-              } else if (type === IMG_TYPE.ICON) {
-                this.setState({disableDraggerIcon: false});
-              }
-              else if (type === IMG_TYPE.LOGO) {
-                this.setState({disableDraggerLogo: false});
-              }
-              if (!sizeCheck) {
-                notification.error({
-                  message: this.i18n._t("File Size").toString(),
-                  className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                  description: this.i18n._t("This file size isn't acceptable!").toString(),
-                });
-              }
-              if (!formatCheck) {
-                notification.error({
-                  message: this.i18n._t("File Format").toString(),
-                  className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                  description: this.i18n._t("This file format isn't acceptable!").toString(),
-                });
-              }
-            }
-          });
-      }
-      else {
-        const uploader = new FlowUpload(UPLOAD_MODULES.VIDEO, file);
-        this.setVideoSize(fileItem as IFileItem)
-          .then((fileItemObject) => {
-            let sizeCheck = this.checkMediaSize(fileItemObject, type);
-            let formatCheck = this.checkMediaFormat(fileItemObject, type);
-            if (sizeCheck && formatCheck) {
-              this.setState({
-                videoFile: fileItemObject
-              }, () => {
-                uploader.upload((state) => {
-                  this.changeFileProgressState(id, state);
-                }).then((state) => {
-                  this.changeFileProgressState(id, state);
-                  this.setState({
-                    disableDraggerVideo: false
-                  });
-                  this.disableUpload = false;
-                }).catch((err) => {
-                  this.setState({
-                    disableDraggerVideo: false
-                  });
-                  this.disableUpload = false;
-
-                  console.log(err);
-                  // fixme:: handle error
-                  notification.error({
-                    message: this.i18n._t("Error").toString(),
-                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                    description: this.i18n._t("Error in upload progress!").toString(),
-                  });
-                });
-              });
-            } else {
-              this.setState({
-                disableDraggerVideo: false,
-              });
-              if (sizeCheck) {
-                notification.error({
-                  message: this.i18n._t("File Size").toString(),
-                  className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                  description: this.i18n._t("This file size isn't acceptable!").toString(),
-                });
-              } else {
-                notification.error({
-                  message: this.i18n._t("File Format").toString(),
-                  className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                  description: this.i18n._t("This file format isn't acceptable!").toString(),
-                });
-              }
-            }
-          });
-      }
-    }
-    else {
-      notification.error({
-        message: this.i18n._t("One File").toString(),
-        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-        description: this.i18n._t("Only One File can be Uploaded").toString(),
-      });
-    }
-    return false;
-  }
-
-  /**
-   * @func cropImg
-   * @desc handle crop image
-   */
-  private cropImg() {
-    if (!this.tmpImg) {
-      notification.error({
-        message: this.i18n._t("Crop Image").toString(),
-        description: this.i18n._t("Please crop image!").toString(),
-      });
-      return;
-    }
-    this.setState((prevState => {
-      if (this.imageType === IMG_TYPE.IMAGE_VER) {
-        prevState.imgVerUrlCropped = URL.createObjectURL(this.tmpImg);
-      }
-      if (this.imageType === IMG_TYPE.IMAGE_HOR) {
-        prevState.imgHorUrlCropped = URL.createObjectURL(this.tmpImg);
-      }
-      if (this.imageType === IMG_TYPE.LOGO) {
-        prevState.logoUrlCropped = URL.createObjectURL(this.tmpImg);
-      }
-      if (this.imageType === IMG_TYPE.ICON) {
-        prevState.iconUrlCropped = URL.createObjectURL(this.tmpImg);
-      }
-      prevState.showCropModal = false;
-      this.tmpImg = null;
-      return prevState;
-    }));
-  }
 
   private handleSubmit() {
 
@@ -591,7 +243,6 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
       });
     });
 
-
     // controllerApi.adBannerTypeIdPost({
     //   bannerType: UPLOAD_MODULES.VIDEO,
     //   id: this.state.currentCampaign.id.toString(),
@@ -606,41 +257,6 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
 
   }
 
-  /**
-   * @func onUtmFormSubmit
-   * @desc Handle params that receive from utm modal
-   * @param params
-   */
-  private onUtmFormSubmit(params) {
-
-    let files = this.state.files;
-    if (this.state.editFile) {
-      const indexOfFile = files.findIndex((f) => (f.id === this.state.editFile.id));
-      files[indexOfFile].name = params.name;
-      files[indexOfFile].utm = params.link;
-      this.setState({
-        files,
-      });
-    } else {
-      this.setState({
-        globalUtm: params.link,
-      });
-    }
-  }
-
-  private handleReset(e, item) {
-    e.stopPropagation();
-    this.setState({[item]: null});
-    console.log("here");
-  }
-
-  private handleEdit(e, type: IMG_TYPE) {
-    e.stopPropagation();
-    this.imageType = type;
-    this.setState({
-      showCropModal: true,
-    });
-  }
 
   /**
    * @func render
@@ -686,84 +302,25 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
             <Col span={24} className={"column-border-bottom"}>
               <Row type={"flex"} gutter={16}>
                 <Col span={5}>
-                                <span className="image-drag-upload"><Translate
-                                  value={"Icon of application"}/></span>
-                  <Dragger
-                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.ICON)}
-                    className="banner-dragger-comp"
-                    disabled={this.state.disableDraggerLogo}
-                  > {!this.state.iconUrlCropped &&
-                  <div className="dragger-content">
-                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                    <Translate value={"Drag your Icon over here or"}/>
-                  </div>
-                  }
-                    {this.state.iconUrlCropped &&
-                    <div className="upload-thumb-container">
-                      <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.ICON)}>
-                        <Icon name="cif-edit"/>
-                      </div>
-                      <div className="remove-upload" onClick={(e) => this.handleReset(e, "iconUrlCropped")}>
-                        <Icon name="cif-close"/>
-                      </div>
-                      <img src={this.state.iconUrlCropped}/>
-                    </div>
-                    }
-                  </Dragger>
-                  <div className="drag-description">
-                    <span className="span-block"><Translate value={"Minimum size: 512x512px"}/></span>
-                    <span className="span-block"><Translate value={"Image ratio: 1:1"}/></span>
-                    <span className="span-block"><Translate value={"allowed extensions: PNG"}/></span>
-                  </div>
+                  <UploadFile label={"Icon of application"}
+                              fileType={[FILE_TYPE.IMG_PNG]}
+                              minDimension={this.minSizeIcon}
+                              uploadModule={MODULE.IMAGE}
+                  />
                 </Col>
                 <Col span={8}>
-                  <span className="image-drag-upload"><Translate value={"video"}/></span>
-                  <Dragger
-                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.VIDEO)}
-                    className="banner-dragger-comp"
-                    disabled={this.state.disableDraggerImageVer}
-                  >
-                    <div className="dragger-content">
-                      <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                      <Translate value={"Drag your video over here or"}/>
-                    </div>
-                  </Dragger>
-                  <div className="drag-description">
-                    <span className="span-block"><Translate value={"Allowed dimension: 320x480px"}/></span>
-                    <span className="span-block"><Translate value={"Allowed size: 20MB"}/></span>
-                    <span className="span-block"><Translate value={"allowed extensions: MP4"}/></span>
-                  </div>
+                  <UploadFile label={"video"}
+                              fileType={[FILE_TYPE.VID_MP4]}
+                              minDimension={this.minVideoSize}
+                              uploadModule={MODULE.VIDEO}
+                  />
                 </Col>
                 <Col span={5}>
-                                    <span className="image-drag-upload"><Translate
-                                      value={"Ad image(vertical)"}/></span>
-                  <Dragger
-                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.IMAGE_VER)}
-                    className="banner-dragger-comp"
-                    disabled={this.state.disableDraggerLogo}
-                  > {!this.state.imgVerUrlCropped &&
-                  <div className="dragger-content">
-                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                    <Translate value={"Drag your image over here or"}/>
-                  </div>
-                  }
-                    {this.state.imgVerUrlCropped &&
-                    <div className="upload-thumb-container">
-                      <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.IMAGE_VER)}>
-                        <Icon name="cif-edit"/>
-                      </div>
-                      <div className="remove-upload" onClick={(e) => this.handleReset(e, "imgVerUrlCropped")}>
-                        <Icon name="cif-close"/>
-                      </div>
-                      <img src={this.state.imgVerUrlCropped}/>
-                    </div>
-                    }
-                  </Dragger>
-                  <div className="drag-description">
-                    <span className="span-block"><Translate value={"Minimum size: 320x480px"}/></span>
-                    <span className="span-block"><Translate value={"Allowed Size: 200KB"}/></span>
-                    <span className="span-block"><Translate value={"allowed extensions: JPG/PNG/GIF"}/></span>
-                  </div>
+                  <UploadFile label={"Ad image(vertical)"}
+                              fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
+                              minDimension={this.minImageVerticalSize}
+                              uploadModule={MODULE.IMAGE}
+                  />
                 </Col>
                 <Col span={3}>
                 </Col>
@@ -771,69 +328,18 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
               {this.state.moreUploadOption &&
               <Row type={"flex"} gutter={16}>
                 <Col span={5}>
-                                    <span className="image-drag-upload"><Translate
-                                      value={"Logo of site, app or corpration"}/></span>
-                  <Dragger
-                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.LOGO)}
-                    className="banner-dragger-comp"
-                    disabled={this.state.disableDraggerLogo}
-                  > {!this.state.logoUrlCropped &&
-                  <div className="dragger-content">
-                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                    <Translate value={"Drag your Logo over here or"}/>
-                  </div>
-                  }
-                    {this.state.logoUrlCropped &&
-                    <div className="upload-thumb-container">
-                      <div className="edit-upload" onClick={(e) => this.handleEdit(e, IMG_TYPE.LOGO)}>
-                        <Icon name="cif-edit"/>
-                      </div>
-                      <div className="remove-upload"
-                           onClick={(e) => this.handleReset(e, "logoUrlCropped")}>
-                        <Icon name="cif-close"/>
-                      </div>
-                      <img src={this.state.logoUrlCropped}/>
-                    </div>
-                    }
-                  </Dragger>
-                  <div className="drag-description">
-                    <span className="span-block"><Translate value={"Minimum size: 627x627px"}/></span>
-                    <span className="span-block"><Translate value={"Image ratio: 1:1"}/></span>
-                    <span className="span-block"><Translate value={"allowed extensions: PNG"}/></span>
-                  </div>
+                  <UploadFile label={"Logo of site, app or corporation"}
+                              fileType={[FILE_TYPE.IMG_PNG]}
+                              minDimension={this.minLogoSize}
+                              uploadModule={MODULE.IMAGE}
+                  />
                 </Col>
                 <Col span={8}>
-                  <span className="image-drag-upload"><Translate value={"Ad image(horizental)"}/></span>
-                  <Dragger
-                    beforeUpload={(file) => this.uploadFile(file, IMG_TYPE.IMAGE_HOR)}
-                    className="banner-dragger-comp"
-                    disabled={this.state.disableDraggerImageVer}
-                  >
-                    {!this.state.imgHorUrlCropped &&
-                    <div className="dragger-content">
-                      <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                      <Translate value={"Drag your image over here or"}/>
-                    </div>
-                    }
-                    {this.state.imgHorUrlCropped &&
-                    <div className="upload-thumb-container">
-                      <div className="edit-upload"
-                           onClick={(e) => this.handleEdit(e, IMG_TYPE.IMAGE_HOR)}>
-                        <Icon name="cif-edit"/>
-                      </div>
-                      <div className="remove-upload"
-                           onClick={(e) => this.handleReset(e, "imgHorUrlCropped")}>
-                        <Icon name="cif-close"/>
-                      </div>
-                      <img src={this.state.imgHorUrlCropped}/>
-                    </div>
-                    }
-                  </Dragger>
-                  <div className="drag-description">
-                    <span className="span-block"><Translate value={"Allowed size: 480x320px"}/></span>
-                    <span className="span-block"><Translate value={"Image ratio: 1.9:1"}/></span>
-                    <span className="span-block"><Translate value={"allowed extensions: JPG/PNG/GIF"}/></span>
-                  </div>
+                  <UploadFile label={"Ad image(horizental)"}
+                              fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
+                              minDimension={this.minImageHorizentalSize}
+                              uploadModule={MODULE.VIDEO}
+                  />
                 </Col>
               </Row>
               }
@@ -859,24 +365,6 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
             </Row>
           </Row>
         </Form>
-        {(this.state.imgVerUrlOriginal || this.state.imgHorUrlOriginal || this.state.logoUrlOriginal || this.state.iconUrlOriginal) && this.state.showCropModal &&
-        <Modal
-          maskClosable={false}
-          closable={false}
-          title={this.i18n._t("Crop image").toString()}
-          visible={this.state.showCropModal}
-          onOk={this.cropImg}
-          footer={<Button type={"primary"} onClick={this.cropImg}>{this.i18n._t("Crop")}</Button>}>
-          <div>
-            <Cropper
-              source={this.imageType === IMG_TYPE.IMAGE_VER ? this.state.imgVerUrlOriginal : (this.imageType === IMG_TYPE.IMAGE_HOR) ? this.state.imgHorUrlOriginal : this.imageType === IMG_TYPE.LOGO ? this.state.logoUrlOriginal : this.state.iconUrlOriginal}
-              aspect={this.imageType === IMG_TYPE.IMAGE_VER ? (1 / 1.9) : (this.imageType === IMG_TYPE.IMAGE_HOR ? (1.9) : 1)}
-              onChange={(img: Blob) => {
-                this.tmpImg = img;
-              }}/>
-          </div>
-        </Modal>
-        }
       </div>
     );
   }
