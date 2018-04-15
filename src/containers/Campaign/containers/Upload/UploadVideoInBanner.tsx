@@ -2,15 +2,14 @@
  * @file Upload Video step
  */
 import * as React from "react";
-import Image from "react-image-file";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import VideoSize from "./size/CONST_VIDEOsize";
 import {IStateUpload} from "./UploadBanner";
-import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
+import {Upload, Row, Col, notification, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS, FlowUpload} from "../../../../services/Upload/index";
+import {UPLOAD_MODULES, UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -18,13 +17,10 @@ import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
-import UtmForm from "./UtmForm";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {UTMInfo} from "./UtmForm";
-import {Checkbox} from "material-ui";
 import UploadFile, {FILE_TYPE, MODULE} from "../../components/UploadFile";
 
-const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
 
 /**
@@ -59,13 +55,11 @@ interface IProps {
  * @desc define state object
  */
 interface IState extends IStateUpload {
-    disableDragger: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 class UploadVideoInBanner extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
-    private disableUpload: boolean = false;
     private FormObject: InputInfo[] = [{
         title: this.i18n._t("Title") as string,
         name: "title",
@@ -102,18 +96,13 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
             files: [],
             openImageModal: false,
             fileSelected: null,
-            disableDragger: false,
-            adSize: VideoSize,
         };
-        let otherPlaceholder: string;
     }
 
-    public showEditHelper: boolean = true;
 
     public componentDidMount() {
         this.setState({
             currentCampaign: this.props.currentCampaign,
-            adSize: VideoSize,
         });
     }
 
@@ -132,44 +121,6 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
 
 
     }
-
-    /**
-     * @func handleFlag
-     * @desc On keyPress it will be called and set edited flag for banner (banner will not get general values from general form)
-     * set state will be used for reRendering
-     * @param item , file , index
-     */
-    private handleFlag(item, file, index) {
-        let fileItem: IFileItem[] = this.state.files;
-        fileItem[index].edited = item;
-        this.setState({
-            files: fileItem
-        });
-    }
-
-
-    /**
-     * @func onUtmFormSubmit
-     * @desc Handle params that receive from utm modal
-     * @param params
-     */
-    private onUtmFormSubmit(params) {
-
-        let files = this.state.files;
-        if (this.state.editFile) {
-            const indexOfFile = files.findIndex((f) => (f.id === this.state.editFile.id));
-            files[indexOfFile].name = params.name;
-            files[indexOfFile].utm = params.link;
-            this.setState({
-                files,
-            });
-        } else {
-            this.setState({
-                globalUtm: params.link,
-            });
-        }
-    }
-
 
     /**
      * @func render

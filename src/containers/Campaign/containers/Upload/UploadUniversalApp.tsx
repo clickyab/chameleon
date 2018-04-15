@@ -318,7 +318,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                 <Col span={5}>
                   <UploadFile label={"Ad image(vertical)"}
                               fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
-                              minDimension={this.minImageVerticalSize}
+                              exactDimension={this.minImageVerticalSize}
                               uploadModule={MODULE.IMAGE}
                   />
                 </Col>

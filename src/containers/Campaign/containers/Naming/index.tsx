@@ -87,10 +87,11 @@ class NamingComponent extends React.Component <IProps, IState> {
                     this.props.setCurrentCampaign(campaign as OrmCampaign);
                     let timePeriods = this.parseTimePeriodToState(campaign.schedule);
                     this.props.setBreadcrumb("campaignTitle", campaign.title, "naming");
+                  console.log("time", timePeriods);
                     this.setState({
                         currentCampaign: campaign,
                         allDay: !campaign.end_at,
-                        allTime: (timePeriods.length === 1 && timePeriods[0].from === 0 && timePeriods[0].to === 23),
+                        allTime: (timePeriods.length === 0 || timePeriods.length === 1 && timePeriods[0].from === 0 && timePeriods[0].to === 23),
                         timePeriods,
                     }, this.setStateForTimePeriods);
                 });
@@ -102,23 +103,25 @@ class NamingComponent extends React.Component <IProps, IState> {
 
     private parseTimePeriodToState(schedule: OrmCampaignSchedule) {
         let parsedSchedule = [];
-        Object.keys(schedule)
+        if (schedule) {
+          Object.keys(schedule)
             .map((key, index) => {
-                if (schedule[key] !== null && schedule[key] !== "") {
-                    schedule[key].split(",")
-                        .forEach(row => {
-                            let itemRow = parsedSchedule[parseInt(row)];
-                            if (itemRow) {
-                                itemRow.to = index;
-                            } else {
-                                itemRow = {};
-                                itemRow.from = index;
-                            }
-                            parsedSchedule[parseInt(row)] = itemRow;
-                        });
-                }
+              if (schedule[key] !== null && schedule[key] !== "") {
+                schedule[key].split(",")
+                  .forEach(row => {
+                    let itemRow = parsedSchedule[parseInt(row)];
+                    if (itemRow) {
+                      itemRow.to = index;
+                    } else {
+                      itemRow = {};
+                      itemRow.from = index;
+                    }
+                    parsedSchedule[parseInt(row)] = itemRow;
+                  });
+              }
             });
-        return parsedSchedule;
+        }
+          return parsedSchedule;
     }
 
     private setStateForTimePeriods() {
