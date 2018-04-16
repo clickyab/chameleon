@@ -54,8 +54,8 @@ export default class ServerStore {
    * @param value
    */
   public setItem(key: string, value: any): void {
-    if (!key || !value) {
-      throw Error(`"Value" is "${typeof value}" for ${key} and this is invalid.`);
+    if (!key) {
+      throw Error(`"Key is not defined`);
     }
     this.items[key] = value;
     this.syncItems();

@@ -53,3 +53,36 @@ export const validateID = (rule, value , callback) => {
     }
   }
 };
+
+/**
+ * @func rangeCheck
+ * @desc rangeCheck checks if value in form is greater than minimum(if defined on rule object inside getFielddecarator) and less than maximum.
+ * minimum and maximum can be used separately or together
+ */
+export const rangeCheck = (rule, value , callback) => {
+    if (rule.minimum && rule.maximum) {
+        if ((value >= rule.minimum && value <= rule.maximum )|| value === "") {
+            callback();
+            return true;
+        }
+        callback("error");
+        return false;
+    }
+    if (rule.minimum) {
+        if (value >= rule.minimum || value === "") {
+            callback();
+            return true;
+        }
+        callback("error");
+        return false;
+    }
+    if (rule.maximum) {
+        if (value <= rule.maximum || value === "") {
+            callback();
+            return true;
+        }
+        callback("error");
+        return false;
+    }
+    throw new Error("minimum or maximum should be defined for rangeCheck validation")
+};

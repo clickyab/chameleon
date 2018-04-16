@@ -4,10 +4,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import {Upload, Row, Col, notification, Button, Form, Spin} from "antd";
+import {Row, Col, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
+import {UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -17,6 +17,7 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import UploadFile, {FILE_TYPE, MODULE} from "../../components/UploadFile";
+import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
 const FormItem = Form.Item;
 
@@ -46,13 +47,15 @@ interface IProps {
     match?: any;
     history?: any;
 }
-const enum IMG_TYPE {LOGO , IMAGE}
+
+const enum IMG_TYPE {LOGO, IMAGE}
+
 /**
  * @interface IState
  * @desc define state object
  */
 interface IState {
-  currentCampaign: OrmCampaign;
+    currentCampaign: OrmCampaign;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -156,31 +159,13 @@ class UploadAdContent extends React.Component <IProps, IState> {
         return (
             <div dir={CONFIG.DIR} className="upload-content">
                 <div className="title">
-                    <h2><Translate value="General ad information"/></h2>
+                    <h2><Translate value="Media upload"/></h2>
                 </div>
                 <Row type="flex" gutter={16}>
-                    <Col span={24} className={"column-border-bottom"}>
-                        <Row gutter={16}>
-                            <Col span={8} offset={16}>
-                                <FormItem>
-                                    <span className="span-block input-title require"><Translate
-                                        value="Choose name for Ad"/></span>
-                                    {getFieldDecorator("adName", {
-                                        rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
-                                    })(
-                                        <InputLimit
-                                            placeholder={this.i18n._t("Name for Creative") as string}
-                                            className="input-campaign full-width"
-                                            limit={10}
-                                        />)}
-                                </FormItem>
-                            </Col>
-                        </Row>
-                    </Col>
                     <Col span={16} offset={8}>
                         <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
                     </Col>
-                    <Col span={24} className={"column-border-bottom"}>
+                    <Col span={24} className={"column-border-bottom upload-container"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
                                 <UploadFile label={"wide image"}
@@ -190,18 +175,30 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                             uploadModule={MODULE.IMAGE}/>
                             </Col>
                             <Col span={5}>
-                              <UploadFile label={"Logo"}
-                                          minDimension={this.minSizeWide}
-                                          fileType={[FILE_TYPE.IMG_PNG]}
-                                          uploadModule={MODULE.IMAGE}/>
+                                <UploadFile label={"Logo"}
+                                            minDimension={this.minSizeWide}
+                                            fileType={[FILE_TYPE.IMG_PNG]}
+                                            uploadModule={MODULE.IMAGE}/>
                             </Col>
                             <Col span={8}>
                             </Col>
                         </Row>
                     </Col>
+                    <Col span={24} className={"column-border-bottom"}>
+                            <Col span={8} offset={16}>
+                                <Col span={24}>
+                                    <div className="upload-setting">
+                        <span className="upload-title-setting span-block">
+                           <Translate value={"Ad general information"}/>
+                        </span>
+                                    </div>
+                                </Col>
+                                <CreativeGeneralInfo form={this.props.form}/>
+                            </Col>
+                    </Col>
                     <Col span={8}>
                         <Row className="upload-setting">
-                            <UTMDynamicForm form={this.props.form} inputObject={this.FormObject} />
+                            <UTMDynamicForm form={this.props.form} inputObject={this.FormObject}/>
                         </Row>
                     </Col>
                     <Row type="flex" align="middle" className="full-width">
@@ -213,13 +210,13 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                     </Row>
                 </Row>
-                </div>
+            </div>
         );
     }
 }
 
 interface IOwnProps {
-    match ?: any;
+    match?: any;
     history?: any;
 }
 
