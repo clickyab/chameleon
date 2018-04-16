@@ -29,7 +29,7 @@ interface IFlowOptions {
     headers?: Object;
     withCredentials?: boolean;
     method?: string;
-    testMethod?: string;
+    testMethod?: string | boolean;
     uploadMethod?: string;
     allowDuplicateUploads?: boolean;
     prioritizeFirstAndLastChunk?: boolean;
@@ -61,10 +61,11 @@ export default class FlowUpload {
         this.file = file;
         this.module = module;
         this.fileName = fileName || null;
-        this.flowOption = {target: `${BASE_PATH}/upload/video` , headers: {token: AAA.getInstance().getToken() } },
+        this.flowOption = {target: `${BASE_PATH}/upload/video` , headers: {token: AAA.getInstance().getToken() }, chunkSize: 250000, testMethod: false },
         this.flowFile = new Flow(this.flowOption);
+        console.log(this);
         this.flowFile.addFile(file);
-        this.flowFile.files[0].name = "file";
+        this.flowFile.files[0].name = "file.mp4";
     }
     /**
      * @func upload
@@ -77,26 +78,26 @@ export default class FlowUpload {
         return new Promise((resolve, reject) => {
             this.flowFile.on("fileSuccess", function (file, message) {
                 resolve({
-                    progress: 1,
+                    progress: 100,
                     status: UPLOAD_STATUS.FINISHED
                 });
                 console.log("message", message);
             });
-            this.flowFile.on("fileError", function (file, message) {
-                console.log(message);
+            this.flowFile.on("fileError", function () {
                 reject({
                     progress: 0,
                     status: UPLOAD_STATUS.FAILED
                 });
             });
-            this.flowFile.on("progress",  (file, message) => {
+            this.flowFile.on("progress",  () => {
                if (progressCallback) {
                    progressCallback({
-                       progress: this.flowFile.progress(),
+                       progress: this.flowFile.progress() * 100,
                        status: UPLOAD_STATUS.UPLOADING
                    });
                }
             });
+            console.log(this);
             this.flowFile.upload();
         });
     }
@@ -106,6 +107,6 @@ export default class FlowUpload {
      * @desc cancel on progress upload
      */
     public abort() {
-        this.flowFile.flowObj.cancel();
+        this.flowFile.cancel();
     }
 }
