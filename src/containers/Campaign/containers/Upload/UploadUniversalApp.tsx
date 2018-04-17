@@ -15,7 +15,6 @@ import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import InputLimit from "../../components/InputLimit/InputLimit";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import UploadFile, {MODULE} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";

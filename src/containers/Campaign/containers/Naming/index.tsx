@@ -87,7 +87,6 @@ class NamingComponent extends React.Component <IProps, IState> {
                     this.props.setCurrentCampaign(campaign as OrmCampaign);
                     let timePeriods = this.parseTimePeriodToState(campaign.schedule);
                     this.props.setBreadcrumb("campaignTitle", campaign.title, "naming");
-                  console.log("time", timePeriods);
                     this.setState({
                         currentCampaign: campaign,
                         allDay: !campaign.end_at,
