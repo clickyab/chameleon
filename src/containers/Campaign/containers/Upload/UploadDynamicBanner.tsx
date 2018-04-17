@@ -22,6 +22,7 @@ import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {default as UploadService} from "../../../../services/Upload";
 import Icon from "../../../../components/Icon";
 import UploadFile, {MODULE, FILE_TYPE} from "../../components/UploadFile";
+import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -249,31 +250,13 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
         return (
             <div dir={CONFIG.DIR} className="upload-content">
                 <div className="title">
-                    <h2><Translate value="General ad information"/></h2>
+                    <h2><Translate value="Media upload"/></h2>
                 </div>
                 <Row type="flex" gutter={16}>
-                    <Col span={24} className={"column-border-bottom"}>
-                        <Row gutter={16}>
-                            <Col span={8} offset={16}>
-                                <FormItem>
-                                    <span className="span-block input-title"><Translate
-                                        value="Choose name for Ad*"/></span>
-                                    {getFieldDecorator("adName", {
-                                        rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
-                                    })(
-                                        <InputLimit
-                                            placeholder={this.i18n._t("Name for Creative") as string}
-                                            className="input-campaign full-width"
-                                            limit={10}
-                                        />)}
-                                </FormItem>
-                            </Col>
-                        </Row>
-                    </Col>
                     <Col span={16} offset={8}>
                         <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
                     </Col>
-                    <Col span={24} className={"column-border-bottom"}>
+                    <Col span={24} className={"column-border-bottom upload-container"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
                                 <UploadFile label={"wide image"}
@@ -302,6 +285,18 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                             <Col span={3}>
                             </Col>
                         </Row>
+                    </Col>
+                    <Col span={24} className={"column-border-bottom"}>
+                        <Col span={8} offset={16}>
+                            <Col span={24}>
+                                <div className="upload-setting">
+                        <span className="upload-title-setting span-block">
+                           <Translate value={"Ad general information"}/>
+                        </span>
+                                </div>
+                            </Col>
+                            <CreativeGeneralInfo form={this.props.form}/>
+                        </Col>
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">

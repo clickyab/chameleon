@@ -368,7 +368,7 @@ class UploadFile extends React.Component<IProps, IState> {
                     className="banner-dragger-comp"
                     disabled={this.state.disableDragger}
                 >
-                    {this.state.progress > 0 &&
+                    {this.state.progress > 0 && !(this.state.imgUrlCropped && this.state.progress === 100) &&
                     <Progress type={"line"} percent={parseInt((this.state.progress).toString())} width={100}/>
                     }
                     {this.state.progress === 0 && !this.state.imgUrlCropped &&

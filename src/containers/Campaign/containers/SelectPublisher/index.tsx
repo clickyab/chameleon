@@ -2,7 +2,7 @@ import * as React from "react";
 import DataTable from "../../../../components/DataTable/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
-import {Row, Form, Col, notification, Button, Checkbox, Switch, Spin, Input} from "antd";
+import {Row, Form, Col, notification, Button, Checkbox, Switch, Spin, Input, Select} from "antd";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
 import Modal from "../../../../components/Modal/index";
@@ -20,8 +20,10 @@ import StickyFooter from "../../components/StickyFooter";
 
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
+const Option = Select.Option;
 
 enum List {NEW, PREVIOUS}
+enum WHITE_LIST {WHITE = "WHITE" , BLACK = "BLACK"}
 
 /**
  * @interface IProps
@@ -45,7 +47,7 @@ interface IProps {
 interface IState {
     currentCampaign: OrmCampaign;
     showPublisherTable: boolean;
-    whiteList: boolean;
+    whiteList: WHITE_LIST ;
     selectedWebSites: any[];
     listType: List;
     typeModal: boolean;
@@ -71,7 +73,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         this.state = {
             currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
             listOFList: [],
-            whiteList: true,
+            whiteList: WHITE_LIST.WHITE,
             showPublisherTable: false,
             selectedWebSites: [],
             listType: List.PREVIOUS,
@@ -95,13 +97,14 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             } else {
                 listType = List.PREVIOUS;
             }
-            this.controllerApi.inventoryPresetsGet({})
-                .then(data => {
-                    this.setState({
-                        listOFList: data,
-                        listType,
-                    });
-                });
+            // TODO:: Un comment after API arrived
+            // this.controllerApi.inventoryPresetsGet({})
+            //     .then(data => {
+            //         this.setState({
+            //             listOFList: data,
+            //             listType,
+            //         });
+            //     });
             this.props.setBreadcrumb("campaignTitle", campaign.title, "selectPublisher");
             this.setState({
                 currentCampaign: campaign,
@@ -155,9 +158,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         let params = {
             id: this.state.currentCampaign.id.toString(),
             payloadData: {
-                exchange: "all",
-                list_id: 0,
-                white_typ: this.state.whiteList,
+                label:   this.state.listName,
+                pub_ids: this.checkedItems.map(d => d.toString()),
             }
         };
 
@@ -176,8 +178,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                 break;
 
             case List.NEW :
-                params.payloadData.list_id = 0;
-                promise = controllerApi.campaignWbIdPut(params);
+              //  params.payloadData.list_id = 0;
+                promise = controllerApi.inventoryCreatePost(params);
                 break;
 
             default:
@@ -262,33 +264,33 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                         <Col span={20} className={"publisher-column"}>
                                             <Row gutter={5} className="publisher-custom-list">
                                                 <Col span={12}>
-                                                    <SelectField
-                                                        value={this.state.listID}
-                                                        onChange={(e, i, value) => {
+                                                    <Select
+                                                        value={this.state.listID as any}
+                                                        onChange={(value: any) => {
                                                             this.setState({
                                                                 listID: value,
                                                             });
                                                         }}
-                                                        className="select-list-rtl full-width">
+                                                        className="select-input full-width">
                                                         {this.state.listOFList.map(item =>
-                                                            (<MenuItem key={item.id} value={item.id}
-                                                                       primaryText={item.label + item.id}/>)
+                                                            (<Option key={item.id} value={item.id}
+                                                            >{item.label + item.id}</Option>)
                                                         )}
-                                                    </SelectField>
+                                                    </Select>
                                                 </Col>
                                                 <Col span={12}>
-                                                    <SelectField
-                                                        className="select-list-rtl full-width"
-                                                        onChange={(a, b, value) => {
+                                                    <Select
+                                                        className="select-input full-width"
+                                                        dropdownClassName={"select-dropdown"}
+                                                        onChange={(value: any) => {
                                                             this.setState({
                                                                 whiteList: value,
                                                             });
                                                         }}
-                                                        value={this.state.whiteList}>
-                                                        <MenuItem value={true} primaryText={this.i18n._t("Whitelist")}/>
-                                                        <MenuItem value={false}
-                                                                  primaryText={this.i18n._t("Blacklist")}/>
-                                                    </SelectField>
+                                                        value={this.state.whiteList as string}>
+                                                      <Option value={WHITE_LIST.WHITE}>{this.i18n._t("Whitelist")}</Option>
+                                                        <Option value={WHITE_LIST.BLACK}>{this.i18n._t("Blacklist")}</Option>
+                                                    </Select>
                                                 </Col>
                                             </Row>
                                         </Col>
@@ -321,8 +323,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                         infinite={true}
                                         name="publisherList"
                                         onSelectRow={this.onSelectRow.bind(this)}
-                                        definitionFn={this.controllerApi.inventoryListDefinitionGet}
-                                        dataFn={this.controllerApi.inventoryListGet}/>
+                                        definitionFn={this.controllerApi.inventoryPublisherListDefinitionGet}
+                                        dataFn={this.controllerApi.inventoryPublisherListGet}/>
                                 </Col>
                             </Row>
                             <Row type="flex" align="middle">
@@ -336,6 +338,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                     <Row type="flex" gutter={16}>
                                         <Col span={12}>
                                             <Input
+                                                className={"input-campaign"}
                                                 onChange={(e) => {
                                                     this.setState({listName: e.target.value});
                                                 }}
@@ -343,17 +346,18 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                             />
                                         </Col>
                                         <Col span={12}>
-                                            <SelectField
-                                                className="select-list-rtl full-width"
-                                                onChange={(a, b, value) => {
+                                            <Select
+                                                className="select-input full-width"
+                                                dropdownClassName={"select-dropdown"}
+                                                onChange={(value: any) => {
                                                     this.setState({
                                                         whiteList: value,
                                                     });
                                                 }}
-                                                value={this.state.whiteList}>
-                                                <MenuItem value={true} primaryText={this.i18n._t("Whitelist")}/>
-                                                <MenuItem value={false} primaryText={this.i18n._t("Blacklist")}/>
-                                            </SelectField>
+                                                value={this.state.whiteList as string}>
+                                              <Option value={WHITE_LIST.WHITE}>{this.i18n._t("Whitelist")}</Option>
+                                              <Option value={WHITE_LIST.BLACK}>{this.i18n._t("Blacklist")}</Option>
+                                            </Select>
                                         </Col>
                                     </Row>
                                 </Col>

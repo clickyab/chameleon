@@ -87,7 +87,6 @@ class NamingComponent extends React.Component <IProps, IState> {
                     this.props.setCurrentCampaign(campaign as OrmCampaign);
                     let timePeriods = this.parseTimePeriodToState(campaign.schedule);
                     this.props.setBreadcrumb("campaignTitle", campaign.title, "naming");
-                  console.log("time", timePeriods);
                     this.setState({
                         currentCampaign: campaign,
                         allDay: !campaign.end_at,
@@ -127,9 +126,13 @@ class NamingComponent extends React.Component <IProps, IState> {
     private setStateForTimePeriods() {
         let schedule: OrmCampaignSchedule = {};
         for (let i = 0; i <= 23; i++) {
-            schedule[`h` + (`0` + i).slice(-2)] = "";
+            if (this.state.timePeriods.length !== 0) {
+                schedule[`h` + (`0` + i).slice(-2)] = "";
+            }
+            else {
+                schedule[`h` + (`0` + i).slice(-2)] = 0;
+            }
         }
-
         this.state.timePeriods.map((p, index) => {
             for (let j = parseInt(p.from); j <= parseInt(p.to); j++) {
                 if (schedule[`h` + (`0` + j).slice(-2)]) {

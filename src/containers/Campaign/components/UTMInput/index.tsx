@@ -1,7 +1,6 @@
 import * as React from "react";
-import {Row, Col, Input} from "antd";
+import {Row, Col, Input, Checkbox} from "antd";
 import Translate from "../../../../components/i18n/Translate";
-import {Checkbox} from "material-ui";
 import {IFileItem} from "../../containers/Upload/UploadBanner";
 import I18n from "../../../../services/i18n";
 
@@ -14,6 +13,7 @@ enum UTM_INPUT {
     content = "content",
     medium = "medium"
 }
+
 /**
  * @interface ISubmitParams
  * @desc define exported object on submit modal's form
@@ -22,6 +22,7 @@ interface ISubmitParams {
     link: string;
     name: string;
 }
+
 /**
  * @interface UTMInfo
  * @desc define interface for UTM
@@ -34,6 +35,7 @@ export interface UTMInfo {
     content: string;
     medium: string;
 }
+
 interface InputInfo {
     title: string;
     type: "textfield" | "limiter" | "url";
@@ -42,6 +44,7 @@ interface InputInfo {
     required?: boolean;
     value?: string;
 }
+
 interface IState {
     showUTMdetails: boolean;
     file?: IFileItem;
@@ -49,6 +52,7 @@ interface IState {
     name: string;
     value?: string;
 }
+
 interface IProps {
     value?: string;
     showUTMdetails?: boolean;
@@ -78,12 +82,13 @@ export default class UTMInput extends React.Component<IProps, IState> {
     constructor(props) {
         super(props);
         this.state = {
-            showUTMdetails : props.showUTMdetails ? props.showUTMdetails : false,
-            utmAll : this.Data,
+            showUTMdetails: props.showUTMdetails ? props.showUTMdetails : false,
+            utmAll: this.Data,
             value: props.value ? props.value : "",
             name: props.name ? props.name : "",
         };
     }
+
     /**
      * @func
      * @desc set params and file from props
@@ -199,8 +204,8 @@ export default class UTMInput extends React.Component<IProps, IState> {
     }
 
     render() {
-        return(
-        <div>
+        return (
+            <div>
                 <span className="span-block input-title require"><Translate value="URL"/></span>
                 <Input
                     placeholder={this.i18n._t("http://domain.com") as string}
@@ -212,11 +217,13 @@ export default class UTMInput extends React.Component<IProps, IState> {
                     }}
                     onKeyDown={() => this.handleKeyPress()}
                 />
-                <Checkbox className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
-                          checked={this.state.showUTMdetails}
-                          label={this.i18n._t("Setting UTM parameters")}
-                          onClick={() => this.showUTMdetails()}
-                />
+                <Checkbox
+                    className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
+                    onChange={() => this.showUTMdetails()}
+                    checked={this.state.showUTMdetails}
+                >
+                    {this.i18n._t("Setting UTM parameters").toString()}
+                </Checkbox>
                 {this.state.showUTMdetails &&
                 <Row gutter={20} className="mt-2">
                     <Col span={12}>
@@ -273,6 +280,6 @@ export default class UTMInput extends React.Component<IProps, IState> {
                     </Col>
                 </Row>
                 }
-        </div>);
+            </div>);
     }
 }

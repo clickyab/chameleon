@@ -19,6 +19,7 @@ import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import {FILE_TYPE, MODULE, default as UploadFile} from "../../components/UploadFile";
 import Currency from "../../../../components/Currency";
+import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
 const FormItem = Form.Item;
 
@@ -132,11 +133,11 @@ class UploadVideo extends React.Component <IProps, IState> {
 
     return (
       <div dir={CONFIG.DIR} className="upload-content">
-        <div className="title">
-          <h2><Translate value="General ad information"/></h2>
-        </div>
+          <div className="title">
+              <h2><Translate value="Media upload"/></h2>
+          </div>
         <Row type="flex" gutter={16}>
-          <Col span={24} className={"column-border-bottom"}>
+          <Col span={24} className={"column-border-bottom upload-container"}>
             <Col span={8} offset={16}>
               <UploadFile label={"video poster(wide with 16:9 aspect ratio)"}
                           minDimension={{width: 640, height: 360}}
@@ -147,36 +148,15 @@ class UploadVideo extends React.Component <IProps, IState> {
             </Col>
           </Col>
           <Col span={24} className={"column-border-bottom pb-3"}>
-            <Col span={8} offset={16}>
-              <Col span={24}>
-               <span className="upload-title-setting span-block">
-                 <Translate value={"Ad general information"}/>
-               </span>
-              <FormItem>
-                <span className="span-block input-title require"><Translate value="Choose name for Ad"/></span>
-                {getFieldDecorator("adName", {
-                  rules: [{required: true, message: this.i18n._t("Please enter your adName!")}],
-                })(
-                  <InputLimit
-                    placeholder={this.i18n._t("Name for Creative") as string}
-                    className="input-campaign full-width"
-                    limit={10}
-                  />)}
-              </FormItem>
-              </Col>
-                <span className="span-block input-title require"><Translate value="Choose name for Ad"/></span>
-              <Col span={12} className={"currency-container"}>
-                <span className="vertical-center"><Translate value={"Toman"}/></span>
-              </Col>
-              <Col span={12} >
-                <FormItem className={"have-description unit-cost-form"}>
-                {getFieldDecorator("unitCost", {
-                  rules: [{required: true, message: this.i18n._t("Please enter unit cost")} , {min: 3 , message: this.i18n._t("Minimum price is 250 toman per click")}],
-                })(
-                  <Currency className={"input-campaign"} type={"toman"} placeholder={"example: 25"}/>)}
-            </FormItem>
-              </Col>
-              <span className="description"><Translate value={"Minimum price is 250 toman per click"}/></span>
+              <Col span={8} offset={16}>
+                  <Col span={24}>
+                      <div className="upload-setting">
+                        <span className="upload-title-setting span-block">
+                           <Translate value={"Ad general information"}/>
+                        </span>
+                      </div>
+                  </Col>
+                  <CreativeGeneralInfo form={this.props.form}/>
             </Col>
           </Col>
           <Col span={8}>
