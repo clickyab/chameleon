@@ -10,12 +10,10 @@ import {RadioButton, RadioButtonGroup} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {Select} from "antd";
-import Icon from "../../../../components/Icon";
 import CONFIG from "../../../../constants/config";
 import Tooltip from "../../../../components/Tooltip/index";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse} from "../../../../api/api";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
-import {DEVICE_TYPES} from "../Type/index" ;
 import StickyFooter from "../../components/StickyFooter";
 
 const Option = Select.Option;
@@ -30,8 +28,8 @@ interface IOwnProps {
 
 interface IProps {
   setBreadcrumb: (name: string, title: string, parent: string) => void;
-  setCurrentCampaign: (campaign: OrmCampaign) => void;
-  currentCampaign: OrmCampaign;
+  setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => void;
+  currentCampaign: ControllersCampaignGetResponse;
   setCurrentStep: (step: STEPS) => {};
   form: any;
   setSelectedCampaignId: (id: number | null) => {};
@@ -45,7 +43,7 @@ interface IState {
   pricing: IPricing;
   subscribers: string[];
   subscriber: string;
-  currentCampaign?: OrmCampaign;
+  currentCampaign?: ControllersCampaignGetResponse;
   networkType?: NETWORK_TYPE;
 }
 
@@ -83,7 +81,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
           this.setState({
             currentCampaign: campaign,
           });
-          this.props.setCurrentCampaign(campaign as OrmCampaign);
+          this.props.setCurrentCampaign(campaign as ControllersCampaignGetResponse);
         });
     }
   }
@@ -118,7 +116,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
           receivers: values.receivers,
         }
       }).then(data => {
-        this.props.setCurrentCampaign(data as OrmCampaign);
+        this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
         notification.success({
           message: this.i18n._t("Submit Budget successfully!"),
           className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
@@ -385,7 +383,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
-    setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => dispatch(setCurrentCampaign(campaign)),
     setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }

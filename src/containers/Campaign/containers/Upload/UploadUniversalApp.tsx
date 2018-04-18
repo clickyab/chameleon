@@ -213,18 +213,16 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                         downloads: values.download ? parseInt(values.download) : null,
                         video: values.video,
                         icon: values.icon,
-                        image: values.image,
+                        images: [values.image1, values.image2],
                         logo: values.logo,
                         phone: values.phone || null,
                         price: values.price ? parseInt(values.price) : null,
                         rating: values.rating ? parseFloat(values.rating) : null,
-                        saleprice: values.salePrice ? parseInt(values.salePrice) : null,
+                        sale_price: values.salePrice ? parseInt(values.salePrice) : null,
                         title: values.title,
                     },
-                    creative: {
                         campaign_id: this.state.currentCampaign.id,
                         url: values.url,
-                    }
                 }
             }).then((data) => {
                 console.log(data);
@@ -301,7 +299,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                 </Col>
                                 <Col span={5}>
                                     <FormItem>
-                                        {getFieldDecorator("image", {})(
+                                        {getFieldDecorator("image1", {})(
                                             <UploadFile label={"Ad image(vertical)"}
                                                         fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                         minDimension={this.minImageVerticalSize}
@@ -316,7 +314,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                             {this.state.moreUploadOption &&
                             <Row type={"flex"} gutter={16}>
                                 <Col span={5}>
-                                    {getFieldDecorator("image", {})(
+                                    {getFieldDecorator("image2", {})(
                                         <UploadFile label={"Logo of site, app or corporation"}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
                                                     minDimension={this.minLogoSize}
