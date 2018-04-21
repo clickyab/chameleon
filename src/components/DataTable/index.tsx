@@ -284,7 +284,7 @@ class DataTable extends React.Component<IProps, IState> {
     }
 
     if (this.state.searches) {
-      config["search"] = this.state.searches;
+      config["q"] = this.state.searches;
     }
 
     if (this.props.onQueryChange && callOnQueryChange) {

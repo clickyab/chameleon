@@ -6,7 +6,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {Form, Input} from "antd";
 import {Row, Col, notification, Spin} from "antd";
-import {MenuItem, RadioButton, SelectField, TextField, RadioButtonGroup, RaisedButton} from "material-ui";
+import {RadioButton, RadioButtonGroup} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {Select} from "antd";
@@ -115,7 +115,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
           total_budget: parseInt(values.total_budget),
           strategy: values.strategy,
           exchange: values.exchange,
-       //   receivers: values.receivers,
+          receivers: values.receivers,
         }
       }).then(data => {
         this.props.setCurrentCampaign(data as OrmCampaign);

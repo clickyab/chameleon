@@ -17,8 +17,9 @@ import "./style.less";
 import {
     ControllersApi,
     OrmCampaign,
-    OrmCampaignSchedule,
-    ControllersCreateCampaignPayload, ControllersCampaignStatusSchedule, ControllersCampaignStatus,
+    OrmScheduleSheet,
+    ControllersCreateCampaignPayload,
+    ControllersCampaignBaseSchedule, ControllersCampaignBase,
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
@@ -53,7 +54,7 @@ interface IState {
     status: CAMPAIGN_STATUS;
     currentCampaign: OrmCampaign;
     tld: string;
-    schedule ?: OrmCampaignSchedule;
+    schedule ?: OrmScheduleSheet;
     timePeriods: any[];
     minRange: string;
 }
@@ -100,7 +101,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         }
     }
 
-    private parseTimePeriodToState(schedule: OrmCampaignSchedule) {
+    private parseTimePeriodToState(schedule: OrmScheduleSheet) {
         let parsedSchedule = [];
         if (schedule) {
           Object.keys(schedule)
@@ -124,13 +125,13 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
 
     private setStateForTimePeriods() {
-        let schedule: OrmCampaignSchedule = {};
+        let schedule: OrmScheduleSheet = {};
         for (let i = 0; i <= 23; i++) {
             if (this.state.timePeriods.length !== 0) {
                 schedule[`h` + (`0` + i).slice(-2)] = "";
             }
             else {
-                schedule[`h` + (`0` + i).slice(-2)] = 0;
+                schedule[`h` + (`0` + i).slice(-2)] = "0";
             }
         }
         this.state.timePeriods.map((p, index) => {
@@ -214,14 +215,22 @@ class NamingComponent extends React.Component <IProps, IState> {
                 campaign.end_at = values.end_at;
             }
 
-            campaign.schedule = this.state.schedule as ControllersCampaignStatusSchedule;
+            if (!this.state.allTime) {
+                campaign.schedule = this.state.schedule as ControllersCampaignBaseSchedule;
+            } else {
+                let schedule: OrmScheduleSheet = {};
+                for (let i = 0; i <= 23; i++) {
+                        schedule[`h` + (`0` + i).slice(-2)] = "0";
+                }
+                campaign.schedule = schedule as ControllersCampaignBaseSchedule;
+            }
 
             const controllerApi = new ControllersApi();
 
             if (this.props.match.params.id) {
                 controllerApi.campaignBaseIdPut({
                     id: this.state.currentCampaign.id.toString(),
-                    payloadData: campaign as ControllersCampaignStatus,
+                    payloadData: campaign as ControllersCampaignBase,
                 }).then(data => {
                     this.props.setCurrentCampaign(data as OrmCampaign);
                     this.props.history.push(`/campaign/targeting/${data.id}`);
