@@ -2,16 +2,17 @@ import * as React from "react";
 import DataTable from "../../../../components/DataTable/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
-import {Row, Form, Col, notification, Checkbox, Spin, Input, Select} from "antd";
+import {Row, Form, Col, notification,  Checkbox,  Spin, Input, Select} from "antd";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
+import Modal from "../../../../components/Modal/index";
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import {MenuItem, RadioButton, RadioButtonGroup, SelectField, RaisedButton} from "material-ui";
+import {RadioButton, RadioButtonGroup} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse} from "../../../../api/api";
 import Tooltip from "../../../../components/Tooltip/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import "./style.less";
@@ -29,8 +30,8 @@ enum WHITE_LIST {WHITE = "WHITE" , BLACK = "BLACK"}
  */
 interface IProps {
     setBreadcrumb: (name: string, title: string, parent: string) => void;
-    setCurrentCampaign: (campaign: OrmCampaign) => void;
-    currentCampaign: OrmCampaign;
+    setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => void;
+    currentCampaign: ControllersCampaignGetResponse;
     setCurrentStep: (step: STEPS) => {};
     form: any;
     setSelectedCampaignId: (id: number | null) => {};
@@ -44,12 +45,13 @@ interface IProps {
  * @interface IState
  */
 interface IState {
-    currentCampaign: OrmCampaign;
+    currentCampaign: ControllersCampaignGetResponse;
     showPublisherTable: boolean;
     whiteList: WHITE_LIST ;
     selectedWebSites: any[];
     listType: List;
     typeModal: boolean;
+    listName: string;
     listID?: number;
     listOFList?: any[];
 }
@@ -185,7 +187,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
 
         promise.then((data) => {
             this.props.setSelectedCampaignId(data.id);
-            this.props.setCurrentCampaign(data as OrmCampaign);
+            this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
             this.props.history.push(`/campaign/upload/${data.id}`);
         }).catch((error) => {
             notification.error({
@@ -308,7 +310,6 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                         <div>
                             <Row>
                                 <Col span={24} className="mt-5">
-                                    {console.log("has been rendered")}
                                     <DataTable
                                         tableDescription={
                                             <div className="pub-table-title">
@@ -387,7 +388,7 @@ function mapStateToProps(state: RootState, ownProps: IOwnProps) {
 function mapDispatchToProps(dispatch) {
     return {
         setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
-        setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+        setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => dispatch(setCurrentCampaign(campaign)),
         setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
         setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
     };

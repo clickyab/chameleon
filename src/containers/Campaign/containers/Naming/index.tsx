@@ -16,10 +16,9 @@ import {CAMPAIGN_STATUS} from "../Type/index";
 import "./style.less";
 import {
     ControllersApi,
-    OrmCampaign,
-    OrmScheduleSheet,
     ControllersCreateCampaignPayload,
-    ControllersCampaignBaseSchedule, ControllersCampaignBase,
+    ControllersCampaignGetResponse,
+    ControllersCampaignGetResponseSchedule, ControllersCampaignBase, ControllersCampaignBaseSchedule,
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
@@ -37,8 +36,8 @@ interface IOwnProps {
 
 interface IProps {
     setBreadcrumb: (name: string, title: string, parent: string) => void;
-    setCurrentCampaign: (campaign: OrmCampaign) => void;
-    currentCampaign: OrmCampaign;
+    setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => void;
+    currentCampaign: ControllersCampaignGetResponse;
     setCurrentStep: (step: STEPS) => {};
     form: any;
     setSelectedCampaignId: (id: number | null) => {};
@@ -52,9 +51,9 @@ interface IState {
     allDay: boolean;
     allTime: boolean;
     status: CAMPAIGN_STATUS;
-    currentCampaign: OrmCampaign;
+    currentCampaign: ControllersCampaignGetResponse;
     tld: string;
-    schedule ?: OrmScheduleSheet;
+    schedule ?: ControllersCampaignGetResponseSchedule;
     timePeriods: any[];
     minRange: string;
 }
@@ -85,7 +84,7 @@ class NamingComponent extends React.Component <IProps, IState> {
             const api = new ControllersApi();
             api.campaignGetIdGet({id: this.props.match.params.id})
                 .then((campaign) => {
-                    this.props.setCurrentCampaign(campaign as OrmCampaign);
+                    this.props.setCurrentCampaign(campaign as ControllersCampaignGetResponse);
                     let timePeriods = this.parseTimePeriodToState(campaign.schedule);
                     this.props.setBreadcrumb("campaignTitle", campaign.title, "naming");
                     this.setState({
@@ -101,7 +100,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         }
     }
 
-    private parseTimePeriodToState(schedule: OrmScheduleSheet) {
+    private parseTimePeriodToState(schedule: ControllersCampaignGetResponseSchedule) {
         let parsedSchedule = [];
         if (schedule) {
           Object.keys(schedule)
@@ -125,7 +124,7 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
 
     private setStateForTimePeriods() {
-        let schedule: OrmScheduleSheet = {};
+        let schedule: ControllersCampaignGetResponseSchedule = {};
         for (let i = 0; i <= 23; i++) {
             if (this.state.timePeriods.length !== 0) {
                 schedule[`h` + (`0` + i).slice(-2)] = "";
@@ -215,15 +214,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                 campaign.end_at = values.end_at;
             }
 
-            if (!this.state.allTime) {
-                campaign.schedule = this.state.schedule as ControllersCampaignBaseSchedule;
-            } else {
-                let schedule: OrmScheduleSheet = {};
-                for (let i = 0; i <= 23; i++) {
-                        schedule[`h` + (`0` + i).slice(-2)] = "0";
-                }
-                campaign.schedule = schedule as ControllersCampaignBaseSchedule;
-            }
+            campaign.schedule = this.state.schedule as ControllersCampaignBaseSchedule;
 
             const controllerApi = new ControllersApi();
 
@@ -232,7 +223,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     id: this.state.currentCampaign.id.toString(),
                     payloadData: campaign as ControllersCampaignBase,
                 }).then(data => {
-                    this.props.setCurrentCampaign(data as OrmCampaign);
+                    this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
                     this.props.history.push(`/campaign/targeting/${data.id}`);
                     this.props.setCurrentStep(STEPS.TARGETING);
                     notification.success({
@@ -252,7 +243,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     payloadData: campaign,
                 }).then(data => {
                     this.props.setSelectedCampaignId(data.id);
-                    this.props.setCurrentCampaign(data as OrmCampaign);
+                    this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
                     this.props.history.push(`targeting/${data.id}`);
                 }).catch((error) => {
                     notification.error({
@@ -354,7 +345,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         <Col span={12}>
                             <FormItem className="have-description">
                                 {getFieldDecorator("domain", {
-                                    initialValue: this.state.currentCampaign.title,
+                                    initialValue: this.state.currentCampaign.tld,
                                     rules: [{
                                         required: true,
                                         message: this.i18n._t("Please input your TLD Domain")
@@ -503,7 +494,7 @@ function mapDispatchToProps(dispatch) {
     return {
         setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
         setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
-        setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+        setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => dispatch(setCurrentCampaign(campaign)),
         setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
     };
 }
