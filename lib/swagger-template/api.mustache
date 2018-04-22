@@ -28,7 +28,21 @@ export class BaseAPI {
         this.configuration = configuration;
     }
 }
+        const removeEmpty = (obj) => {
+        const objectInstance = JSON.parse(JSON.stringify(obj)); // Clone source oect.
 
+        Object.keys(objectInstance).forEach(key => {
+        if (objectInstance[key] && typeof objectInstance[key] === "object")
+        objectInstance[key] = removeEmpty(objectInstance[key]);  // Recurse.
+        else if (objectInstance[key] === undefined || objectInstance[key] === null) {
+        delete objectInstance[key]; // Delete undefined and null.
+        }
+        else
+        objectInstance[key] = objectInstance[key];  // Copy value.
+        });
+
+        return objectInstance; // Return new object.
+        };
 {{#models}}
 {{#model}}
 {{#description}}
@@ -114,6 +128,7 @@ export const {{classname}}FetchParamCreator = {
 {{/hasFormParams}}
 {{#hasBodyParam}}
         contentTypeHeader = { "Content-Type": "application/json" };{{#bodyParam}}
+        params["{{paramName}}"]= removeEmpty(params["{{paramName}}"]);
         if (params["{{paramName}}"]) {
             fetchOptions.body = JSON.stringify(params["{{paramName}}"] || {});
         }{{/bodyParam}}

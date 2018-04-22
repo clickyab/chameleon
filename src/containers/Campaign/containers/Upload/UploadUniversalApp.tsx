@@ -18,6 +18,7 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import UploadFile, {MODULE} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
+import {assetObjGen, assetPushObjArray} from "../../../../services/Utils/assetInputFormatter";
 
 
 const Dragger = Upload.Dragger;
@@ -102,7 +103,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
             name: "description",
             type: "limiter",
             limit: 150,
-            required: false,
+            required: true,
             multiLine: true,
             className: "textarea-campaign"
         },
@@ -199,7 +200,6 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
             // });
         }
     }
-
     private handleSubmit() {
 
         this.props.form.validateFields((err, values) => {
@@ -208,21 +208,22 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
             controllerApi.adNativePost({
                 payloadData: {
                     assets: {
-                        cta: values.cta,
-                        description: values.description,
-                        downloads: values.download ? parseInt(values.download) : null,
-                        video: values.video,
-                        icon: values.icon,
-                        images: [values.image1, values.image2],
-                        logo: values.logo,
-                        phone: values.phone || null,
-                        price: values.price ? parseInt(values.price) : null,
-                        rating: values.rating ? parseFloat(values.rating) : null,
-                        sale_price: values.salePrice ? parseInt(values.salePrice) : null,
-                        title: values.title,
+                        cta: values.cta ? [{val: values.cta}] : null,
+                        description: values.description ? [{val: values.description}] : null ,
+                        downloads: parseInt(values.download) ? [{val: parseInt(values.download)}] : null,
+                        video: values.video ?  [{val: values.video}] : null,
+                        images: assetPushObjArray(assetObjGen("imageHorizental", values.imageHorizental), assetObjGen("imageVertical", values.imageVertical)),
+                        icon: values.icon ? [{val: values.icon}] : null,
+                        logo: values.log ? [{val: values.logo}] : null,
+                        phone: values.phone ? [{val: values.phone}] : null,
+                        price: parseInt(values.price) ? [{val: parseInt(values.price)}] : null,
+                        rating: parseFloat(values.rating) ? [{val: parseFloat(values.rating)}] : null,
+                        title: values.title ? [{val: values.title}] : null,
+                        sale_price: parseInt(values.sale_price) ? [{val: values.sale_price}] : null,
                     },
                         campaign_id: this.state.currentCampaign.id,
                         url: values.url,
+                        max_bid: 123,
                 }
             }).then((data) => {
                 console.log(data);
@@ -272,7 +273,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                 </div>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <Row type="flex" gutter={16}>
-                        <Col span={24} className={"column-border-bottom upload-container"}>
+                        <Col span={24} className={"column-border-bottom uploaders-container"}>
                             <Row type={"flex"} gutter={16}>
                                 <Col span={5}>
                                     <FormItem>
@@ -281,7 +282,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                                         fileType={[FILE_TYPE.IMG_PNG]}
                                                         minDimension={this.minSizeIcon}
                                                         ratio={this.minSizeIcon}
-                                                        uploadModule={MODULE.IMAGE}
+                                                        uploadModule={MODULE.NATIVE_BANNER}
                                             />
                                         )}
                                     </FormItem>
@@ -292,18 +293,18 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                             <UploadFile label={"video"}
                                                         fileType={[FILE_TYPE.VID_MP4]}
                                                         minDimension={this.minVideoSize}
-                                                        uploadModule={MODULE.VIDEO}
+                                                        uploadModule={MODULE.NATIVE_VIDEO}
                                             />
                                         )}
                                     </FormItem>
                                 </Col>
                                 <Col span={5}>
                                     <FormItem>
-                                        {getFieldDecorator("image1", {})(
+                                        {getFieldDecorator("imageVertical", {})(
                                             <UploadFile label={"Ad image(vertical)"}
                                                         fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                         minDimension={this.minImageVerticalSize}
-                                                        uploadModule={MODULE.IMAGE}
+                                                        uploadModule={MODULE.NATIVE_BANNER}
                                             />
                                         )}
                                     </FormItem>
@@ -314,21 +315,27 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                             {this.state.moreUploadOption &&
                             <Row type={"flex"} gutter={16}>
                                 <Col span={5}>
-                                    {getFieldDecorator("image2", {})(
+                                    <FormItem>
+                                    {getFieldDecorator("logo", {})(
                                         <UploadFile label={"Logo of site, app or corporation"}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
                                                     minDimension={this.minLogoSize}
-                                                    uploadModule={MODULE.IMAGE}
+                                                    uploadModule={MODULE.NATIVE_BANNER}
                                         />
                                     )}
+                                    </FormItem>
                                 </Col>
                                 <Col span={8}>
+                                    <FormItem>
+                                     {getFieldDecorator("imageHorizental", {})(
                                     <UploadFile label={"Ad image(horizontal)"}
                                                 fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                 minDimension={this.minImageHorizentalSize}
                                                 ratio={this.minImageHorizentalSize}
-                                                uploadModule={MODULE.VIDEO}
+                                                uploadModule={MODULE.NATIVE_BANNER}
                                     />
+                                     )}
+                                    </FormItem>
                                 </Col>
                             </Row>
                             }
@@ -339,7 +346,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                             </div>
                             }
                         </Col>
-                        <Col span={24} className={"column-border-bottom upload-container"}>
+                        <Col span={24} className={"column-border-bottom uploaders-container"}>
                             <Row gutter={16}>
                                 <Col span={8} offset={16}>
                                     <Col span={24}>

@@ -4,6 +4,7 @@ import {UploadState , UPLOAD_STATUS} from "./index";
 import {IFlow} from "flowjs";
 import {BASE_PATH} from "../../api/api";
 import AAA from "../AAA";
+import {MODULE} from "../../containers/Campaign/components/UploadFile";
 
 interface IFlowFile {
     flowObj: IFlow;
@@ -61,11 +62,11 @@ export default class FlowUpload {
         this.file = file;
         this.module = module;
         this.fileName = fileName || null;
-        this.flowOption = {target: `${BASE_PATH}/upload/video` , headers: {token: AAA.getInstance().getToken() }, chunkSize: 250000, testMethod: false },
+        this.flowOption = {target: this.checkModule(module)  , headers: {token: AAA.getInstance().getToken() }, chunkSize: 250000, testMethod: false },
         this.flowFile = new Flow(this.flowOption);
-        console.log(this);
+        console.log("file" , file);
         this.flowFile.addFile(file);
-        this.flowFile.files[0].name = "file.mp4";
+        this.flowFile.files[0].name = file.name;
     }
     /**
      * @func upload
@@ -108,5 +109,18 @@ export default class FlowUpload {
      */
     public abort() {
         this.flowFile.cancel();
+    }
+
+    public checkModule(module: string) {
+         let target = `${BASE_PATH}/upload/module/`;
+        switch (module) {
+            case "native-image":
+                target += `native-image`;
+                break;
+            case "native-video":
+                target += `native-video`;
+                break;
+        }
+        return target;
     }
 }

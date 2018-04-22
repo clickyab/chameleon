@@ -4,7 +4,6 @@ import Translate from "../../../../components/i18n/Translate";
 import {IFileItem} from "../../containers/Upload/UploadBanner";
 import I18n from "../../../../services/i18n";
 
-
 enum UTM_INPUT {
     CTA = "CTA",
     URL = "URL",
@@ -155,16 +154,20 @@ export default class UTMInput extends React.Component<IProps, IState> {
                 if (prevState.utmAll.URL.indexOf("?") === -1) {
                     if (value !== "") {
                         prevState.utmAll.URL = prevState.utmAll.URL + `?${name}=${value}`;
+                        prevState.value = prevState.value + `?${name}=${value}`;
                     }
                 } else {
                     prevState.utmAll.URL = prevState.utmAll.URL + `&${name}=${value}`;
+                    prevState.value = prevState.value + `&${name}=${value}`;
                 }
             } else {
                 if (value !== "") {
                     prevState.utmAll.URL = prevState.utmAll.URL.replace(`${name}=${prevState[name]}`, `${name}=${value}`);
+                    prevState.value = prevState.value.replace(`${name}=${prevState[name]}`, `${name}=${value}`);
                 }
                 else {
                     prevState.utmAll.URL = prevState.utmAll.URL.replace(`${name}=${prevState[name]}`, ``).slice(0, -1);
+                    prevState.value = prevState.value.replace(`${name}=${prevState[name]}`, ``).slice(0, -1);
                 }
             }
             prevState[name] = value;
@@ -217,13 +220,10 @@ export default class UTMInput extends React.Component<IProps, IState> {
                     }}
                     onKeyDown={() => this.handleKeyPress()}
                 />
-                <Checkbox
-                    className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
-                    onChange={() => this.showUTMdetails()}
-                    checked={this.state.showUTMdetails}
-                >
-                    {this.i18n._t("Setting UTM parameters").toString()}
-                </Checkbox>
+                <Checkbox className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
+                          checked={this.state.showUTMdetails}
+                          onChange={() => this.showUTMdetails()}
+                ><Translate value={"Setting UTM parameters"}/></Checkbox>
                 {this.state.showUTMdetails &&
                 <Row gutter={20} className="mt-2">
                     <Col span={12}>

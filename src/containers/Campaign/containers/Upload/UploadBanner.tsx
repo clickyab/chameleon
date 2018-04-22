@@ -442,7 +442,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                                 value={"allowed extentions: GIF/PNG/JPG"}/></span>
                                         </div>
                                     </Col>
-                                    <Col span={24} className={"column-border-bottom upload-container"}>
+                                    <Col span={24} className={"column-border-bottom uploaders-container"}>
                                             <Col span={24}>
                                                 <div className="upload-setting">
                                                    <span className="upload-title-setting span-block">
