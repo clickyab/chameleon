@@ -9,7 +9,7 @@ import {IStateUpload} from "./UploadBanner";
 import {Upload, Row, Col, notification, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState} from "../../../../services/Upload/index";
+import {UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -19,8 +19,9 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import {UTMInfo} from "./UtmForm";
-import UploadFile, {FILE_TYPE, MODULE} from "../../components/UploadFile";
+import UploadFile, {FILE_TYPE} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
+import {UPLOAD_MODULES} from "../../components/UploadFile";
 
 const FormItem = Form.Item;
 
@@ -151,7 +152,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                                           required={true}
                                           exactDimension={{width: 640 , height: 360}}
                                           fileType={[FILE_TYPE.VID_MP4]}
-                                          uploadModule={MODULE.VIDEO}
+                                          uploadModule={UPLOAD_MODULES.BANNER_VIDEO}
                               />
                             </Col>
                             <Col span={8}>
@@ -159,14 +160,14 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                                           minDimension={{width: 640 , height: 360}}
                                           required={true}
                                           fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
-                                          uploadModule={MODULE.IMAGE}
+                                          uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
                               />
                             </Col>
                             <Col span={8}>
                             </Col>
                         </Row>
                     </Col>
-                    <Col span={24} className={"column-border-bottom upload-container"}>
+                    <Col span={24} className={"column-border-bottom uploaders-container"}>
                             <Col span={8} offset={16}>
                                 <Col span={24}>
                                     <div className="upload-setting">

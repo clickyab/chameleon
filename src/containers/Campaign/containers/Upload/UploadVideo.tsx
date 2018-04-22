@@ -137,7 +137,7 @@ class UploadVideo extends React.Component <IProps, IState> {
               <h2><Translate value="Media upload"/></h2>
           </div>
         <Row type="flex" gutter={16}>
-          <Col span={24} className={"column-border-bottom upload-container"}>
+          <Col span={24} className={"column-border-bottom uploaders-container"}>
             <Col span={8} offset={16}>
               <UploadFile label={"video poster(wide with 16:9 aspect ratio)"}
                           minDimension={{width: 640, height: 360}}

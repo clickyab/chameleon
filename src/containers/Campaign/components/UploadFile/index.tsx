@@ -2,7 +2,7 @@ import * as React from "react";
 import Translate from "../../../../components/i18n/Translate";
 import Dragger from "antd/es/upload/Dragger";
 import {notification} from "antd";
-import UploadService, {FlowUpload, UPLOAD_MODULES, UploadState} from "../../../../services/Upload";
+import UploadService, {UploadState} from "../../../../services/Upload";
 import CONFIG from "../../../../constants/config";
 import {IFileItem} from "../../containers/Upload/UploadUniversalApp";
 import I18n from "../../../../services/i18n";
@@ -12,10 +12,20 @@ import Cropper from "../../../../components/Cropper/Index";
 import Icon from "../../../../components/Icon";
 import "./style.less";
 import Progress from "antd/es/progress/progress";
+import FlowUpload from "../../../../services/Upload/flowUpload";
+import {BASE_PATH} from "../../../../api/api";
 
 export const enum FILE_TYPE {IMG_JPG = "image/jpeg", IMG_PNG = "image/png", IMG_GIF = "image/gif", VID_MP4 = "video/mp4"}
 
-export const enum MODULE {IMAGE = "banner", VIDEO = "video"}
+export const enum UPLOAD_MODULES {
+    USER_AVATAR = "user-avatar",
+    BANNER_VIDEO = "banner-video",
+    BANNER_IMAGE = "banner-image",
+    NATIVE_BANNER = "native-image",
+    NATIVE_VIDEO = "native-video",
+    VAST_IMAGE = "vast-image",
+    VAST_VIDEO = "vast-video",
+}
 
 interface IDimension {
     width: number;
@@ -89,7 +99,7 @@ class UploadFile extends React.Component<IProps, IState> {
             return;
         }
         this.setState((prevState => {
-            prevState.imgUrlCropped = URL.createObjectURL(this.tmpImg);
+            // prevState.imgUrlCropped = URL.createObjectURL(this.tmpImg);
             this.uploadImage(this.id, this.tmpImg);
             prevState.value = URL.createObjectURL(this.tmpImg);
             prevState.showCropModal = false;
@@ -100,7 +110,7 @@ class UploadFile extends React.Component<IProps, IState> {
 
     private handleReset(e) {
         e.stopPropagation();
-        this.setState({imgUrlCropped: null, value: null});
+        this.setState({imgUrlCropped: null, value: null, progress: 0});
         if (this.props.onChange) {
             this.props.onChange(null);
         }
@@ -110,6 +120,7 @@ class UploadFile extends React.Component<IProps, IState> {
         e.stopPropagation();
         this.setState({
             showCropModal: true,
+            progress: 0,
         });
     }
 
@@ -147,17 +158,17 @@ class UploadFile extends React.Component<IProps, IState> {
     }
 
     private uploadImage(id: string, file: any) {
-        const uploader = new UploadService(this.props.uploadModule, file, file.name);
+        const uploader = new FlowUpload(this.props.uploadModule, file, file.name);
         uploader.upload((state) => {
             this.changeFileProgressState(id, state);
         }).then((state) => {
             this.changeFileProgressState(id, state);
-            console.log(state);
             if (this.props.onChange) {
                 this.props.onChange(state.url);
             }
             this.setState({
-                disableDragger: false
+                disableDragger: false,
+                imgUrlCropped: BASE_PATH.replace("/api", "") + "/uploads/" +  state.url,
             });
             this.disableUpload = false;
         }).catch((err) => {
@@ -294,7 +305,7 @@ class UploadFile extends React.Component<IProps, IState> {
                     });
             }
             else {
-                const uploader = new FlowUpload(MODULE.VIDEO, file);
+                const uploader = new FlowUpload(this.props.uploadModule, file);
                 this.setVideoDimension(fileItem as IFileItem)
                     .then((fileItemObject) => {
                         let dimensionCheck = this.checkMediaDimension(fileItemObject);
@@ -443,6 +454,7 @@ class UploadFile extends React.Component<IProps, IState> {
                             aspect={(this.ratio.width / this.ratio.height)}
                             onChange={(img: Blob) => {
                                 this.tmpImg = img;
+                                this.setState({imgUrlCropped: ""});
                             }}/>
                     </div>
                 </Modal>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Row, Col, Button, Spin, notification} from "antd";
 import {RaisedButton} from "material-ui";
-import {ControllersApi, ControllersCampaignGetResponse, OrmWhiteBlackList} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse} from "../../../../api/api";
 import CONFIG from "../../../../constants/config";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -276,7 +276,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <b>{this.state.totalBudget}</b>
+                <b>{this.state.totalBudget + " "}</b>
                 <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>
@@ -285,7 +285,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <b>{this.state.dailyBudget}</b>
+                <b>{this.state.dailyBudget + " "}</b>
                 <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>

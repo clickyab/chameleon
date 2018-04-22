@@ -192,7 +192,7 @@
 .edit-overlay {
     width: calc(~"400% + 60px");
     background: #F9FAFC;
-    border: 1px solid #D8DADE;
+    border: @input-border-style ;
     padding: 15px;
     margin-top: -10px;
     margin-bottom: 20px;
@@ -442,6 +442,7 @@
     left: 1px;
     padding-top: 0;
     bottom: auto;
+    line-height: 33px;
 }
 
 .native-item-icon {
@@ -688,7 +689,7 @@
     .upload-column-border {
         border-left: 1px solid #DFE0E6;
     }
-    .uploader-container {
+    .uploaders-container {
         .ant-form-item-control {
             line-height: 1.5;
         }
@@ -699,14 +700,14 @@
     height: 90px;
     min-height: 90px;
     max-height: 90px;
-    border: 1px solid #D8DADE;
+    border: @input-border-style ;
 }
 
 .ant-input {
     &.input-campaign {
         height: 35px;
         border-radius: 2px;
-        border: 1px solid #D8DADE;
+        border: @input-border-style ;
         padding: 0 10px;
         &::placeholder {
             color: #A4AAB2;

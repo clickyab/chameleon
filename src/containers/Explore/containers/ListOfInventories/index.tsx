@@ -8,8 +8,8 @@ import I18n from "../../../../services/i18n/index";
 import {Select} from "antd";
 import CONFIG from "../../../../constants/config";
 import {
-  ControllersApi, ControllersWhiteBlackLists, ControllersWhiteBlackListsInner,
-  OrmCampaign
+    ControllersApi, ControllersListInventoryResponseData, ControllersWhiteBlackLists, ControllersWhiteBlackListsInner,
+    OrmCampaign
 } from "../../../../api/api";
 import DataTable from "../../../../components/DataTable/index";
 
@@ -98,8 +98,8 @@ class ListOfInventories extends React.Component <IProps, IState> {
             infinite={true}
             name="publisherList"
             onSelectRow={this.onSelectRow.bind(this)}
-            definitionFn={this.controllerApi.inventoryPublisherListDefinitionGet}
-            dataFn={this.controllerApi.inventoryPublisherListGet}
+            definitionFn={this.controllerApi.inventoryInventoryListDefinitionGet}
+            dataFn={this.controllerApi.inventoryInventoryListGet}
             actionsFn={{
               "edit": (v, r) => {
                 console.log(r);
@@ -111,10 +111,10 @@ class ListOfInventories extends React.Component <IProps, IState> {
               }
             }}
             customRenderColumns={{
-              "status": (value: string): JSX.Element => {
+              "status": (value: string, row: ControllersListInventoryResponseData): JSX.Element => {
                 let switchValue = value ? true : false;
                 return <div><Switch className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
-                                    checked={switchValue}/></div>;
+                                     onChange={() => console.log("test", arguments) }/></div>;
               }
             }}
           />

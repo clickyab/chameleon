@@ -11,7 +11,7 @@ import VideoSize from "./size/CONST_VIDEOsize";
 import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {default as UploadService, UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
+import {default as UploadService, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import FileSizeConvertor from "../../../../services/Utils/FileSizeConvertor";
 import "./style.less";
@@ -26,6 +26,8 @@ import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
 import {UTMInfo} from "./UtmForm";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
+import {UPLOAD_MODULES} from "../../components/UploadFile";
+import FlowUpload from "../../../../services/Upload/flowUpload";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -245,7 +247,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
             fileObject: file,
             name: file.name,
         };
-        const uploader = new UploadService(UPLOAD_MODULES.BANNER, file);
+        const uploader = new FlowUpload(UPLOAD_MODULES.BANNER_IMAGE, file);
         this.setImageSize(fileItem)
             .then((fileItemObject) => {
                 if (this.checkImageSize(fileItemObject)) {
@@ -442,7 +444,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                                 value={"allowed extentions: GIF/PNG/JPG"}/></span>
                                         </div>
                                     </Col>
-                                    <Col span={24} className={"column-border-bottom upload-container"}>
+                                    <Col span={24} className={"column-border-bottom uploaders-container"}>
                                             <Col span={24}>
                                                 <div className="upload-setting">
                                                    <span className="upload-title-setting span-block">

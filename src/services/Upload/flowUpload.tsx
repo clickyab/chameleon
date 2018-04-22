@@ -61,11 +61,11 @@ export default class FlowUpload {
         this.file = file;
         this.module = module;
         this.fileName = fileName || null;
-        this.flowOption = {target: `${BASE_PATH}/upload/video` , headers: {token: AAA.getInstance().getToken() }, chunkSize: 250000, testMethod: false },
+        this.flowOption = {target: this.checkModule(module)  , headers: {token: AAA.getInstance().getToken() }, chunkSize: 250000, testMethod: false },
         this.flowFile = new Flow(this.flowOption);
-        console.log(this);
+        console.log("file" , file);
         this.flowFile.addFile(file);
-        this.flowFile.files[0].name = "file.mp4";
+        this.flowFile.files[0].name = file.name;
     }
     /**
      * @func upload
@@ -79,9 +79,9 @@ export default class FlowUpload {
             this.flowFile.on("fileSuccess", function (file, message) {
                 resolve({
                     progress: 100,
-                    status: UPLOAD_STATUS.FINISHED
+                    status: UPLOAD_STATUS.FINISHED,
+                    url: JSON.parse(message).src,
                 });
-                console.log("message", message);
             });
             this.flowFile.on("fileError", function () {
                 reject({
@@ -108,5 +108,10 @@ export default class FlowUpload {
      */
     public abort() {
         this.flowFile.cancel();
+    }
+
+    public checkModule(module: string) {
+        let target = `${BASE_PATH}/upload/module/` + module;
+        return target;
     }
 }
