@@ -266,3 +266,22 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
 }
 .anticon-star:before{
 }
+
+.validate-form {
+    margin-bottom: 10px !important;
+    &.ant-form-item-with-help{
+        .validate-form-description{
+            opacity: 0;
+        }
+    }
+    .ant-form-explain {
+        position: absolute !important;
+        top: 42px;
+        right: 0;
+        left: 0;
+        white-space:nowrap;
+    }
+    &-description{
+        white-space:nowrap;
+    }
+}

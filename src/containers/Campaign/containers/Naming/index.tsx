@@ -16,9 +16,9 @@ import {CAMPAIGN_STATUS} from "../Type/index";
 import "./style.less";
 import {
     ControllersApi,
-    OrmCampaign,
-    OrmCampaignSchedule,
-    ControllersCreateCampaignPayload, ControllersCampaignStatusSchedule, ControllersCampaignStatus,
+    ControllersCreateCampaignPayload,
+    ControllersCampaignGetResponse,
+    ControllersCampaignGetResponseSchedule, ControllersCampaignBase, ControllersCampaignBaseSchedule,
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
@@ -36,8 +36,8 @@ interface IOwnProps {
 
 interface IProps {
     setBreadcrumb: (name: string, title: string, parent: string) => void;
-    setCurrentCampaign: (campaign: OrmCampaign) => void;
-    currentCampaign: OrmCampaign;
+    setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => void;
+    currentCampaign: ControllersCampaignGetResponse;
     setCurrentStep: (step: STEPS) => {};
     form: any;
     setSelectedCampaignId: (id: number | null) => {};
@@ -51,9 +51,9 @@ interface IState {
     allDay: boolean;
     allTime: boolean;
     status: CAMPAIGN_STATUS;
-    currentCampaign: OrmCampaign;
+    currentCampaign: ControllersCampaignGetResponse;
     tld: string;
-    schedule ?: OrmCampaignSchedule;
+    schedule ?: ControllersCampaignGetResponseSchedule;
     timePeriods: any[];
     minRange: string;
 }
@@ -84,10 +84,9 @@ class NamingComponent extends React.Component <IProps, IState> {
             const api = new ControllersApi();
             api.campaignGetIdGet({id: this.props.match.params.id})
                 .then((campaign) => {
-                    this.props.setCurrentCampaign(campaign as OrmCampaign);
+                    this.props.setCurrentCampaign(campaign as ControllersCampaignGetResponse);
                     let timePeriods = this.parseTimePeriodToState(campaign.schedule);
                     this.props.setBreadcrumb("campaignTitle", campaign.title, "naming");
-                  console.log("time", timePeriods);
                     this.setState({
                         currentCampaign: campaign,
                         allDay: !campaign.end_at,
@@ -101,7 +100,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         }
     }
 
-    private parseTimePeriodToState(schedule: OrmCampaignSchedule) {
+    private parseTimePeriodToState(schedule: ControllersCampaignGetResponseSchedule) {
         let parsedSchedule = [];
         if (schedule) {
           Object.keys(schedule)
@@ -125,11 +124,15 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
 
     private setStateForTimePeriods() {
-        let schedule: OrmCampaignSchedule = {};
+        let schedule: ControllersCampaignGetResponseSchedule = {};
         for (let i = 0; i <= 23; i++) {
-            schedule[`h` + (`0` + i).slice(-2)] = "";
+            if (this.state.timePeriods.length !== 0) {
+                schedule[`h` + (`0` + i).slice(-2)] = "";
+            }
+            else {
+                schedule[`h` + (`0` + i).slice(-2)] = "0";
+            }
         }
-
         this.state.timePeriods.map((p, index) => {
             for (let j = parseInt(p.from); j <= parseInt(p.to); j++) {
                 if (schedule[`h` + (`0` + j).slice(-2)]) {
@@ -211,16 +214,16 @@ class NamingComponent extends React.Component <IProps, IState> {
                 campaign.end_at = values.end_at;
             }
 
-            campaign.schedule = this.state.schedule as ControllersCampaignStatusSchedule;
+            campaign.schedule = this.state.schedule as ControllersCampaignBaseSchedule;
 
             const controllerApi = new ControllersApi();
 
             if (this.props.match.params.id) {
                 controllerApi.campaignBaseIdPut({
                     id: this.state.currentCampaign.id.toString(),
-                    payloadData: campaign as ControllersCampaignStatus,
+                    payloadData: campaign as ControllersCampaignBase,
                 }).then(data => {
-                    this.props.setCurrentCampaign(data as OrmCampaign);
+                    this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
                     this.props.history.push(`/campaign/targeting/${data.id}`);
                     this.props.setCurrentStep(STEPS.TARGETING);
                     notification.success({
@@ -240,7 +243,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     payloadData: campaign,
                 }).then(data => {
                     this.props.setSelectedCampaignId(data.id);
-                    this.props.setCurrentCampaign(data as OrmCampaign);
+                    this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
                     this.props.history.push(`targeting/${data.id}`);
                 }).catch((error) => {
                     notification.error({
@@ -342,7 +345,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         <Col span={12}>
                             <FormItem className="have-description">
                                 {getFieldDecorator("domain", {
-                                    initialValue: this.state.currentCampaign.title,
+                                    initialValue: this.state.currentCampaign.tld,
                                     rules: [{
                                         required: true,
                                         message: this.i18n._t("Please input your TLD Domain")
@@ -491,7 +494,7 @@ function mapDispatchToProps(dispatch) {
     return {
         setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
         setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
-        setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+        setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => dispatch(setCurrentCampaign(campaign)),
         setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
     };
 }

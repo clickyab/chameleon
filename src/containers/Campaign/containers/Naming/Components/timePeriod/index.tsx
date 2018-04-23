@@ -51,7 +51,7 @@ export default class TimePeriod extends React.Component<IProps, IState> {
     let options = [];
     for (let i = 0; i < 24; i++) {
       options.push(<Option key={i} disabled={to ? (i < parseInt(this.state.from) ) : (i > parseInt(this.state.to))}
-                           value={i.toString()}>{(`0` + i.toString()).toString().slice(-2)}:{to ? `59` : `00`}</Option>);
+                           value={i.toString()}>{(`0` + (to ? (i + 1).toString() : i.toString())).toString().slice(-2)}:{`00`}</Option>);
     }
     return options;
   }

@@ -25,6 +25,7 @@ import {DEVICE_TYPES} from "../Type";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
 import {UTMInfo} from "./UtmForm";
+import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -66,7 +67,7 @@ export interface IStateUpload {
     openImageModal: boolean;
     previewImage?: IFileItem;
     editFile?: IFileItem;
-    globalUtm ?: string;
+    globalUtm?: string;
     adSize?: any;
     fileSelected?: number | null;
 }
@@ -94,7 +95,8 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
     }
 
-    public  showEditHelper: boolean = true;
+    public showEditHelper: boolean = true;
+
     public componentDidMount() {
         this.setState({
             currentCampaign: this.props.currentCampaign,
@@ -292,6 +294,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
         });
         this.showEditHelper = true;
     }
+
     private openImageModal(file?: IFileItem) {
         this.setState({
             openImageModal: true,
@@ -328,6 +331,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
         // });
 
     }
+
     /**
      * @func handleFlag
      * @desc On keyPress it will be called and set edited flag for banner (banner will not get general values from general form)
@@ -341,6 +345,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
             files: fileItem
         });
     }
+
     /**
      * @func handleFormData
      * @desc will change file values (state will set after submission)
@@ -351,6 +356,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
         fileItem[index].cta = item.CTA;
         fileItem[index].utm = item.URL;
     }
+
     /**
      * @func onUtmFormSubmit
      * @desc Handle params that receive from utm modal
@@ -372,25 +378,27 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
             });
         }
     }
+
     /**
      * @func handleBannerData
      * @desc fill values of banner with general form if it has not been edited
      * @param item{UTMInfo}
      */
-private handleBannerData(item: UTMInfo) {
-    this.state.files.map((file: IFileItem, index) => {
-    let fileItem: IFileItem[] = this.state.files;
-        if (!file.edited) {
-            fileItem[index].cta = item.CTA;
-        }
-        if (!file.edited) {
-            fileItem[index].utm = item.URL;
-        }
-        this.setState({
-            files: fileItem
+    private handleBannerData(item: UTMInfo) {
+        this.state.files.map((file: IFileItem, index) => {
+            let fileItem: IFileItem[] = this.state.files;
+            if (!file.edited) {
+                fileItem[index].cta = item.CTA;
+            }
+            if (!file.edited) {
+                fileItem[index].utm = item.URL;
+            }
+            this.setState({
+                files: fileItem
+            });
         });
-    });
-}
+    }
+
     /**
      * @func render
      * @desc render component
@@ -410,109 +418,128 @@ private handleBannerData(item: UTMInfo) {
                 </div>
                 <Row type="flex" gutter={16} justify="center">
                     <Col span={24} className="full-width">
-                            <Form>
-                                <Row type={"flex"} gutter={66}>
-                                    <Col span={8} className="upload-column-border">
-                                        <Col span={24} className={"column-border-bottom"}>
+                        <Form>
+                            <Row type={"flex"} gutter={66}>
+                                <Col span={8} className="upload-column-border">
+                                    <Col span={24} className={"column-border-bottom"}>
                                         <span className="image-drag-upload"><Translate value={"Image*"}/></span>
                                         <Dragger
                                             beforeUpload={this.uploadFile.bind(this)}
                                             className="banner-dragger-comp"
                                         >
                                             <div className="dragger-content">
-                                                <span className="upload-image-link"><Translate value={"upload it"}/></span>
+                                                <span className="upload-image-link"><Translate
+                                                    value={"upload it"}/></span>
                                                 <Translate value={"Drag your image over here or"}/>
                                             </div>
                                         </Dragger>
                                         <div className="drag-description">
-                                        <Translate value={"Image size:"}/>
-                                        <span className="link"><Translate value={"image size guide"}/></span>
-                                        <span className="span-block"><Translate value={"maximum size: 200KB"}/></span>
-                                        <span className="span-block"><Translate value={"allowed extentions: GIF/PNG/JPG"}/></span>
+                                            <Translate value={"Image size:"}/>
+                                            <span className="link"><Translate value={"image size guide"}/></span>
+                                            <span className="span-block"><Translate
+                                                value={"maximum size: 200KB"}/></span>
+                                            <span className="span-block"><Translate
+                                                value={"allowed extentions: GIF/PNG/JPG"}/></span>
                                         </div>
                                     </Col>
-                                        <Col span={24} className="upload-setting">
-                                            <span className="upload-title-setting span-block"><Translate value={"URL and uploaded banners setting"}/></span>
-                                            <FormItem>
-                                                <UtmForm global={true} onSubmit={(params) => {this.onUtmFormSubmit(params); }}
-                                                         onChange={(item) => {this.handleBannerData(item);  }}
-                                                         link={this.state.globalUtm}/>
-                                            </FormItem>
+                                    <Col span={24} className={"column-border-bottom upload-container"}>
+                                            <Col span={24}>
+                                                <div className="upload-setting">
+                                                   <span className="upload-title-setting span-block">
+                                                   <Translate value={"Ad general information"}/>
+                                                   </span>
+                                                </div>
+                                            <CreativeGeneralInfo form={this.props.form}/>
                                         </Col>
                                     </Col>
-                                    <Col span={16}>
-                                        <Row type="flex" gutter={20}>
-                                            {this.state.files.map((file, index) => (
-                                                <Col key={file.id} span={6}>
-                                                    <div className="upload-process-wrapper">
-                                                        <div className="image-wrapper">
-                                                            <div className="image-overlay"
-                                                                 onClick={() => this.openImageModal(file)}>
-                                                                <Icon name={"cif-eye"} fontsize={20}/>
-                                                            </div>
-                                                            {file.fileObject && (!file.state || !file.state.url) &&
-                                                            <Image file={file.fileObject} alt={file.fileObject.name}
-                                                                   type={"img"}
-                                                            />
-                                                            }
-                                                            {file.state && file.state.url &&
-                                                            <img
-                                                                src={`http://staging.crab.clickyab.ae/uploads/` + file.state.url}
-                                                                alt={file.name}/>
-                                                            }
-                                                        </div>
-                                                        <div className="upload-option">
-                                                            {file.state && file.state.progress !== 100 &&
-                                                            <Progress type="line"
-                                                                      percent={file.state ? file.state.progress : 1}
-                                                                      width={100}/>
-                                                            }
-                                                            {file.state && file.state.progress === 100 &&
-                                                            <Button onClick={() => {
-                                                                this.imageEdit(file, index);
-                                                            }}
-                                                                    className="btn-edit flex-start"
-                                                            >
-                                                                <Icon name={"cif-edit"}/>
-                                                            </Button>
-                                                            }
-                                                            <Button onClick={() => {
-                                                                this.removeFile(file.id);
-                                                                this.setState({
-                                                                    fileSelected: null,
-                                                                });
-                                                            }}
-                                                                    className="btn-cancel"
-                                                            >
-                                                                <Icon name={"cif-closelong"}/>
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                    {this.state.fileSelected === index &&
-                                                    <div className={`edit-overlay transformX-${(index % 4)}`}>
-                                                        <FormItem><UtmForm onSubmit={(params) => this.onUtmFormSubmit(params)}
-                                                                           onChange={(item) => this.handleFormData(file, index,  item)}
-                                                                           customOnKeyPress={(item) => this.handleFlag(item, file, index)}
-                                                                           link={file.utm}
-                                                                           cta={file.cta}
-                                                                           shouldUpdate={file.edited}
-                                                        />
-                                                        </FormItem></div>
-                                                    }
-                                                </Col>
-                                            ))}
-                                        </Row>
+                                    <Col span={24} className="upload-setting">
+                                        <span className="upload-title-setting span-block"><Translate
+                                            value={"URL and uploaded banners setting"}/></span>
+                                        <FormItem>
+                                            <UtmForm global={true} onSubmit={(params) => {
+                                                this.onUtmFormSubmit(params);
+                                            }}
+                                                     onChange={(item) => {
+                                                         this.handleBannerData(item);
+                                                     }}
+                                                     link={this.state.globalUtm}/>
+                                        </FormItem>
                                     </Col>
-                                </Row>
-                                <Row type="flex" align="middle">
-                                    <Button className="btn-general btn-submit ml-1"
-                                            onClick={this.handleSubmit.bind(this)}
-                                    >
-                                        <Translate value={"Save and creat new ad"}/>
-                                    </Button>
-                                    <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
-                                </Row>
-                            </Form>
+                                </Col>
+                                <Col span={16}>
+                                    <Row type="flex" gutter={20}>
+                                        {this.state.files.map((file, index) => (
+                                            <Col key={file.id} span={6}>
+                                                <div className="upload-process-wrapper">
+                                                    <div className="image-wrapper">
+                                                        <div className="image-overlay"
+                                                             onClick={() => this.openImageModal(file)}>
+                                                            <Icon name={"cif-eye"} fontsize={20}/>
+                                                        </div>
+                                                        {file.fileObject && (!file.state || !file.state.url) &&
+                                                        <Image file={file.fileObject} alt={file.fileObject.name}
+                                                               type={"img"}
+                                                        />
+                                                        }
+                                                        {file.state && file.state.url &&
+                                                        <img
+                                                            src={`http://staging.crab.clickyab.ae/uploads/` + file.state.url}
+                                                            alt={file.name}/>
+                                                        }
+                                                    </div>
+                                                    <div className="upload-option">
+                                                        {file.state && file.state.progress !== 100 &&
+                                                        <Progress type="line"
+                                                                  percent={file.state ? file.state.progress : 1}
+                                                                  width={100}/>
+                                                        }
+                                                        {file.state && file.state.progress === 100 &&
+                                                        <Button onClick={() => {
+                                                            this.imageEdit(file, index);
+                                                        }}
+                                                                className="btn-edit flex-start"
+                                                        >
+                                                            <Icon name={"cif-edit"}/>
+                                                        </Button>
+                                                        }
+                                                        <Button onClick={() => {
+                                                            this.removeFile(file.id);
+                                                            this.setState({
+                                                                fileSelected: null,
+                                                            });
+                                                        }}
+                                                                className="btn-cancel"
+                                                        >
+                                                            <Icon name={"cif-closelong"}/>
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                                {this.state.fileSelected === index &&
+                                                <div className={`edit-overlay transformX-${(index % 4)}`}>
+                                                    <FormItem><UtmForm
+                                                        onSubmit={(params) => this.onUtmFormSubmit(params)}
+                                                        onChange={(item) => this.handleFormData(file, index, item)}
+                                                        customOnKeyPress={(item) => this.handleFlag(item, file, index)}
+                                                        link={file.utm}
+                                                        cta={file.cta}
+                                                        shouldUpdate={file.edited}
+                                                    />
+                                                    </FormItem></div>
+                                                }
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row type="flex" align="middle">
+                                <Button className="btn-general btn-submit ml-1"
+                                        onClick={this.handleSubmit.bind(this)}
+                                >
+                                    <Translate value={"Save and creat new ad"}/>
+                                </Button>
+                                <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
+                            </Row>
+                        </Form>
                     </Col>
                 </Row>
                 {this.state.previewImage &&
@@ -542,7 +569,7 @@ private handleBannerData(item: UTMInfo) {
 }
 
 interface IOwnProps {
-    match ?: any;
+    match?: any;
     history?: any;
 }
 
