@@ -2,13 +2,14 @@ import * as React from "react" ;
 import {Input} from "antd";
 import {InputProps} from "antd/lib/input/Input";
 
+const {TextArea} = Input;
+
 interface IState {
     value: string;
 }
 
 interface IProps extends InputProps {
     limit?: number;
-    customOnChange?: (event) => void;
     multiLine?: boolean;
 }
 
@@ -32,15 +33,15 @@ export default class InputLimit extends React.Component<IProps, IState> {
         if (this.props.limit) {
             if (e.target.value.length <= this.props.limit) {
                 this.setState({value: e.target.value});
-                if (this.props.customOnChange) {
-                    this.props.customOnChange(e);
+                if (this.props.onChange) {
+                    this.props.onChange(e);
                 }
             }
         }
     }
 
     render() {
-        let {limit, multiLine, customOnChange, ...rest} = this.props;
+        let {limit, multiLine, ...rest} = this.props;
         return (
             <div className="input-limit-wrapper">
                 {!this.props.multiLine &&
@@ -49,10 +50,9 @@ export default class InputLimit extends React.Component<IProps, IState> {
                 }} {...rest} value={this.state.value}/>
                 }
                 {this.props.multiLine &&
-                <textarea onChange={(e) => {
+                <TextArea onChange={(e) => {
                     this.handleValueChange(e);
-                }} value={this.state.value} className={this.props.className}>
-                    </textarea>
+                }} value={this.state.value} className={this.props.className} placeholder={this.props.placeholder}/>
                 }
                 {this.state.value &&
                 <span className={`item-desc-num-input ${ (this.state.value.length < limit - 5) ? "green" : "red"}`}>

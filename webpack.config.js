@@ -100,7 +100,7 @@ module.exports = {
     publicPath: "/",
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       filename: "vendor.bundle.js",
       minChunks: 3,

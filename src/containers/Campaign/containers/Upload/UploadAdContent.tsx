@@ -65,14 +65,15 @@ class UploadAdContent extends React.Component <IProps, IState> {
         width: 627,
         height: 627,
     };
-    private FormObject: InputInfo[] = [{
-        title: this.i18n._t("Title") as string,
-        name: "title",
-        type: "limiter",
-        limit: 50,
-        placeholder: this.i18n._t("your title will display below image") as string,
-        required: true,
-    },
+    private FormObject: InputInfo[] = [
+        {
+            title: this.i18n._t("Title") as string,
+            name: "title",
+            type: "limiter",
+            limit: 50,
+            placeholder: this.i18n._t("your title will display below image") as string,
+            required: true,
+        },
         {
             title: this.i18n._t("Description") as string,
             name: "description",
@@ -131,16 +132,34 @@ class UploadAdContent extends React.Component <IProps, IState> {
 
     private handleSubmit() {
 
-        // const controllerApi = new ControllersApi();
-        // controllerApi.adBannerTypeIdPost({
-        //     bannerType: UPLOAD_MODULES.VIDEO,
-        //     id: this.state.currentCampaign.id.toString(),
-        //     payloadData: {
-        //         banners
-        //     }
-        // }).then(() => {
-        //     this.props.history.push(`/campaign/check-publish/${this.props.match.params.id}`);
-        // });
+        this.props.form.validateFields((err, values) => {
+            console.log(err, values);
+            if (err) return;
+            const controllerApi = new ControllersApi();
+            controllerApi.adNativePost({
+                payloadData: {
+                    assets: {
+                        cta: values.cta,
+                        description: values.description,
+                        downloads: values.download ? parseInt(values.download) : null,
+                        video: values.video,
+                        image: values.image,
+                        logo: values.logo,
+                        phone: values.phone || null,
+                        price: values.price ? parseInt(values.price) : null,
+                        rating: values.rating ? parseFloat(values.rating) : null,
+                        saleprice: values.salePrice ? parseInt(values.salePrice) : null,
+                        title: values.title,
+                    },
+                    creative: {
+                        campaign_id: this.state.currentCampaign.id,
+                        url: values.url,
+                    }
+                }
+            }).then((data) => {
+                console.log(data);
+            });
+        });
 
     }
 
@@ -168,17 +187,25 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom upload-container"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <UploadFile label={"wide image"}
-                                            minDimension={this.minSizeWide}
-                                            required={true}
-                                            fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
-                                            uploadModule={MODULE.IMAGE}/>
+                                <FormItem>
+                                    {getFieldDecorator("image", {})(
+                                        <UploadFile label={"wide image"}
+                                                    minDimension={this.minSizeWide}
+                                                    required={true}
+                                                    fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
+                                                    uploadModule={MODULE.IMAGE}/>
+                                    )}
+                                </FormItem>
                             </Col>
                             <Col span={5}>
-                                <UploadFile label={"Logo"}
-                                            minDimension={this.minSizeWide}
-                                            fileType={[FILE_TYPE.IMG_PNG]}
-                                            uploadModule={MODULE.IMAGE}/>
+                                <FormItem>
+                                    {getFieldDecorator("logo", {})(
+                                        <UploadFile label={"Logo"}
+                                                    minDimension={this.minSizeWide}
+                                                    fileType={[FILE_TYPE.IMG_PNG]}
+                                                    uploadModule={MODULE.IMAGE}/>
+                                    )}
+                                </FormItem>
                             </Col>
                             <Col span={8}>
                             </Col>
