@@ -8,10 +8,12 @@ exit_message() {
     code=${2:-1}
     if [ "${code}" == "0" ]
     then
-        echo "Build was OK, but its not the correct branch. ignore this" >> ${OUT_LOG}
+        echo "${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
+        echo "Build was OK, but its not the correct branch(${APP}:${BRANCH}.${COMMIT_COUNT} By ${CHANGE_AUTHOR}). ignore this" >> ${OUT_LOG}
         echo "green" > ${OUT_LOG_COLOR}
     else
-        echo "Build was NOT OK. verify with dev team" >> ${OUT_LOG}
+        echo "${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
+        echo "Build was NOT OK(${APP}:${BRANCH}.${COMMIT_COUNT} By ${CHANGE_AUTHOR}). verify with dev team" >> ${OUT_LOG}
         echo "red" > ${OUT_LOG_COLOR}
     fi;
     exit ${code}
@@ -152,6 +154,8 @@ echo "${BUILD_PACKS_DIR}" >> /tmp/kill-me
 if [[ ( "${BRANCH}" != "master" ) && ( "${BRANCH}" != "deploy" ) ]]; then
     exit_message "Its not on correct branch, bail out" 0
 fi
+
+echo "${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
 echo "The branch ${BRANCH} build finished, try to deploy it" >> ${OUT_LOG}
 echo "If there is no report after this for successful deploy, it means the deploy failed. report it please." >> ${OUT_LOG}
 kubectl -n ${PROJECT} set image deployment  ${APP}-${BRANCH} ${APP}-${BRANCH}=registry.clickyab.ae/clickyab/${APP}_${BRANCH}:${COMMIT_COUNT} --record
