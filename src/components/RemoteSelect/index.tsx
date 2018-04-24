@@ -1,27 +1,31 @@
 import {Select, Spin} from "antd";
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 
 const Option = Select.Option;
 import * as React from "react";
+import Translate from "../i18n/Translate";
 
 interface IProps {
-    fetchFn: any;
-    value: any;
-    onChange: any[];
+    dataFn: any;
+    value?: any;
+    onChange?: (value: string) => void;
+    keyProps: string;
+    labelProps: string;
+    multiple?: boolean;
+    placeHolder?: string;
 }
 
 interface IState {
     data: any[];
-    value: any[];
+    value: any;
     fetching: boolean;
 }
 
-class RemoteSelect extends React.Component {
-    lastFetchId = 0;
+export default class RemoteSelect extends React.Component <IProps, IState> {
 
     constructor(props) {
         super(props);
-        this.fetchUser = debounce(this.fetchUser, 800);
+        this.fetchData = this.fetchData;
         this.state = {
             data: [],
             value: [],
@@ -29,26 +33,27 @@ class RemoteSelect extends React.Component {
         };
     }
 
-    fetchUser = (value) => {
-        this.lastFetchId += 1;
-        const fetchId = this.lastFetchId;
+    fetchData = (value) => {
         this.setState({data: [], fetching: true});
-        fetch('https://randomuser.me/api/?results=5')
-            .then(response => response.json())
-            .then((body) => {
-                if (fetchId !== this.lastFetchId) { // for fetch callback order
-                    return;
-                }
-                const data = body.results.map(user => ({
-                    text: `${user.name.first} ${user.name.last}`,
-                    value: user.login.username,
-                }));
-                this.setState({data, fetching: false});
+        this.props.dataFn({params: {q: value}})
+            .then((res) => {
+                this.setState({data: res.data, fetching: false});
             });
     }
+
     handleChange = (value) => {
+        let valueObj = value;
+        let label;
+        try {
+            valueObj = JSON.parse(value);
+            label = valueObj[this.props.labelProps];
+            this.props.onChange(valueObj[this.props.keyProps]);
+        } catch (e) {
+            label = value;
+            this.props.onChange(value);
+        }
         this.setState({
-            value,
+            value: label,
             data: [],
             fetching: false,
         });
@@ -58,17 +63,17 @@ class RemoteSelect extends React.Component {
         const {fetching, data, value} = this.state;
         return (
             <Select
-                mode="multiple"
-                labelInValue
-                value={value}
-                placeholder="Select users"
-                notFoundContent={fetching ? <Spin size="small"/> : null}
+                mode={this.props.multiple ? "multiple" : "combobox"}
+                value={value[this.props.labelProps] ? value[this.props.labelProps] : value}
+                placeholder={this.props.placeHolder}
+                notFoundContent={fetching ? <Spin size="small"/> : <Translate value={"Not Found"}/>}
                 filterOption={false}
-                onSearch={this.fetchUser}
+                onSearch={this.fetchData}
                 onChange={this.handleChange}
-                style={{width: "100%"}}
-            >
-                {data.map(d => <Option key={d.value}>{d.text}</Option>)}
+                className="select-input full-width"
+                dropdownClassName={"select-dropdown"}
+                style={{width: "100%"}}>
+                {data.map(d => <Option value={JSON.stringify(d)} key={d[this.props.keyProps]}>{d[this.props.labelProps]}</Option>)}
             </Select>
         );
     }
