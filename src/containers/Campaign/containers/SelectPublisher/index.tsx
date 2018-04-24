@@ -355,7 +355,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                                         className="select-input full-width"
                                                         dropdownClassName={"select-dropdown"}>
                                                         <Option key={LIST_TYPE.WHITE}
-                                                                value={LIST_TYPE.WHITE}>{this.i18n._t("Whitessssssssslist")}</Option>
+                                                                value={LIST_TYPE.WHITE}>{this.i18n._t("White list")}</Option>
                                                         <Option key={LIST_TYPE.BLACK}
                                                                 value={LIST_TYPE.BLACK}>{this.i18n._t("Blacklist")}</Option>
                                                     </Select>
