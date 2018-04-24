@@ -184,7 +184,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     <Col span={16} offset={8}>
                         <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
                     </Col>
-                    <Col span={24} className={"column-border-bottom upload-container"}>
+                    <Col span={24} className={"column-border-bottom uploaders-container"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
                                 <FormItem>

@@ -61,7 +61,8 @@ export default class Cropper extends React.Component<IProps, IState> {
     }
 
     cropImageSource(crop: ICrop) {
-        this.getCroppedImg(crop, "file.jpg")
+        console.log("crop", crop);
+        this.getCroppedImg(crop)
             .then(file => {
                 if (this.props.onChange) {
                     this.props.onChange(file);
@@ -105,7 +106,7 @@ export default class Cropper extends React.Component<IProps, IState> {
         });
     }
 
-    getCroppedImg(pixelCrop, fileName): Promise<Blob> {
+    getCroppedImg(pixelCrop): Promise<Blob> {
 
         const canvas = document.createElement("canvas");
         canvas.width = pixelCrop.width * this.sourceImage.width / 100;
@@ -125,13 +126,21 @@ export default class Cropper extends React.Component<IProps, IState> {
         // As a blob
         return new Promise((resolve, reject) => {
                 canvas.toBlob((file: any) => {
-                    if (file) file.name = fileName;
+                    if (file) file.name = "file." + this.extentionGenerate(this.type);
                     resolve(file);
                 }, this.type);
             }
         );
     }
 
+    extentionGenerate(type): string {
+        switch (type) {
+            case "image/png":
+                return "png";
+            case "image/jpeg":
+                return "jpg";
+        }
+    }
 
     render() {
         return (

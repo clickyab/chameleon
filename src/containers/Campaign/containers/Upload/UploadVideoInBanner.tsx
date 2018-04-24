@@ -166,7 +166,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                     </Col>
-                    <Col span={24} className={"column-border-bottom upload-container"}>
+                    <Col span={24} className={"column-border-bottom uploaders-container"}>
                             <Col span={8} offset={16}>
                                 <Col span={24}>
                                     <div className="upload-setting">

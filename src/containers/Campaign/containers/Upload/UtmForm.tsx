@@ -227,7 +227,7 @@ export default class UtmForm extends React.Component<IProps, IState> {
                         className="input-campaign full-width mb-2"
                         limit={10}
                         value={this.state.name}
-                        customOnChange={(e) => this.setState({name: e.target.value})}
+                        onChange={(e) => this.setState({name: e.target.value})}
                         onKeyDown={() => this.handleKeyPress()}
                     />
                     </Col>
@@ -239,7 +239,7 @@ export default class UtmForm extends React.Component<IProps, IState> {
                     className="input-campaign full-width mb-2"
                     limit={10}
                     value={this.state.utmAll.CTA}
-                    customOnChange={(e) => this.handleData(e.target.value, UTM_INPUT.CTA)}
+                    onChange={(e) => this.handleData(e.target.value, UTM_INPUT.CTA)}
                     onKeyDown={() => this.handleKeyPress()}
                 />
                 </Col>

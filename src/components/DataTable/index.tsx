@@ -134,6 +134,7 @@ class DataTable extends React.Component<IProps, IState> {
     super(props);
     const customFieldsObject = this.serverStore.getItem(`TABLE_CUSTOM_${this.props.name}`);
     let customField = customFieldsObject ? customFieldsObject : {};
+    props.infinite ? this.infiniteLoader = props.infinite : null;
     this.state = {
       selectedRows: [],
       selectedKeys: [],
@@ -241,8 +242,7 @@ class DataTable extends React.Component<IProps, IState> {
           let currentScroll = event.target["scrollTop"];
           if (currentScroll === maxScroll) {
             // load more data
-            if (!this.infiniteLoader) {
-              this.infiniteLoader = true;
+            if (this.props.infinite) {
               this.setState({
                 page: this.state.page + 1,
               }, this.loadData);
@@ -283,8 +283,8 @@ class DataTable extends React.Component<IProps, IState> {
       });
     }
 
-    if (this.state.searches) {
-      config["q"] = this.state.searches;
+    if (this.state.searches && this.state.definition && this.state.definition.searchkey) {
+      config[this.state.definition.searchkey] = this.state.searches;
     }
 
     if (this.props.onQueryChange && callOnQueryChange) {
@@ -505,6 +505,7 @@ class DataTable extends React.Component<IProps, IState> {
   onSearch(value: string) {
     let searches = this.state.searches;
     let data = this.state.data;
+      console.log("search", value);
     data.page = 1;
     data.data = [];
     if (value) {
@@ -654,8 +655,8 @@ class DataTable extends React.Component<IProps, IState> {
           onChange={this.handleTableChange.bind(this)}
           className="campaign-data-table"
         />
-        <div className={(this.infiniteLoader) ? "table-total-number" : "mt-2"}>
-          {this.infiniteLoader &&
+        <div className={(this.props.infinite) ? "table-total-number" : "mt-2"}>
+          {this.props.infinite &&
           <div>
             <Icon name={"cif-target"}/>
             <Translate value={"%s result"} params={[this.state.data.total]}/>

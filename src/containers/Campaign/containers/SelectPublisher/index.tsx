@@ -51,7 +51,6 @@ interface IState {
     selectedWebSites: any[];
     listType: List;
     typeModal: boolean;
-    listName: string;
     listID?: number;
     listOFList?: any[];
 }

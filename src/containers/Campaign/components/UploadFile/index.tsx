@@ -2,7 +2,7 @@ import * as React from "react";
 import Translate from "../../../../components/i18n/Translate";
 import Dragger from "antd/es/upload/Dragger";
 import {notification} from "antd";
-import UploadService, {FlowUpload, UPLOAD_MODULES, UploadState} from "../../../../services/Upload";
+import UploadService, {UPLOAD_MODULES, UploadState} from "../../../../services/Upload";
 import CONFIG from "../../../../constants/config";
 import {IFileItem} from "../../containers/Upload/UploadUniversalApp";
 import I18n from "../../../../services/i18n";
@@ -12,10 +12,11 @@ import Cropper from "../../../../components/Cropper/Index";
 import Icon from "../../../../components/Icon";
 import "./style.less";
 import Progress from "antd/es/progress/progress";
+import FlowUpload from "../../../../services/Upload/flowUpload";
 
 export const enum FILE_TYPE {IMG_JPG = "image/jpeg", IMG_PNG = "image/png", IMG_GIF = "image/gif", VID_MP4 = "video/mp4"}
 
-export const enum MODULE {IMAGE = "banner", VIDEO = "video"}
+export const enum MODULE {IMAGE = "banner", VIDEO = "video" , NATIVE_BANNER = "native-image" , NATIVE_VIDEO = "native-video"}
 
 interface IDimension {
     width: number;
@@ -100,7 +101,7 @@ class UploadFile extends React.Component<IProps, IState> {
 
     private handleReset(e) {
         e.stopPropagation();
-        this.setState({imgUrlCropped: null, value: null});
+        this.setState({imgUrlCropped: null, value: null, progress: 0});
         if (this.props.onChange) {
             this.props.onChange(null);
         }
@@ -147,7 +148,7 @@ class UploadFile extends React.Component<IProps, IState> {
     }
 
     private uploadImage(id: string, file: any) {
-        const uploader = new UploadService(this.props.uploadModule, file, file.name);
+        const uploader = new FlowUpload(this.props.uploadModule, file, file.name);
         uploader.upload((state) => {
             this.changeFileProgressState(id, state);
         }).then((state) => {
@@ -294,7 +295,7 @@ class UploadFile extends React.Component<IProps, IState> {
                     });
             }
             else {
-                const uploader = new FlowUpload(MODULE.VIDEO, file);
+                const uploader = new FlowUpload(this.props.uploadModule, file);
                 this.setVideoDimension(fileItem as IFileItem)
                     .then((fileItemObject) => {
                         let dimensionCheck = this.checkMediaDimension(fileItemObject);
