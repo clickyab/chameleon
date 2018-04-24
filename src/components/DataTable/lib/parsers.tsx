@@ -28,6 +28,7 @@ export class DataTableDataParser {
     bindTable: any;
 
     i18n = I18n.getInstance();
+
     constructor(definition: IDefinition) {
         this.definition = definition;
     }

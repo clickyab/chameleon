@@ -8,16 +8,16 @@ import Avatar from "../../../../components/Avatar/index";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import {UserApi, UserAvatarPayload, UserResponseLoginOKAccount, UserUserPayload} from "../../../../api/api";
-import {default as Upload, UPLOAD_MODULES} from "../../../../services/Upload/index";
 import {notification , Tabs , Row} from "antd/lib";
 import I18n from "../../../../services/i18n/index";
 import {setUser} from "../../../../redux/app/actions/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import "./style.less";
-import classNames = require("classnames");
 import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
+import FlowUpload from "../../../../services/Upload/flowUpload";
+import {UPLOAD_MODULES} from "../../../Campaign/components/UploadFile";
 
 const TabPane = Tabs.TabPane;
 /**
@@ -98,7 +98,7 @@ class UserArea extends React.Component<IProps, IState> {
     }
 
   uploadAvatar(file) {
-    const uploader = new Upload(UPLOAD_MODULES.AVATAR, file);
+    const uploader = new FlowUpload(UPLOAD_MODULES.USER_AVATAR, file);
     uploader.upload((state) => {
       // todo:: show progress
       this.setState({

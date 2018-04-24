@@ -50,7 +50,7 @@ class CreativeGeneralInfo extends React.Component<IProps> {
                     </Col>
                     <Col span={12}>
                         <FormItem className={"have-description validate-form"}>
-                            {getFieldDecorator("unitCost", {
+                            {getFieldDecorator("sale_price", {
                                 initialValue: this.props.value ? (this.props.value.unitCost ? this.props.value.unitCost : "") : "",
                                 rules: [{required: true, message: this.i18n._t("Please enter unit cost")}, {
                                     validator: rangeCheck,

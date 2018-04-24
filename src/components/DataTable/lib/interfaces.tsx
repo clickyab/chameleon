@@ -15,6 +15,7 @@ export interface IDefinition {
   checkable: boolean;
   multiselect: boolean;
   key: string;
+  searchkey: string;
   columns: IColumn[];
 }
 

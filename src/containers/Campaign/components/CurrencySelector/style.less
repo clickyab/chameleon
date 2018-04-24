@@ -1,3 +1,4 @@
+@import "../../../App/theme.less";
 .currency-selector {
   display: flex;
   .ant-input {
@@ -8,7 +9,7 @@
   }
   .selector {
     background: #FFF;
-    border: 1px solid #D8DADE;
+    border: @input-border-style ;
     border-right: 0;
     width: 50%;
     direction: rtl;
@@ -19,7 +20,7 @@
   .currency-selector {
     .selector {
       direction: ltr;
-      border-right: 1px solid #D8DADE;
+      border-right: @input-border-style ;
       border-left: 0;
     }
   }
