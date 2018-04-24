@@ -1,11 +1,11 @@
 ///<reference path="../../../../api/api.ts"/>
 import * as React from "react";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse} from "../../../../api/api";
 import {Col, Form, Row, Select, notification, Spin} from "antd";
 import SelectTag from "../../../../components/SelectTag/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import Tooltip from "../../../../components/Tooltip/index";
-import {MenuItem, RadioButton, RadioButtonGroup, RaisedButton, SelectField} from "material-ui";
+import {RadioButton, RadioButtonGroup} from "material-ui";
 import I18n from "../../../../services/i18n/index";
 import STEPS from "../../steps";
 import CONFIG from "../../../../constants/config";
@@ -16,9 +16,7 @@ import CheckBoxList from "../../../../components/CheckboxList/index";
 import IranMap from "../../../../components/IranMap/index";
 import SelectList from "../../../../components/SelectList/index";
 import "./style.less";
-import Icon from "../../../../components/Icon/index";
 import {connect} from "react-redux";
-import {showWarningOnce} from "tslint/lib/error";
 import AreaMap from "../../../../components/AreaMap/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import {DEVICE_TYPES} from "../Type/index" ;
@@ -40,8 +38,8 @@ interface IOwnProps {
 
 interface IProps {
   setBreadcrumb: (name: string, title: string, parent: string) => void;
-  setCurrentCampaign: (campaign: OrmCampaign) => void;
-  currentCampaign: OrmCampaign;
+  setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => void;
+  currentCampaign: ControllersCampaignGetResponse;
   setCurrentStep: (step: STEPS) => {};
   form: any;
   setSelectedCampaignId: (id: number | null) => {};
@@ -52,7 +50,7 @@ interface IProps {
 }
 
 interface IState {
-  currentCampaign: OrmCampaign;
+  currentCampaign: ControllersCampaignGetResponse;
   checked: boolean;
   showOtherDevices: boolean;
   devices: string[];
@@ -303,7 +301,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
         os: this.state.oss,
       }
     }).then(data => {
-      this.props.setCurrentCampaign(data as OrmCampaign);
+      this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
       this.props.history.push(`/campaign/budget/${data.id}`);
     }).catch((error) => {
       notification.error({
@@ -744,7 +742,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
-    setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => dispatch(setCurrentCampaign(campaign)),
     setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }

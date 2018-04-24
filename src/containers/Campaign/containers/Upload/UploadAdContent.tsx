@@ -4,10 +4,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import {Upload, Row, Col, notification, Button, Form, Spin} from "antd";
+import {Row, Col, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
+import {UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -17,6 +17,7 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import UploadFile, {FILE_TYPE, MODULE} from "../../components/UploadFile";
+import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
 const FormItem = Form.Item;
 
@@ -152,6 +153,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     },
                     creative: {
                         campaign_id: this.state.currentCampaign.id,
+
                         url: values.url,
                     }
                 }
@@ -177,7 +179,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
         return (
             <div dir={CONFIG.DIR} className="upload-content">
                 <div className="title">
-                    <h2><Translate value="General ad information"/></h2>
+                    <h2><Translate value="Media upload"/></h2>
                 </div>
                 <Row type="flex" gutter={16}>
                     <Col span={24} className={"column-border-bottom"}>
@@ -227,6 +229,18 @@ class UploadAdContent extends React.Component <IProps, IState> {
                             <Col span={8}>
                             </Col>
                         </Row>
+                    </Col>
+                    <Col span={24} className={"column-border-bottom"}>
+                            <Col span={8} offset={16}>
+                                <Col span={24}>
+                                    <div className="upload-setting">
+                        <span className="upload-title-setting span-block">
+                           <Translate value={"Ad general information"}/>
+                        </span>
+                                    </div>
+                                </Col>
+                                <CreativeGeneralInfo form={this.props.form}/>
+                            </Col>
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">

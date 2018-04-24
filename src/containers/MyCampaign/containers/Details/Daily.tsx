@@ -202,8 +202,8 @@ class DetailsDaily extends React.Component<IProps, IState> {
                     <DataTable
                         infinite={true}
                         name="publisherList"
-                        definitionFn={this.controllerApi.inventoryListDefinitionGet}
-                        dataFn={this.controllerApi.inventoryListGet}/>
+                        definitionFn={this.controllerApi.inventoryInventoryListDefinitionGet}
+                        dataFn={this.controllerApi.inventoryInventoryListGet}/>
                 </Row>
             </div>
         );

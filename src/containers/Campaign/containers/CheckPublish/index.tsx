@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Row, Col, Button, Spin, notification} from "antd";
 import {RaisedButton} from "material-ui";
-import {ControllersApi, OrmCampaign, OrmWhiteBlackList} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse, OrmWhiteBlackList} from "../../../../api/api";
 import CONFIG from "../../../../constants/config";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -27,8 +27,8 @@ interface IOwnProps {
 
 interface IProps {
   setBreadcrumb: (name: string, title: string, parent: string) => void;
-  setCurrentCampaign: (campaign: OrmCampaign) => void;
-  currentCampaign: OrmCampaign;
+  setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => void;
+  currentCampaign: ControllersCampaignGetResponse;
   setCurrentStep: (step: STEPS) => {};
   form: any;
   setSelectedCampaignId: (id: number | null) => {};
@@ -53,7 +53,7 @@ interface IState {
   listLabel: string | null;
   listType: boolean | null;
   websitesList: any[] | null;
-  currentCampaign: OrmCampaign;
+  currentCampaign: ControllersCampaignGetResponse;
 }
 
 
@@ -121,7 +121,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
       api.campaignGetIdGet({id: this.props.match.params.id})
         .then((campaign) => {
           this.props.setBreadcrumb("campaignTitle", campaign.title, "checkPublisher");
-          this.props.setCurrentCampaign(campaign as OrmCampaign);
+          this.props.setCurrentCampaign(campaign as ControllersCampaignGetResponse);
           this.setState({
             status: campaign.status as CAMPAIGN_STATUS,
             type: campaign.kind as DEVICE_TYPES,
@@ -420,7 +420,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setCurrentStep: (step: STEPS) => dispatch(setCurrentStep(step)),
     setSelectedCampaignId: (id: number | null) => dispatch(setSelectedCampaignId(id)),
-    setCurrentCampaign: (campaign: OrmCampaign) => dispatch(setCurrentCampaign(campaign)),
+    setCurrentCampaign: (campaign: ControllersCampaignGetResponse) => dispatch(setCurrentCampaign(campaign)),
     setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
   };
 }
