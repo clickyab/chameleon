@@ -2,7 +2,7 @@ import * as React from "react";
 import DataTable from "../../../../components/DataTable/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
-import {Row, Form, Col, notification,  Checkbox,  Spin, Input, Select} from "antd";
+import {Row, Form, Col, notification, Checkbox, Spin, Input, Select} from "antd";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
 import Modal from "../../../../components/Modal/index";
@@ -17,13 +17,15 @@ import Tooltip from "../../../../components/Tooltip/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import "./style.less";
 import StickyFooter from "../../components/StickyFooter";
+import RemoteSelect from "../../../../components/RemoteSelect";
 
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
 enum List {NEW, PREVIOUS}
-enum WHITE_LIST {WHITE = "WHITE" , BLACK = "BLACK"}
+
+enum LIST_TYPE {WHITE = "white_list", BLACK = "black_list"}
 
 /**
  * @interface IProps
@@ -47,11 +49,11 @@ interface IProps {
 interface IState {
     currentCampaign: ControllersCampaignGetResponse;
     showPublisherTable: boolean;
-    whiteList: WHITE_LIST ;
+    whiteList: LIST_TYPE.WHITE;
     selectedWebSites: any[];
     listType: List;
     typeModal: boolean;
-    listName: string;
+    listName?: string;
     listID?: number;
     listOFList?: any[];
 }
@@ -62,7 +64,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
     private i18n = I18n.getInstance();
     private checkedItems = [];
     private controllerApi = new ControllersApi();
-    private listName ;
+    private listName;
 
     /**
      * @constructor
@@ -73,11 +75,10 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         super(props);
         this.state = {
             currentCampaign: props.currentCampaign && props.currentCampaign.id === this.props.match.params.id ? props.currentCampaign : null,
-            listOFList: [],
-            whiteList: WHITE_LIST.WHITE,
+            whiteList: LIST_TYPE.WHITE,
             showPublisherTable: false,
             selectedWebSites: [],
-            listType: List.PREVIOUS,
+            listType: List.NEW,
             typeModal: false,
         };
     }
@@ -91,20 +92,17 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         }).then(campaign => {
             let listType: List;
             if (campaign.inventory_id !== 0) {
-                listType = List.NEW;
+                listType = List.PREVIOUS;
             } else if (!campaign.exchange && campaign.inventory_id === 0) {
                 listType = List.PREVIOUS;
             } else {
-                listType = List.PREVIOUS;
+                listType = List.NEW;
             }
-            // TODO:: Un comment after API arrived
-            // this.controllerApi.inventoryPresetsGet({})
-            //     .then(data => {
-            //         this.setState({
-            //             listOFList: data,
-            //             listType,
-            //         });
-            //     });
+
+            this.setState({
+                listType,
+            });
+
             this.props.setBreadcrumb("campaignTitle", campaign.title, "selectPublisher");
             this.setState({
                 currentCampaign: campaign,
@@ -120,25 +118,19 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
      * @param {any[]} rows
      */
     onSelectRow(keys: string[], rows: any[]) {
-        this.checkedItems = keys;
+        this.checkedItems = rows.map(d => d.id);
     }
 
-    private activePublisher() {
-        this.setState({
-            listType: List.PREVIOUS
-        });
-    }
-
-    private createCustomList(): Promise<number> {
+    private createCustomList(listName): Promise<number> {
         return new Promise((res, rej) => {
             const controllerApi = new ControllersApi();
-            controllerApi.inventoryPresetPost({
+            controllerApi.inventoryCreatePost({
                 payloadData: {
-                    label: this.state.listName,
-                    domains: this.checkedItems.map(d => d.toString()),
-                    publisher_type: this.state.currentCampaign.kind,
+                    label: listName,
+                    pub_ids: this.checkedItems,
                 }
             }).then(data => {
+
                 this.setState({
                     listID: data.id,
                 }, () => {
@@ -150,50 +142,48 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         });
     }
 
-    private handleSubmit() {
+    private handleSubmit(e) {
 
-        const controllerApi = new ControllersApi();
-        let promise: Promise<any>;
-        let params = {
-            id: this.state.currentCampaign.id.toString(),
-            payloadData: {
-                label:   this.state.listName,
-                pub_ids: this.checkedItems.map(d => d.toString()),
-            }
-        };
-
-        switch (this.state.listType) {
-            case  List.PREVIOUS:
-                if (this.state.showPublisherTable && !this.state.typeModal) {
-                    promise = this.createCustomList()
-                        .then(id => {
-                            params.payloadData.list_id = id;
-                            return controllerApi.campaignWbIdPut(params);
-                        });
-                } else {
-                    params.payloadData.list_id = this.state.listID;
-                    promise = controllerApi.campaignWbIdPut(params);
+        console.log(this.state);
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            const controllerApi = new ControllersApi();
+            let promise: Promise<any>;
+            let params = {
+                id: this.state.currentCampaign.id.toString(),
+                payloadData: {
+                    state: this.state.listType === List.NEW ? values.newListType : values.listType,
+                    id: values.listId,
                 }
-                break;
+            };
 
-            case List.NEW :
-              //  params.payloadData.list_id = 0;
-                promise = controllerApi.inventoryCreatePost(params);
-                break;
+            switch (this.state.listType) {
+                case  List.NEW:
+                    promise = this.createCustomList(values.listName)
+                        .then(id => {
+                            params.payloadData.id = id;
+                            return controllerApi.campaignInventoryIdPut(params);
+                        });
+                    break;
 
-            default:
-                throw("List type had to selected");
-        }
+                case List.PREVIOUS :
+                    promise = controllerApi.campaignInventoryIdPut(params);
+                    break;
 
-        promise.then((data) => {
-            this.props.setSelectedCampaignId(data.id);
-            this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
-            this.props.history.push(`/campaign/upload/${data.id}`);
-        }).catch((error) => {
-            notification.error({
-                message: this.i18n._t("Set publishers failed!"),
-                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                description: error.message,
+                default:
+                    throw("List type have to selected");
+            }
+
+            promise.then((data) => {
+                this.props.setSelectedCampaignId(data.id);
+                this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
+                this.props.history.push(`/campaign/upload/${data.id}`);
+            }).catch((error) => {
+                notification.error({
+                    message: this.i18n._t("Set publishers failed!"),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: error.message,
+                });
             });
         });
     }
@@ -226,7 +216,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             return <Spin/>;
         }
 
-
+        const {getFieldDecorator} = this.props.form;
         return (
             <div dir={CONFIG.DIR} className="campaign-content">
                 <h2><Translate value="Select Publishers"/></h2>
@@ -263,35 +253,41 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                     <Col span={20} className={"publisher-column"}>
                                         <Row gutter={5} className="publisher-custom-list">
                                             <Col span={12}>
-                                                <Select
-                                                    value={this.state.listID as any}
-                                                    onChange={(value: any) => {
-                                                        this.setState({
-                                                            listID: value,
-                                                        });
-                                                    }}
-                                                    className="select-input full-width">
-                                                    {this.state.listOFList.map(item =>
-                                                        (<Option key={item.id} value={item.id}
-                                                        >{item.label + item.id}</Option>)
+                                                <FormItem>
+                                                    {getFieldDecorator("listId", {
+                                                        initialValue: this.state.currentCampaign.inventory_id,
+                                                        rules: [{
+                                                            required: true,
+                                                            message: this.i18n._t("Select inventory")
+                                                        }],
+                                                    })(
+                                                        <RemoteSelect
+                                                            keyProps={"id"}
+                                                            labelProps={"label"}
+                                                            placeHolder={this.i18n._t("Select Inventory").toString()}
+                                                            dataFn={this.controllerApi.inventoryInventoryListGet}/>
                                                     )}
-                                                </Select>
+                                                </FormItem>
                                             </Col>
                                             <Col span={12}>
-                                                <Select
-                                                    className="select-input full-width"
-                                                    dropdownClassName={"select-dropdown"}
-                                                    onChange={(value: any) => {
-                                                        this.setState({
-                                                            whiteList: value,
-                                                        });
-                                                    }}
-                                                    value={this.state.whiteList as string}>
-                                                    <Option
-                                                        value={WHITE_LIST.WHITE}>{this.i18n._t("Whitelist")}</Option>
-                                                    <Option
-                                                        value={WHITE_LIST.BLACK}>{this.i18n._t("Blacklist")}</Option>
-                                                </Select>
+                                                <FormItem>
+                                                    {getFieldDecorator("listType", {
+                                                        initialValue: this.state.currentCampaign.inventory_type,
+                                                        rules: [{
+                                                            required: true,
+                                                            message: this.i18n._t("Select inventory")
+                                                        }],
+                                                    })(
+                                                        <Select
+                                                            className="select-input full-width"
+                                                            dropdownClassName={"select-dropdown"}>
+                                                            <Option key={LIST_TYPE.WHITE}
+                                                                    value={LIST_TYPE.WHITE}>{this.i18n._t("Whitelist")}</Option>
+                                                            <Option key={LIST_TYPE.BLACK}
+                                                                    value={LIST_TYPE.BLACK}>{this.i18n._t("Blacklist")}</Option>
+                                                        </Select>
+                                                    )}
+                                                </FormItem>
                                             </Col>
                                         </Row>
                                     </Col>
@@ -338,27 +334,33 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                 <Col span={14} offset={6}>
                                     <Row type="flex" gutter={16}>
                                         <Col span={12}>
-                                            <Input
-                                                className={"input-campaign"}
-                                                onChange={(e) => {
-                                                     this.listName = e.target.value;
-                                                }}
-                                                defaultValue={this.i18n._t("%s Publishers", {params: [this.state.currentCampaign.title]}).toString()}
-                                            />
+                                            <FormItem>
+                                                {getFieldDecorator("listName", {
+                                                    initialValue: this.i18n._t("%s Publishers", {params: [this.state.currentCampaign.title]}).toString(),
+                                                    rules: [{
+                                                        required: true,
+                                                        message: this.i18n._t("Enter inventory name")
+                                                    }],
+                                                })(
+                                                    <Input
+                                                        className={"input-campaign"}
+                                                    />
+                                                )}
+                                            </FormItem>
                                         </Col>
                                         <Col span={12}>
-                                            <Select
-                                                className="select-input full-width"
-                                                dropdownClassName={"select-dropdown"}
-                                                onChange={(value: any) => {
-                                                    this.setState({
-                                                        whiteList: value,
-                                                    });
-                                                }}
-                                                value={this.state.whiteList as string}>
-                                                <Option value={WHITE_LIST.WHITE}>{this.i18n._t("Whitelist")}</Option>
-                                                <Option value={WHITE_LIST.BLACK}>{this.i18n._t("Blacklist")}</Option>
-                                            </Select>
+                                            <FormItem>
+                                                {getFieldDecorator("newListType", {})(
+                                                    <Select
+                                                        className="select-input full-width"
+                                                        dropdownClassName={"select-dropdown"}>
+                                                        <Option key={LIST_TYPE.WHITE}
+                                                                value={LIST_TYPE.WHITE}>{this.i18n._t("White list")}</Option>
+                                                        <Option key={LIST_TYPE.BLACK}
+                                                                value={LIST_TYPE.BLACK}>{this.i18n._t("Blacklist")}</Option>
+                                                    </Select>
+                                                )}
+                                            </FormItem>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -395,7 +397,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 interface IOwnProps {
-    match ?: any;
+    match?: any;
     history?: any;
 }
 

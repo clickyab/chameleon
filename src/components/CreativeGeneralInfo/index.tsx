@@ -44,7 +44,7 @@ class CreativeGeneralInfo extends React.Component<IProps> {
                                 limit={10}
                             />)}
                     </FormItem>
-                    <span className="span-block input-title require"><Translate value="Choose name for Ad"/></span>
+                    <span className="span-block input-title require"><Translate value="Max Unit Cost"/></span>
                     <Col span={12} className={"currency-container"}>
                         <span className="vertical-center"><Translate value={"Toman"}/></span>
                     </Col>

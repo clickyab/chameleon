@@ -143,18 +143,17 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         description: values.description,
                         downloads: values.download ? parseInt(values.download) : null,
                         video: values.video,
-                        image: values.image,
+                        images: [values.image],
                         logo: values.logo,
                         phone: values.phone || null,
                         price: values.price ? parseInt(values.price) : null,
                         rating: values.rating ? parseFloat(values.rating) : null,
-                        saleprice: values.salePrice ? parseInt(values.salePrice) : null,
+                        sale_price: values.salePrice ? parseInt(values.salePrice) : null,
                         title: values.title,
                     },
-                    creative: {
-                        campaign_id: this.state.currentCampaign.id,
-                        url: values.url,
-                    }
+                    campaign_id: this.state.currentCampaign.id,
+                    url: values.url,
+                    max_bid: values.unitCost ? parseInt(values.unitCost) : null,
                 }
             }).then((data) => {
                 console.log(data);
@@ -181,10 +180,28 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     <h2><Translate value="Media upload"/></h2>
                 </div>
                 <Row type="flex" gutter={16}>
+                    <Col span={24} className={"column-border-bottom"}>
+                        <Row gutter={16}>
+                            <Col span={8} offset={16}>
+                                <FormItem>
+                                    <span className="span-block input-title require"><Translate
+                                        value="Choose name for Ad"/></span>
+                                    {getFieldDecorator("adName", {
+                                        rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
+                                    })(
+                                        <InputLimit
+                                            placeholder={this.i18n._t("Name for Creative") as string}
+                                            className="input-campaign full-width"
+                                            limit={10}
+                                        />)}
+                                </FormItem>
+                            </Col>
+                        </Row>
+                    </Col>
                     <Col span={16} offset={8}>
                         <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
                     </Col>
-                    <Col span={24} className={"column-border-bottom upload-container"}>
+                    <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
                                 <FormItem>
@@ -212,16 +229,16 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         </Row>
                     </Col>
                     <Col span={24} className={"column-border-bottom"}>
-                            <Col span={8} offset={16}>
-                                <Col span={24}>
-                                    <div className="upload-setting">
+                        <Col span={8} offset={16}>
+                            <Col span={24}>
+                                <div className="upload-setting">
                         <span className="upload-title-setting span-block">
                            <Translate value={"Ad general information"}/>
                         </span>
-                                    </div>
-                                </Col>
-                                <CreativeGeneralInfo form={this.props.form}/>
+                                </div>
                             </Col>
+                            <CreativeGeneralInfo form={this.props.form}/>
+                        </Col>
                     </Col>
                     <Col span={8}>
                         <Row className="upload-setting">
