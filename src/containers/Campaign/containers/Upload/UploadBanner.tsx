@@ -472,8 +472,8 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                     <Row type="flex" gutter={20}>
                                         {this.state.files.map((file, index) => (
                                             <Col key={file.id} span={6}>
-                                                <div className="upload-process-wrapper">
-                                                    <div className="image-wrapper">
+                                                <div className="upload-process-wrapper square">
+                                                    <div className="image-wrapper square-content">
                                                         <div className="image-overlay"
                                                              onClick={() => this.openImageModal(file)}>
                                                             <Icon name={"cif-eye"} fontsize={20}/>
@@ -489,6 +489,8 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                                             alt={file.name}/>
                                                         }
                                                     </div>
+                                                </div>
+                                                    <div>
                                                     <div className="upload-option">
                                                         {file.state && file.state.progress !== 100 &&
                                                         <Progress type="line"
@@ -515,7 +517,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                                             <Icon name={"cif-closelong"}/>
                                                         </Button>
                                                     </div>
-                                                </div>
+                                                    </div>
                                                 {this.state.fileSelected === index &&
                                                 <div className={`edit-overlay transformX-${(index % 4)}`}>
                                                     <FormItem><UtmForm

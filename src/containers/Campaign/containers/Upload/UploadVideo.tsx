@@ -7,7 +7,7 @@ import {withRouter} from "react-router";
 import {Upload, Row, Col, notification, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
+import {UploadState, UPLOAD_STATUS} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -17,7 +17,7 @@ import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../.
 import {DEVICE_TYPES} from "../Type";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import InputLimit from "../../components/InputLimit/InputLimit";
-import {FILE_TYPE, MODULE, default as UploadFile} from "../../components/UploadFile";
+import {FILE_TYPE, default as UploadFile, UPLOAD_MODULES} from "../../components/UploadFile";
 import Currency from "../../../../components/Currency";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
@@ -143,7 +143,7 @@ class UploadVideo extends React.Component <IProps, IState> {
                           minDimension={{width: 640, height: 360}}
                           required={true}
                           fileType={[FILE_TYPE.VID_MP4, FILE_TYPE.IMG_GIF]}
-                          uploadModule={MODULE.IMAGE}
+                          uploadModule={UPLOAD_MODULES.VAST_IMAGE}
               />
             </Col>
           </Col>

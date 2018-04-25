@@ -14,9 +14,8 @@ import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import InputLimit from "../../components/InputLimit/InputLimit";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
-import UploadFile, {FILE_TYPE, MODULE} from "../../components/UploadFile";
+import UploadFile, {FILE_TYPE, UPLOAD_MODULES} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
 const FormItem = Form.Item;
@@ -48,7 +47,6 @@ interface IProps {
     history?: any;
 }
 
-const enum IMG_TYPE {LOGO, IMAGE}
 
 /**
  * @interface IState
@@ -79,7 +77,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
             name: "description",
             type: "limiter",
             limit: 150,
-            required: true,
+            required: false,
             multiLine: true,
             className: "textarea-campaign"
         },
@@ -139,20 +137,18 @@ class UploadAdContent extends React.Component <IProps, IState> {
             controllerApi.adNativePost({
                 payloadData: {
                     assets: {
-                        cta: values.cta,
-                        description: values.description,
-                        downloads: values.download ? parseInt(values.download) : null,
-                        video: values.video,
-                        images: [values.image],
+                        cta: values.cta ? [{val: values.cta}] : null,
+                        description: values.description ? [{val: values.description}] : null ,
+                        downloads: parseInt(values.download) ? [{val: parseInt(values.download)}] : null,
+                        images: values.images ?  [{val: values.images}] : null,
                         logo: values.logo,
-                        phone: values.phone || null,
-                        price: values.price ? parseInt(values.price) : null,
-                        rating: values.rating ? parseFloat(values.rating) : null,
-                        sale_price: values.salePrice ? parseInt(values.salePrice) : null,
-                        title: values.title,
+                        phone: values.phone ? [{val: values.phone}] : null,
+                        rating: parseFloat(values.rating) ? [{val: parseFloat(values.rating)}] : null,
+                        title: values.title ? [{val: values.title}] : null,
                     },
                     campaign_id: this.state.currentCampaign.id,
                     url: values.url,
+                    name: values.creativeName,
                     max_bid: values.unitCost ? parseInt(values.unitCost) : null,
                 }
             }).then((data) => {
@@ -180,24 +176,6 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     <h2><Translate value="Media upload"/></h2>
                 </div>
                 <Row type="flex" gutter={16}>
-                    <Col span={24} className={"column-border-bottom  uploaders-container"}>
-                        <Row gutter={16}>
-                            <Col span={8} offset={16}>
-                                <FormItem>
-                                    <span className="span-block input-title require"><Translate
-                                        value="Choose name for Ad"/></span>
-                                    {getFieldDecorator("adName", {
-                                        rules: [{required: true, message: this.i18n._t("Please input your adName!")}],
-                                    })(
-                                        <InputLimit
-                                            placeholder={this.i18n._t("Name for Creative") as string}
-                                            className="input-campaign full-width"
-                                            limit={10}
-                                        />)}
-                                </FormItem>
-                            </Col>
-                        </Row>
-                    </Col>
                     <Col span={16} offset={8}>
                         <span className="span-block upload-media mb-1"><Translate value={"Upload media"}/></span>
                     </Col>
@@ -210,7 +188,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                                     minDimension={this.minSizeWide}
                                                     required={true}
                                                     fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
-                                                    uploadModule={MODULE.IMAGE}/>
+                                                    uploadModule={UPLOAD_MODULES.NATIVE_BANNER}/>
                                     )}
                                 </FormItem>
                             </Col>
@@ -220,7 +198,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                                         <UploadFile label={"Logo"}
                                                     minDimension={this.minSizeWide}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
-                                                    uploadModule={MODULE.IMAGE}/>
+                                                    uploadModule={UPLOAD_MODULES.NATIVE_BANNER}/>
                                     )}
                                 </FormItem>
                             </Col>

@@ -505,7 +505,6 @@ class DataTable extends React.Component<IProps, IState> {
   onSearch(value: string) {
     let searches = this.state.searches;
     let data = this.state.data;
-      console.log("search", value);
     data.page = 1;
     data.data = [];
     if (value) {

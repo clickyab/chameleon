@@ -16,7 +16,7 @@ import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
-import UploadFile, {UPLAOD_MODULES} from "../../components/UploadFile";
+import UploadFile, {UPLOAD_MODULES} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 import {assetObjGen, assetPushObjArray} from "../../../../services/Utils/assetInputFormatter";
 

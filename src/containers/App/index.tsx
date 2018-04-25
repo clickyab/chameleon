@@ -10,11 +10,11 @@ import Dashboard from "./Dashboard/index";
 import "./style.less";
 import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
-import {setIsLogin, unsetIsLogin} from "../../redux/app/actions/index";
+import {setIsLogin, setUser, unsetIsLogin} from "../../redux/app/actions/index";
 import CampaignContainer from "../Campaign/index";
 import MyCampaignContainer from "../MyCampaign/index";
 import CheckMail from "../User/containers/CheckMail";
-import {UserApi} from "../../api/api";
+import {UserApi, UserResponseLoginOKAccount} from "../../api/api";
 import ExploreContainer from "../Explore/index";
 import BackofficeContainer from "../Backoffice";
 
@@ -23,6 +23,8 @@ interface IProps {
   isLogin: boolean;
   setIsLogin: () => {};
   unsetIsLogin: () => {};
+  user: UserResponseLoginOKAccount;
+  setUser: (UserResponseLoginOKAccount) => {};
 }
 
 interface IState {
@@ -65,7 +67,8 @@ class App extends React.Component<IProps, IState> {
     if (!!AAA.getInstance().getToken()) {
       const userApi = new UserApi();
       userApi.userPingGet({})
-        .then(() => {
+        .then((res) => {
+          this.props.setUser(res.account);
           this.setState({isLogin: true});
         })
         .catch((error) => {
@@ -108,6 +111,7 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    setUser: (user) => dispatch(setUser(user)),
     setIsLogin: () => dispatch(setIsLogin()),
     unsetIsLogin: () => dispatch(unsetIsLogin())
   };

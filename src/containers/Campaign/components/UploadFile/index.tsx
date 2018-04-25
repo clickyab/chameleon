@@ -151,7 +151,6 @@ class UploadFile extends React.Component<IProps, IState> {
      * @param {UploadState} state
      */
     private changeFileProgressState(id: number | string, state: UploadState): void {
-        console.log("state.progress", state.progress);
         this.setState({
             progress: state.progress,
         });
