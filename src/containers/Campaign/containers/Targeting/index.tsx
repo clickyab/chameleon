@@ -286,29 +286,29 @@ class TargetingComponent extends React.Component <IProps, IState> {
         });
         return;
       }
-    });
-    const api = new ControllersApi();
-    api.campaignAttributesIdPut({
-      id: this.state.currentCampaign.id.toString(),
-      payloadData: {
-        browser: this.state.browsers,
-        manufacturer: this.state.brands,
-        iab: this.state.iabs,
-        region: this.state.locationType === ILocationType.FOREIGN ? ["foreign"] : this.state.locations.filter(l => l !== "foreign"),
-        cellular: this.state.cellulars,
-        isp: this.state.isps,
-        device: this.state.devices,
-        os: this.state.oss,
-      }
-    }).then(data => {
-      this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
-      this.props.history.push(`/campaign/budget/${data.id}`);
-    }).catch((error) => {
-      notification.error({
-        message: this.i18n._t("Campaign update failed!").toString(),
-        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-        description: error.message,
-      });
+        const api = new ControllersApi();
+        api.campaignAttributesIdPut({
+            id: this.state.currentCampaign.id.toString(),
+            payloadData: {
+                browser: this.state.browsers,
+                manufacturer: this.state.brands,
+                iab: this.state.iabs,
+                region: this.state.locationType === ILocationType.FOREIGN ? ["foreign"] : this.state.locations.filter(l => l !== "foreign"),
+                cellular: this.state.cellulars,
+                isp: this.state.isps,
+                device: this.state.devices,
+                os: this.state.oss,
+            }
+        }).then(data => {
+            this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
+            this.props.history.push(`/campaign/budget/${data.id}`);
+        }).catch((error) => {
+            notification.error({
+                message: this.i18n._t("Campaign update failed!").toString(),
+                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                description: error.message,
+            });
+        });
     });
   }
 

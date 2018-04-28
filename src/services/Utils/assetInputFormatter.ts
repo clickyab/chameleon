@@ -1,7 +1,17 @@
+/**
+ * @file asset input formatter
+ * @desc Contain functions that convert/Format payloads off assets
+ */
+
 interface AssetObjectContent {
     label?: string;
     val?: string;
 }
+
+/**
+ * @func assetObjGen
+ * @desc will generate object of each asset parameter (label and val)
+ * */
 export const assetObjGen = (label: string, val: string): AssetObjectContent => {
     let object: AssetObjectContent = {};
     if (val === undefined || val === null) {
@@ -11,8 +21,12 @@ export const assetObjGen = (label: string, val: string): AssetObjectContent => {
         object.val = val;
         return object;
     }
-}
-export const assetPushObjArray = (...args: AssetObjectContent[]) : AssetObjectContent[] =>  {
+};
+/**
+ * @func assetPushObjArray
+ * @desc will push generated asset's object to array of the asset
+ * */
+export const assetPushObjArray = (...args: AssetObjectContent[]): AssetObjectContent[] =>  {
     let asset = [];
     let nullCount = 0;
     for (let i = 0 ; i < args.length ; i++) {
@@ -27,4 +41,4 @@ export const assetPushObjArray = (...args: AssetObjectContent[]) : AssetObjectCo
     } else {
         return asset;
     }
-}
+};
