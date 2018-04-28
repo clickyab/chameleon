@@ -283,7 +283,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                                         fileType={[FILE_TYPE.IMG_PNG]}
                                                         minDimension={this.minSizeIcon}
                                                         ratio={this.minSizeIcon}
-                                                        uploadModule={UPLAOD_MODULES.NATIVE_BANNER}
+                                                        uploadModule={UPLOAD_MODULES.NATIVE_BANNER}
                                             />
                                         )}
                                     </FormItem>
@@ -294,7 +294,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                             <UploadFile label={"video"}
                                                         fileType={[FILE_TYPE.VID_MP4]}
                                                         minDimension={this.minVideoSize}
-                                                        uploadModule={UPLAOD_MODULES.NATIVE_VIDEO}
+                                                        uploadModule={UPLOAD_MODULES.NATIVE_VIDEO}
                                             />
                                         )}
                                     </FormItem>
@@ -305,7 +305,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                             <UploadFile label={"Ad image(vertical)"}
                                                         fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                         minDimension={this.minImageVerticalSize}
-                                                        uploadModule={UPLAOD_MODULES.NATIVE_BANNER}
+                                                        uploadModule={UPLOAD_MODULES.NATIVE_BANNER}
                                             />
                                         )}
                                     </FormItem>
@@ -321,7 +321,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                         <UploadFile label={"Logo of site, app or corporation"}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
                                                     minDimension={this.minLogoSize}
-                                                    uploadModule={UPLAOD_MODULES.NATIVE_BANNER}
+                                                    uploadModule={UPLOAD_MODULES.NATIVE_BANNER}
                                         />
                                     )}
                                     </FormItem>
@@ -333,7 +333,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                                 fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                 minDimension={this.minImageHorizentalSize}
                                                 ratio={this.minImageHorizentalSize}
-                                                uploadModule={UPLAOD_MODULES.NATIVE_BANNER}
+                                                uploadModule={UPLOAD_MODULES.NATIVE_BANNER}
                                     />
                                      )}
                                     </FormItem>

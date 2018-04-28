@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import BannerSize from "./size/CONSTsize";
 import AppSize from "./size/CONST_APPsize";
-import VideoSize from "./size/CONST_VIDEOsize";
 import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
@@ -17,7 +16,7 @@ import FileSizeConvertor from "../../../../services/Utils/FileSizeConvertor";
 import "./style.less";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {BASE_PATH, ControllersApi, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
@@ -28,6 +27,7 @@ import {UTMInfo} from "./UtmForm";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 import {UPLOAD_MODULES} from "../../components/UploadFile";
 import FlowUpload from "../../../../services/Upload/flowUpload";
+import Tooltip from "antd/es/tooltip";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -400,7 +400,18 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
             });
         });
     }
-
+    public sizeGuidBox = () => {
+        return (
+            <div>
+                <span className="tooltip-guid-header"><Translate value={"Allowed size"}/></span>
+                <div className="tooltip-guid-content">
+                    {this.state.adSize.map((item) => {
+                        return (item.width + "x" + item.height);
+                    }).join(" / ")}
+                </div>
+            </div>
+        );
+    }
     /**
      * @func render
      * @desc render component
@@ -437,7 +448,9 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                         </Dragger>
                                         <div className="drag-description">
                                             <Translate value={"Image size:"}/>
-                                            <span className="link"><Translate value={"image size guide"}/></span>
+                                             <Tooltip overlayClassName={"guid-tooltip-popup"} placement="topRight" title={this.sizeGuidBox()}>
+                                                 <Button className="btn-text-link"><Translate value={"image size guide"}/></Button>
+                                             </Tooltip>
                                             <span className="span-block"><Translate
                                                 value={"maximum size: 200KB"}/></span>
                                             <span className="span-block"><Translate
@@ -485,7 +498,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                                         }
                                                         {file.state && file.state.url &&
                                                         <img
-                                                            src={`http://staging.crab.clickyab.ae/uploads/` + file.state.url}
+                                                            src={BASE_PATH.replace("/api", "") + "/uploads/" + file.state.url}
                                                             alt={file.name}/>
                                                         }
                                                     </div>

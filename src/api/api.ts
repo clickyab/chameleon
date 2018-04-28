@@ -1485,7 +1485,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -1515,7 +1515,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -1791,7 +1791,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -1827,7 +1827,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -1863,7 +1863,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -1996,7 +1996,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2026,7 +2026,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2312,7 +2312,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2431,7 +2431,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2467,7 +2467,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2497,7 +2497,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2575,7 +2575,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2611,7 +2611,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2641,7 +2641,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2671,7 +2671,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2707,7 +2707,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -2743,7 +2743,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -3058,7 +3058,7 @@ export const ControllersApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5565,7 +5565,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5590,7 +5590,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5615,7 +5615,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5665,7 +5665,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5738,7 +5738,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5768,7 +5768,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5799,7 +5799,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5824,7 +5824,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5849,7 +5849,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5923,7 +5923,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5953,7 +5953,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }
@@ -5983,7 +5983,7 @@ export const UserApiFetchParamCreator = {
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
-        params["payloadData"]= removeEmpty(params["payloadData"]);
+        params["payloadData"] = removeEmpty(params["payloadData"]);
         if (params["payloadData"]) {
             fetchOptions.body = JSON.stringify(params["payloadData"] || {});
         }

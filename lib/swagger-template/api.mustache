@@ -128,7 +128,7 @@ export const {{classname}}FetchParamCreator = {
 {{/hasFormParams}}
 {{#hasBodyParam}}
         contentTypeHeader = { "Content-Type": "application/json" };{{#bodyParam}}
-        params["{{paramName}}"]= removeEmpty(params["{{paramName}}"]);
+        params["{{paramName}}"] = removeEmpty(params["{{paramName}}"]);
         if (params["{{paramName}}"]) {
             fetchOptions.body = JSON.stringify(params["{{paramName}}"] || {});
         }{{/bodyParam}}
