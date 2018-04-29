@@ -2,15 +2,14 @@
  * @file Charge file
  */
 import * as React from "react";
-import {RouteComponentProps} from "react-router";
 import {connect} from "react-redux";
+import {BASE_PATH, ControllersApi, ControllersCampaignGetResponse, SamanInitPaymentResp} from "../../../../api/api";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 import Translate from "../../../../components/i18n/Translate/index";
-import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Row, Col, notification, Input} from "antd";
-import {TextField, RaisedButton} from "material-ui";
+import {RaisedButton} from "material-ui";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
 import CONFIG from "../../../../constants/config" ;
@@ -18,6 +17,8 @@ import CONFIG from "../../../../constants/config" ;
 import "./style.less";
 import SelectBox, {ISelectBoxItem} from "../../../Campaign/containers/Naming/Components/SelectBox";
 import Currency from "../../../../components/Currency";
+import {rangeCheck} from "../../../../services/Utils/CustomValidations";
+import {ReactHTMLElement} from "react";
 
 const FormItem = Form.Item;
 /**
@@ -43,6 +44,7 @@ export interface IState {
     isOffer: boolean;
     accountDeposit: number | null;
     couponInput: number | "" ;
+    JSXForm: JSX.Element ;
 }
 
 enum PAYMENT { ONLINE = "online", RECEIPT = "receipt", CHECK_BANK = "check bank", COUPON = "coupon"}
@@ -62,9 +64,10 @@ class ChargeContainer extends React.Component<IProps, IState> {
             activeInput: false,
             amountValue: null,
             amountString: null,
-            isOffer: true,
+            isOffer: false,
             accountDeposit : 50000,
             couponInput: "" ,
+            JSXForm: null ,
         };
     }
 
@@ -88,6 +91,10 @@ class ChargeContainer extends React.Component<IProps, IState> {
 
     componentDidMount() {
         this.props.setBreadcrumb("charge", this.i18n._t("Charge").toString(), "home");
+        const controllerApi = new ControllersApi();
+        // TODO: get values from server
+        // default value set for user to choose from
+        this.handleActiveAmount(1, 500000);
     }
     /**
      * @func handleChangePaymentType
@@ -162,6 +169,31 @@ class ChargeContainer extends React.Component<IProps, IState> {
         }
     }
 
+    private handleSubmit = () => {
+        const controllerApi = new ControllersApi();
+        controllerApi.financialPaymentInitPost({
+                payloadData: {
+                    charge_amount: parseInt(this.state.amountValue.toString()),
+                    gate_way: 1,
+                }
+            }
+        ).then((res) => {
+            this.formGenerate(res);
+            (document.getElementById("bank-online-payment") as HTMLFormElement).submit();
+        });
+    }
+
+    private formGenerate(data: SamanInitPaymentResp) {
+        let inputJSX = [];
+        for (let key in data.params) {
+            inputJSX.push(<Input key={key} readOnly={true} name={key} value={data.params[key]}/>);
+        }
+        this.setState({JSXForm : (
+            <form id="bank-online-payment" method={data.method} action={data.bank_url}>
+                {inputJSX}
+            </form>
+        )});
+    }
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
@@ -234,14 +266,20 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                         <FormItem className="reset-margin">
                                             {getFieldDecorator("bankAmount", {
                                                 initialValue: this.state.amountValue,
-                                                rules: [{required: true , message: this.i18n._t("This field is required")}],
+                                                rules: [
+                                                    {required: true , message: this.i18n._t("This field is required")},
+                                                    {   validator: rangeCheck,
+                                                        minimum: 500000,
+                                                        message: this.i18n._t("Minimum price is 500,000 toman per click")
+                                                    }
+                                                ],
                                             })(
                                     <Currency
                                         className={"input-campaign amount-input"}
                                         currencyLenght={9}
                                         placeholder={(this.state.amountValue === null) ?
                                             this.i18n._t("Enter your amount") as string : ""}
-                                        onKeyDown={() => {
+                                        onFocus={() => {
                                             this.handleAmount();
                                         }}
                                         onChange={(e) => {
@@ -270,6 +308,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 <Col className="payment-content" span={6}>
                                     <RaisedButton
                                         label={<Translate value="transfer to Bank Gate"/>}
+                                        onClick={this.handleSubmit}
                                         primary={true}
                                         className="button-next-step"
                                     />
@@ -388,6 +427,9 @@ class ChargeContainer extends React.Component<IProps, IState> {
                     <Col span={7}>
                     </Col>
                 </Row>
+                <div className={"form-hide"} >
+                    {this.state.JSXForm}
+                </div>
             </div>
         );
     }
