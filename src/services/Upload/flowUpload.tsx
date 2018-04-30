@@ -63,7 +63,6 @@ export default class FlowUpload {
         this.fileName = fileName || null;
         this.flowOption = {target: this.checkModule(module)  , headers: {token: AAA.getInstance().getToken() }, chunkSize: 250000, testMethod: false },
         this.flowFile = new Flow(this.flowOption);
-        console.log("file" , file);
         this.flowFile.addFile(file);
         this.flowFile.files[0].name = file.name;
     }
