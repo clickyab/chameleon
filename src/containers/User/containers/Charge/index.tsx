@@ -2,22 +2,27 @@
  * @file Charge file
  */
 import * as React from "react";
-import {RouteComponentProps} from "react-router";
 import {connect} from "react-redux";
+import {
+    BASE_PATH,
+    ControllersApi,
+    PaymentInitPaymentResp,
+    UserResponseLoginOKAccount
+} from "../../../../api/api";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 import Translate from "../../../../components/i18n/Translate/index";
-import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Row, Col, notification, Input} from "antd";
-import {TextField, RaisedButton} from "material-ui";
+import {RaisedButton} from "material-ui";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
 import CONFIG from "../../../../constants/config" ;
-
 import "./style.less";
+import ChargeAmountSelector from "../../../../components/ChargeAmount";
 import SelectBox, {ISelectBoxItem} from "../../../Campaign/containers/Naming/Components/SelectBox";
 import Currency from "../../../../components/Currency";
+import {rangeCheck} from "../../../../services/Utils/CustomValidations";
 
 const FormItem = Form.Item;
 /**
@@ -26,6 +31,7 @@ const FormItem = Form.Item;
  */
 export interface IProps {
     form: any;
+    user: UserResponseLoginOKAccount;
     setBreadcrumb: (name: string, title: string, parent: string) => void;
     unsetBreadcrumb: (name: string) => void;
 }
@@ -36,13 +42,10 @@ export interface IProps {
  */
 export interface IState {
     selectedPayment: PAYMENT;
-    activeAmount: number | null;
-    activeInput: boolean;
-    amountValue: number | null ;
-    amountString: string | null;
-    isOffer: boolean;
+    amountValue: number | null;
     accountDeposit: number | null;
     couponInput: number | "" ;
+    JSXForm: JSX.Element ;
 }
 
 enum PAYMENT { ONLINE = "online", RECEIPT = "receipt", CHECK_BANK = "check bank", COUPON = "coupon"}
@@ -58,13 +61,10 @@ class ChargeContainer extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             selectedPayment: PAYMENT.ONLINE,
-            activeAmount: null,
-            activeInput: false,
             amountValue: null,
-            amountString: null,
-            isOffer: true,
-            accountDeposit : 50000,
+            accountDeposit : props.user.balance ? props.user.balance : null,
             couponInput: "" ,
+            JSXForm: null ,
         };
     }
 
@@ -88,6 +88,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
 
     componentDidMount() {
         this.props.setBreadcrumb("charge", this.i18n._t("Charge").toString(), "home");
+        const controllerApi = new ControllersApi();
     }
     /**
      * @func handleChangePaymentType
@@ -97,44 +98,8 @@ class ChargeContainer extends React.Component<IProps, IState> {
         if (!this.disable) {
             this.setState({
                 selectedPayment: value,
-                activeAmount: null,
             });
         }
-    }
-    /**
-     * @func handleActiveAmount
-     * @desc Change default amount buttons
-     */
-    private handleActiveAmount(index: number , value: number): void {
-        this.setState({
-           activeAmount: index,
-           amountValue: value,
-        });
-    }
-    /**
-     * @func handleActiveInput
-     * @desc active custom amount input
-     */
-    private handleActiveInput(): void {
-        this.setState({activeInput: true});
-    }
-    /**
-     * @func handleAmount
-     * @desc reset default amount buttons
-     */
-    private handleAmount(): void {
-        this.setState({
-            activeAmount: null,
-        });
-    }
-    /**
-     * @func handleInputChange
-     * @desc set amount after each input change
-     */
-    private handleInputChange(value) {
-        this.setState({
-            amountValue: value,
-        });
     }
     /**
      * @func handleInputCoupon
@@ -161,7 +126,78 @@ class ChargeContainer extends React.Component<IProps, IState> {
             return currencyFormatter(amount)("en-US") ;
         }
     }
+    /**
+     * @func handleSubmitOnlinePayment
+     * @desc as it's name indicate this function will validate and then redirect to bank gateway
+     * @return {void}
+     */
+    private handleSubmitOnlinePayment = (e) => {
+        if (e) e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                notification.error({
+                    message: this.i18n._t("can't connect to gateway"),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: this.i18n._t("Please check all fields and try again!").toString(),
+                });
+                return;
+            }
+            const controllerApi = new ControllersApi();
+            controllerApi.financialPaymentInitPost({
+                    payloadData: {
+                        charge_amount: parseInt(values.paymentAmount),
+                        gate_way: 1,
+                    }
+                }
+            ).then((res) => {
+                this.formGenerate(res);
+                (document.getElementById("bank-online-payment") as HTMLFormElement).submit();
+            });
+        });
+    }
 
+    /**
+     * @func handleSubmitReceipt
+     * @desc will send request to submit bank receipt
+     * @return {void}
+     */
+    private handleSubmitReceipt = (e) => {
+        if (e) e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                notification.error({
+                    message: this.i18n._t("can't submit receipt"),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: this.i18n._t("Please check all fields and try again!").toString(),
+                });
+                return;
+            }
+            const controllerApi = new ControllersApi();
+            controllerApi.financialAddPost({
+                payloadData: {
+                    amount: parseInt(values.bankAmount),
+                    trace_number: parseInt(values.TransactionNumber)
+                }
+            });
+        });
+    }
+
+    /**
+     * @func formGenerate
+     * @desc generate Form for online payment
+     * @return {void}
+     */
+    private formGenerate(data: PaymentInitPaymentResp) {
+        let inputJSX = [];
+        for (let key in data.params) {
+            inputJSX.push(<Input key={key} readOnly={true} name={key} value={data.params[key]}/>);
+        }
+        this.setState({JSXForm : (
+            <form id="bank-online-payment" method={data.method} action={data.bank_url}>
+                {inputJSX}
+            </form>
+        )});
+    }
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
@@ -184,92 +220,39 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 <span className="circle-number">2</span>
                                 <Translate value={"Account charge amount"}/>
                             </Row>
-                            <Row className="amount-wrapper">
-                                <div className="amount-container first">
-                                    <div className={`amount-box ${this.state.activeAmount === 1 ? "active" : "" }`}
-                                         onClick={() => {
-                                             this.handleActiveAmount(1, 500000);
-                                         }}>
-                                        <Translate value={"500,000 Toman"}/>
-                                    </div>
-                                </div>
-                                <div className="amount-container">
-                                    <div className={`amount-box ${this.state.activeAmount === 2 ? "active" : "" }`}
-                                         onClick={() => {
-                                             this.handleActiveAmount(2, 1000000);
-                                         }}>
-                                        <Translate value={"1,000,000 Toman"}/>
-                                    </div>
-                                </div>
-                                <div className="amount-container">
-                                    <div className={`amount-box ${this.state.activeAmount === 3 ? "active" : "" }`}
-                                         onClick={() => {
-                                             this.handleActiveAmount(3, 4000000);
-                                         }}>
-                                        <Translate value={"4,000,000 Toman"}/>
-                                    </div>
-                                    {this.state.isOffer &&
-                                    <span className="gift"><Translate value={"10% free extra charge"}/></span>
-                                    }
-                                </div>
-                                <div className="amount-container" onClick={() => {
-                                    this.handleActiveAmount(4, 10000000);
-                                }}>
-                                    <div className={`amount-box ${this.state.activeAmount === 4 ? "active" : "" }`}>
-                                        <Translate value={"10,000,000 Toman"}/>
-                                    </div>
-                                    {this.state.isOffer &&
-                                    <span className="gift"><Translate value={"20% free extra charge"}/></span>
-                                    }
-                                </div>
-                                <div className="amount-input-wrapper error-position">
-                                    {!this.state.activeInput &&
-                                    <div className="amount-text" onClick={() => {
-                                        this.handleActiveInput();
-                                    }}>
-                                        <Translate value={"Arbitrary amount"}/>
-                                    </div>
-                                    }
-                                    {this.state.activeInput &&
-                                        <FormItem className="reset-margin">
-                                            {getFieldDecorator("bankAmount", {
-                                                initialValue: this.state.amountValue,
-                                                rules: [{required: true , message: this.i18n._t("This field is required")}],
-                                            })(
-                                    <Currency
-                                        className={"input-campaign amount-input"}
-                                        currencyLenght={9}
-                                        placeholder={(this.state.amountValue === null) ?
-                                            this.i18n._t("Enter your amount") as string : ""}
-                                        onKeyDown={() => {
-                                            this.handleAmount();
-                                        }}
-                                        onChange={(e) => {
-                                            this.handleInputChange(e);
-                                        }}
-                                        value={this.state.amountValue}
-                                    />)}
-                                        </FormItem>
-                                    }
-                                </div>
-                            </Row>
+                            <FormItem className="reset-margin">
+                                {getFieldDecorator("paymentAmount", {
+                                    initialValue: this.state.amountValue,
+                                    rules: [
+                                        {required: true, message: this.i18n._t("This field is required")},
+                                        {
+                                            validator: rangeCheck,
+                                            minimum: 500000,
+                                            message: this.i18n._t("Minimum price is 500,000 toman per click")
+                                        }
+                                    ],
+                                })(
+                                    <ChargeAmountSelector hasDefault={true} />
+                                )}
+                    </FormItem>
                             <Row type="flex" align="middle" className="payment-box">
                                 <Col className="payment-content" span={6}>
                                     <Translate value={"Amount of your charge"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(this.state.amountValue, this.i18n._t("Toman").toString())}
+                                    {(this.props.form.getFieldValue("paymentAmount") === null ) ? "_____" : this.amountFormatter(this.props.form.getFieldValue("paymentAmount"), this.i18n._t("Toman").toString())}
                                 </Col>
                                 <Col className="payment-content border" span={6}>
                                     <Translate value={"Amount after 9% tax"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(Math.ceil(this.state.amountValue * 1.09).toFixed(0), this.i18n._t("Toman").toString())}
+                                    {(this.props.form.getFieldValue("paymentAmount") === null ) ? "_____" : this.amountFormatter(Math.ceil(this.props.form.getFieldValue("paymentAmount") * 1.09).toFixed(0), this.i18n._t("Toman").toString())}
                                 </Col>
                                 <Col className="payment-content" span={6}>
                                     <Translate value={"Amount of account"}/>
                                     <span
-                                        className="green">{this.amountFormatter(this.state.amountValue + this.state.accountDeposit, this.i18n._t("Toman").toString())}</span>
+                                        className="green">{this.amountFormatter(parseInt(this.props.form.getFieldValue("paymentAmount")) + this.state.accountDeposit, this.i18n._t("Toman").toString())}</span>
                                 </Col>
                                 <Col className="payment-content" span={6}>
                                     <RaisedButton
                                         label={<Translate value="transfer to Bank Gate"/>}
+                                        onClick={this.handleSubmitOnlinePayment}
                                         primary={true}
                                         className="button-next-step"
                                     />
@@ -288,7 +271,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                     <span className="span-block input-title">{this.i18n._t("Follow up transaction number")}</span>
                                     <FormItem className={"reset-margin error-position"}>
                                         {getFieldDecorator("TransactionNumber", {
-                                            initialValue: "",
                                             rules: [{required: true , message: this.i18n._t("This field is required")}],
                                         })(
                                 <Input
@@ -307,10 +289,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                     <Currency
                                         className={"receipt-input input-campaign"}
                                         currencyLenght={10}
-                                        onChange={(value) => {
-                                            this.handleInputChange(value);
-                                        }}
-                                        value={this.state.amountValue}
                                     />)}
                                         </FormItem>
                                     <span className={"receipt-currency"}><Translate value={"Toman"}/></span>
@@ -320,20 +298,21 @@ class ChargeContainer extends React.Component<IProps, IState> {
                             <Row type="flex" align="middle" className="payment-box">
                                 <Col className="payment-content" span={6}>
                                     <Translate value={"Amount of your charge"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(this.state.amountValue, "Toman")}
+                                    {(this.props.form.getFieldValue("bankAmount") === null ) ? "_____" : this.amountFormatter(this.props.form.getFieldValue("bankAmount"), "Toman")}
                                 </Col>
                                 <Col className="payment-content border" span={6}>
                                     <Translate value={"Amount after decrease 9% of tax"}/>
-                                    {(this.state.amountValue === null ) ? "_____" : this.amountFormatter(Math.floor(this.state.amountValue * 0.91).toFixed(0), "Toman")}
+                                    {(this.props.form.getFieldValue("bankAmount") === null ) ? "_____" : this.amountFormatter(Math.floor(this.props.form.getFieldValue("bankAmount") * 0.91).toFixed(0), "Toman")}
                                 </Col>
                                 <Col className="payment-content" span={8}>
                                     <Translate value={"Amount of account after deposits approval"}/>
                                     <span
-                                        className="green">{this.amountFormatter(this.state.amountValue * 0.91 + this.state.accountDeposit, "Toman")}</span>
+                                        className="green">{this.amountFormatter(this.props.form.getFieldValue("bankAmount") * 0.91 + this.state.accountDeposit, "Toman")}</span>
                                 </Col>
                                 <Col className="payment-content" span={4}>
                                     <RaisedButton
                                         label={<Translate value="Approve deposits"/>}
+                                        onClick={this.handleSubmitReceipt}
                                         primary={true}
                                         className="button-next-step"
                                     />
@@ -353,7 +332,6 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                         <span className="span-block input-title">{this.i18n._t("10 number of your coupon")}</span>
                                         <FormItem>
                                             {getFieldDecorator("bankAmount", {
-                                                initialValue: this.state.couponInput,
                                                 rules: [{required: true , message: this.i18n._t("This field is required")}],
                                             })(
                                         <Input
@@ -388,17 +366,23 @@ class ChargeContainer extends React.Component<IProps, IState> {
                     <Col span={7}>
                     </Col>
                 </Row>
+                <div className={"form-hide"} >
+                    {this.state.JSXForm}
+                </div>
             </div>
         );
     }
 }
 
 function mapStateToProps(state: RootState) {
-    return {};
+    return {
+        user: state.app.user,
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
         setBreadcrumb: (name: string, title: string, parent: string) => dispatch(setBreadcrumb({name, title, parent})),
         unsetBreadcrumb: (name: string) => dispatch(unsetBreadcrumb(name)),
     };
