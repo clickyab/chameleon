@@ -72,18 +72,18 @@ class ChargeContainer extends React.Component<IProps, IState> {
         {
             title: this.i18n._t("Online payment").toString(),
             value: PAYMENT.ONLINE,
-            icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
+            icon: <Icon name="cif-money-charge" className={"campaign-icon"}/>,
         },
         {
             title: this.i18n._t("With bank receipt").toString(),
             value: PAYMENT.RECEIPT,
-            icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
+            icon: <Icon name="cif-bankwire" className={"campaign-icon"}/>,
         },
-        {
-            title: this.i18n._t("Coupon").toString(),
-            value: PAYMENT.COUPON,
-            icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
-        }
+        // {
+        //     title: this.i18n._t("Coupon").toString(),
+        //     value: PAYMENT.COUPON,
+        //     icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
+        // }
     ];
 
     componentDidMount() {

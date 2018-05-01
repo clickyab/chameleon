@@ -63,7 +63,7 @@ componentWillReceiveProps(props: IProps) {
             >
                 <div className={"user-action-icon-wrapper"}>
                     <div className={"user-action-notification"}>
-                        <Icon name={"cif-dashboard"} className={"user-action-icon"}/>
+                        <Icon name={"cif-communication"} className={"user-action-icon"}/>
                         <Badge className={"user-action-badge"} dot />
                     </div>
                     <Avatar className={"flex"} user={this.props.user} radius={15} disableProgress={true}/>
@@ -71,7 +71,7 @@ componentWillReceiveProps(props: IProps) {
                 <div className="title">
                     {(this.state.user.first_name + " " + this.state.user.last_name)}
                 </div>
-                {this.state.popoverOpen &&
+                {this.state.popoverOpen  &&
                 <div className="user-action-popup">
                     <UserBox user={this.state.user}/>
                 </div>
