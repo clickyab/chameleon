@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import {RouteComponentProps, withRouter} from "react-router";
 import {RootState} from "../../../../redux/reducers/index";
 import {Form} from "antd";
 import {Row, Col, notification, Spin} from "antd";
@@ -13,25 +13,21 @@ import CONFIG from "../../../../constants/config";
 import Tooltip from "../../../../components/Tooltip/index";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
 import DataTable from "../../../../components/DataTable/index";
-import LiveCounter from "./LiveCounter";
 import "./style.less";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
-import RemoteSelect from "../../../../components/RemoteSelect";
-
-const Option = Select.Option;
 
 const FormItem = Form.Item;
 
 
 interface IOwnProps {
-    match?: any;
-    history?: any;
+    inventory: any;
+    onChange: (record) => void;
 }
 
-interface IProps {
+interface IProps extends RouteComponentProps<any> {
     form: any;
-    match: any;
-    history: any;
+    inventory: any;
+    onChange: (record) => void;
     setBreadcrumb: (name: string, title: string, parent: string) => void;
 }
 
@@ -45,7 +41,7 @@ interface IState {
 
 
 @connect(mapStateToProps, mapDispatchToProps)
-class ListOfPublisherComponent extends React.Component <IProps, IState> {
+class ListOfPublishersInventoryComponent extends React.Component <IProps, IState> {
 
     private i18n = I18n.getInstance();
     private checkedItems = [];
@@ -77,21 +73,9 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
     }
 
 
-    /**
-     * @func handleChangeUpdateMode
-     * @desc Show update list/ text field to list's name
-     * @param e
-     * @param setAll
-     */
-    private handleChangeUpdateMode(e: any, update) {
-        this.setState({
-            updateList: update,
-        });
-    }
-
-    private updateList(values) {
-        this.controllerApi.inventoryAddpubIdPatch({
-            id: values.listId,
+    private updateList() {
+        this.controllerApi.inventoryRemovepubIdPatch({
+            id: this.props.inventory.id.toString(),
             payloadData: {
                 pub_ids: this.checkedItems,
             }
@@ -111,16 +95,17 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
     }
 
     private createNewList(values) {
-        this.controllerApi.inventoryCreatePost({
+        this.controllerApi.inventoryIdPut({
+            id: this.props.inventory.id.toString(),
             payloadData: {
                 label: values.listName,
-                pub_ids: this.checkedItems,
             }
         }).then(data => {
+            this.props.onChange(data);
             notification.success({
-                message: this.i18n._t("%s has been created.", {params: [data.label]}).toString(),
+                message: this.i18n._t("%s has been updated.", {params: [data.label]}).toString(),
                 className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                description: this.i18n._t("The publishers added to list!").toString(),
+                description: this.i18n._t("").toString(),
             });
         }).catch(() => {
             notification.error({
@@ -142,15 +127,18 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
                 });
                 return;
             }
-
-            if (this.state.updateList) {
-                this.updateList(values);
-            } else {
-                this.createNewList(values);
-            }
-
-
+            this.createNewList(values);
         });
+    }
+
+    private loadData(config) {
+        config.id = this.props.inventory.id;
+        return this.controllerApi.inventoryPublisherListSingleIdGet(config);
+    }
+
+    private loadDefinition(config) {
+        config.id = this.props.inventory.id;
+        return this.controllerApi.inventoryPublisherListSingleIdDefinitionGet(config);
     }
 
 
@@ -159,17 +147,26 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
         const {getFieldDecorator} = this.props.form;
         return (
             <div dir={CONFIG.DIR}>
-                <Row type="flex" align="middle">
-                    <LiveCounter publisherCount={50943} avgViewCount={12931443} exchangeCount={2}/>
-                </Row>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <Row type="flex" align="middle">
                         <DataTable
+                            ref={"table"}
                             infinite={true}
                             name="publisherList"
                             onSelectRow={this.onSelectRow.bind(this)}
-                            definitionFn={this.controllerApi.inventoryPublisherListDefinitionGet}
-                            dataFn={this.controllerApi.inventoryPublisherListGet}/>
+                            definitionFn={this.loadDefinition.bind(this)}
+                            dataFn={this.loadData.bind(this)}
+                            tableButtons={
+                                [{
+                                    title: this.i18n._t("Remove pulishers from list").toString(),
+                                    icon: "trash",
+                                    onClick: () => {
+                                        this.updateList();
+                                        this.refs.table["removeRecords"](this.checkedItems);
+                                    }
+                                }
+                                ]}
+                        />
                     </Row>
 
                     <Row type="flex" align="top">
@@ -181,27 +178,10 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
                         </Col>
                         <Col span={14} offset={6}>
                             <Row type="flex" gutter={16}>
-                                <Col span={14}>
-                                    <RadioButtonGroup className="campaign-radio-group" name="setAll"
-                                                      defaultSelected={this.state.updateList}
-                                                      onChange={this.handleChangeUpdateMode.bind(this)}>
-                                        <RadioButton className="campaign-radio-button"
-                                                     value={false}
-                                                     label={this.i18n._t("Create New List")}
-                                        />
-                                        <RadioButton className="campaign-radio-button"
-                                                     value={true}
-                                                     label={this.i18n._t("Add to your created lists")}
-                                        />
-                                    </RadioButtonGroup>
-                                </Col>
-                            </Row>
-                            <Row type="flex" gutter={16}>
                                 <Col span={19}>
-                                    {!this.state.updateList &&
                                     <div>
                                         {getFieldDecorator("listName", {
-                                            initialValue: this.i18n._t("Inventory name").toString(),
+                                            initialValue: this.props.inventory.label,
                                             rules: [{
                                                 required: true,
                                                 message: this.i18n._t("Enter inventory name")
@@ -215,24 +195,6 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
                                             />
                                         )}
                                     </div>
-                                    }
-                                    {this.state.updateList &&
-                                    <div>
-                                        {getFieldDecorator("listId", {
-                                            rules: [{
-                                                required: true,
-                                                message: this.i18n._t("Enter inventory name")
-                                            }],
-                                        })(
-                                            <RemoteSelect
-                                                keyProps={"id"}
-                                                labelProps={"label"}
-                                                placeHolder={this.i18n._t("Select Inventory").toString()}
-                                                dataFn={this.controllerApi.inventoryInventoryListGet}/>
-                                        )}
-                                    </div>
-                                    }
-
                                 </Col>
                             </Row>
                         </Col>
@@ -265,4 +227,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default Form.create()(withRouter(ListOfPublisherComponent as any));
+export default withRouter<IOwnProps>(Form.create()(ListOfPublishersInventoryComponent));
