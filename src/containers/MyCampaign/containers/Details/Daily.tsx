@@ -5,9 +5,9 @@ import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import {ControllersApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Form, Row, Col, Button, Tabs} from "antd";
+import {Form, Row, Col} from "antd";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
-import ReactEcharts from "echarts-for-react";
+// import ReactEcharts from "echarts-for-react";
 import * as echarts from "echarts";
 import CONFIG from "../../../../constants/config";
 import "./style.less";
@@ -23,6 +23,10 @@ const numeral = require("numeral");
 echarts.registerTheme("CampaignPieChart", pieTheme);
 
 const FormItem = Form.Item;
+
+interface IOwnProps {
+    history?: any;
+}
 
 interface IProps extends RouteComponentProps<void> {
     setBreadcrumb: (name: string, title: string, parent: string) => void;
@@ -104,13 +108,17 @@ class DetailsDaily extends React.Component<IProps, IState> {
     }
 
     private  loadData(config) {
-        config.id = 1;
+        config.id = this.handlePathID();
         return this.controllerApi.campaignPublisherDetailsIdGet(config);
     }
 
     private loadDefinition(config) {
-        config.id = 1;
+        config.id = this.handlePathID();
         return this.controllerApi.campaignPublisherDetailsIdDefinitionGet(config);
+    }
+    private handlePathID() {
+        let pathArray = (this.props.history.location.pathname).split("/");
+        return parseInt(pathArray[pathArray.length - 1]);
     }
     public componentDidMount() {
         this.props.setBreadcrumb("Daily", this.i18n._t("Detail of seprate viewer of %s - Data %s" , {params : ["campName", "date"]} ).toString(), "campaigns");
@@ -193,6 +201,7 @@ class DetailsDaily extends React.Component<IProps, IState> {
     public render() {
         return (
             <div dir={CONFIG.DIR} className="campaign-content">
+                {console.log("history" , this.props.history)}
                     <Row className="campaign-title" style={{marginBottom: "25px"}}>
                         <h5><Translate value={"Detail of seprate viewer of %s - Data %s"} params={["campName" , "date"]}/></h5>
                     </Row>
@@ -220,10 +229,10 @@ class DetailsDaily extends React.Component<IProps, IState> {
     }
 }
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: RootState, ownProps: IOwnProps) {
     return {
-        isLogin: state.app.isLogin,
         user: state.app.user,
+        history: ownProps.history,
     };
 }
 
