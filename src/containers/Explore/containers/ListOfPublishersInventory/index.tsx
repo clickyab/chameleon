@@ -34,7 +34,6 @@ interface IProps extends RouteComponentProps<any> {
 interface IState {
     listName: string;
     whiteList: boolean;
-    listOFLists?: any[];
     listID?: number;
     updateList: boolean;
 }
@@ -52,7 +51,6 @@ class ListOfPublishersInventoryComponent extends React.Component <IProps, IState
         this.state = {
             listName: "",
             whiteList: true,
-            listOFLists: [],
             updateList: false,
         };
     }
@@ -159,7 +157,7 @@ class ListOfPublishersInventoryComponent extends React.Component <IProps, IState
                             tableButtons={
                                 [{
                                     title: this.i18n._t("Remove pulishers from list").toString(),
-                                    icon: "trash",
+                                    icon: "cif-trashbin",
                                     onClick: () => {
                                         this.updateList();
                                         this.refs.table["removeRecords"](this.checkedItems);
