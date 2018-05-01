@@ -102,6 +102,16 @@ class DetailsDaily extends React.Component<IProps, IState> {
         });
         this.setState({apiData : tempData});
     }
+
+    private  loadData(config) {
+        config.id = 1;
+        return this.controllerApi.campaignPublisherDetailsIdGet(config);
+    }
+
+    private loadDefinition(config) {
+        config.id = 1;
+        return this.controllerApi.campaignPublisherDetailsIdDefinitionGet(config);
+    }
     public componentDidMount() {
         this.props.setBreadcrumb("Daily", this.i18n._t("Detail of seprate viewer of %s - Data %s" , {params : ["campName", "date"]} ).toString(), "campaigns");
         this.sortByValue(this.state.apiData);
@@ -188,22 +198,22 @@ class DetailsDaily extends React.Component<IProps, IState> {
                     </Row>
             <Row type="flex" className="campaign-details">
                             <Col span={6} className="legend-float">
-                                {this.state.apiData && this.state.apiData.map(this.renderLegends.bind(this))}
+                                {/*{this.state.apiData && this.state.apiData.map(this.renderLegends.bind(this))}*/}
                             </Col>
                             <Col span={6}>
-                                <ReactEcharts
-                                    className="piechart-container"
-                                    option={this.state.options}
-                                    theme={"CampaignPieChart"}
-                                />
+                                {/*<ReactEcharts*/}
+                                    {/*className="piechart-container"*/}
+                                    {/*option={this.state.options}*/}
+                                    {/*theme={"CampaignPieChart"}*/}
+                                {/*/>*/}
                             </Col>
             </Row>
                 <Row type="flex">
                     <DataTable
                         infinite={true}
                         name="publisherList"
-                        definitionFn={this.controllerApi.inventoryInventoryListDefinitionGet}
-                        dataFn={this.controllerApi.inventoryInventoryListGet}/>
+                        definitionFn={this.loadDefinition.bind(this)}
+                        dataFn={this.loadData.bind(this)}/>
                 </Row>
             </div>
         );
