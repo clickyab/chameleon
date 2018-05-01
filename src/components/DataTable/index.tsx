@@ -132,7 +132,7 @@ class DataTable extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const customFieldsObject = this.serverStore.getItem(`TABLE_CUSTOM_${this.props.name}`);
+    const customFieldsObject = this.serverStore.getItem(`TABLE_CUSTOM_${props.name}`);
     let customField = customFieldsObject ? customFieldsObject : {};
     props.infinite ? this.infiniteLoader = props.infinite : null;
     this.state = {
@@ -199,7 +199,7 @@ class DataTable extends React.Component<IProps, IState> {
    * @returns {IDefinition}
    */
   restoreDefinition(): IDefinition | null {
-    return this.serverStore.getItem(`CHART_DEFINITION_${this.props.name}`);
+    return this.serverStore.getItem(`TABLE_DEFINITION_${this.props.name}`);
   }
 
   /**

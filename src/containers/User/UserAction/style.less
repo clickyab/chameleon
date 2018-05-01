@@ -1,36 +1,56 @@
 @import "../../App/theme.less";
+
 .user-action {
-  display: flex;
-  margin-right: auto;
-  .user-action-icon-wrapper {
-    margin: 0 15px;
-    position: relative;
-    cursor: pointer;
-    .user-action-badge {
-      position: absolute;
-      top: -4px;
-      left: -4px;
-      sup {
-        background: @primary-color;
-        padding: 0;
-        height: 15px;
-        min-width: 15px;
-        line-height: 1.8;
-        font-family: @font-family;
-        p{
-          font-size: 11px;
+    display: flex;
+    margin-right: auto;
+    align-items: center;
+    .user-action-icon-wrapper {
+        display: flex;
+        margin: 0 5px;
+        position: relative;
+        cursor: pointer;
+        align-items: center;
+        .user-action-notification {
+            position: relative;
+            .user-action-icon {
+                margin: 0 10px;
+                position: relative;
+                top:4px;
+            }
+            .user-action-badge {
+                position: absolute;
+                left: 15px;
+                top: 5px;
+                sup {
+                    background: @primary-color;
+                    padding: 0;
+                    height: 6px;
+                    min-width: 6px;
+                    line-height: 1.8;
+                    font-family: @font-family;
+                    p {
+                        font-size: 11px;
+                    }
+                }
+            }
+            i {
+                font-size: 16px;
+            }
         }
-      }
     }
-    i {
-      font-size: 16px;
+    .user-action-popup {
+        position: relative;
+        top: 10px;
     }
-  }
+    .flex {
+        display: flex !important;
+    }
 }
 
 [dir ="ltr"] {
-  &.user-action {
-    margin-left: auto;
-    margin-right: 0;
-  }
+    &.user-action {
+        margin-left: auto;
+        margin-right: 0;
+    }
 }
+

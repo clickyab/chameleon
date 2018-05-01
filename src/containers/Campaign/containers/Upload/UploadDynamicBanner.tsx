@@ -5,10 +5,10 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {IStateUpload} from "./UploadBanner";
-import {Upload, Row, Col, notification, Card, Progress, Button, Form, Spin, Modal} from "antd";
+import {Upload, Row, Col, Button, Form, Spin} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
-import {UPLOAD_MODULES, UploadState, UPLOAD_STATUS, FlowUpload} from "../../../../services/Upload/index";
+import {UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
 import {ControllersApi, OrmCampaign} from "../../../../api/api";
@@ -17,14 +17,11 @@ import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import UtmForm from "./UtmForm";
-import Cropper from "../../../../components/Cropper/Index";
 import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
-import {default as UploadService} from "../../../../services/Upload";
 import Icon from "../../../../components/Icon";
-import UploadFile, {MODULE, FILE_TYPE} from "../../components/UploadFile";
+import UploadFile, {UPLOAD_MODULES, FILE_TYPE} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 
-const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
 
 /**
@@ -262,7 +259,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                                 <UploadFile label={"wide image"}
                                             fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                             exactDimension={this.exactWideImageSize}
-                                            uploadModule={MODULE.IMAGE}
+                                            uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
                                             required={true}
                                 />
                             </Col>
@@ -271,7 +268,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                                             fileType={[FILE_TYPE.IMG_PNG]}
                                             minDimension={this.minSizeIcon}
                                             ratio={{width: 1, height: 1}}
-                                            uploadModule={MODULE.IMAGE}
+                                            uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
                                 />
                             </Col>
                             <Col span={5}>
@@ -279,7 +276,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                                             fileType={[FILE_TYPE.IMG_PNG]}
                                             minDimension={this.minLogoSize}
                                             ratio={{width: 1, height: 1}}
-                                            uploadModule={MODULE.IMAGE}
+                                            uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
                                 />
                             </Col>
                             <Col span={3}>
