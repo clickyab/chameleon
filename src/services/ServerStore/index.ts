@@ -150,7 +150,7 @@ export default class ServerStore {
     Object.keys(localStorage).map(key => {
       if (localStorage[key] && localStorage[key].indexOf("{") === 0) {
         try {
-          this.items[key] = JSON.stringify(localStorage[key]);
+          this.items[key] = JSON.parse(localStorage[key]);
         } catch (e) {
           this.items[key] = localStorage[key];
         }
