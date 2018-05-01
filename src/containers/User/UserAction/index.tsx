@@ -8,6 +8,8 @@ import Icon from "../../../components/Icon/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../api/api";
 import CONFIG from "../../../constants/config";
 import {RootState} from "../../../redux/reducers";
+import UserBox from "../../../components/UserBox";
+import Avatar from "../../../components/Avatar";
 
 /**
  * @interface Props
@@ -37,6 +39,7 @@ function mapStateToProps(state: RootState) {
         user: state.app.user,
     };
 }
+
 @connect(mapStateToProps)
 class UserAction extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -46,16 +49,33 @@ class UserAction extends React.Component<IProps, IState> {
             user: props.user,
         };
     }
+componentWillReceiveProps(props: IProps) {
+        this.setState({
+            user: props.user,
+        });
+    }
    render() {
         return(
-            <div dir={CONFIG.DIR} className="user-action">
+            <div dir={CONFIG.DIR}
+                 className="user-action"
+                 onMouseEnter={() => {this.setState({popoverOpen: true}); }}
+                 onMouseLeave={() => {this.setState({popoverOpen: false}); }}
+            >
                 <div className={"user-action-icon-wrapper"}>
-                <Icon name={"cif-dashboard"}/>
-                <Badge className={"user-action-badge"} count={9} />
+                    <div className={"user-action-notification"}>
+                        <Icon name={"cif-communication"} className={"user-action-icon"}/>
+                        <Badge className={"user-action-badge"} dot />
+                    </div>
+                    <Avatar className={"flex"} user={this.props.user} radius={15} disableProgress={true}/>
                 </div>
                 <div className="title">
                     {(this.state.user.first_name + " " + this.state.user.last_name)}
                 </div>
+                {this.state.popoverOpen  &&
+                <div className="user-action-popup">
+                    <UserBox user={this.state.user}/>
+                </div>
+                }
             </div>
         );
    }

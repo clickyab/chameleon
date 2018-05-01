@@ -24,7 +24,6 @@ import I18n from "../../services/i18n/index";
 import CONFIG from "../../constants/config";
 import * as moment from "moment-jalaali";
 import ServerStore from "./../../services/ServerStore";
-import {update} from "offline-plugin/runtime";
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
@@ -198,13 +197,13 @@ class DataTable extends React.Component<IProps, IState> {
         this.serverStore.setItem(`TABLE_CUSTOM_${this.props.name}`, customField);
     }
 
-    /**
-     * Try to load definition from local storage
-     * @returns {IDefinition}
-     */
-    restoreDefinition(): IDefinition | null {
-        return this.serverStore.getItem(`CHART_DEFINITION_${this.props.name}`);
-    }
+  /**
+   * Try to load definition from local storage
+   * @returns {IDefinition}
+   */
+  restoreDefinition(): IDefinition | null {
+    return this.serverStore.getItem(`TABLE_DEFINITION_${this.props.name}`);
+  }
 
     /**
      * Try to load definition from local storage or API Call
@@ -509,7 +508,6 @@ class DataTable extends React.Component<IProps, IState> {
     onSearch(value: string) {
         let searches = this.state.searches;
         let data = this.state.data;
-        console.log("search", value);
         data.page = 1;
         data.data = [];
         if (value) {

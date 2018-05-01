@@ -16,6 +16,7 @@ interface IProps {
   user: UserResponseLoginOKAccount;
   className?: string | null ;
   radius?: number | null ;
+  disableProgress?: boolean;
 }
 
 /**
@@ -146,7 +147,7 @@ export default class Avatar extends React.Component<IProps, IState> {
   render() {
     return (
       <div className={(this.props.className) ? (this.props.className + " avatar") : "avatar"}>
-        {((this.state.progress) || (this.state.progress === 0)) &&
+        {((this.state.progress) || (this.state.progress === 0)) && !this.props.disableProgress &&
       <svg className="profile-progress" width={this.state.cx * 2} height={this.state.cx * 2}>
         <circle className="progress-border inactive" cx={this.state.cx} cy={this.state.cx} r={this.state.cx + 2}
                 strokeWidth="1" fill="transparent"

@@ -1,0 +1,100 @@
+@import "../../containers/App/color";
+.userbox-wrapper {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    padding-top: 10px;  // bellow line comment -->
+    margin-top: -10px;  // dont remove this two line - trick for positioning and hover effect
+    .userbox-container {
+        display: flex;
+        width: 315px;
+        padding: 10px;
+        border: 1px solid #DFE0E6;
+        border-radius: 2px;
+        position: relative;
+        background: #FFF;
+        z-index: 9;
+        .userbox-column {
+            width: 50%;
+            padding: 0 15px;
+        }
+        .balance {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .balance-amount {
+                text-align: center;
+            }
+        }
+        .navigation {
+            .nav-item {
+                display: flex;
+                padding-top: 5px;
+                font-size: 12px;
+                font-weight: 400;
+                i{
+                    font-size: 16px;
+                    margin-left: 5px;
+                }
+                a {
+                    color: #88909B;
+                    font-size: 12px;
+                    font-weight: 400;
+                    &:hover {
+                        color: @primary-color;
+                    }
+                }
+                &:hover {
+                    i {
+                        color: @primary-color;
+                    }
+                }
+            }
+        }
+        .border {
+            &-right {
+                border-right: 1px solid #DFE0E6;
+            }
+            &-left {
+                border-left: 1px solid #DFE0E6;
+            }
+        }
+        &:after, &:before {
+            bottom: 100%;
+            left: 20px;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        &:after {
+            border-color: rgba(255, 255, 255, 0);
+            border-bottom-color: #FFF;
+            border-width: 7px;
+            margin-left: -6px;
+            width: 15px;
+        }
+        &:before {
+            border-color: rgba(223, 224, 230, 0);
+            border-bottom-color: #DFE0E6;
+            border-width: 8px;
+            margin-left: -7px;
+            width: 17px;
+        }
+    }
+}
+
+[dir="rtl"] {
+    .userbox-container {
+        .navigation {
+            .nav-item {
+                i {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}

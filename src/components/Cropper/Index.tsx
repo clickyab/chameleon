@@ -61,7 +61,6 @@ export default class Cropper extends React.Component<IProps, IState> {
     }
 
     cropImageSource(crop: ICrop) {
-        console.log("crop", crop);
         this.getCroppedImg(crop)
             .then(file => {
                 if (this.props.onChange) {

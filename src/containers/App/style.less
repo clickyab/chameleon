@@ -285,3 +285,20 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
         white-space:nowrap;
     }
 }
+.btn-text-link{
+    border: none !important;
+    padding: 0 !important;
+    text-decoration: underline;
+    color: @primary-color !important;
+    &:hover{
+        text-decoration: underline;
+    }
+    .ant-btn.clicked {
+        &:after {
+            content: none !important;
+        }
+    }
+    &:after {
+        content: none !important;
+    }
+}
