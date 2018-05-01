@@ -241,8 +241,9 @@ class RegisterForm extends React.Component<IProps, IState> {
                     })(
                       <TextField
                         fullWidth={true}
-                        floatingLabelText={this.i18n._t("Name")}
+                        hintText={this.i18n._t("Name")}
                         autoFocus={true}
+                        className={"input-login"}
                       />
                     )}
                   </FormItem>
@@ -254,7 +255,8 @@ class RegisterForm extends React.Component<IProps, IState> {
                     })(
                       <TextField
                         fullWidth={true}
-                        floatingLabelText={this.i18n._t("Family")}
+                        hintText={this.i18n._t("Family")}
+                        className={"input-login"}
                       />
                     )}
                   </FormItem>
@@ -267,9 +269,10 @@ class RegisterForm extends React.Component<IProps, IState> {
                 })(
                   <TextField
                     fullWidth={true}
-                    floatingLabelText={this.i18n._t("Email")}
+                    hintText={this.i18n._t("Email")}
                     disabled={true}
                     type={"email"}
+                    className={"input-login"}
                   />
                 )}
               </FormItem>
@@ -279,7 +282,8 @@ class RegisterForm extends React.Component<IProps, IState> {
                 })(
                   <PasswordStrength
                     fullWidth={true}
-                    floatingLabelText={this.i18n._t("Password")}
+                    hintText={this.i18n._t("Password")}
+                    className={"input-login"}
                     type="password"
                   />
                 )}
@@ -303,7 +307,8 @@ class RegisterForm extends React.Component<IProps, IState> {
                 })(
                   <TextField
                     fullWidth={true}
-                    floatingLabelText={this.i18n._t("Company Name")}
+                    hintText={this.i18n._t("Company Name")}
+                    className={"input-login"}
                   />
                 )}
               </FormItem>

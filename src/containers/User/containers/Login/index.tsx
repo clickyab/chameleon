@@ -139,7 +139,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
             </div>
           </a>
           <Card className="login-box" noHovering>
-            <h5 className="text-center">
+            <h5 className="text-center login-box-title">
               <Translate value="You try to login with this email:"/>
               <br/>
               {this.state.email}
@@ -172,7 +172,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                   type="submit"
                   label={<Translate value="Enter"/>}
                   primary={true}
-                  className="button-full-width"
+                  className="button-full-width button-login-next-step"
                   icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
                               name={"cif-arrowleft-4"}/>}
                   disabled={this.state.disablePassBtn}

@@ -227,7 +227,7 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
             <Icon className={"login-logo"} name={"cif-cylogo-without-typo"}/>
           </Row>
           <Card className="login-box" noHovering>
-            <h5 className="text-center">
+            <h5 className="text-center login-box-title">
               {this.state.step === STEPS.RECOVERY && this.i18n._t("Please enter your email address")}
               {this.state.step === STEPS.VERIFY && this.i18n._t("Enter your verify code")}
               {this.state.step === STEPS.NEWPASSWORD && this.i18n._t("Enter new password")}
@@ -245,9 +245,9 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                 })(
                   <TextField
                     type={"email"}
+                    className={"input-login"}
                     fullWidth={true}
-                    floatingLabelText="Email"
-                    hintText={"example@example.com"}
+                    hintText={this.i18n._t("Email")}
                     autoFocus={true}
                   />
                 )}
