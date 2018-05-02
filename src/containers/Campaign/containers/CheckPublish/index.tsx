@@ -138,13 +138,13 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             currentCampaign: campaign,
           });
           if (campaign.inventory_id) {
-            api.inventoryPresetIdGet({id: campaign.inventory_id.toString()})
-              .then((list) => {
-                this.setState({
-                  listLabel: list.label,
-                  // websitesList: list.domains,
-                });
-              });
+            // api.inventoryPresetIdGet({id: campaign.inventory_id.toString()})
+            //   .then((list) => {
+            //     this.setState({
+            //       listLabel: list.label,
+            //       // websitesList: list.domains,
+            //     });
+            //   });
           }
         });
 
