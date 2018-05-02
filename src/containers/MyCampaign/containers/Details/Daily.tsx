@@ -4,21 +4,18 @@ import {RouteComponentProps, withRouter} from "react-router";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
-import {ControllersApi, UserResponseLoginOKAccount} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Row, Col} from "antd";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 // import ReactEcharts from "echarts-for-react";
 import * as echarts from "echarts";
 import CONFIG from "../../../../constants/config";
 import "./style.less";
-import {pieTheme , pieColorPalette} from "../../../../components/TimeSeriesChart/theme";
+import {pieTheme, pieColorPalette} from "../../../../components/TimeSeriesChart/theme";
 import Translate from "../../../../components/i18n/Translate";
 import DataTable from "../../../../components/DataTable";
 import {setBreadcrumb} from "../../../../redux/app/actions";
-
-
-const numeral = require("numeral");
-
+import moment = require("moment");
 
 echarts.registerTheme("CampaignPieChart", pieTheme);
 
@@ -46,6 +43,7 @@ interface IState {
     totalValue: number;
     query: any;
     range?: { from: string, to: string };
+    currentCampaign?: ControllersCampaignGetResponse;
 }
 
 
@@ -67,65 +65,76 @@ class DetailsDaily extends React.Component<IProps, IState> {
             options: {},
             apiData: api,
             apiTitle: [],
-            totalValue : 0,
+            totalValue: 0,
             query: {},
         };
     }
+
+    private loadCampaign() {
+        const api = new ControllersApi();
+        api.campaignGetIdGet({id: this.props.match.params["id"]})
+            .then((campaign) => {
+                this.setState({
+                    currentCampaign: campaign,
+                });
+            });
+    }
+
     /**
      * get title of piChart data (for sending to the chart option directly)
      * @param  data
      */
     private fillTitle(data) {
-        let title: string[] = [] ;
-        for (let i = 0 ; i < data.length ; i++) {
-            title[i] = data[i].name ;
+        let title: string[] = [];
+        for (let i = 0; i < data.length; i++) {
+            title[i] = data[i].name;
         }
         this.setState({
-           apiTitle: title
+            apiTitle: title
         });
     }
+
     /**
      * find total value of pieChart element for finding percent
      * @param  data
      */
     private findTotalValue(data) {
         let totalValue = 0;
-        for (let i = 0 ; i < data.length ; i++) {
-            totalValue += parseFloat(data[i].value) ;
+        for (let i = 0; i < data.length; i++) {
+            totalValue += parseFloat(data[i].value);
         }
         this.setState({totalValue});
     }
+
     /**
      * Sort values of PieChart data
      * @param  data
      */
     private sortByValue(data) {
         let tempData = data;
-        tempData.sort(function(x , y){
+        tempData.sort(function (x, y) {
             return y.value - x.value;
         });
-        this.setState({apiData : tempData});
+        this.setState({apiData: tempData});
     }
 
-    private  loadData(config) {
-        config.id = this.handlePathID();
+    private loadData(config) {
+        config.id = this.props.match.params["id"];
         return this.controllerApi.campaignPublisherDetailsIdGet(config);
     }
 
     private loadDefinition(config) {
-        config.id = this.handlePathID();
+        config.id = this.props.match.params["id"];
         return this.controllerApi.campaignPublisherDetailsIdDefinitionGet(config);
     }
-    private handlePathID() {
-        let pathArray = (this.props.history.location.pathname).split("/");
-        return parseInt(pathArray[pathArray.length - 1]);
-    }
+
     public componentDidMount() {
-        this.props.setBreadcrumb("Daily", this.i18n._t("Detail of seprate viewer of %s - Data %s" , {params : ["campName", "date"]} ).toString(), "campaigns");
+        this.props.setBreadcrumb("Daily", this.i18n._t("Detail of seprate viewer of %s - Data %s", {params: ["campName", "date"]}).toString(), "campaigns");
         this.sortByValue(this.state.apiData);
-        this.findTotalValue(this.state.apiData);
-        this.fillTitle(this.state.apiData);
-        this.getOption();
+        // this.findTotalValue(this.state.apiData);
+        // this.fillTitle(this.state.apiData);
+        // this.getOption();
+        this.loadCampaign();
     }
 
     public componentWillReceiveProps(nextProps: IProps) {
@@ -151,8 +160,8 @@ class DetailsDaily extends React.Component<IProps, IState> {
                     radius: [0, "65%"],
                     label: {
                         normal: {
-                            formatter:  function (params) {
-                                return `{b|${params.name}}\n{hr|}\n ${(params.percent).toFixed(1)}` ;
+                            formatter: function (params) {
+                                return `{b|${params.name}}\n{hr|}\n ${(params.percent).toFixed(1)}`;
                             },
                             backgroundColor: "#eee",
                             borderColor: "#aaa",
@@ -193,35 +202,52 @@ class DetailsDaily extends React.Component<IProps, IState> {
 
     private renderLegends(record, index) {
         return <Col span={12} className="pie-legend-item" key={index}>
-                <h4>{(parseFloat(record.value) * 100 / this.state.totalValue).toFixed(1) + "%"}</h4>
-                <div className="bullet" style={{backgroundColor: pieColorPalette[index]}}></div>
-                <h6 style={{color: pieColorPalette[index]}}>{record.name}</h6>
+            <h4>{(parseFloat(record.value) * 100 / this.state.totalValue).toFixed(1) + "%"}</h4>
+            <div className="bullet" style={{backgroundColor: pieColorPalette[index]}}></div>
+            <h6 style={{color: pieColorPalette[index]}}>{record.name}</h6>
         </Col>;
     }
+
     public render() {
+        const from = this.props.match.params["from"];
+        const to = this.props.match.params["to"];
         return (
             <div dir={CONFIG.DIR} className="campaign-content">
-                {console.log("history" , this.props.history)}
-                    <Row className="campaign-title" style={{marginBottom: "25px"}}>
-                        <h5><Translate value={"Detail of seprate viewer of %s - Data %s"} params={["campName" , "date"]}/></h5>
-                    </Row>
-            <Row type="flex" className="campaign-details">
-                            <Col span={6} className="legend-float">
-                                {/*{this.state.apiData && this.state.apiData.map(this.renderLegends.bind(this))}*/}
-                            </Col>
-                            <Col span={6}>
-                                {/*<ReactEcharts*/}
-                                    {/*className="piechart-container"*/}
-                                    {/*option={this.state.options}*/}
-                                    {/*theme={"CampaignPieChart"}*/}
-                                {/*/>*/}
-                            </Col>
-            </Row>
+                {this.state.currentCampaign &&
+                <Row className="campaign-title" style={{marginBottom: "25px"}}>
+                    <h5>
+                        {from === to &&
+                        <Translate value={"Detail of separate viewer of %s - Data %s"}
+                                   params={[this.state.currentCampaign.title, this.i18n._d(from)]}/>
+                        }
+                        {from !== to &&
+                        <Translate value={"Detail of separate viewer of %s - Data %s to %s"}
+                                   params={[this.state.currentCampaign.title, this.i18n._d(from), this.i18n._d(to)]}/>
+                        }
+                    </h5>
+                </Row>
+                }
+                <Row type="flex" className="campaign-details">
+                    <Col span={6} className="legend-float">
+                        {/*{this.state.apiData && this.state.apiData.map(this.renderLegends.bind(this))}*/}
+                    </Col>
+                    <Col span={6}>
+                        {/*<ReactEcharts*/}
+                        {/*className="piechart-container"*/}
+                        {/*option={this.state.options}*/}
+                        {/*theme={"CampaignPieChart"}*/}
+                        {/*/>*/}
+                    </Col>
+                </Row>
                 <Row type="flex">
                     <DataTable
                         infinite={true}
                         name="publisherList"
                         definitionFn={this.loadDefinition.bind(this)}
+                        dateRange={{
+                            from: moment(from),
+                            to: moment(to),
+                        }}
                         dataFn={this.loadData.bind(this)}/>
                 </Row>
             </div>

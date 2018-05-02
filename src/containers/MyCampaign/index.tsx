@@ -34,8 +34,8 @@ export default class PublicContainer extends React.Component<IProps, IState> {
       <div>
         <Switch>
           <Route path={`${match.url}/list`} component={ListComponent}/>
-          <Route exact path={`${match.url}/details`} component={DetailsComponent}/>
-          <Route path={`${match.url}/details/daily`} component={DetailsDailyComponent}/>
+          <Route exact path={`${match.url}/details/:id`} component={DetailsComponent}/>
+          <Route path={`${match.url}/details/:id/daily/:from/:to`} component={DetailsDailyComponent}/>
         </Switch>
       </div>
     );
