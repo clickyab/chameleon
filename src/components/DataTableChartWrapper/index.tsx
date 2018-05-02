@@ -13,6 +13,7 @@ interface IProps {
   dataTableDescription?: JSX.Element;
   showRangePicker?: boolean;
   dataTableButtons?: ITableBtn[];
+  dataTableCustomRenderColumns?: { [key: string]: (value?: string, record?: any, index?: number) => JSX.Element };
 }
 
 interface IState {
@@ -59,7 +60,8 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
           dataFn={this.props.dataTableDataFn}
           tableDescription={this.props.dataTableDescription}
           definitionFn={this.props.dataTableDefinitionFn}
-          tableButtons={this.props.dataTableButtons}/>
+          tableButtons={this.props.dataTableButtons}
+          customRenderColumns={this.props.dataTableCustomRenderColumns}/>
       </div>
     );
   }
