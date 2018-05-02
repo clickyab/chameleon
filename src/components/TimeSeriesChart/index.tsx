@@ -9,6 +9,7 @@ import * as moment from "moment-jalaali";
 import RangePickerWrapper, {IRangeObject} from "../RangePickerWrapper/index";
 import {rangeType} from "../RangePicker";
 import ServerStore from "../../services/ServerStore";
+import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
 
 
 echarts.registerTheme("CampaignTimeSeries", theme);
@@ -250,7 +251,7 @@ private createXaxis(obj) {
             chartData : tempChartData
         } , () => {this.getOption(); });
       }}>
-        <h4>{sum}</h4>
+        <h4>{currencyFormatter(sum)}</h4>
         <div className="bullet" style={{backgroundColor: colorPalette[index]}}></div>
         <h5 style={{color: colorPalette[index]}}>{this.i18n._t(record.title)}</h5>
       </a>
