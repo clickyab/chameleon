@@ -255,7 +255,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                             <Col span={12}>
                                                 <FormItem>
                                                     {getFieldDecorator("listId", {
-                                                        initialValue: this.state.currentCampaign.inventory_id,
+                                                        initialValue: this.state.currentCampaign.inventory,
                                                         rules: [{
                                                             required: true,
                                                             message: this.i18n._t("Select inventory")
