@@ -27,6 +27,7 @@ interface IProps {
     disable?: boolean;
     customClass?: string;
     menuCollapse?: boolean;
+    isSave?: boolean;
 }
 interface IState {
     collapse: boolean;
@@ -69,6 +70,7 @@ class StickyFooter extends React.Component<IProps, IState> {
                    icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
                />
                }
+                   {!this.props.isSave &&
                    <RaisedButton
                        onClick={this.props.nextAction}
                        label={`${this.i18n._t("Next Step")}${(this.props.nextTitle) ? " - " + this.i18n._t(this.props.nextTitle) : "" }`}
@@ -77,6 +79,15 @@ class StickyFooter extends React.Component<IProps, IState> {
                        className="button-next-step"
                        icon={<Icon name="cif-arrow-left" className={"arrow-next-step"}/>}
                    />
+                   }
+                   {this.props.isSave &&
+                   <RaisedButton
+                       onClick={this.props.nextAction}
+                       label={`${this.i18n._t("Save and publish campaign")}${(this.props.nextTitle) ? " - " + this.i18n._t(this.props.nextTitle) : "" }`}
+                       primary={true}
+                       className="button-next-step btn-save"
+                   />
+                   }
                </div>
            </div>
        );

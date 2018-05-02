@@ -15,6 +15,7 @@ import map from "../../../../components/IranMap/map";
 import I18n from "../../../../services/i18n/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import {CAMPAIGN_STATUS} from "../Type";
+import StickyFooter from "../../components/StickyFooter";
 
 // campaign status
 enum STATUS {ACTIVE, DEACTIVE, ARCHIVE}
@@ -194,7 +195,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           <Col>
             <h2><Translate value="Check and publish"/></h2>
             <p><Translate
-              value={"before save please check all informations such as, budget , start and end time , ..."}/></p>
+              value={"before save please check all information such as, budget , start and end time , ..."}/></p>
           </Col>
         </Row>
         <Row type="flex" gutter={30}>
@@ -388,19 +389,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           </Col>
         </Row>
         <Row type="flex" align="middle">
-          <RaisedButton
-            label={<Translate value="Back"/>}
-            primary={false}
-            onClick={this.handleBack.bind(this)}
-            className="button-back-step"
-            icon={<Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>}
-          />
-          <RaisedButton
-            onClick={this.handleSubmit.bind(this)}
-            label={<Translate value="Save campaign"/>}
-            primary={true}
-            className="button-next-step btn-save"
-          />
+            <StickyFooter isSave  nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} />
         </Row>
       </div>
     );

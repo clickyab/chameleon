@@ -62,10 +62,6 @@ class SidebarMenu extends React.Component<IProps, IState> {
             <Icon className="sidbar-menu-icon" name="cif-campaign"/>
             <span>{this.i18n._t("Campaigns")}</span>
           </Menu.Item>
-          <Menu.Item key="media" className="campaign-menu-item">
-            <Icon className="sidbar-menu-icon" name="cif-publishers"/>
-            <span>{this.i18n._t("Media")}</span>
-          </Menu.Item>
           <Menu.Item key="explore" className="campaign-menu-item">
             <Icon className="sidbar-menu-icon" name="cif-inventory"/>
             <span>{this.i18n._t("explore")}</span>

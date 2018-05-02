@@ -31,7 +31,6 @@ interface IState {
   disablePassBtn: boolean;
 }
 
-enum STEPS { CHECK_MAIL, LOGIN, REGISTER, VERIFICATION}
 
 @connect(mapStateToProps, mapDispatchToProps)
 class CheckMail extends React.Component<IProps, IState> {
@@ -106,7 +105,7 @@ class CheckMail extends React.Component<IProps, IState> {
           </Row>
 
           <Card className="login-box" noHovering>
-            <h5 className="text-center">
+            <h5 className="text-center login-box-title">
               <Translate value="Enter your email address"/>
             </h5>
             <form onSubmit={this.submitMail.bind(this)}>
@@ -116,6 +115,7 @@ class CheckMail extends React.Component<IProps, IState> {
                   rules: [{required: true, type: "email", message: this.i18n._t("Please input a valid email!")}],
                 })(
                   <TextField
+                    className={"login-textfield"}
                     fullWidth={true}
                     hintText={mailPlaceHolder}
                     autoFocus={true}
