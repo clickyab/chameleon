@@ -55,7 +55,8 @@ export class DataTableDataParser {
                 .filter(c => c !== null);
         }
 
-        this.columns.push(this.createActionsColumnsDefinition(params.actionsFn));
+        if (params.actionsFn)
+            this.columns.push(this.createActionsColumnsDefinition(params.actionsFn));
 
         return this.columns;
     }
@@ -121,32 +122,7 @@ export class DataTableDataParser {
             column.render = customRender;
         }
 
-        if (source.searchable && source.data === "name") {
-
-            // column.filterDropdown = (
-            //     <div className="custom-filter-dropdown">
-            //         <TextField name="search"
-            //                    onChange={(e) => {
-            //                        searchValue = (e.target as HTMLTextAreaElement).value;
-            //                    }}
-            //                    onKeyPress={(e) => {
-            //                        if (e.key === "Enter") {
-            //                            this.searchFn(source.data, searchValue);
-            //                            column.filterDropdownVisible = false;
-            //                            e.preventDefault();
-            //                        }
-            //                    }}
-            //         />
-            //         <Button type="primary" onClick={() => {
-            //             this.searchFn(source.data, searchValue);
-            //             column.filterDropdownVisible = false;
-            //         }}>Search</Button>
-            //     </div>
-            // );
-            // column.filterIcon = (<Icon
-            //     name="cif-magnifier table-icon"
-            // />);
-        } else if (source.filter) {
+        if (source.filter) {
             column.filters = this.filtersMapToObjects(source.filter_valid_map);
             column.filterIcon = (<Icon name="cif-filter table-icon"/>);
         }
