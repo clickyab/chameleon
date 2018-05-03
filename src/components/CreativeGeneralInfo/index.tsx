@@ -44,7 +44,7 @@ class CreativeGeneralInfo extends React.Component<IProps> {
                                 limit={10}
                             />)}
                     </FormItem>
-                    <span className="span-block input-title require"><Translate value="Max Unit Cost"/></span>
+                    <span className="span-block input-title"><Translate value="Max Unit Cost"/></span>
                     <Col span={12} className={"currency-container"}>
                         <span className="vertical-center"><Translate value={"Toman"}/></span>
                     </Col>
@@ -52,7 +52,7 @@ class CreativeGeneralInfo extends React.Component<IProps> {
                         <FormItem className={"have-description validate-form"}>
                             {getFieldDecorator("sale_price", {
                                 initialValue: this.props.value ? (this.props.value.unitCost ? this.props.value.unitCost : "") : "",
-                                rules: [{required: true, message: this.i18n._t("Please enter unit cost")}, {
+                                rules: [{
                                     validator: rangeCheck,
                                     minimum: 250,
                                     message: this.i18n._t("Minimum price is 250 toman per click")
