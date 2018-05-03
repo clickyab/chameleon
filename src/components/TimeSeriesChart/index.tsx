@@ -87,6 +87,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
     };
 
     this.changeRange = this.changeRange.bind(this);
+    this.loadData = this.loadData.bind(this);
   }
 
   public componentDidMount() {
