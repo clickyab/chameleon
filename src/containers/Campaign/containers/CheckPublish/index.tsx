@@ -308,13 +308,13 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </div>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.locations.length === 0 &&
+                {this.state.currentCampaign.attributes.region && this.state.currentCampaign.attributes.region.length === 0 &&
                 <Translate value={"All Iran Area"}/>
                 }
-                {this.state.locations && this.state.locations.length > 0 && this.state.locations[0] === "foreign" &&
+                {this.state.currentCampaign.attributes.region && this.state.currentCampaign.attributes.region.length > 0 && this.state.currentCampaign.attributes.region[0] === "foreign" &&
                 <Translate value={"Foreign of Iran"}/>
                 }
-                {this.state.locations && this.state.locations.length > 0 && this.state.locations[0] !== "foreign" &&
+                {this.state.currentCampaign.attributes.region && this.state.currentCampaign.attributes.region.length > 0 && this.state.currentCampaign.attributes.region[0] !== "foreign" &&
                 <span>{this.state.locations.map(location => {
                   const area = map.g.path.find((item) => (item.id === location));
                   return area ? area.title : "-";
@@ -327,10 +327,10 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.devices.length === 0 &&
+                {this.state.currentCampaign.attributes.device && this.state.currentCampaign.attributes.device.length === 0 &&
                 <Translate value={"All devices"}/>
                 }
-                {this.state.devices.join(" / ")}
+                {this.state.currentCampaign.attributes.device && this.state.currentCampaign.attributes.device.join(" / ")}
               </Col>
               <Col span={8}>
                 <label><Translate value={"Device Type"}/></label>
@@ -338,10 +338,10 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.iabs.length === 0 &&
+                {this.state.currentCampaign.attributes.iab && this.state.currentCampaign.attributes.iab.length === 0 &&
                 <Translate value={"All categories"}/>
                 }
-                {this.state.iabs.join(" / ")}
+                {this.state.currentCampaign.attributes.iab && this.state.currentCampaign.attributes.iab.join(" / ")}
               </Col>
               <Col span={8}>
                 <label><Translate value={"IAB Catagories"}/></label>
