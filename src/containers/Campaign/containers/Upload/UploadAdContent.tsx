@@ -4,7 +4,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import {Row, Col, Button, Form, Spin} from "antd";
+import {Row, Col, Button, Form, Spin, notification} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
 import {UploadState} from "../../../../services/Upload/index";
@@ -138,9 +138,9 @@ class UploadAdContent extends React.Component <IProps, IState> {
                 payloadData: {
                     assets: {
                         cta: values.cta ? [{val: values.cta}] : null,
-                        description: values.description ? [{val: values.description}] : null ,
+                        description: values.description ? [{val: values.description}] : null,
                         downloads: parseInt(values.download) ? [{val: parseInt(values.download)}] : null,
-                        images: values.images ?  [{val: values.images}] : null,
+                        images: values.images ? [{val: values.images}] : null,
                         logo: values.logo,
                         phone: values.phone ? [{val: values.phone}] : null,
                         rating: parseFloat(values.rating) ? [{val: parseFloat(values.rating)}] : null,
@@ -152,7 +152,18 @@ class UploadAdContent extends React.Component <IProps, IState> {
                     max_bid: values.unitCost ? parseInt(values.unitCost) : null,
                 }
             }).then((data) => {
-                console.log(data);
+                notification.success({
+                    message: this.i18n._t("Your Ad has created and assigned to campaign."),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: "",
+                });
+                this.props.history.push(`/campaign/check-publish/${this.props.currentCampaign.id}`);
+            }).catch((err) => {
+                notification.success({
+                    message: this.i18n._t("Error in create and assign to campaign."),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: "",
+                });
             });
         });
 

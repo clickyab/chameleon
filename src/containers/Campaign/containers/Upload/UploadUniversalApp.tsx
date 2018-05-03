@@ -5,13 +5,13 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter, RouteComponentProps} from "react-router";
 import {IStateUpload} from "./UploadBanner";
-import {Upload, Row, Col, Button, Form, Spin} from "antd";
+import {Upload, Row, Col, Button, Form, Spin, notification} from "antd";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config";
 import {UploadState} from "../../../../services/Upload/index";
 import I18n from "../../../../services/i18n/index";
 import "./style.less";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse, OrmCampaign} from "../../../../api/api";
 import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
@@ -227,7 +227,18 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                         max_bid: values.unitCost ? parseInt(values.unitCost) : null,
                 }
             }).then((data) => {
-                console.log(data);
+                notification.success({
+                    message: this.i18n._t("Your Ad has created and assigned to campaign."),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: "",
+                });
+                this.props.history.push(`/campaign/check-publish/${this.props.currentCampaign.id}`);
+            }).catch((err) => {
+                notification.success({
+                    message: this.i18n._t("Error in create and assign to campaign."),
+                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                    description: "",
+                });
             });
         });
 
