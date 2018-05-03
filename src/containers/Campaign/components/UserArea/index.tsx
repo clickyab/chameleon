@@ -63,15 +63,19 @@ class UserArea extends React.Component<IProps, IState> {
         };
     }
 
+    componentDidMount() {
+        this.handleTabUrl(window.location.href);
+    }
+
     componentWillReceiveProps(props: IProps) {
         this.setState({
             user: props.user,
         });
-        this.handleTabUrl(this.props.history.location.pathname);
+        this.handleTabUrl(window.location.href);
     }
 
     private handleTabUrl(url: string): void {
-        let splitUrl = (url.split("/"));
+        let splitUrl = url.split("/");
         let tempKey: string;
         switch (splitUrl[splitUrl.length - 1]) {
             case "profile":
@@ -166,21 +170,26 @@ class UserArea extends React.Component<IProps, IState> {
                               hideAdd={true}
                               className="tabs-container mt-2 mr-4 ml-4">
                             <TabPane tab={this.i18n._t("Profile")} key="profile" closable={false}>
-                                <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
+                                <div>
+                                    <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>
+                                </div>
                             </TabPane>
                             <TabPane tab={this.i18n._t("Transaction History")} key="transactions" closable={false}>
-                                <PrivateRoute path={`${match.url}/transactions`} component={TransactionHistory}/>
+                                <div>
+                                    <PrivateRoute path={`${match.url}/transactions`} component={TransactionHistory}/>
+                                </div>
                             </TabPane>
                             <TabPane tab={this.i18n._t("Charge Account")} key="charge" closable={false}>
-                                <PrivateRoute path={`${match.url}/charge`} component={ChargeContainer}/>
+                                <div>
+                                    <PrivateRoute path={`${match.url}/charge`} component={ChargeContainer}/>
+                                </div>
                             </TabPane>
                         </Tabs>
                         {/*<Redirect to="/dashboard"/>*/}
                     </Row>
                 </Switch>
             </div>
-        )
-            ;
+        );
     }
 }
 
