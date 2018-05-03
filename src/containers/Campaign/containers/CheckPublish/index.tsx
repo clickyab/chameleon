@@ -16,6 +16,7 @@ import I18n from "../../../../services/i18n/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import {CAMPAIGN_STATUS} from "../Type";
 import StickyFooter from "../../components/StickyFooter";
+import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 
 // campaign status
 enum STATUS {ACTIVE, DEACTIVE, ARCHIVE}
@@ -277,7 +278,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <b>{this.state.totalBudget + " "}</b>
+                <b>{currencyFormatter(this.state.currentCampaign.total_budget) + " "}</b>
                 <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>
@@ -286,7 +287,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                <b>{this.state.dailyBudget + " "}</b>
+                <b>{currencyFormatter(this.state.currentCampaign.total_budget) + " "}</b>
                 <Translate value={"Currency_Name"}/>
               </Col>
               <Col span={8}>
@@ -358,7 +359,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </div>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                {this.state.listLabel}
+                {this.state.currentCampaign.inventory.label}
               </Col>
               <Col span={8}>
                 <label><Translate value={"Selected List"}/></label>
@@ -380,7 +381,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
             </Row>
             <Row className="summary-field-wrapper">
               <Col span={16}>
-                400 websites selected
+                  {this.state.currentCampaign.inventory.publisher_count} websites selected
               </Col>
               <Col span={8}>
                 <label><Translate value={"Number of websites"}/></label>
@@ -389,7 +390,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
           </Col>
         </Row>
         <Row type="flex" align="middle">
-            <StickyFooter isSave  nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} />
+            <StickyFooter isSave={true}  nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} />
         </Row>
       </div>
     );
