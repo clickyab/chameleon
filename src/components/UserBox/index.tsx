@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {UserResponseLoginOKAccount} from "../../api/api";
 import {setUser} from "../../redux/app/actions";
 import {RootState} from "../../redux/reducers";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import Icon from "../Icon";
 import Translate from "../i18n/Translate";
 import "./style.less";
@@ -43,11 +43,11 @@ class UserBox extends React.Component<IProps, IState> {
                         </div>
                     </div>
                     <div className={"userbox-column navigation"}>
-                        <div className={"nav-item"}><Icon name={"cif-gear-setting"}/><NavLink activeClassName="active" to="/user/profile"><Translate value={"Edit profile"}/></NavLink></div>
-                        <div className={"nav-item"}><Icon name={"cif-trans-archive"}/><NavLink activeClassName="active" to="/transaction-history"><Translate value={"Transactions"}/></NavLink></div>
-                        <div className={"nav-item"}><Icon name={"cif-addfund"}/><NavLink activeClassName="active" to="/user/charge"><Translate value={"Charge"}/></NavLink></div>
-                        <div className={"nav-item"}><Icon name={"cif-access-management"}/><NavLink activeClassName="active" to="/managment"><Translate value={"user manage"}/></NavLink></div>
-                        <div className={"nav-item"}><Icon name={"cif-logout-user"}/><NavLink activeClassName="active" to="/user/logout"> <Translate value={"logout"}/></NavLink>
+                        <div className={"nav-item"}><Icon name={"cif-gear-setting"}/><Link to="/user/profile"><Translate value={"Edit profile"}/></Link></div>
+                        <div className={"nav-item"}><Icon name={"cif-trans-archive"}/><Link to="/user/transactions"><Translate value={"Transactions"}/></Link></div>
+                        <div className={"nav-item"}><Icon name={"cif-addfund"}/><Link to="/user/charge"><Translate value={"Charge"}/></Link></div>
+                        {/*<div className={"nav-item"}><Icon name={"cif-access-management"}/><Link to="/managment"><Translate value={"user manage"}/></Link></div>*/}
+                        <div className={"nav-item"}><Icon name={"cif-logout-user"}/><Link to="/user/logout"> <Translate value={"logout"}/></Link>
                         </div>
                     </div>
                 </div>
