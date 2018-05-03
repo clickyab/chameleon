@@ -234,7 +234,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                 });
                 this.props.history.push(`/campaign/check-publish/${this.props.currentCampaign.id}`);
             }).catch((err) => {
-                notification.success({
+                notification.error({
                     message: this.i18n._t("Error in create and assign to campaign."),
                     className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                     description: "",
@@ -289,7 +289,9 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                             <Row type={"flex"} gutter={16}>
                                 <Col span={5}>
                                     <FormItem>
-                                        {getFieldDecorator("icon", {})(
+                                        {getFieldDecorator("icon", {
+                                            required: true, message: this.i18n._t("Please upload Icon!")
+                                        })(
                                             <UploadFile label={"Icon of application"}
                                                         fileType={[FILE_TYPE.IMG_PNG]}
                                                         minDimension={this.minSizeIcon}
@@ -312,7 +314,9 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                 </Col>
                                 <Col span={5}>
                                     <FormItem>
-                                        {getFieldDecorator("imageVertical", {})(
+                                        {getFieldDecorator("imageVertical", {
+                                            required: true, message: this.i18n._t("Please upload Image!")
+                                        })(
                                             <UploadFile label={"Ad image(vertical)"}
                                                         fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                         minDimension={this.minImageVerticalSize}
@@ -381,7 +385,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                             <Button className="btn-general btn-submit ml-1"
                                     onClick={this.handleSubmit.bind(this)}
                             >
-                                <Translate value={"Save and creat new ad"}/>
+                                <Translate value={"Save and create new ad"}/>
                             </Button>
                             <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                         </Row>
