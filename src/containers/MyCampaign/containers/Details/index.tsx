@@ -22,6 +22,7 @@ import Icon from "../../../../components/Icon";
 import {setBreadcrumb} from "../../../../redux/app/actions";
 import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 import DataTable from "../../../../components/DataTable";
+import {Link} from "react-router-dom";
 
 const FormItem = Form.Item;
 
@@ -244,9 +245,9 @@ class Details extends React.Component<IProps, IState> {
                                         dataTableCustomRenderColumns={{
                                             "date": (value: string, record): JSX.Element => {
                                                 const date = value;
-                                                return <a href={`/my/campaign/details/${this.props.match.params["id"]}/daily/${date}/${date}`}>
+                                                return <Link to={`/my/campaign/details/${this.props.match.params["id"]}/daily/${date}/${date}`}>
                                                     <div>{this.i18n._d(value)}</div>
-                                                </a>;
+                                                </Link>;
                                             }
                                         }}
                                     />
