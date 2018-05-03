@@ -564,7 +564,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                               className="select-tag-ant"
                             >
                               {this.categories.map(cat => (
-                                <Option key={cat.name} value={cat.name}>{cat.name}</Option>
+                                <Option key={cat.name} value={cat.name}>{cat.description}</Option>
                               ))}
                             </Select>
                           )}
