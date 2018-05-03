@@ -130,7 +130,7 @@ export default class IranMap extends React.Component<IProps, IState> {
       });
       this.props.onChange([]);
     } else {
-      let items = map.g.path.map((p) => p.id);
+      let items = map.g.path.map((p) => p.title);
       this.setState({
         selectedItems: items,
       }, () => {
@@ -155,15 +155,15 @@ export default class IranMap extends React.Component<IProps, IState> {
               label={"all"}/>
             {map.g.path.map((path) => {
               return <Checkbox
-                key={path.id}
-                checked={this.state.selectedItems.indexOf(path.id) > -1}
-                onCheck={() => this.check(path.id)}
-                style={{backgroundColor: this.state.hoverItem === path.id ? "#ccc" : ""}}
-                onSelect={() => this.check(path.id)}
+                key={path.title}
+                checked={this.state.selectedItems.indexOf(path.title) > -1}
+                onCheck={() => this.check(path.title)}
+                style={{backgroundColor: this.state.hoverItem === path.title ? "#ccc" : ""}}
+                onSelect={() => this.check(path.title)}
                 onMouseLeave={() => this.mouseLeave()}
-                onMouseEnter={() => this.mouseEnter(path.id)}
+                onMouseEnter={() => this.mouseEnter(path.title)}
                 label={path.title}
-                className={(this.state.selectedItems.indexOf(path.id) > -1) ? "checkbox-checked" : "checkbox"}
+                className={(this.state.selectedItems.indexOf(path.title) > -1) ? "checkbox-checked" : "checkbox"}
               />;
             })}
           </div>
@@ -173,13 +173,12 @@ export default class IranMap extends React.Component<IProps, IState> {
             <g id="map-graphic">
               {map.g.path.map((path) => {
                 return <path
-                  key={path.id}
+                  key={path.title}
                   onMouseLeave={() => this.mouseLeave()}
-                  onMouseEnter={() => this.mouseEnter(path.id)}
-                  onClick={() => this.check(path.id)}
-                  className={`land ${this.state.hoverItem === path.id ? "selected" : ""} ${this.state.selectedItems.indexOf(path.id) > -1 ? "selected" : ""}`}
+                  onMouseEnter={() => this.mouseEnter(path.title)}
+                  onClick={() => this.check(path.title)}
+                  className={`land ${this.state.hoverItem === path.title ? "selected" : ""} ${this.state.selectedItems.indexOf(path.title) > -1 ? "selected" : ""}`}
                   d={path.d}
-                  id={path.id}
                   xlinkTitle={path.title}/>;
               })}
             </g>
