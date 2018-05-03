@@ -76,7 +76,6 @@ class UserArea extends React.Component<IProps, IState> {
 
     private handleTabUrl(url: string): void {
         let splitUrl = url.split("/");
-        console.log(splitUrl);
         let tempKey: string;
         switch (splitUrl[splitUrl.length - 1]) {
             case "profile":
