@@ -121,10 +121,8 @@ class ListOfInventories extends React.Component <IProps, IState> {
     }
 
     public render() {
-        console.log(this.table);
         return (
             <div dir={CONFIG.DIR}>
-
                 <Row type="flex" align="middle">
                     <DataTable
                         ref={table => {

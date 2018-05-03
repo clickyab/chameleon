@@ -62,7 +62,8 @@ export default class I18n {
       const locale = LOCALES[Cookies.get(this.CookieName)] ? Cookies.get(this.CookieName) : LOCALES.fa;
       this.setLocale(locale);
       this.locale = locale;
-      if (locale === LOCALES.fa) {
+      // fixme:: remove true
+      if (locale === LOCALES.fa || true) {
         this.moment = momentJalaali;
         momentJalaali.loadPersian();
       }
@@ -91,8 +92,8 @@ export default class I18n {
    * @returns {string}
    * @public
    */
-    public _d(date: string | Date | number, format: string = "LLLL"): string {
-      const momentObj = this.moment(date);
+    public _d(date: string | Date | number, format: string = "jYYYY/jMM/jDD"): string {
+      const momentObj = momentJalaali(date);
       return momentObj.format(format);
     }
 

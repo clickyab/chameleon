@@ -10,7 +10,6 @@ import STEPS from "../../steps";
 import {RootState} from "../../../../redux/reducers/index";
 import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
-import Native from "./Native";
 import UploadBanner from "./UploadBanner";
 import UploadVideo from "./UploadVideo";
 import {AdTemplate, TEMPLATE, CAMPAIGN_TYPE} from "./templateComponent";

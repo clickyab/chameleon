@@ -28,7 +28,7 @@ export default class RemoteSelect extends React.Component <IProps, IState> {
         this.fetchData = this.fetchData;
         this.state = {
             data: [],
-            value: [],
+            value: this.props.value,
             fetching: false,
         };
     }

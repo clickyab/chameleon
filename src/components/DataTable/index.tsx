@@ -147,6 +147,10 @@ class DataTable extends React.Component<IProps, IState> {
             pageSize: 10,
         };
 
+        if (props.dateRange) {
+            this.range = props.dateRange;
+        }
+
         this.changeRecordData = this.changeRecordData.bind(this);
     }
 
@@ -197,13 +201,13 @@ class DataTable extends React.Component<IProps, IState> {
         this.serverStore.setItem(`TABLE_CUSTOM_${this.props.name}`, customField);
     }
 
-  /**
-   * Try to load definition from local storage
-   * @returns {IDefinition}
-   */
-  restoreDefinition(): IDefinition | null {
-    return this.serverStore.getItem(`TABLE_DEFINITION_${this.props.name}`);
-  }
+    /**
+     * Try to load definition from local storage
+     * @returns {IDefinition}
+     */
+    restoreDefinition(): IDefinition | null {
+        return this.serverStore.getItem(`TABLE_DEFINITION_${this.props.name}`);
+    }
 
     /**
      * Try to load definition from local storage or API Call
@@ -298,10 +302,10 @@ class DataTable extends React.Component<IProps, IState> {
         this.props.dataFn(config).then((data: IData) => {
 
             // TODO:: remove me
-            data.data = data.data.map(d => {
-                d["_actions"] = "edit, archive, copy";
-                return d;
-            });
+            // data.data = data.data.map(d => {
+            //     d["_actions"] = "edit, archive, copy";
+            //     return d;
+            // });
 
             if (this.state.data && this.props.infinite) {
                 data.data = [...this.state.data.data, ...data.data];
@@ -319,9 +323,11 @@ class DataTable extends React.Component<IProps, IState> {
                     data,
                     definition: def,
                     loading: false,
+                }, () => {
+                    this.addScrollListener();
+                    this.infiniteLoader = false;
+                    this.setColumnsWidth();
                 });
-                this.addScrollListener();
-                this.infiniteLoader = false;
             } else {
                 this.storeDefinition(null);
                 this.loadDefinition()
@@ -550,7 +556,7 @@ class DataTable extends React.Component<IProps, IState> {
 
     public changeRecordData(index: number, newRecord: any) {
         this.setState(prevState => {
-            prevState.data.data[index] = newRecord;
+            prevState.data.data[index] = Object.assign({}, prevState.data.data[index], newRecord, false);
             return prevState;
         });
     }
@@ -654,10 +660,10 @@ class DataTable extends React.Component<IProps, IState> {
                             </CheckboxGroup>
                         </Row>
                         <Row>
-                            <div className="pub-switch-wrapper">
-                                <Switch/>
-                                <Translate value={"only show last 30 days recent websites"}/>
-                            </div>
+                            {/*<div className="pub-switch-wrapper">*/}
+                            {/*<Switch/>*/}
+                            {/*<Translate value={"only show last 30 days recent websites"}/>*/}
+                            {/*</div>*/}
                         </Row>
                     </div>
                 </Modal>

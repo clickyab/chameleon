@@ -41,6 +41,7 @@ interface IState {
     listOFLists?: any[];
     listID?: number;
     updateList: boolean;
+    Statistics?: any;
 }
 
 
@@ -153,6 +154,14 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
         });
     }
 
+    private onQueryChange(query) {
+        this.controllerApi.inventoryBasePublishersStatisticsGet(query)
+            .then((data) => {
+                this.setState({
+                    Statistics: data.data[0],
+                });
+            });
+    }
 
     public render() {
 
@@ -160,13 +169,17 @@ class ListOfPublisherComponent extends React.Component <IProps, IState> {
         return (
             <div dir={CONFIG.DIR}>
                 <Row type="flex" align="middle">
-                    <LiveCounter publisherCount={50943} avgViewCount={12931443} exchangeCount={2}/>
+                    <LiveCounter
+                        publisherCount={this.state.Statistics ? this.state.Statistics.count : 0}
+                        avgViewCount={this.state.Statistics ? this.state.Statistics.avg_imp : 0}
+                        exchangeCount={this.state.Statistics ? this.state.Statistics.exchange_count : 0}/>
                 </Row>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <Row type="flex" align="middle">
                         <DataTable
                             infinite={true}
                             name="publisherList"
+                            onQueryChange={this.onQueryChange.bind(this)}
                             onSelectRow={this.onSelectRow.bind(this)}
                             definitionFn={this.controllerApi.inventoryPublisherListDefinitionGet}
                             dataFn={this.controllerApi.inventoryPublisherListGet}/>
