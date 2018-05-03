@@ -314,7 +314,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
   public render() {
 
-    if (this.props.match.params.id && !this.state.currentCampaign) {
+    if (!this.state.currentCampaign) {
       return <Spin/>;
     }
 
@@ -500,7 +500,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                       <div className="select-tag-component-wrapper">
                         <FormItem>
                           {getFieldDecorator("browsers", {
-                            initialValue: attr.browser,
+                            initialValue: this.state.browsers,
                             rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
                           })(
                             <SelectTag
@@ -686,7 +686,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     {this.state.showISP && this.state.showOtherNetwork &&
                     <FormItem>
                       {getFieldDecorator("isps", {
-                        initialValue: attr.isp,
+                        initialValue: this.state.isps,
                         rules: [{required: true, message: this.i18n._t("Please select ISP!")}],
                       })(
                         <SelectTag
@@ -702,7 +702,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     {this.state.showCellar && this.state.showOtherNetwork &&
                     <FormItem>
                       {getFieldDecorator("cellular", {
-                        initialValue: attr.cellular,
+                        initialValue: this.state.cellulars,
                         rules: [{required: true, message: this.i18n._t("Please select Cellular!")}],
                       })(
                         <SelectTag

@@ -167,7 +167,7 @@ class UploadFile extends React.Component<IProps, IState> {
             }
             this.setState({
                 disableDragger: false,
-                imgUrlCropped: BASE_PATH.replace("/api", "") + "/uploads/" +  state.url,
+                imgUrlCropped: BASE_PATH.replace("/api", "") + "/uploads/" + state.url,
             });
             this.disableUpload = false;
         }).catch((err) => {
@@ -222,6 +222,7 @@ class UploadFile extends React.Component<IProps, IState> {
             }
         }
         else if (this.props.minDimension) {
+            console.log(file, this.props.minDimension);
             if (file.height >= this.props.minDimension.height && file.width >= this.props.minDimension.width) {
                 return true;
             }
@@ -450,7 +451,6 @@ class UploadFile extends React.Component<IProps, IState> {
                         <Cropper
                             source={this.state.imgUrlOriginal}
                             type={this.state.imageType}
-                            aspect={(this.ratio.width / this.ratio.height)}
                             onChange={(img: Blob) => {
                                 this.tmpImg = img;
                                 this.setState({imgUrlCropped: ""});
