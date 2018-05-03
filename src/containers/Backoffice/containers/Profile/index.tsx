@@ -410,7 +410,7 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
                         onChange={this.handleChangeLocation.bind(this)}
                         countryId={1}
                         cityId={this.state.user.city_id}
-                        provinceId={this.state.user.province_id}
+                        provinceId={this.state.user.province_name}
                         disabled={!this.state.editActive}
                       />
                       }
@@ -619,7 +619,7 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
                         onChange={this.handleChangeLocation.bind(this)}
                         countryId={1}
                         cityId={this.state.user.city_id}
-                        provinceId={this.state.user.province_id}
+                        provinceId={this.state.user.province_name}
                         disabled={!this.state.editActive}
                       />
                       }
