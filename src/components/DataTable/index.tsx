@@ -564,7 +564,6 @@ class DataTable extends React.Component<IProps, IState> {
     public removeRecords(ids: number[]) {
         this.setState(prevState => {
             prevState.data.data = prevState.data.data.filter((r) => {
-                console.log(ids, r[this.state.definition.key], r, prevState.definition.key || "id");
                 return !Array.includes(ids, r[this.state.definition.key || "id"]);
             });
             prevState.selectedKeys = [];
