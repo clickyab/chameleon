@@ -15,9 +15,9 @@ import UploadVideo from "./UploadVideo";
 import {AdTemplate, TEMPLATE, CAMPAIGN_TYPE} from "./templateComponent";
 import StickyFooter from "../../components/StickyFooter";
 import Translate from "../../../../components/i18n/Translate";
-import UploadVideoInBanner from "./UploadVideoInBanner";
+// import UploadVideoInBanner from "./UploadVideoInBanner";
 import UploadAdContent from "./UploadAdContent";
-import UploadDynamicBanner from "./UploadDynamicBanner";
+// import UploadDynamicBanner from "./UploadDynamicBanner";
 import UploadUniversalApp from "./UploadUniversalApp";
 
 
@@ -111,21 +111,21 @@ class UploadComponent extends React.Component <IProps, IState> {
             <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
             </div>
             }
-            {this.state.template === TEMPLATE.BANNER && this.state.currentCampaign &&
-            <UploadBanner currentCampaign={this.state.currentCampaign} />
-            }
-            {this.state.template === TEMPLATE.VAST && this.state.currentCampaign &&
-            <UploadVideo currentCampaign={this.state.currentCampaign} />
-            }
-            {this.state.template === TEMPLATE.VIDEO_IN_BANNER && this.state.currentCampaign &&
-            <UploadVideoInBanner currentCampaign={this.state.currentCampaign} />
-            }
+            {/*{this.state.template === TEMPLATE.BANNER && this.state.currentCampaign &&*/}
+            {/*<UploadBanner currentCampaign={this.state.currentCampaign} />*/}
+            {/*}*/}
+            {/*{this.state.template === TEMPLATE.VAST && this.state.currentCampaign &&*/}
+            {/*<UploadVideo currentCampaign={this.state.currentCampaign} />*/}
+            {/*}*/}
+            {/*{this.state.template === TEMPLATE.VIDEO_IN_BANNER && this.state.currentCampaign &&*/}
+            {/*<UploadVideoInBanner currentCampaign={this.state.currentCampaign} />*/}
+            {/*}*/}
             {this.state.template === TEMPLATE.AD_CONTENT && this.state.currentCampaign &&
             <UploadAdContent currentCampaign={this.state.currentCampaign} />
             }
-            {this.state.template === TEMPLATE.DYNAMIC_BANNER && this.state.currentCampaign &&
-            <UploadDynamicBanner currentCampaign={this.state.currentCampaign} />
-            }
+            {/*{this.state.template === TEMPLATE.DYNAMIC_BANNER && this.state.currentCampaign &&*/}
+            {/*<UploadDynamicBanner currentCampaign={this.state.currentCampaign} />*/}
+            {/*}*/}
             {this.state.template === TEMPLATE.UNIVERSAL_APP && this.state.currentCampaign &&
             <UploadUniversalApp currentCampaign={this.state.currentCampaign} />
             }

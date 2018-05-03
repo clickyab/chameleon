@@ -65,46 +65,46 @@ export class AdTemplate extends React.Component<IProps, IState> {
                 <div className="title"><Translate value="Ad Type"/></div>
                 {this.props.campaignType === CAMPAIGN_TYPE.WEB &&
                 <div>
-                    <div draggable={true}
-                         className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
-                         onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}
-                         onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>
-                        <Banner/>
-                    </div>
-                    <div draggable={true}
-                         className={`template-type${this.state.template === TEMPLATE.VAST ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
-                         onClick={() => this.handleActiveTemp(TEMPLATE.VAST)}
-                         onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VAST, e)}>
-                        <Vast/>
-                    </div>
+                    {/*<div draggable={true}*/}
+                         {/*className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
+                         {/*onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}*/}
+                         {/*onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>*/}
+                        {/*<Banner/>*/}
+                    {/*</div>*/}
+                    {/*<div draggable={true}*/}
+                         {/*className={`template-type${this.state.template === TEMPLATE.VAST ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
+                         {/*onClick={() => this.handleActiveTemp(TEMPLATE.VAST)}*/}
+                         {/*onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VAST, e)}>*/}
+                        {/*<Vast/>*/}
+                    {/*</div>*/}
                     <div draggable={true}
                          className={`template-type${this.state.template === TEMPLATE.AD_CONTENT ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                          onClick={() => this.handleActiveTemp(TEMPLATE.AD_CONTENT)}
                          onDragStart={(e) => this.handleActiveTemp(TEMPLATE.AD_CONTENT, e)}>
                         <AdContent/>
                     </div>
-                    <div draggable={true}
-                         className={`template-type${this.state.template === TEMPLATE.VIDEO_IN_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
-                         onClick={() => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER)}
-                         onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER, e)}>
-                        <VideoInBanner/>
-                    </div>
-                    <div draggable={true}
-                         className={`template-type${this.state.template === TEMPLATE.DYNAMIC_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
-                         onClick={() => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER)}
-                         onDragStart={(e) => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER, e)}>
-                        <DynamicBanner/>
-                    </div>
+                    {/*<div draggable={true}*/}
+                         {/*className={`template-type${this.state.template === TEMPLATE.VIDEO_IN_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
+                         {/*onClick={() => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER)}*/}
+                         {/*onDragStart={(e) => this.handleActiveTemp(TEMPLATE.VIDEO_IN_BANNER, e)}>*/}
+                        {/*<VideoInBanner/>*/}
+                    {/*</div>*/}
+                    {/*<div draggable={true}*/}
+                         {/*className={`template-type${this.state.template === TEMPLATE.DYNAMIC_BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
+                         {/*onClick={() => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER)}*/}
+                         {/*onDragStart={(e) => this.handleActiveTemp(TEMPLATE.DYNAMIC_BANNER, e)}>*/}
+                        {/*<DynamicBanner/>*/}
+                    {/*</div>*/}
                 </div>
                 }
                 {this.props.campaignType === CAMPAIGN_TYPE.APP &&
                 <div>
-                    <div draggable={true}
-                         className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
-                         onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}
-                         onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>
-                        <Banner/>
-                    </div>
+                    {/*<div draggable={true}*/}
+                         {/*className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
+                         {/*onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}*/}
+                         {/*onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>*/}
+                        {/*<Banner/>*/}
+                    {/*</div>*/}
                     <div draggable={true}
                          className={`template-type${this.state.template === TEMPLATE.UNIVERSAL_APP ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
                          onClick={() => this.handleActiveTemp(TEMPLATE.UNIVERSAL_APP)}
