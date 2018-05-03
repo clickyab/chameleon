@@ -43,15 +43,7 @@ export default class Dashboard extends React.Component<IProps , IState> {
     let getRange: any ;
     return (
         <div>
-            <RangePickerWrapper
-                onChange={value => {this.setState({value}) ; console.log(value); }}
-            />
-      <Currency onChange={(e) => { console.log(e); } }/>
-          <UploadFile label={"test"}
-                      fileType={[FILE_TYPE.IMG_PNG , FILE_TYPE.IMG_GIF]}
-                      minDimension={{width: 512 , height: 512}}
-                      uploadModule={MODULE.IMAGE}
-                      />
+         <h1>Dashboard Page</h1>
         </div>
     );
   }
