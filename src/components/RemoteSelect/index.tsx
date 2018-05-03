@@ -64,7 +64,7 @@ export default class RemoteSelect extends React.Component <IProps, IState> {
         return (
             <Select
                 mode={this.props.multiple ? "multiple" : "combobox"}
-                value={value[this.props.labelProps] ? value[this.props.labelProps] : value}
+                value={value[this.props.labelProps] !== undefined && value[this.props.labelProps] !== null ? value[this.props.labelProps] : value}
                 placeholder={this.props.placeHolder}
                 notFoundContent={fetching ? <Spin size="small"/> : <Translate value={"Not Found"}/>}
                 filterOption={false}
