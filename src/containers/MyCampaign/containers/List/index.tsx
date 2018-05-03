@@ -63,7 +63,7 @@ class List extends React.Component<IProps, IState> {
                                     this.props.history.push(`/campaign/check-publish/${record.id}`);
                                 },
                                 "copy": (value, record) => {
-                                    this.controllerApi.campaignCopyIdPatch({id: record.id , payloadData: {}})
+                                    this.controllerApi.campaignCopyIdPatch({id: record.id})
                                         .then((data) => {
                                             this.props.history.push(`/campaign/check-publish/${data.id}`);
                                         }).catch((error) => {
