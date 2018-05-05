@@ -24,6 +24,21 @@ interface IProps {
    * @desc onChange callback function
    */
   onChange?: (value: string) => void;
+
+  /**
+   * @param errorText
+   * @desc determine texfield error message
+  */
+  errorText?: string | boolean;
+  /**
+   * @param {boolean} value
+   * @desc check if phone number is empty and send it to parent
+  */
+  checkEmpty?: (value: boolean) => void;
+
+  maxLenght?: number;
+
+  className?: string;
 }
 
 /**
@@ -48,6 +63,11 @@ interface IState {
    * @desc phone value
    */
   phone?: string | number;
+    /**
+     * @param {string}
+     * @desc error text
+     */
+  errorText?: string | boolean;
 }
 
 export default class PhoneInput extends React.Component<IProps, IState> {
@@ -69,6 +89,7 @@ export default class PhoneInput extends React.Component<IProps, IState> {
       code: "ir",
       dialCode: initialValue.length === 2 ? initialValue[0] : "98",
       phone: initialValue.length === 2 ? initialValue[1] : null,
+      errorText: props.errorText ? props.errorText : false
     };
 
     this.handleChangeCode = this.handleChangeCode.bind(this);
@@ -95,7 +116,7 @@ export default class PhoneInput extends React.Component<IProps, IState> {
       code: country.code,
       dialCode: value,
     });
-    this.onChange();
+    this.onChangeDialCode(value);
   }
 
   /**
@@ -106,23 +127,41 @@ export default class PhoneInput extends React.Component<IProps, IState> {
    */
   handleChangePhone(event, phone) {
     this.setState({phone});
-    this.onChange();
+    this.onChangePhone(phone);
   }
 
   /**
    * @func
-   * @desc check props onChange and call it
+   * @desc check props onChangePhone and call it
    */
-  onChange() {
+  onChangePhone(phone?: number) {
     if (this.props.onChange) {
-      this.props.onChange(`${this.state.dialCode}-${this.state.phone}`);
+      this.props.onChange(`${this.state.dialCode}-${phone}`);
+    }
+    if (this.props.checkEmpty) {
+        phone ? this.props.checkEmpty(false) : this.props.checkEmpty(true);
     }
   }
 
+    /**
+     * @func
+     * @desc check props onChangeDialCode and call it
+     */
+    onChangeDialCode(dialCode?: number) {
+        if (this.props.onChange) {
+            this.props.onChange(`${dialCode}-${this.state.dialCode}`);
+        }
+    }
+
+  componentWillReceiveProps(nextProps) {
+      if (nextProps.errorText || nextProps.errorText === false) {
+          this.setState({errorText: nextProps.errorText});
+      }
+  }
   public render() {
     return (
-      <div className="phone-input">
-        <div className="flag-wraper">
+      <div className={`phone-input ${this.props.className}`}>
+        <div className="flag-wrapper">
           <img className="phone-flag" src={require(`./flags/${this.state.code.toLocaleLowerCase()}.png`)}/>
         </div>
         <div className="country-code">
@@ -139,8 +178,9 @@ export default class PhoneInput extends React.Component<IProps, IState> {
         </div>
         <div className="phone-text-field">
           <TextField
-            floatingLabelText={this.i18n._t("Mobile Phone Number").toString()}
+            hintText={this.i18n._t("Mobile Phone Number").toString()}
             defaultValue={this.state.phone}
+            errorText={this.state.errorText ? this.state.errorText : null}
             type="number"
             onChange={this.handleChangePhone.bind(this)}
             fullWidth={true}

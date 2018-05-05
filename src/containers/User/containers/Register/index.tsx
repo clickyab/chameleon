@@ -7,7 +7,7 @@ import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Card, Col, Form, message, notification, Row, Switch} from "antd";
-import {Checkbox, FontIcon, RaisedButton, TextField, Toggle} from "material-ui";
+import {RaisedButton, TextField} from "material-ui";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
 import Icon from "../../../../components/Icon/index";
@@ -34,6 +34,10 @@ interface IState {
   isCorporation: boolean;
   step: STEPS;
   disablePassBtn: boolean;
+  errorFirstName: boolean;
+  errorLastname: boolean;
+  errorPassword: boolean;
+  errorMobile: boolean;
 }
 
 enum STEPS {REGISTER, VERIFICATION}
@@ -55,6 +59,10 @@ class RegisterForm extends React.Component<IProps, IState> {
       step: props.match.params["token"] ? STEPS.VERIFICATION : STEPS.REGISTER,
       isCorporation: false,
       disablePassBtn: true,
+      errorFirstName: false,
+      errorLastname: false,
+      errorPassword: false,
+      errorMobile: false,
     };
   }
 
@@ -209,7 +217,6 @@ class RegisterForm extends React.Component<IProps, IState> {
       });
     });
   }
-
   public render() {
     const {getFieldDecorator} = this.props.form;
 
@@ -235,37 +242,40 @@ class RegisterForm extends React.Component<IProps, IState> {
             <form onSubmit={this.submitRegister.bind(this)}>
               <Row type="flex" gutter={16}>
                 <Col span={12}>
-                  <FormItem>
+                  <FormItem className={"hide-ant-error"}>
                     {getFieldDecorator("firstName", {
-                      rules: [{required: true, message: this.i18n._t("Please input your first name!").toString()}],
+                      rules: [{required: true, message: this.i18n._t("Please enter your first name!").toString()}],
                     })(
                       <TextField
+                        required
                         fullWidth={true}
                         hintText={this.i18n._t("Name")}
                         autoFocus={true}
                         className={"input-login"}
+                        errorText={this.state.errorFirstName ? this.i18n._t("Please input your first name!") : false}
                       />
                     )}
                   </FormItem>
                 </Col>
                 <Col span={12}>
-                  <FormItem>
+                  <FormItem className={"hide-ant-error"}>
                     {getFieldDecorator("lastName", {
-                      rules: [{required: true, message: this.i18n._t("Please input your last name!")}],
+                      rules: [{required: true, message: this.i18n._t("Please enter your last name!")}],
                     })(
                       <TextField
+                        required
                         fullWidth={true}
-                        hintText={this.i18n._t("Family")}
+                        hintText={this.i18n._t("Last name")}
                         className={"input-login"}
                       />
                     )}
                   </FormItem>
                 </Col>
               </Row>
-              <FormItem>
+              <FormItem className={"hide-ant-error"}>
                 {getFieldDecorator("email", {
                   initialValue: this.state.email,
-                  rules: [{required: true, message: this.i18n._t("Please input your email!")}],
+                  rules: [{required: true, message: this.i18n._t("Please enter your email!")}],
                 })(
                   <TextField
                     fullWidth={true}
@@ -276,29 +286,37 @@ class RegisterForm extends React.Component<IProps, IState> {
                   />
                 )}
               </FormItem>
-              <FormItem>
+              <FormItem className={"hide-ant-error"}>
                 {getFieldDecorator("password", {
-                  rules: [{required: true, message: this.i18n._t("Please input your password!")}],
+                  rules: [{required: true, message: this.i18n._t("Please enter your password!")}],
                 })(
                   <PasswordStrength
+                    required
                     fullWidth={true}
                     hintText={this.i18n._t("Password")}
                     className={"input-login"}
                     type="password"
+                    errorText={this.state.errorPassword  ? this.i18n._t("Please enter your password!") : false}
                   />
                 )}
               </FormItem>
-              <FormItem>
+              <FormItem className={"hide-ant-error"}>
                 {getFieldDecorator("mobile", {
                   rules: [{required: true, message: this.i18n._t("Please input your mobile number!")}],
                 })(
-                  <PhoneInput/>
+                  <PhoneInput
+                      className={this.state.errorMobile ? "mb-2" : ""}
+                      checkEmpty={(isEmpty) => this.setState({errorMobile: isEmpty })}
+                      errorText={this.state.errorMobile ? this.i18n._t("Please input your mobile number!") as string : false }
+                  />
                 )}
               </FormItem>
-              <FormItem>
-                <Translate value={"Is corporation?"}/>
+              <FormItem className={"corporation-wrapper"}>
+                <span className={"corporation-text"}><Translate value={"Is corporation?"}/></span>
                 <Switch className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
-                        onChange={(e) => (this.setState({isCorporation: !this.state.isCorporation}))}/>
+                        onChange={(e) => (this.setState({isCorporation: !this.state.isCorporation}))}
+                        size={"small"}
+                />
               </FormItem>
               {this.state.isCorporation &&
               <FormItem>
@@ -318,7 +336,7 @@ class RegisterForm extends React.Component<IProps, IState> {
                   type="submit"
                   label={<Translate value="Next Step"/>}
                   primary={true}
-                  className="button-full-width"
+                  className="button-full-width button-login-next-step"
                   icon={<Icon className={(CONFIG.DIR === "rtl") ? "btn-arrow-rtl" : "btn-arrow"}
                               name={"cif-arrowleft-4"}/>}
                 />
@@ -359,7 +377,7 @@ class RegisterForm extends React.Component<IProps, IState> {
                   type="submit"
                   label={<Translate value="verify"/>}
                   primary={true}
-                  className="button-full-width"
+                  className="button-full-width button-login-next-step"
                 />
               </FormItem>
             </form>

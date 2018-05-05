@@ -29,6 +29,7 @@ interface IState {
   email: string;
   disableLoginBtn: boolean;
   disablePassBtn: boolean;
+  errorText: string | null;
 }
 
 
@@ -44,6 +45,7 @@ class CheckMail extends React.Component<IProps, IState> {
       email,
       disableLoginBtn: email ? false : true,
       disablePassBtn: email ? false : true,
+      errorText: null,
     };
   }
 
@@ -55,7 +57,17 @@ class CheckMail extends React.Component<IProps, IState> {
 
   public handleBtn() {
     this.props.form.validateFields((err, values) => {
-      (err) ? this.setState({disableLoginBtn: true}) : this.setState({disableLoginBtn: false});
+        if (err) {
+            this.setState({
+                disableLoginBtn: true,
+                errorText: this.i18n._t("Please enter a valid email!") as string
+            });
+        } else {
+            this.setState({
+                disableLoginBtn: false,
+                errorText: null
+            });
+        }
     });
   }
 
@@ -109,10 +121,10 @@ class CheckMail extends React.Component<IProps, IState> {
               <Translate value="Enter your email address"/>
             </h5>
             <form onSubmit={this.submitMail.bind(this)}>
-              <FormItem className="login-input">
+              <FormItem className="login-input hide-ant-error">
                 {getFieldDecorator("email", {
                   initialValue: this.state.email,
-                  rules: [{required: true, type: "email", message: this.i18n._t("Please input a valid email!")}],
+                  rules: [{required: true, type: "email", message: this.i18n._t("Please enter a valid email!")}],
                 })(
                   <TextField
                     className={"login-textfield"}
