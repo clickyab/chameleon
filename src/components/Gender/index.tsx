@@ -44,22 +44,12 @@ componentWillReceiveProps(nextProps: IProps) {
           <div className={`gender-item ${this.state.value === "female" ? "active" : ""}`} onClick={() => {
             this.onClick("female");
           }}>
-            {(this.state.value === "female") &&
-            <Icon name={"cif-womenhair-active"}/>
-            }
-            {(this.state.value !== "female") &&
             <Icon name={"cif-womenhair-normal"}/>
-            }
           </div>
           <div className={`gender-item ${this.state.value === "male" ? "active" : ""}`} onClick={() => {
             this.onClick("male");
           }}>
-            {(this.state.value === "male") &&
-            <Icon name={"cif-menhair-active"}/>
-            }
-            {(this.state.value !== "male") &&
             <Icon name={"cif-menhair-normal"}/>
-            }
           </div>
         </div>
       </div>
