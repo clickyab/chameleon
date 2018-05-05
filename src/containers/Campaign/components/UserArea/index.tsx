@@ -18,6 +18,7 @@ import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 import FlowUpload from "../../../../services/Upload/flowUpload";
 import {UPLOAD_MODULES} from "../../../Campaign/components/UploadFile";
+import FinancialVerify from "../../../User/containers/FinancialVerify";
 
 const TabPane = Tabs.TabPane;
 
@@ -47,6 +48,7 @@ interface IState {
     user: UserResponseLoginOKAccount;
     uploadProgress: number;
     activeTab: string;
+    showPaymentResult: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -60,6 +62,7 @@ class UserArea extends React.Component<IProps, IState> {
             user: props.user,
             uploadProgress: null,
             activeTab: props.activeTab ? props.activeTab : "Profile",
+            showPaymentResult: false,
         };
     }
 
@@ -75,7 +78,7 @@ class UserArea extends React.Component<IProps, IState> {
     }
 
     private handleTabUrl(url: string): void {
-        let splitUrl = url.split("/");
+        let splitUrl = url.split("?")[0].split("/");
         let tempKey: string;
         switch (splitUrl[splitUrl.length - 1]) {
             case "profile":
@@ -86,6 +89,12 @@ class UserArea extends React.Component<IProps, IState> {
                 break;
             case "charge":
                 tempKey = "charge";
+                break;
+            case "financial-verify":
+                this.setState({
+                    showPaymentResult: true,
+                });
+                tempKey = "financial-verify";
                 break;
             case "logout":
                 tempKey = "logout";
@@ -182,6 +191,11 @@ class UserArea extends React.Component<IProps, IState> {
                             <TabPane tab={this.i18n._t("Charge Account")} key="charge" closable={false}>
                                 <div>
                                     <PrivateRoute path={`${match.url}/charge`} component={ChargeContainer}/>
+                                </div>
+                            </TabPane>
+                            <TabPane disabled={!this.state.showPaymentResult} tab={this.i18n._t("Payment Result")} key="financial-verify" closable={false}>
+                                <div>
+                                    <PrivateRoute path={this.props.match.path} component={FinancialVerify}/>
                                 </div>
                             </TabPane>
                         </Tabs>
