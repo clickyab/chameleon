@@ -36,7 +36,7 @@ interface IProps {
   */
   checkEmpty?: (value: boolean) => void;
 
-  maxLenght?: number;
+  maxLength?: number;
 
   className?: string;
 }
@@ -126,6 +126,9 @@ export default class PhoneInput extends React.Component<IProps, IState> {
    * @param phone
    */
   handleChangePhone(event, phone) {
+    if (this.props.maxLength && phone.length > this.props.maxLength){
+        return;
+    }
     this.setState({phone});
     this.onChangePhone(phone);
   }
@@ -179,11 +182,11 @@ export default class PhoneInput extends React.Component<IProps, IState> {
         <div className="phone-text-field">
           <TextField
             hintText={this.i18n._t("Mobile Phone Number").toString()}
-            defaultValue={this.state.phone}
             errorText={this.state.errorText ? this.state.errorText : null}
             type="number"
             onChange={this.handleChangePhone.bind(this)}
             fullWidth={true}
+            value={this.state.phone}
             className={"spin-btn-hide"}
           />
         </div>

@@ -272,7 +272,7 @@ class RegisterForm extends React.Component<IProps, IState> {
                   </FormItem>
                 </Col>
               </Row>
-              <FormItem className={"hide-ant-error"}>
+              <FormItem className={"hide-ant-error remove-disable-style"}>
                 {getFieldDecorator("email", {
                   initialValue: this.state.email,
                   rules: [{required: true, message: this.i18n._t("Please enter your email!")}],
@@ -305,6 +305,7 @@ class RegisterForm extends React.Component<IProps, IState> {
                   rules: [{required: true, message: this.i18n._t("Please input your mobile number!")}],
                 })(
                   <PhoneInput
+                      maxLength={11}
                       className={this.state.errorMobile ? "mb-2" : ""}
                       checkEmpty={(isEmpty) => this.setState({errorMobile: isEmpty })}
                       errorText={this.state.errorMobile ? this.i18n._t("Please input your mobile number!") as string : false }
@@ -312,11 +313,11 @@ class RegisterForm extends React.Component<IProps, IState> {
                 )}
               </FormItem>
               <FormItem className={"corporation-wrapper"}>
-                <span className={"corporation-text"}><Translate value={"Is corporation?"}/></span>
                 <Switch className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
                         onChange={(e) => (this.setState({isCorporation: !this.state.isCorporation}))}
                         size={"small"}
                 />
+                <span className={"corporation-text"}><Translate value={"Is corporation?"}/></span>
               </FormItem>
               {this.state.isCorporation &&
               <FormItem>
