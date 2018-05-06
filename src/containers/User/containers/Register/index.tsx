@@ -6,7 +6,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Card, Col, Form, message, notification, Row, Switch} from "antd";
+import {Card, Col, Form, notification, Row, Switch} from "antd";
 import {RaisedButton, TextField} from "material-ui";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
@@ -346,43 +346,53 @@ class RegisterForm extends React.Component<IProps, IState> {
           </Card>
           }
           {this.state.step === STEPS.VERIFICATION &&
-          <Card className="login-box" noHovering>
-            <h5 className="text-center">
-              {this.state.email}
-            </h5>
-            <div className="text-center mb-3">
-              <Translate value={"Check your email for verification code that has been sent to your email."}/>
-            </div>
-            <form onSubmit={this.submitVerification.bind(this)}>
-              <FormItem>
-                {getFieldDecorator("number", {
-                  rules: [{required: true, message: this.i18n._t("Please input your verification code!")}],
-                })(
-                  <TextField
-                    fullWidth={true}
-                    type="number"
-                    hintText={this.i18n._t("verification code")}
-                    autoFocus={true}
-                    className="spin-btn-hide placeholder-center"
-                  />
-                )}
-              </FormItem>
-              <Row className="text-center mb-3">
-                <Resend seconds={120}
-                        onClick={this.resendVerificationCode.bind(this)}
-                        className={"verify-link"}
-                />
-              </Row>
-              <FormItem>
-                <RaisedButton
-                  type="submit"
-                  label={<Translate value="verify"/>}
-                  primary={true}
-                  className="button-full-width button-login-next-step"
-                />
-              </FormItem>
-            </form>
-          </Card>
+          <div>
+              <a onClick={() => {
+                  this.setState({step: STEPS.REGISTER});
+              }}>
+                  <div className={"back-text-wrapper"}>
+                      <h6 className="back-button">{this.i18n._t("Back")}</h6>
+                      <Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>
+                  </div>
+              </a>
+              <Card className="login-box" noHovering>
+                  <h5 className="text-center">
+                      {this.state.email}
+                  </h5>
+                  <div className="text-center mb-3">
+                      <Translate value={"Check your email for verification code that has been sent to your email."}/>
+                  </div>
+                  <form onSubmit={this.submitVerification.bind(this)}>
+                      <FormItem>
+                          {getFieldDecorator("number", {
+                              rules: [{required: true, message: this.i18n._t("Please input your verification code!")}],
+                          })(
+                              <TextField
+                                  fullWidth={true}
+                                  type="number"
+                                  hintText={this.i18n._t("verification code")}
+                                  autoFocus={true}
+                                  className="spin-btn-hide placeholder-center input-text-center"
+                              />
+                          )}
+                      </FormItem>
+                      <Row className="text-center mb-3">
+                          <Resend seconds={120}
+                                  onClick={this.resendVerificationCode.bind(this)}
+                                  className={"verify-link"}
+                          />
+                      </Row>
+                      <FormItem>
+                          <RaisedButton
+                              type="submit"
+                              label={<Translate value="verify"/>}
+                              primary={true}
+                              className="button-full-width button-login-next-step"
+                          />
+                      </FormItem>
+                  </form>
+              </Card>
+          </div>
           }
         </div>
       </Row>

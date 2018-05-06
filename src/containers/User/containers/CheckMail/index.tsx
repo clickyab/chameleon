@@ -29,7 +29,6 @@ interface IState {
   email: string;
   disableLoginBtn: boolean;
   disablePassBtn: boolean;
-  errorText: string | null;
 }
 
 
@@ -45,7 +44,6 @@ class CheckMail extends React.Component<IProps, IState> {
       email,
       disableLoginBtn: email ? false : true,
       disablePassBtn: email ? false : true,
-      errorText: null,
     };
   }
 
@@ -60,12 +58,10 @@ class CheckMail extends React.Component<IProps, IState> {
         if (err) {
             this.setState({
                 disableLoginBtn: true,
-                errorText: this.i18n._t("Please enter a valid email!") as string
             });
         } else {
             this.setState({
                 disableLoginBtn: false,
-                errorText: null
             });
         }
     });

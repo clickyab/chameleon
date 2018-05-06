@@ -13,6 +13,8 @@ import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import {RouteComponentProps, withRouter} from "react-router";
 import AAA from "../../../../services/AAA/index";
 import CONFIG from "../../../../constants/config";
+import "./style.less";
+import {Link} from "react-router-dom";
 
 const FormItem = Form.Item;
 
@@ -32,6 +34,7 @@ interface IState {
   email: string | null;
   confirmDirty: boolean;
   token: string | null;
+  disableRecoverBtn: boolean;
 }
 
 /**
@@ -54,11 +57,13 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       step: STEPS.RECOVERY,
       email: null,
       confirmDirty: false,
-      token: null
+      token: null,
+      disableRecoverBtn: true,
     };
 
     // bind form function in constructor
     this.submitForm = this.submitForm.bind(this);
+    this.handleRecoverBtn = this.handleRecoverBtn.bind(this);
   }
 
   // translation
@@ -102,7 +107,11 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       }).then(data => {
         this.setState({step: STEPS.VERIFY});
       }).catch(err => {
-        message.error(err.error.text);
+          notification.error({
+              message: this.i18n._t("Something went wrong"),
+              className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+              description: err.status === 400 ? this.i18n._t(err.text).toString() : null ,
+          });
       });
     });
   }
@@ -217,6 +226,19 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
       callback();
     }
   }
+    public handleRecoverBtn() {
+        this.props.form.validateFields((err, values) => {
+            if (err && err.email) {
+                this.setState({
+                    disableRecoverBtn: true,
+                });
+            } else {
+                this.setState({
+                    disableRecoverBtn: false,
+                });
+            }
+        });
+    }
 
   public render() {
     const {getFieldDecorator} = this.props.form;
@@ -226,10 +248,17 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
           <Row className="logo-wrapper" align="middle" justify="center">
             <Icon className={"login-logo"} name={"cif-cylogo-without-typo"}/>
           </Row>
+            <a onClick={() => {
+                this.props.history.push("/");
+            }}>
+                <div className={"back-text-wrapper"}>
+                    <h6 className="back-button">{this.i18n._t("Back")}</h6>
+                    <Icon name={"cif-arrowleft-4"} className={"back-arrow"}/>
+                </div>
+            </a>
           <Card className="login-box" noHovering>
             <h5 className="text-center login-box-title">
               {this.state.step === STEPS.RECOVERY && this.i18n._t("Please enter your email address")}
-              {this.state.step === STEPS.VERIFY && this.i18n._t("Enter your verify code")}
               {this.state.step === STEPS.NEWPASSWORD && this.i18n._t("Enter new password")}
             </h5>
             <Form onSubmit={this.submitForm}>
@@ -249,25 +278,18 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                     fullWidth={true}
                     hintText={this.i18n._t("Email")}
                     autoFocus={true}
+                    onKeyUp={this.handleRecoverBtn}
                   />
                 )}
               </FormItem>
               }
               {this.state.step === STEPS.VERIFY &&
-              <FormItem className="login-input">
-                {getFieldDecorator("verifyCode", {
-                  rules: [{
-                    required: true, message: "Please input your verify code!"
-                  }],
-                })(
-                  <TextField
-                    fullWidth={true}
-                    floatingLabelText="verify code"
-                    hintText={"123456789"}
-                    autoFocus={true}
-                  />
-                )}
-              </FormItem>
+              <div className="email-sent-card">
+                  <div>
+                  <Icon name={"cif-verifymail"} className={"verify-email-icon"}/>
+                  </div>
+                  <span className={"recover-password-message"}><Translate value={"An email of change password link has been sent to you, this link is only valid for 48 hours."}/></span>
+              </div>
               }
               {this.state.step === STEPS.NEWPASSWORD &&
               <div>
@@ -308,35 +330,35 @@ class PublicRecoverPassword extends React.Component<IProp, IState> {
                 {this.state.step === STEPS.RECOVERY &&
                 <RaisedButton
                   type="submit"
+                  disabled={this.state.disableRecoverBtn}
                   label={<Translate value="Send recover password"/>}
                   primary={true}
-                  className="button-full-width"
+                  className="button-full-width button-login-next-step"
                   icon={<Icon name="arrow"/>}
                 />
-                }
-                {this.state.step === STEPS.VERIFY &&
-                <div>
-                  <Resend className={"verify-link"} seconds={120} email={this.state.email}/>
-                  <RaisedButton
-                    type="submit"
-                    label={<Translate value="Verify your code"/>}
-                    primary={true}
-                    className="button-full-width"
-                  />
-                </div>
                 }
                 {this.state.step === STEPS.NEWPASSWORD &&
                 <RaisedButton
                   type="submit"
                   label={<Translate value="Change password"/>}
                   primary={true}
-                  className="button-full-width"
+                  className="button-full-width button-login-next-step"
                   icon={<Icon name="arrow"/>}
                 />
                 }
               </FormItem>
             </Form>
           </Card>
+            <Row className="text-center forgot-password">
+                <p>
+                    <Translate value="Do you have an account?"/>
+                </p>
+                <h5>
+                    <Link to={`/`}>
+                        <Translate value="Sign in"/>
+                    </Link>
+                </h5>
+            </Row>
         </div>
       </Row>
     );

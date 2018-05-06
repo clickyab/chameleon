@@ -112,7 +112,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           notification.error({
             message: this.i18n._t("Login Failed").toString(),
             className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-            description: this.i18n._t(res.error.text).toString(),
+            description: this.i18n._t(res.text).toString(),
           });
 
         });
