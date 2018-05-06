@@ -57,7 +57,7 @@ export default class PrivateLayout extends React.Component<IProps, IState> {
                   name={this.state.collapsed ? "cif-opennav" : "cif-closenav"}
                   onClick={this.toggle}
               />
-            <PrivateBreadcrumb/>
+            {/*<PrivateBreadcrumb/>*/}
             <UserAction/>
           </Header>
           <Content className="content">

@@ -4,6 +4,7 @@ import {Badge, Button, Layout, Menu} from "antd";
 import I18n from "../../../services/i18n/index";
 import Icon from "../../../components/Icon/index";
 import CONFIG from "../../../constants/config";
+import {Link} from "react-router-dom";
 
 
 const {Sider}: any = Layout;
@@ -45,9 +46,11 @@ class SidebarMenu extends React.Component<IProps, IState> {
   public render() {
     return (
       <div dir={CONFIG.DIR} className={this.props.collapsed ? "" : "menu-list"}>
-        <Icon className="logo-sidebar" name={"cif-cylogo-without-typo"}/>
+        <a  className={"clickyab-logo-link"} onClick={() => this.sideBarRouting("dashboard")}>
+           <Icon className="logo-sidebar" name={"cif-cylogo-without-typo"}/>
+        </a>
         <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]}
-              onClick={e => this.sideBarRouting(e.key)}>
+              onClick={e => this.sideBarRouting(e.key)} >
           <Menu.Item key="createCampaign" className="campaignButton">
             <Button className="ghostButton" size="large" ghost>
                 <Icon className="create-campaign-icon" name="cif-plusbold"/>

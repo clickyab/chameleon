@@ -31,7 +31,7 @@
 }
 
 .trigger {
-  font-size: 1.5em;
+  font-size: 19px;
   color: #969BA1;
   cursor: pointer;
   position: relative;
@@ -144,7 +144,7 @@
 }
 
 .logo-sidebar {
-  font-size: 25px;
+  font-size: 27px;
   color: @primary-color;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -155,7 +155,8 @@
 // Align btn text with Icon
 .create-campaign-text {
   position: relative;
-  top: -2px;
+  font-size: 12px;
+  top:-2px;
 }
 
 .ant-menu-inline-collapsed {
@@ -205,6 +206,7 @@
 }
 
 .ant-layout-sider {
+  background: #FEFEFE !important;
   .campaignButton {
     &:before {
       content: unset;
@@ -213,6 +215,8 @@
     .ghostButton {
       i {
         font-size: 12px;
+        position: relative;
+        top:2px;
       }
     }
   }
@@ -264,7 +268,8 @@
   margin-bottom: 20px !important;
   .ghostButton {
     padding: 0;
-    height: 28px !important;
+    height: 26px !important;
+    width: 26px !important;
     i {
       position: relative;
       top: 2px;
@@ -367,6 +372,25 @@
   .ant-col-offset-10 {
     margin-left: 0;
   }
+}
+
+.ant-tooltip-inner {
+    .ghostButton {
+        padding: 0;
+        border: none !important;
+        height: 20px !important;
+        color: #FFF !important;
+        font-size: 12px;
+        font-weight: 400;
+    }
+}
+.clickyab-logo-link{
+    cursor: unset;
+    .logo-sidebar{
+        &:before {
+            cursor: pointer;
+        }
+    }
 }
 
 .dir-rtl {
