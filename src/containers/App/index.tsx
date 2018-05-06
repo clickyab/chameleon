@@ -34,7 +34,7 @@ interface IState {
 const muiTheme = getMuiTheme({
   fontFamily: "IRANSans",
   palette: {
-    primary1Color: "#41b6e6",
+    primary1Color: "#00ABFB",
     // primary2Color: green700,
     // primary3Color: green100,
     shadowColor: "#FFF"
