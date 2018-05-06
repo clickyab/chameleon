@@ -56,19 +56,20 @@ componentWillReceiveProps(props: IProps) {
     }
    render() {
         return(
-            <div dir={CONFIG.DIR}
-                 className="user-action"
-                 onMouseEnter={() => {this.setState({popoverOpen: true}); }}
+            <div dir={CONFIG.DIR} className="user-action"
                  onMouseLeave={() => {this.setState({popoverOpen: false}); }}
             >
-                <div className={"user-action-icon-wrapper"}>
+                <div className={"user-action-icon-wrapper"}
+                     onMouseEnter={() => {this.setState({popoverOpen: false}); }}>
                     <div className={"user-action-notification"}>
                         <Icon name={"cif-communication"} className={"user-action-icon"}/>
                         <Badge className={"user-action-badge"} dot />
                     </div>
-                    <Avatar className={"flex"} user={this.props.user} radius={15} disableProgress={true}/>
                 </div>
-                <div className="title">
+                <div className="user-action-title user-action-avatar-title"
+                     onMouseEnter={() => {this.setState({popoverOpen: true}); }}
+                >
+                    <Avatar className={"flex"} user={this.props.user} radius={10} disableProgress={true}/>
                     {(this.state.user.first_name + " " + this.state.user.last_name)}
                 </div>
                 {this.state.popoverOpen  &&

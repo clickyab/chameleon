@@ -4,9 +4,19 @@
     display: flex;
     margin-right: auto;
     align-items: center;
+    &-title{
+        color: #2E3246;
+        font-weight: 500;
+    }
+    &-avatar-title{
+        display: flex;
+        align-items: center;
+        .avatar{
+            margin: 0 5px;
+        }
+    }
     .user-action-icon-wrapper {
         display: flex;
-        margin: 0 5px;
         position: relative;
         cursor: pointer;
         align-items: center;
@@ -21,6 +31,7 @@
                 position: absolute;
                 left: 15px;
                 top: 5px;
+                transform: translateX(-10%);
                 sup {
                     background: @primary-color;
                     padding: 0;
@@ -41,9 +52,6 @@
     .user-action-popup {
         position: relative;
         top: 10px;
-    }
-    .flex {
-        display: flex !important;
     }
 }
 

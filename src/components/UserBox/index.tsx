@@ -37,7 +37,7 @@ class UserBox extends React.Component<IProps, IState> {
             <div className={"userbox-wrapper"}>
                 <div className={"userbox-container"}>
                     <div className={`userbox-column balance border-${CONFIG.DIR === "rtl" ? "left" : "right"} `}>
-                        <div>
+                        <div className={"balance"}>
                             <Translate value={"Your balance"}/>
                             <div className="balance-amount">{currencyFormatter(this.state.user.balance) + " "}<Translate value={"Toman"}/></div>
                         </div>
