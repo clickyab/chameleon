@@ -4,22 +4,25 @@ import {Badge, Button, Layout, Menu} from "antd";
 import I18n from "../../../services/i18n/index";
 import Icon from "../../../components/Icon/index";
 import CONFIG from "../../../constants/config";
-import {Link} from "react-router-dom";
 
 
 const {Sider}: any = Layout;
 
 interface IProps {
   collapsed: boolean;
-  history?: Array<Object>;
+  history?: any;
 }
 
 interface IState {
+    selectedKey: string;
 }
 
 class SidebarMenu extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    this.state = {
+        selectedKey: "dashborad",
+    };
   }
 
   private i18n = I18n.getInstance();
@@ -29,27 +32,38 @@ class SidebarMenu extends React.Component<IProps, IState> {
       case "createCampaign":
         return this.props.history.push("/Campaign/type");
       case "dashboard":
+        this.setState({selectedKey: key});
         return this.props.history.push("/");
       case "campaigns":
+        this.setState({selectedKey: key});
         return this.props.history.push("/my/campaign/list");
       case "media":
+        this.setState({selectedKey: key});
         return this.props.history.push("/media");
       case "explore":
+        this.setState({selectedKey: key});
         return this.props.history.push("/explore");
       case "reports":
-        return this.props.history.push("/report");
+        this.setState({selectedKey: key});
+        return this.props.history.push("/reports");
       case "support":
+        this.setState({selectedKey: key});
         return this.props.history.push("/support");
     }
   }
 
+  componentDidMount() {
+      let path = this.props.history.location.pathname.split("/");
+      let currentPath = path[path.length - 1];
+      (currentPath) ? this.sideBarRouting(currentPath) : this.sideBarRouting("dashboard");
+  }
   public render() {
     return (
       <div dir={CONFIG.DIR} className={this.props.collapsed ? "" : "menu-list"}>
         <a  className={"clickyab-logo-link"} onClick={() => this.sideBarRouting("dashboard")}>
            <Icon className="logo-sidebar" name={"cif-cylogo-without-typo"}/>
         </a>
-        <Menu theme="dark" mode="inline" className="sidebar" defaultSelectedKeys={["1"]}
+        <Menu theme="dark" mode="inline" className="sidebar" selectedKeys={[this.state.selectedKey]} defaultSelectedKeys={[this.state.selectedKey]}
               onClick={e => this.sideBarRouting(e.key)} >
           <Menu.Item key="createCampaign" className="campaignButton">
             <Button className="ghostButton" size="large" ghost>
