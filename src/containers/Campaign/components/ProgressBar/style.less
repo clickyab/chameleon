@@ -1,107 +1,152 @@
 @import "../../../App/theme";
 
 .progress-bar {
-  height: 100px;
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-bottom: 30px;
-  div{
-    div{
-        > span {
-          border-width: 2px !important;
+    height: 100px;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    div {
+        div {
+            > span {
+                border-width: 2px !important;
+            }
         }
     }
-  }
-  button{
-    background-color: transparent !important;
-  }
-  button{
-    > span {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      span{
-        padding-right: 0 !important;
-      }
-      > span:last-child {    //Positioning text on bottom of Bullet
-        position: absolute;
-        top: 50px;
-        left: 0;
-        transform:translateX(-25%);
-        white-space: nowrap ;
-      }
+    button {
+        background-color: transparent !important;
     }
-  }
-  span{
-    font-size:14px;
-  }
-  text{
-    fill: @step-inactive-text;
-  }
-  circle {
-    display: none;                         //Disable showing all Bullets (only active and completed state Should have bullet)
-  }
-  .active-step {
-    svg {
-      height: 28px;
-      width:28px;
-      fill: @step-active-color !important;
-      color: @step-active-color !important;
+    button {
+        > span {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            span {
+                padding-right: 0 !important;
+            }
+            > span:last-child { //Positioning text on bottom of Bullet
+                position: absolute;
+                top: 55px;
+                left: 0;
+                transform: translateX(-25%);
+                white-space: nowrap;
+            }
+        }
+    }
+    span {
+        font-size: 14px;
+        font-weight: 400;
+        margin: 0 3px;
+        background: #FFF;
+    }
+    text {
+        fill: @step-inactive-text;
     }
     circle {
-      display: block;
+        display: none; //Disable showing all Bullets (only active and completed state Should have bullet)
     }
-    text{
-      fill:@step-active-text;
-    }
-  }
-  .complete-step{
-    circle{
-      display: block;
-    }
-    span{
-      color: @primary-color;
-    }
-     + div {
-       > span{
-         border-color : @primary-color !important;
-         transition: all 0.2s ease-in;
-       }
-     }
-  }
-  @media screen and (min-width: 1400px) {
-    svg{
-      height: @step-wizard-size !important;
-      width: @step-wizard-size !important;
-    }
-  }
-  @media screen and (max-width: 1400px) {
-    text {
-      font-size: 12px;
-    }
-
-    span {
-      font-size: 12px;
-    }
-
     svg {
-      height: @step-wizard-size - 6  !important;
-      width: @step-wizard-size - 6 !important;
+        height: @step-wizard-size !important;
+        width: @step-wizard-size  !important;
+        border:1px solid #EBECF2;
+        border-radius: 100px;
+        background: #FFF;
     }
-  }
-
-  @media screen and (max-width: 1250px) {
-    span {
-      font-size: 10px;
+    .active-step {
+        svg {
+            background: #FFF;
+            border:none;
+            fill: @step-active-color !important;
+            color: @step-active-color !important;
+            circle {
+                r: 12 !important;
+            }
+            text{
+                fill: #2E3246;
+            }
+        }
+        circle {
+            display: block;
+        }
+        text {
+            fill: @step-active-text;
+        }
+        span {
+            color: #2E3246;
+        }
     }
-
-    svg {
-      height: @step-wizard-size - 10 !important;
-      width: @step-wizard-size - 10 !important;
+    .complete-step {
+        svg {
+            background: #FFF;
+            border:none;
+        }
+        span {
+            color: @primary-color;
+        }
+        + div {
+            > span {
+                border-color: @primary-color !important;
+                transition: all 0.2s ease-in;
+            }
+        }
     }
-  }
-  div {
-    > div {
-      width: auto;
-    }
-  }
 }
+    @media screen and (min-width: 1400px) {
+        text {
+            font-size: 16px !important;
+            margin: 0 5px;
+        }
+        .progress-bar {
+            .complete-step, .active-step {
+                svg {
+                    height: @step-wizard-size + 4 !important;
+                    width: @step-wizard-size + 4 !important;
+                    background: #FFF;
+                    circle{
+                        r:14px !important;
+                    }
+                    text {
+                        font-size: 12px !important;
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 1250px) {
+            text {
+                font-size: 14px;
+            }
+
+            span {
+                font-size: 14px;
+            }
+            .progress-bar {
+                .complete-step, .active-step {
+                    svg {
+                        height: @step-wizard-size - 6 !important;
+                        width: @step-wizard-size - 6 !important;
+                        background: red;
+                        margin: 0 2px;
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            span {
+                font-size: 12px;
+            }
+            .progress-bar {
+                .complete-step, .active-step {
+                    svg {
+                        height: @step-wizard-size - 15 !important;
+                        width: @step-wizard-size - 15 !important;
+                        background: #FFF;
+                    }
+                }
+            }
+            div {
+                > div {
+                    width: auto;
+                }
+            }
+        }
+    }
