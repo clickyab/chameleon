@@ -4,7 +4,7 @@
     height: 100px;
     margin-left: 25px;
     margin-right: 25px;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
     div {
         div {
             > span {
@@ -72,6 +72,23 @@
         span {
             color: #2E3246;
         }
+        .final-step{
+            span {
+                color: #66C395;
+               > span:first-child {
+                    border-radius: 100px;
+                    background: #66C395;
+                    height: 28px;
+                    width: 28px;
+                    i {
+                        position: relative;
+                        top: 5px;
+                        left: 1px;
+                        color: #FFF;
+                    }
+                }
+            }
+        }
     }
     .complete-step {
         svg {
@@ -85,6 +102,21 @@
             > span {
                 border-color: @primary-color !important;
                 transition: all 0.2s ease-in;
+            }
+        }
+    }
+    .final-step{
+        span > span:first-child {
+            border: 1px solid #EBECF2;
+            border-radius: 100px;
+            background: #FFF;
+            height: 28px;
+            width: 28px;
+            i{
+                position: relative;
+                top:5px;
+                left:1px;
+                color: #B6BBC2;
             }
         }
     }

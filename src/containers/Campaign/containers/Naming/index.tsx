@@ -312,7 +312,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle">
-                        <Col span={4}>
+                        <Col span={4} className="form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Name"}/></label>
                         </Col>
@@ -338,7 +338,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle" className={"mb-3"}>
-                        <Col span={4}>
+                        <Col span={4} className="form-label">
                             <Tooltip/>
                             <label><Translate value={"TLD Domain"}/></label>
                         </Col>
@@ -363,7 +363,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex">
-                        <Col span={4} className="title-with-radio">
+                        <Col span={4} className="title-with-radio form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Date"}/></label>
                         </Col>
@@ -423,7 +423,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex">
-                        <Col span={4} className="title-with-radio">
+                        <Col span={4} className="title-with-radio form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Time"}/></label>
                         </Col>

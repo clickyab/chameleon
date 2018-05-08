@@ -13,6 +13,7 @@
   box-shadow: 0 0 0 0 transparent;
   transition: all @animation-duration-fast ease-out ;
   margin: 0 20px;
+  border: 1px solid transparent;
   &.active {
     position: relative;
     border: 1px solid @primary-color;
@@ -29,22 +30,27 @@
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 0 25px 25px 0;
+      border-width: 0 30px 30px 0;
       border-color: transparent @primary-color transparent transparent;
     }
     &:after{
       content: "\e012";
       font-family: clickyabdashboard !Important;
-      font-size: 10px;
+      font-size: 11px;
       color: #FFF;
       position: absolute;
-      top:1px;
-      right:3px;
+      top:2px;
+      right:4px;
     }
     .hint-link{
       transition: all @animation-duration-fast ease-in ;
       opacity: 1;
-      text-decoration: underline;
+      font-weight: 400;
+      border-bottom: 1px solid @primary-color;
+      display: inline-block;
+      :active{
+        text-decoration: none;
+      }
     }
     &:hover{
       box-shadow: 2px 10px 15px 0 rgba(65,182,320,.1) ;
@@ -60,7 +66,8 @@
     .hint-link{
       transition: all @animation-duration-fast ease-in ;
       opacity: 1;
-      text-decoration: underline;
+      display: inline-block;
+      font-weight: 400;
     }
   }
   &.device-type{
@@ -109,9 +116,9 @@
 }
 .arrow-next-step {
   color: white !important;
-  font-size: 9px;
+  font-size: 15px;
   position: relative;
-  top:2px;
+  top:3px;
   margin-right: 10px;
 }
 
@@ -124,6 +131,20 @@
 .campaign-icon {
   color: #B6BBC2;
   font-size: 70px;
+  display: block;
+  height: 110px;
+  + h6{
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+    &.cif-browser-campaign-outline{
+        font-size: 87px;
+        &:before{
+            top: -13px;
+            position: relative;
+            display: block;
+        }
+    }
 }
 
 // Align back arrow for back-btn on campaigns

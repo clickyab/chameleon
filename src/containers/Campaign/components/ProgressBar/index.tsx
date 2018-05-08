@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import {StepButton, Stepper} from "material-ui/Stepper";
+import {StepButton, StepLabel, Stepper} from "material-ui/Stepper";
 import {Row} from "antd";
 import STEPS from "../../steps";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -20,6 +20,7 @@ import Step from "./stepComponent";
 import "./style.less";
 import {setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import I18n from "../../../../services/i18n/index";
+import Icon from "../../../../components/Icon";
 
 /**
  * @interface
@@ -175,9 +176,11 @@ private checkCurrentCampaign(): boolean {
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH)}
+          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) + " final-step"}
                 active={stepIndex === STEPS.CHECK_PUBLISH}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}
+                        icon={<Icon name={"cif-final-flag"}/>}
+            >
               <Translate value="Check and Publish"/>
             </StepButton>
           </Step>
