@@ -207,7 +207,7 @@ class NamingComponent extends React.Component <IProps, IState> {
             let campaign: ControllersCreateCampaignPayload = this.state.currentCampaign as ControllersCreateCampaignPayload;
             campaign.title = values.name;
             campaign.start_at = values.start_at;
-            campaign.tld = values.domain.replace("https://", "").replace("http://", "");
+            campaign.tld = values.domain;
 
             if (this.state.allDay) {
                 campaign.end_at = null;
@@ -295,7 +295,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     </Col>
                 </Row>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
-                    <Row type="flex" align="middle">
+                    <Row type="flex" align="middle" className="mb-2">
                         <Col span={4}>
                             <Tooltip/>
                             <label><Translate value={"Status"}/></label>
@@ -356,7 +356,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                     }],
                                 })(
                                     <Input
-                                        placeholder={this.i18n._t("http://domain.com OR https://domain.com") as string}
+                                        placeholder={this.i18n._t("exp: mydomain.com") as string}
                                         className="input-campaign dir-ltr"
                                     />
                                 )}

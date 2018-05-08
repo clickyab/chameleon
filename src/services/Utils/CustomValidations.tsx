@@ -84,11 +84,11 @@ export const rangeCheck = (rule, value , callback) => {
         callback("error");
         return false;
     }
-    throw new Error("minimum or maximum should be defined for rangeCheck validation")
+    throw new Error("minimum or maximum should be defined for rangeCheck validation");
 };
 
 export const isValidDomain = (rule, value , callback) => {
-    let domainRegx = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gi;
+    let domainRegx = /^[a-z0-9\.\-]+$/gi;
     if (domainRegx.test(value)) {
         callback();
     } else {
