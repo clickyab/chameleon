@@ -25,6 +25,7 @@ import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import StickyFooter from "../../components/StickyFooter";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import moment = require("moment");
+import {isValidDomain} from "../../../../services/Utils/CustomValidations";
 
 const FormItem = Form.Item;
 const Option  = Select.Option;
@@ -294,7 +295,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                     </Col>
                 </Row>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
-                    <Row type="flex" align="middle">
+                    <Row type="flex" align="middle" className="mb-2">
                         <Col span={4}>
                             <Tooltip/>
                             <label><Translate value={"Status"}/></label>
@@ -312,7 +313,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle">
-                        <Col span={4}>
+                        <Col span={4} className="form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Name"}/></label>
                         </Col>
@@ -338,7 +339,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle" className={"mb-3"}>
-                        <Col span={4}>
+                        <Col span={4} className="form-label">
                             <Tooltip/>
                             <label><Translate value={"TLD Domain"}/></label>
                         </Col>
@@ -347,12 +348,15 @@ class NamingComponent extends React.Component <IProps, IState> {
                                 {getFieldDecorator("domain", {
                                     initialValue: this.state.currentCampaign.tld,
                                     rules: [{
+                                        validator: isValidDomain,
+                                        message: this.i18n._t("Domain is not valid")
+                                    }, {
                                         required: true,
                                         message: this.i18n._t("Please input your TLD Domain")
                                     }],
                                 })(
                                     <Input
-                                        placeholder={this.i18n._t("http://domain.com OR https://domain.com") as string}
+                                        placeholder={this.i18n._t("exp: mydomain.com") as string}
                                         className="input-campaign dir-ltr"
                                     />
                                 )}
@@ -363,7 +367,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex">
-                        <Col span={4} className="title-with-radio">
+                        <Col span={4} className="title-with-radio form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Date"}/></label>
                         </Col>
@@ -387,7 +391,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                 )}
                             </FormItem>
                             <Row type="flex" gutter={16} align="top">
-                                <Col span={12}>
+                                <Col span={7}>
                                     <FormItem>
                                         {getFieldDecorator("start_at", {
                                             initialValue: this.state.currentCampaign.start_at,
@@ -399,10 +403,11 @@ class NamingComponent extends React.Component <IProps, IState> {
                                             <PersianDatePicker onChange={this.handleRange.bind(this)}
                                                                minValue={moment().add(-1 , "day").format()}/>
                                         )}
+                                        <span className="datepicker-placeholder"><Translate value={"YYYY/MM/DD"}/></span>
                                     </FormItem>
                                 </Col>
                                 {!this.state.allDay &&
-                                <Col span={12}>
+                                <Col span={7}>
                                     <FormItem>
                                         {getFieldDecorator("end_at", {
                                             initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at
@@ -416,6 +421,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                             <PersianDatePicker
                                                 minValue={this.state.minRange}/>
                                         )}
+                                        <span className="datepicker-placeholder"><Translate value={"YYYY/MM/DD"}/></span>
                                     </FormItem>
                                 </Col>
                                 }
@@ -423,7 +429,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex">
-                        <Col span={4} className="title-with-radio">
+                        <Col span={4} className="title-with-radio form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Time"}/></label>
                         </Col>
@@ -450,25 +456,27 @@ class NamingComponent extends React.Component <IProps, IState> {
                             this.state.timePeriods.map((p, index) => (
                                 <Row type="flex" className="time-period-row" key={index} align={"middle"}>
                                     <Col span={8}>
-                                        <TimePeriod first={index === 0} from={p.from} to={p.to} onChange={(from, to) => {
+                                        <TimePeriod className="time-period-float" first={index === 0} from={p.from} to={p.to} onChange={(from, to) => {
                                             this.onTimePeriodChange(index, from, to);
                                         }}/>
-                                    </Col>
-                                    <Col span={5}>
                                         {index > 0 &&
+                                        <div className="close-time-period-wrapper">
                                         <Icon name={"cif-close time-close-icon"} onClick={(e) => {
                                             e.preventDefault();
                                             this.removePeriod(index);
                                         }}/>
+                                        </div>
                                         }
                                     </Col>
                                 </Row>
                             ))
                             }
                             {!this.state.allTime &&
-                            <a className={"mr-2"} onClick={this.addPeriod.bind(this)}><Translate
-                                value="Add new period"/>+</a>
-                            }
+                            <div className="add-time-period">
+                                <Icon name={"cif-plusbold"}/>
+                                <a onClick={this.addPeriod.bind(this)}><Translate
+                                    value="Add new period"/></a>
+                            </div>}
                         </Col>
                     </Row>
                     <StickyFooter nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} backBtn={true}/>

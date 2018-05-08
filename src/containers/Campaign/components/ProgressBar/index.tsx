@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import {StepButton, Stepper} from "material-ui/Stepper";
+import {StepButton, StepLabel, Stepper} from "material-ui/Stepper";
 import {Row} from "antd";
 import STEPS from "../../steps";
 import Translate from "../../../../components/i18n/Translate/index";
@@ -20,6 +20,7 @@ import Step from "./stepComponent";
 import "./style.less";
 import {setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import I18n from "../../../../services/i18n/index";
+import Icon from "../../../../components/Icon";
 
 /**
  * @interface
@@ -157,27 +158,29 @@ private checkCurrentCampaign(): boolean {
               <Translate value="Targeting"/>
             </StepButton>
           </Step>
-            <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET)} active={stepIndex === STEPS.BUDGET}
+            <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET) ? this.checkStateClass(stepIndex, STEPS.BUDGET) : ""} active={stepIndex === STEPS.BUDGET}
                   completed={stepIndex > STEPS.BUDGET}>
                 <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)} disabled={this.checkCurrentCampaign()}>
                     <Translate value="Budget and Finance"/>
                 </StepButton>
             </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER)}
+          <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER) ? this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER) : ""}
                 active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Select Publisher"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.UPLOAD)} active={stepIndex === STEPS.UPLOAD}
+          <Step className={this.checkStateClass(stepIndex, STEPS.UPLOAD) ? this.checkStateClass(stepIndex, STEPS.UPLOAD) : "" } active={stepIndex === STEPS.UPLOAD}
                 completed={stepIndex > STEPS.UPLOAD}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.UPLOAD)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH)}
+          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) ? this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) : ""  + " final-step"}
                 active={stepIndex === STEPS.CHECK_PUBLISH}>
-            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}>
+            <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}
+                        icon={<Icon name={"cif-final-flag"}/>}
+            >
               <Translate value="Check and Publish"/>
             </StepButton>
           </Step>

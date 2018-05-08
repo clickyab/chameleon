@@ -8,19 +8,30 @@
     display: flex;
     align-items: center;
   }
-  .phone-text-field{
-    width: 100%;
-  }
+    .phone-text-field {
+        width: 100%;
+        position: relative;
+        top: 4px;
+        div > div {
+            font-size: 13px;
+            color: #88909B;
+            text-align: right;
+            left:0;
+        }
+        input{
+            font-size: 13px !important;
+        }
+    }
   .country-code {
     padding-right: 5px;
-    margin-top: 49px;
-    padding-bottom: 5px;
+    margin-top: 27px;
+    padding-bottom: 16px;
     border-bottom: 1px solid #DBDDE1;
     height: 15px;
     * {
       height: 20px !important;
       font-size:13px !important;
-      top: -4px ;
+      top: -2px ;
     }
     > span{
       color:@select-border-color ;
@@ -33,12 +44,12 @@
     border-right: 1px solid #ccc;
   }
   .phone-flag {
-    margin-top: 39px;
+    margin-top: 19px;
     padding-right: 5px;
     height: auto;
     width: @flag-width;
     border-bottom: 1px solid #DBDDE1;
-    padding-bottom: 5px;
+    padding-bottom: 9px;
   }
 
   // Remove increment and decrement arrow of number input
@@ -49,6 +60,13 @@
   }
 }
 
+[dir="rtl"]{
+    .phone-text-field {
+        div > div {
+            right:0;
+        }
+    }
+}
 
 
 

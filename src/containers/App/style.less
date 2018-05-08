@@ -85,6 +85,9 @@ p {
         font-size: 13px;
         color: #88909B;
     }
+    input{
+        font-size: 13px !important;
+    }
 }
 
 .full-width{
@@ -161,6 +164,11 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
     transform: translateX(-50%);
     left: 50%;
   }
+}
+.input-text-center{
+    input{
+        text-align: center;
+    }
 }
 
 /* generate Margin and Padding helper class */
@@ -262,6 +270,9 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
 [dir="rtl"] label{
   transform-origin: right top 0 !important;
 }
+label{
+  color: @campaign-label-font-color;
+}
 .ant-btn {
   &.btn-general {
     height: 35px;
@@ -320,5 +331,15 @@ input[type="number"]:focus::-webkit-inner-spin-button  {
     }
     &:after {
         content: none !important;
+    }
+}
+.ant-select-selection{
+    border-radius: 2px !important ;
+    border: @input-border-style  ;
+    color: #2E3246;
+    .ant-select-arrow{
+        &:before{
+            color: #2E3246;
+        }
     }
 }

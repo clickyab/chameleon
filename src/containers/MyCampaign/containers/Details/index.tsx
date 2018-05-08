@@ -173,7 +173,7 @@ class Details extends React.Component<IProps, IState> {
                                         <Col span={16}>
                                             <div className="campaign-strip-bar-wrapper">
                                                 <div className="campaign-strip-bar"
-                                                     style={{width: this.state.progress.total_spend / this.state.progress.total_budget * 100 + "%"}}>
+                                                     style={{width: (this.state.progress.total_budget) ? this.state.progress.total_spend / this.state.progress.total_budget * 100 + "%" : 0}}>
                                                 </div>
                                             </div>
                                         </Col>

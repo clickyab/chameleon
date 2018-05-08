@@ -4,8 +4,13 @@
 // card sizes
 
 .login-box {
-  padding-top:20px ;
-  width: 400px;
+    padding-top:20px ;
+    width: 400px;
+    &-title{
+        color: #6E7682;
+        font-size: 14px;
+        font-weight: 400;
+    }
 }
 
 //Forgot password block
@@ -36,7 +41,17 @@
   margin-bottom: 15px !important;
 }
 .switch-rtl {
-  float: right;
+    float: right;
+    &.ant-switch {
+        height: 16px;
+        width: 30px;
+        margin: 8px 0 !important;
+        &:after {
+            width: 13px;
+            height: 13px;
+            top: 0.5px;
+        }
+    }
 }
 
 .flip-icon{
@@ -50,7 +65,7 @@
   color: white;
   position: absolute;
   left: 20px;
-  top:2px
+  top:4px
 }
 .btn-arrow{
   .flip-icon();
@@ -103,5 +118,5 @@
 }
 
 .verify-link{
-  border-bottom: 1px dotted @primary-color;
+  border-bottom: 1px solid @primary-color;
 }

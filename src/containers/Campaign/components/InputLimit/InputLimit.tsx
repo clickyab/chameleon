@@ -45,9 +45,10 @@ export default class InputLimit extends React.Component<IProps, IState> {
         return (
             <div className="input-limit-wrapper">
                 {!this.props.multiLine &&
-                <Input onChange={(e) => {
+                <Input {...rest}
+                    onChange={(e) => {
                     this.handleValueChange(e);
-                }} {...rest} value={this.state.value}/>
+                }}  value={this.state.value}/>
                 }
                 {this.props.multiLine &&
                 <TextArea onChange={(e) => {
