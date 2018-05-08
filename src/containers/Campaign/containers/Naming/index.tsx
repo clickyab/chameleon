@@ -25,6 +25,7 @@ import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import StickyFooter from "../../components/StickyFooter";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import moment = require("moment");
+import {isValidDomain} from "../../../../services/Utils/CustomValidations";
 
 const FormItem = Form.Item;
 const Option  = Select.Option;
@@ -347,6 +348,9 @@ class NamingComponent extends React.Component <IProps, IState> {
                                 {getFieldDecorator("domain", {
                                     initialValue: this.state.currentCampaign.tld,
                                     rules: [{
+                                        validator: isValidDomain,
+                                        message: this.i18n._t("Domain is not valid")
+                                    }, {
                                         required: true,
                                         message: this.i18n._t("Please input your TLD Domain")
                                     }],
