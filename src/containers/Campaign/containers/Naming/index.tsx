@@ -207,7 +207,7 @@ class NamingComponent extends React.Component <IProps, IState> {
             let campaign: ControllersCreateCampaignPayload = this.state.currentCampaign as ControllersCreateCampaignPayload;
             campaign.title = values.name;
             campaign.start_at = values.start_at;
-            campaign.tld = values.domain;
+            campaign.tld = values.domain.replace("https://", "").replace("http://", "");
 
             if (this.state.allDay) {
                 campaign.end_at = null;
