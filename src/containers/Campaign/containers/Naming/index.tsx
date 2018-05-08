@@ -391,7 +391,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                 )}
                             </FormItem>
                             <Row type="flex" gutter={16} align="top">
-                                <Col span={12}>
+                                <Col span={7}>
                                     <FormItem>
                                         {getFieldDecorator("start_at", {
                                             initialValue: this.state.currentCampaign.start_at,
@@ -407,7 +407,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                     </FormItem>
                                 </Col>
                                 {!this.state.allDay &&
-                                <Col span={12}>
+                                <Col span={7}>
                                     <FormItem>
                                         {getFieldDecorator("end_at", {
                                             initialValue: this.state.currentCampaign.end_at ? this.state.currentCampaign.end_at
@@ -421,6 +421,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                             <PersianDatePicker
                                                 minValue={this.state.minRange}/>
                                         )}
+                                        <span className="datepicker-placeholder"><Translate value={"YYYY/MM/DD"}/></span>
                                     </FormItem>
                                 </Col>
                                 }
