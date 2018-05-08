@@ -158,25 +158,25 @@ private checkCurrentCampaign(): boolean {
               <Translate value="Targeting"/>
             </StepButton>
           </Step>
-            <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET)} active={stepIndex === STEPS.BUDGET}
+            <Step className={this.checkStateClass(stepIndex, STEPS.BUDGET) ? this.checkStateClass(stepIndex, STEPS.BUDGET) : ""} active={stepIndex === STEPS.BUDGET}
                   completed={stepIndex > STEPS.BUDGET}>
                 <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.BUDGET)} disabled={this.checkCurrentCampaign()}>
                     <Translate value="Budget and Finance"/>
                 </StepButton>
             </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER)}
+          <Step className={this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER) ? this.checkStateClass(stepIndex, STEPS.SELECT_PUBLISHER) : ""}
                 active={stepIndex === STEPS.SELECT_PUBLISHER} completed={stepIndex > STEPS.SELECT_PUBLISHER}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.SELECT_PUBLISHER)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Select Publisher"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.UPLOAD)} active={stepIndex === STEPS.UPLOAD}
+          <Step className={this.checkStateClass(stepIndex, STEPS.UPLOAD) ? this.checkStateClass(stepIndex, STEPS.UPLOAD) : "" } active={stepIndex === STEPS.UPLOAD}
                 completed={stepIndex > STEPS.UPLOAD}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.UPLOAD)} disabled={this.checkCurrentCampaign()}>
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) + " final-step"}
+          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) ? this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) : ""  + " final-step"}
                 active={stepIndex === STEPS.CHECK_PUBLISH}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}
                         icon={<Icon name={"cif-final-flag"}/>}

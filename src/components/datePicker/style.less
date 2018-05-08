@@ -2,6 +2,7 @@
 @import "../../containers/App/theme";
 
 .persian-datepicker {
+    width: 125px;
   input {
     width: 125px;
     height: 32px;
@@ -10,14 +11,17 @@
     border: 1px solid #DFE0E6;
     border-radius: 2px;
   }
-  &:before{
-      content: "\E04B";
-      font-size: 8px;
-      color: #2E3246;
-      font-family: clickyabdashboard;
-      position: absolute;
-      left: 10px;
-  }
+    div {
+        &:before {
+            content: "\E04B";
+            font-size: 8px;
+            color: #2E3246;
+            font-family: clickyabdashboard;
+            position: absolute;
+            left: 20px;
+            top:1px;
+        }
+    }
 
   .anticon-caret-down {
     position: absolute;
