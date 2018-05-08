@@ -14,6 +14,7 @@ interface IProps {
   to?: string;
   onChange: (from, to) => void;
   first: boolean;
+  className?: string;
 }
 
 interface IState {
@@ -74,7 +75,7 @@ export default class TimePeriod extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <Row type="flex">
+      <Row type="flex" className={this.props.className ? this.props.className : ""}>
         <Col className="time-period">
             {this.props.first && <div className="text-center"><Translate value={"start time"}/></div>}
           <Select dropdownClassName={"time-period-dropdown"} value={this.state.from.toString()} onChange={this.handleChangeFrom.bind(this)}>

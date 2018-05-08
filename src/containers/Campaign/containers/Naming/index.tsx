@@ -455,25 +455,27 @@ class NamingComponent extends React.Component <IProps, IState> {
                             this.state.timePeriods.map((p, index) => (
                                 <Row type="flex" className="time-period-row" key={index} align={"middle"}>
                                     <Col span={8}>
-                                        <TimePeriod first={index === 0} from={p.from} to={p.to} onChange={(from, to) => {
+                                        <TimePeriod className="time-period-float" first={index === 0} from={p.from} to={p.to} onChange={(from, to) => {
                                             this.onTimePeriodChange(index, from, to);
                                         }}/>
-                                    </Col>
-                                    <Col span={5}>
                                         {index > 0 &&
+                                        <div className="close-time-period-wrapper">
                                         <Icon name={"cif-close time-close-icon"} onClick={(e) => {
                                             e.preventDefault();
                                             this.removePeriod(index);
                                         }}/>
+                                        </div>
                                         }
                                     </Col>
                                 </Row>
                             ))
                             }
                             {!this.state.allTime &&
-                            <a className={"mr-2"} onClick={this.addPeriod.bind(this)}><Translate
-                                value="Add new period"/>+</a>
-                            }
+                            <div className="add-time-period">
+                                <Icon name={"cif-plusbold"}/>
+                                <a onClick={this.addPeriod.bind(this)}><Translate
+                                    value="Add new period"/></a>
+                            </div>}
                         </Col>
                     </Row>
                     <StickyFooter nextAction={this.handleSubmit.bind(this)} backAction={this.handleBack.bind(this)} backBtn={true}/>
