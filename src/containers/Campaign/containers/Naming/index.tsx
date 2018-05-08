@@ -403,6 +403,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                                             <PersianDatePicker onChange={this.handleRange.bind(this)}
                                                                minValue={moment().add(-1 , "day").format()}/>
                                         )}
+                                        <span className="datepicker-placeholder"><Translate value={"YYYY/MM/DD"}/></span>
                                     </FormItem>
                                 </Col>
                                 {!this.state.allDay &&
