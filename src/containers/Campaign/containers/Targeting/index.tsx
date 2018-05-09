@@ -505,6 +505,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                             rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
                           })(
                             <SelectTag
+                              className="targeting-select-tag"
                               OnChange={(browsers: string[]) => (this.setState({browsers}))}
                               allOption={false}
                               placeholder={this.i18n._t("Select Browsers").toString()}
@@ -583,7 +584,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     <label>{this.i18n._t("Geo location")}</label>
                   </Col>
                   <Col span={19}>
-                    <div className="mt-1">
+                    <div>
                       <Select className={"select-input campaign-select"}
                               dropdownClassName={"select-dropdown"}
                                    onChange={(value) => {
