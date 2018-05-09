@@ -334,7 +334,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 {/* Devices */}
                   {this.state.currentCampaign.kind === DEVICE_TYPES.WEB &&
                   <Row type="flex" className="targeting-row">
-                      <Col span={5} className="title-target">
+                      <Col span={5} lg={3} className="title-target">
                           <Tooltip/>
                           <label>{this.i18n._t("Device Type")}</label>
                       </Col>
@@ -374,7 +374,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 {/* Manufactures */}
                 {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Manufactures Brand")}</label>
                   </Col>
@@ -423,7 +423,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Operation systems */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Operation systems")}</label>
                   </Col>
@@ -456,6 +456,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                             rules: [{required: true, message: this.i18n._t("Please select operation systems!")}],
                           })(
                             <SelectTag
+                              className="targeting-select-tag"
                               OnChange={(oss: string[]) => (this.setState({oss}))}
                               allOption={false}
                               placeholder={this.i18n._t("Select OS").toString()}
@@ -471,7 +472,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Browsers */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Browsers")}</label>
                   </Col>
@@ -521,7 +522,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* IAB Categorie */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("IAB Categories")}</label>
                   </Col>
@@ -577,7 +578,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Location */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Geo location")}</label>
                   </Col>
@@ -638,7 +639,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Networks */}
                 <Row type="flex" className="mt-2" align="top">
-                  <Col span={5}>
+                  <Col span={5} lg={3}>
                     <Tooltip/>
                     <label>{this.i18n._t("Internet Network")}</label>
                   </Col>

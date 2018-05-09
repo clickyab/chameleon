@@ -20,6 +20,8 @@ interface IProps {
   placeholder?: string | null;
   type: string | null;
   allOption?: boolean | null;
+  hasLabel?: boolean;
+  className?: string;
 }
 
 interface IStates {
@@ -176,8 +178,8 @@ export default class SelectTag extends React.Component<IProps, IStates> {
 
   render() {
     return (
-      <div>
-        {this.props.type &&
+      <div className={this.props.className ? this.props.className : ""}>
+        {this.props.type && this.props.hasLabel &&
         <div className="select-label">
           <Translate value={"select %s"} params={[this.props.type]}/>
         </div>}

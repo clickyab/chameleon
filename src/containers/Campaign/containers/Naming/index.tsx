@@ -296,7 +296,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                 </Row>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <Row type="flex" align="middle" className="mb-2">
-                        <Col span={4}>
+                        <Col span={4} lg={3}>
                             <Tooltip/>
                             <label><Translate value={"Status"}/></label>
                         </Col>
@@ -313,7 +313,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle">
-                        <Col span={4} className="form-label">
+                        <Col span={4} lg={3} className="form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Name"}/></label>
                         </Col>
@@ -339,7 +339,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle" className={"mb-3"}>
-                        <Col span={4} className="form-label">
+                        <Col span={4} lg={3} className="form-label">
                             <Tooltip/>
                             <label><Translate value={"TLD Domain"}/></label>
                         </Col>
@@ -367,7 +367,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex">
-                        <Col span={4} className="title-with-radio form-label">
+                        <Col span={4} lg={3} className="title-with-radio form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Date"}/></label>
                         </Col>
@@ -429,7 +429,7 @@ class NamingComponent extends React.Component <IProps, IState> {
                         </Col>
                     </Row>
                     <Row type="flex">
-                        <Col span={4} className="title-with-radio form-label">
+                        <Col span={4} lg={3} className="title-with-radio form-label">
                             <Tooltip/>
                             <label><Translate value={"Campaign Time"}/></label>
                         </Col>
