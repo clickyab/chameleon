@@ -12,8 +12,6 @@
 
 .select-list {
   width: 340px !important;
-  padding-right: 20px;
-  padding-left: 20px;
   // customized Scrollbar Works only on webkit support browsers
   *::-webkit-scrollbar {
     width: .4em;
@@ -44,7 +42,8 @@
     border-left: solid 1px #DBDDE1;
     border-right: solid 1px #DBDDE1;
     border-bottom: solid 1px #DBDDE1;
-    > div {
+    direction: ltr;
+    > label {
       &:nth-child(even) {
         background: #EEEFF0;
       }
@@ -61,7 +60,8 @@
     overflow-y: auto;
     overflow-x: hidden;
     border: solid 1px #DBDDE1;
-    > div {
+    direction: ltr;
+    > label {
       &:nth-child(even) {
         background: #EEEFF0;
       }
@@ -69,7 +69,6 @@
         fill: #DBDDE1 !important;
       }
     }
-
     &-container {
       width: 240px !important;
       .select-list-header {
@@ -93,13 +92,15 @@
   &-empty {
     display: block;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     padding-top: 85px;
     padding-right: 15px;
     padding-left: 15px;
     max-height: 230px;
     min-height: 230px;
     border: solid 1px #DBDDE1;
+    color: #5E6670;
+    line-height: 2;
   }
 
   &-checkbox {
@@ -120,13 +121,10 @@
     margin-top: 2px;
     line-height: 28px;
     border: solid 1px #DBDDE1;
-    div {
-      align-items: center;
-      > div > div > svg {
-        fill: #DBDDE1 !important;
-        .checkbox-size();
-      }
-    }
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    padding: 5px 9px !important;
     &-select {
       height: 28px !important;
       margin-top: 2px;
@@ -140,28 +138,109 @@
       }
     }
   }
-
+    .checkbox-item{
+        display: flex !important;
+        align-items: center;
+        padding-right: 5px;
+        padding-left: 5px;
+        flex-direction: row-reverse;
+        span {
+            font-size: 13px;
+            color: #5E6670;
+        }
+    }
+    .ant-checkbox-wrapper + .ant-checkbox-wrapper{
+        margin-left: 0 !important;
+    }
+    .ant-checkbox{
+        input{
+            height: 16px !important;
+            width: 16px !important;
+        }
+        &:after{
+            border:none;
+            border-radius: 2px !important;
+        }
+        .ant-checkbox-inner{
+            height: 16px !important;
+            width: 16px !important;
+            border-radius: 2px !important;
+            &:after{
+                transform: rotate(45deg) scale(1) translate(1px);
+            }
+        }
+    }
+    .brand-title{
+        font-weight: 500;
+        font-size: 12px;
+        color: #5E6670;
+    }
 }
-
+[dir="ltr"] {
+    .select-list-right , .select-list-left{
+        direction: rtl !important;
+    }
+    .select-list-header {
+        .count {
+            float: right;
+        }
+    }
+}
+.select-list-left{
+    border-top:none !important;
+}
+.btn-select-list{
+    button {
+        display: flex;
+        div {
+            > div {
+                display: flex;
+                justify-content: center;
+                flex-direction: row-reverse;
+            }
+        }
+    }
+}
+.btn-select-list-left{
+    button {
+        display: flex;
+        div {
+            > div {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+}
 .btn-select-list, .btn-select-list-left {
   margin-top: 10px;
   height: 30px;
   width: 220px;
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px !important;
   background: #B6BBC2;
+  font-size:13px;
   button {
-    height: @campaign-button-height !important;
-    line-height: @campaign-button-height !important;
+    display: flex;
+    justify-items: center;
+    height: 30px !important;
+    line-height: 30px !important;
+      i{
+          position: relative;
+          top:4px;
+          color: #FFF !important;
+      }
     div {
       > div {
         span {
           color: white;
+          font-weight: 400;
+          padding: 0 2px !important;
         }
         &:hover {
           background: @dark-gray-color !important;
         }
         background: #B6BBC2;
-        height: @campaign-button-height !important;
+        height: 30px !important;
       }
     }
   }
@@ -172,4 +251,16 @@
     max-width: 200px !important;
   }
 }
+.select-list-description{
+    line-height: 1.5;
+    width: 555px;
+    padding: 10px 0;
+}
 
+[dir="rtl"]{
+    .checkbox-item{
+        span:nth-child(2){
+            direction: rtl;
+        }
+    }
+}

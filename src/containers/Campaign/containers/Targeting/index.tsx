@@ -410,7 +410,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
                               data={this.brands}
                               onChange={(brands) => {
                                 this.setState({brands});
-                              }}/>
+                              }}
+                              description={
+                                  <Translate value={"If you like to view campaign for specific brands please choose brands from right box and click on transfer button tranfer them on final list"}/>
+                                  }
+                            />
                           )}
                         </FormItem>
                       </div>

@@ -1,9 +1,10 @@
 import * as React from "react";
-import {Row, Col} from "antd";
-import {Checkbox, RaisedButton} from "material-ui";
+import {Row, Col, Checkbox} from "antd";
+import {RaisedButton} from "material-ui";
 import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
 import "./style.less";
+import Icon from "../Icon";
 
 export interface IData {
   id: number;
@@ -15,6 +16,7 @@ interface IProps {
   selectedItems?: string[];
   value?: any[];
   onChange?: (value: any[]) => void ;
+  description?: JSX.Element;
 }
 
 interface IState {
@@ -62,10 +64,9 @@ export default class SelectList extends React.Component<IProps, IState> {
     return this.props.data.map((data) => {
       if (this.state.selectedItemsLeft.indexOf(data.id) > -1) {
         return <Checkbox key={data.id}
-                         label={data.title}
                          checked={this.state.selectedLeftTemp.length === this.state.selectedItemsLeft.length || this.state.selectedLeftTemp.indexOf(data.id) > -1}
-                         className={((this.state.selectedLeftTemp.indexOf(data.id)) > -1) ? "select-list-checkbox-selected" : "select-list-checkbox"}
-                         onCheck={() => (this.checkLeft(data.id))}/>;
+                         className={"checkbox-item"}
+                         onChange={() => (this.checkLeft(data.id))}>{data.title}</Checkbox>;
       }
     });
   }
@@ -82,10 +83,9 @@ export default class SelectList extends React.Component<IProps, IState> {
     return Data.map((data) => {
       if (!(this.state.selectedItemsLeft.indexOf(data.id) > -1)) {
         return <Checkbox key={data.id}
-                         label={data.title}
-                         className={((this.state.selectedRightTemp.indexOf(data.id) > -1 ) ? "select-list-checkbox-selected" : "select-list-checkbox")}
+                         className={"checkbox-item"}
                          checked={this.state.selectedRightTemp.indexOf(data.id) > -1}
-                         onCheck={() => this.check(data.id)}/>;
+                         onChange={() => this.check(data.id)}>{data.title}</Checkbox>;
       }
     });
   }
@@ -258,20 +258,19 @@ export default class SelectList extends React.Component<IProps, IState> {
       <Row type="flex" gutter={40}>
         <Col span={12} className="select-list">
           <div className="select-list-header">
-            <Translate value="Brands List"/>
-            <span className="count">{this.props.data.length - this.state.selectedItemsLeft.length}</span>
+            <span className="brand-title"><Translate value="Brands List:"/></span>
+            <span className="count"><Translate value={"%s results"} params={[(this.props.data.length - this.state.selectedItemsLeft.length) ? (this.props.data.length - this.state.selectedItemsLeft.length) : "0" ]}/></span>
           </div>
           <Checkbox
-            className={(this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length === this.props.data.length) ? "all-selector-select" : "all-selector"}
-            label={"Select all"}
-            checked={this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length === this.props.data.length}
-            onCheck={() => this.checkAll()}
-            onSelect={() => this.checkAll()}
-          />
+            className={"all-selector checkbox-item"}
+            checked={this.state.selectedRightTemp.length !== 0 ? this.state.selectedRightTemp.length + this.state.selectedItemsLeft.length === this.props.data.length :  false}
+            onChange={() => this.checkAll()}
+          ><Translate value={"Select All"}/></Checkbox>
           <div className="select-list-right">
             {this.createItem()}
           </div>
           <RaisedButton
+            icon={<Icon name={"cif-arrowleft-4"}/>}
             label={<Translate value="Move chosen items"/>}
             primary={false}
             className="btn-select-list"
@@ -281,19 +280,17 @@ export default class SelectList extends React.Component<IProps, IState> {
         </Col>
         <Col span={12} className="select-list select-list-left-container">
           <div className="select-list-header">
-            <Translate value="Your final List"/>
-            <span className="count">{this.state.selectedItemsLeft.length}</span>
+              <span className="brand-title"><Translate value="Your final List"/></span>
+            <span className="count"><Translate value={"%s choice"} params={[(this.state.selectedItemsLeft.length) ? this.state.selectedItemsLeft.length : "0"]}/></span>
           </div>
 
           {this.state.selectedItemsLeft.length !== 0 &&
           <div>
             <Checkbox
-              className={(this.state.selectedLeftTemp.length === this.state.selectedItemsLeft.length) ? "all-selector-select" : "all-selector"}
-              label={"Select all"}
+              className={"all-selector checkbox-item"}
               checked={(this.state.selectedLeftTemp.length === this.state.selectedItemsLeft.length)}
-              onCheck={() => this.checkAllLeft()}
-              onSelect={() => this.checkAllLeft()}
-            />
+              onChange={() => this.checkAllLeft()}
+            ><Translate value={"Select All"}/></Checkbox>
             <div className="select-list-left">
               {this.showSelectedLeft()}
             </div>
@@ -302,6 +299,7 @@ export default class SelectList extends React.Component<IProps, IState> {
           {this.state.selectedItemsLeft.length === 0 && <span
             className="select-list-empty">{i18n._t("Please select your items from right box, then click on move button")}</span>}
           <RaisedButton
+            icon={<Icon name={"cif-arrowright-4"}/>}
             label={<Translate value="Remove chosen items"/>}
             primary={false}
             className="btn-select-list-left"
@@ -309,6 +307,9 @@ export default class SelectList extends React.Component<IProps, IState> {
             onClick={this.handleSubmitLeft}
           />
         </Col>
+          <Col span={24}>
+           <p className={"select-list-description"}>{this.props.description}</p>
+          </Col>
       </Row>
     );
   }
