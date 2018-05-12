@@ -1,8 +1,9 @@
 import * as React from "react";
 import map from "./map";
 import "./style.less";
-import {Row, Col} from "antd";
-import {Checkbox} from "material-ui";
+import {Row, Col, Checkbox} from "antd";
+import I18n from "../../services/i18n";
+//import {Checkbox} from "material-ui";
 
 /**
  * @interface IProps
@@ -44,6 +45,7 @@ interface IState {
 }
 
 export default class IranMap extends React.Component<IProps, IState> {
+    private i18n = I18n.getInstance();
   /**
    * @constructor
    * @desc set initial state
@@ -145,27 +147,27 @@ export default class IranMap extends React.Component<IProps, IState> {
     return (
       <Row type="flex">
         <Col className="city-selector">
-          <div style={{overflowY: "auto", height: "500px"}} onMouseLeave={() => this.mouseLeave()}>
+          <div onMouseLeave={() => this.mouseLeave()}>
             <Checkbox
-              className={(this.state.selectedItems.length === map.g.path.length) ? "all-city-selector-checked" : "all-city-selector"}
+              className={"all-city-selector"}
               checked={this.state.selectedItems.length === map.g.path.length}
-              onCheck={() => this.checkAll()}
+              onChange={() => this.checkAll()}
               onMouseLeave={() => this.mouseLeave()}
               onMouseEnter={() => this.mouseLeave()}
-              label={"all"}/>
+            >{this.i18n._t("select all")}</Checkbox>
+              <div className="location-container">
             {map.g.path.map((path) => {
               return <Checkbox
                 key={path.title}
                 checked={this.state.selectedItems.indexOf(path.title) > -1}
-                onCheck={() => this.check(path.title)}
-                style={{backgroundColor: this.state.hoverItem === path.title ? "#ccc" : ""}}
-                onSelect={() => this.check(path.title)}
+                onChange={() => this.check(path.title)}
+                style={{backgroundColor: this.state.hoverItem === path.title ? "#DBDDE1" : ""}}
                 onMouseLeave={() => this.mouseLeave()}
                 onMouseEnter={() => this.mouseEnter(path.title)}
-                label={path.title}
-                className={(this.state.selectedItems.indexOf(path.title) > -1) ? "checkbox-checked" : "checkbox"}
-              />;
+                className={"location-checkbox-item"}
+              >{path.title}</Checkbox>;
             })}
+              </div>
           </div>
         </Col>
         <Col className="map-selector">
