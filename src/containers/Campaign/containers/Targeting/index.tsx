@@ -334,7 +334,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 {/* Devices */}
                   {this.state.currentCampaign.kind === DEVICE_TYPES.WEB &&
                   <Row type="flex" className="targeting-row">
-                      <Col span={5} className="title-target">
+                      <Col span={5} lg={3} className="title-target">
                           <Tooltip/>
                           <label>{this.i18n._t("Device Type")}</label>
                       </Col>
@@ -374,7 +374,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 {/* Manufactures */}
                 {this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION &&
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Manufactures Brand")}</label>
                   </Col>
@@ -410,7 +410,11 @@ class TargetingComponent extends React.Component <IProps, IState> {
                               data={this.brands}
                               onChange={(brands) => {
                                 this.setState({brands});
-                              }}/>
+                              }}
+                              description={
+                                  <Translate value={"If you like to view campaign for specific brands please choose brands from right box and click on transfer button tranfer them on final list"}/>
+                                  }
+                            />
                           )}
                         </FormItem>
                       </div>
@@ -423,7 +427,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Operation systems */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Operation systems")}</label>
                   </Col>
@@ -456,6 +460,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                             rules: [{required: true, message: this.i18n._t("Please select operation systems!")}],
                           })(
                             <SelectTag
+                              className="targeting-select-tag"
                               OnChange={(oss: string[]) => (this.setState({oss}))}
                               allOption={false}
                               placeholder={this.i18n._t("Select OS").toString()}
@@ -471,7 +476,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Browsers */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Browsers")}</label>
                   </Col>
@@ -504,6 +509,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                             rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
                           })(
                             <SelectTag
+                              className="targeting-select-tag"
                               OnChange={(browsers: string[]) => (this.setState({browsers}))}
                               allOption={false}
                               placeholder={this.i18n._t("Select Browsers").toString()}
@@ -521,7 +527,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* IAB Categorie */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("IAB Categories")}</label>
                   </Col>
@@ -560,7 +566,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                               mode={"multiple"}
                               showSearch={false}
                               filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                              placeholder="Tags Mode"
+                              placeholder={this.i18n._t("choose your category") as string}
                               className="select-tag-ant"
                             >
                               {this.categories.map(cat => (
@@ -577,13 +583,13 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Location */}
                 <Row type="flex" className="targeting-row">
-                  <Col span={5} className="title-target">
+                  <Col span={5} lg={3} className="title-target">
                     <Tooltip/>
                     <label>{this.i18n._t("Geo location")}</label>
                   </Col>
                   <Col span={19}>
-                    <div className="mt-1">
-                      <Select className={"select-input campaign-select"}
+                    <div>
+                      <Select className={"select-input campaign-select select-location-dropdown"}
                               dropdownClassName={"select-dropdown"}
                                    onChange={(value) => {
                                      this.setState({
@@ -620,13 +626,13 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     }
                     {this.state.locationType === ILocationType.GM &&
                     <div className="component-wrapper area-map-wrapper">
-                      <FormItem>
+                      <FormItem className="map-position-fix">
                         {getFieldDecorator("regionArea", {
-                          initialValue: {coordinate: {lat: -34, lng: 150}, radius: 10000},
+                          initialValue: {radius: 2000 , coordinate: {lat: 35.691062 , lng: 51.4016 }},
                           rules: [{required: true, message: this.i18n._t("Please select locations!")}],
                         })(
                           <AreaMap
-                            onChange={(coordinate) => {
+                              onChange={(coordinate) => {
                               console.log(coordinate);
                             }}/>
                         )}
@@ -638,7 +644,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
 
                 {/* Networks */}
                 <Row type="flex" className="mt-2" align="top">
-                  <Col span={5}>
+                  <Col span={5} lg={3}>
                     <Tooltip/>
                     <label>{this.i18n._t("Internet Network")}</label>
                   </Col>

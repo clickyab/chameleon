@@ -11,19 +11,33 @@
     margin-bottom: 40px;
   }
   .select-tag-ant-component-wrapper {
-    margin-bottom: 40px;
+    margin-bottom: -5px;
   }
   .area-map-wrapper{
     display: block;
     margin-top: 30px;
     height: 500px;
   }
+    .map-position-fix{
+        .ant-form-item-control-wrapper {
+            .ant-form-item-control {
+               > div {
+                    position: relative;
+                    z-index: 1;
+                }
+            }
+        }
+    }
+    .select-location-dropdown{
+        position: relative;
+        z-index: 2;
+    }
   // Align tooltip and title
   .title-target {
     margin-top: 10px;
   }
   .targeting-row {
-    margin-top: 5px;
+    margin-top: 10px;
   }
   .network-select {
     margin-top: 10px;
@@ -36,64 +50,53 @@
     margin-top: 20px;
   }
 }
-
+.targeting-select-tag{
+    margin-top: 15px;
+    margin-bottom: -25px;
+}
+[dir="rtl"]{
+    .select-tag-ant {
+        .ant-select-selection__placeholder {
+            text-align: right;
+            color: #5E6670;
+            margin-top: -9px;
+        }
+    }
+}
 .select-tag-ant {
+    width: 610px !important;
   .ant-select-selection {
-    border: 1px solid transparent !important;
+    border: 1px solid #DFE0E6 !important;
     border-bottom: 1px solid #DBDDE1 !important;
     border-radius: 0 !important;
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0) !important;
-  }
-
-  &:before {
-    content: '\e048';
-    font-family: "clickyabdashboard" !important;
-    left: 0;
-    position: absolute;
-    font-size: 13px;
-  }
-  &:after {
-    content: "";
-    height: 1px;
-    background: @primary-color;
-    // border: 1px solid @primary-color;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom:0;
-    transform: scale(0);
-    transition: all ease-In 0.2s;
-  }
-  &.ant-select-focused:after {
-    transform: scale(1);
-    transition: all ease-In 0.2s;
-  }
-  &:active:after {
-    transform: scale(1);
-    transition: all ease-In 0.2s;
-  }
-  .ant-select-selection--multiple{
-    padding-bottom:8px;
+    min-height: 35px !important;
   }
   // Change float for rtl support
-  .ant-select-selection__rendered > ul > li {
-    color: @tag-color;
-    background-color: @tag-bg-color;
-    border: 1px solid @tag-border-color;
-    border-radius: 2px;
-    margin: 5px;
-    margin-bottom: 0;
-    padding-top: 5px;
-    padding-left: 5px;
-    padding-bottom: 5px;
-    font-size: 14px;
-    line-height: 14px;
-    height: 25px;
-    float: right;
+  .ant-select-selection__rendered > ul {
+      padding-top: 2.5px;
+      padding-bottom: 2.5px !important;
+      > li {
+          color: @tag-color;
+          background-color: @tag-bg-color;
+          border: 1px solid @tag-border-color;
+          border-radius: 2px;
+          margin: 2.5px !important;
+          margin-right: 5px !important;
+          margin-left: 0 !important;
+          padding-top: 5px;
+          padding-left: 5px;
+          padding-bottom: 5px;
+          font-size: 14px;
+          line-height: 14px;
+          height: 25px !important;
+          float: right;
+      }
   }
   .ant-select-selection__choice__content {
     padding-right: 0 !important;
     line-height: 1;
+    height: 25px;
     padding-bottom: 5px;
   }
   .ant-select-search--inline {
@@ -111,13 +114,12 @@
   }
   .ant-select-selection__choice__remove {
     font-size: 18px !important;
-    margin-left: 3px;
     padding: 0 !important;
     float: left;
     position: relative;
     line-height: 1;
     &:before{
-      content: "\E016" ;
+      content: "\E011" ;
       font-family: clickyabdashboard !important;
       font-size: 14px;
     }
@@ -148,12 +150,14 @@
   }
 }
     .ant-select-selection--multiple {
+        padding-bottom: 0 !important;
         .ant-select-selection__rendered {
+            margin: 0 !important;
                 .ant-select-selection__choice__remove {
                     position: relative !important;
                     top: -6px;
                     &:before {
-                        content: "\E016" !important;
+                        content: "\E011" !important;
                         font-family: clickyabdashboard !important;
                         font-size: 14px;
                     }

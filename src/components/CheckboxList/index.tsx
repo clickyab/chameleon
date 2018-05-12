@@ -4,7 +4,7 @@
  */
 import * as React from "react";
 import {Row, Col} from "antd";
-import {Checkbox} from "material-ui";
+import {Checkbox} from "antd";
 import "./style.less";
 
 /**
@@ -86,19 +86,18 @@ export default class CheckBoxList extends React.Component<IProps, IState> {
    */
   render() {
     return (
-      <Row type="flex">
+      <Row type="flex" className="checkbox-list-container">
         {this.props.items.length === 0 && <span>No Item</span>}
         {this.props.items.map((item, index) => (
           <Col key={index}>
             <Checkbox
-              label={item.title}
               value={item.value}
               className={(this.state.value.indexOf(item.value) > -1) ? "checkbox-list-checked" : "checkbox-list" }
               checked={this.state.value.indexOf(item.value) > -1}
-              onCheck={(p, c) => {
-                this.update(item, c);
+              onChange={(e) => {
+                this.update(e.target as any, e.target.checked);
               }}
-            />
+            >{item.title}</Checkbox>
           </Col>
         ))}
       </Row>

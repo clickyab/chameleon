@@ -176,7 +176,7 @@ private checkCurrentCampaign(): boolean {
               <Translate value="Upload Banner"/>
             </StepButton>
           </Step>
-          <Step className={this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) ? this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) : ""  + " final-step"}
+          <Step className={`${this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) ? this.checkStateClass(stepIndex, STEPS.CHECK_PUBLISH) : ""} final-step`}
                 active={stepIndex === STEPS.CHECK_PUBLISH}>
             <StepButton disableTouchRipple={true} onClick={() => this.onClickStepHandler(STEPS.CHECK_PUBLISH)} disabled={this.checkCurrentCampaign()}
                         icon={<Icon name={"cif-final-flag"}/>}

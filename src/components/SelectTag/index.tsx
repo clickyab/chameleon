@@ -20,6 +20,8 @@ interface IProps {
   placeholder?: string | null;
   type: string | null;
   allOption?: boolean | null;
+  hasLabel?: boolean;
+  className?: string;
 }
 
 interface IStates {
@@ -170,14 +172,14 @@ export default class SelectTag extends React.Component<IProps, IStates> {
       case this.props.data.length:
         return this.i18n._t("All %s selected" , {params: [this.props.type]}) as string;
       default:
-        return this.i18n._t("%s selected %s" , {params: [this.props.type, value.length]}) as string;
+        return this.i18n._t("%s %s selected" , {params: [value.length, this.props.type]}) as string;
     }
   }
 
   render() {
     return (
-      <div>
-        {this.props.type &&
+      <div className={this.props.className ? this.props.className : ""}>
+        {this.props.type && this.props.hasLabel &&
         <div className="select-label">
           <Translate value={"select %s"} params={[this.props.type]}/>
         </div>}
