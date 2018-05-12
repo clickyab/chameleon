@@ -566,7 +566,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                               mode={"multiple"}
                               showSearch={false}
                               filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                              placeholder="Tags Mode"
+                              placeholder={this.i18n._t("choose your category") as string}
                               className="select-tag-ant"
                             >
                               {this.categories.map(cat => (
