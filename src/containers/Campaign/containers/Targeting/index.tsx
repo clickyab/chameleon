@@ -589,7 +589,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                   </Col>
                   <Col span={19}>
                     <div>
-                      <Select className={"select-input campaign-select"}
+                      <Select className={"select-input campaign-select select-location-dropdown"}
                               dropdownClassName={"select-dropdown"}
                                    onChange={(value) => {
                                      this.setState({
@@ -626,13 +626,13 @@ class TargetingComponent extends React.Component <IProps, IState> {
                     }
                     {this.state.locationType === ILocationType.GM &&
                     <div className="component-wrapper area-map-wrapper">
-                      <FormItem>
+                      <FormItem className="map-position-fix">
                         {getFieldDecorator("regionArea", {
-                          initialValue: {coordinate: {lat: -34, lng: 150}, radius: 10000},
+                          initialValue: {radius: 2000 , coordinate: {lat: 35.691062 , lng: 51.4016 }},
                           rules: [{required: true, message: this.i18n._t("Please select locations!")}],
                         })(
                           <AreaMap
-                            onChange={(coordinate) => {
+                              onChange={(coordinate) => {
                               console.log(coordinate);
                             }}/>
                         )}

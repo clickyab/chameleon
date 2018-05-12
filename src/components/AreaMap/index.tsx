@@ -40,7 +40,6 @@ interface IProps {
   value?: IMap;
   height?: string;
   width?: string;
-  radius?: number;
   fillColor?: string;
   onChange?: (mapInfo: IMap) => void;
 }
@@ -53,7 +52,7 @@ export default class AreaMap extends React.Component<IProps, IState> {
 
   CustomMap = withScriptjs(withGoogleMap(props =>
     <GoogleMap
-      defaultZoom={9}
+      defaultZoom={11}
       defaultCenter={{lat: Number(this.state.coordinate.lat) , lng: Number(this.state.coordinate.lng) }}
       defaultOptions={{styles: Theme}}
       onClick = {(e) => this.handleCirclePosition(e.latLng)}
@@ -65,6 +64,7 @@ export default class AreaMap extends React.Component<IProps, IState> {
         options={{
           fillColor: this.props.fillColor ? this.props.fillColor : "#66C395",
           strokeColor: this.props.fillColor ? this.props.fillColor : "#66C395",
+          strokeWeight: "1"
         }}
       />
       <Marker draggable={true}
