@@ -164,12 +164,12 @@ class BudgetComponent extends React.Component <IProps, IState> {
                 break;
             case NETWORK_TYPE.EXCHANGE:
                 this.setState({
-                    pricing: IPricing.CPM,
+                    pricing: IPricing.CPC,
                 });
                 break;
             case NETWORK_TYPE.ALL:
                 this.setState({
-                    pricing: IPricing.CPM,
+                    pricing: IPricing.CPC,
                 });
                 break;
         }
@@ -337,12 +337,11 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                                 <RadioButton className="campaign-radio-button"
                                                              value={IPricing.CPC}
                                                              label={this.i18n._t("CPC (per click)")}
-                                                             disabled={this.state.networkType === NETWORK_TYPE.EXCHANGE}
                                                 />
                                                 <RadioButton className="campaign-radio-button"
                                                              value={IPricing.CPM}
                                                              label={this.i18n._t("CPM (per 10,000 views)")}
-                                                             disabled={this.state.networkType === NETWORK_TYPE.CLICKYAB}
+                                                             disabled
                                                 />
                                             </RadioButtonGroup>
                                         )}
@@ -364,7 +363,13 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                                     rules: [{
                                                         required: true,
                                                         message: this.i18n._t("please enter max bid")
-                                                    }],
+                                                    },
+                                                        {
+                                                            validator: rangeCheck,
+                                                            minimum: 250,
+                                                            message: this.i18n._t("Minimum price is 250 toman per click")
+                                                        }
+                                                    ],
                                                 })(
                                                     <Currency
                                                         currencyLenght={5}

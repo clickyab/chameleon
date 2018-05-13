@@ -19,6 +19,7 @@ import Translate from "../../../../components/i18n/Translate";
 import UploadAdContent from "./UploadAdContent";
 // import UploadDynamicBanner from "./UploadDynamicBanner";
 import UploadUniversalApp from "./UploadUniversalApp";
+import Icon from "../../../../components/Icon";
 
 
 interface IProps {
@@ -106,7 +107,13 @@ class UploadComponent extends React.Component <IProps, IState> {
                  onDragOver={this.handleDragOver}
                  onDrop={(e) => {this.handleTemplateEvent(e); }}>
                 <div className="vcenter">
-                    <Translate value={"Please select your add type from right and drag and drop it over here"}/>
+                    <div className="dragdrop-icon">
+                        <Icon name={"cif-dragdrop-zone"}/>
+                        <div className="dragdrop-text">
+                        <span>Drag & </span><span className="bold">DROP</span>
+                        </div>
+                    <span className="dragdrop-description"><Translate value={"Please select your add type from right and drag and drop it over here"}/></span>
+                    </div>
                 </div>
             <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
             </div>

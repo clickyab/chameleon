@@ -62,6 +62,11 @@
 
 .progress-bar-wrapper{
   margin: 0 -15px;
+  // next 2 lines are hack for removing breadcrumb border while we have progressbar
+  margin-top: -1px ;
+  border-top:1px solid #FFF;
+  padding-bottom:25px;
+  border-bottom: 1px solid #DFE0E6;
 }
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
 // if we wrap selector with ant decorator
