@@ -16,6 +16,8 @@ import {ControllersApi, ControllersCampaignGetResponse, UserApi, UserUserSearchR
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import StickyFooter from "../../components/StickyFooter";
 import {userInfo} from "os";
+import Currency from "../../../../components/Currency";
+import {rangeCheck} from "../../../../services/Utils/CustomValidations";
 
 const Option = Select.Option;
 
@@ -217,18 +219,23 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 <Col span={10} offset={10}>
                                     <Row type="flex" align="middle" gutter={16}>
                                         <Col span={10}>
-                                            <FormItem>
+                                            <FormItem className={"error-position"}>
                                                 {getFieldDecorator("total_budget", {
                                                     initialValue: this.state.currentCampaign.total_budget || null,
                                                     rules: [{
                                                         required: true,
-                                                        message: this.i18n._t(" ")
-                                                    }],
+                                                        message: this.i18n._t("Please enter total budget")
+                                                    },
+                                                        {
+                                                            validator: rangeCheck,
+                                                            minimum: 30000,
+                                                            message: this.i18n._t("Minimum price is 30,000 toman!")
+                                                        }],
                                                 })(
-                                                    <Input
+                                                    <Currency
+                                                        currencyLenght={9}
                                                         className="input-campaign campaign-textfield"
                                                         placeholder={this.i18n._t("Maximum Campaign's budget") as string}
-                                                        type="number"
                                                     />
                                                 )}
                                             </FormItem>
@@ -248,18 +255,23 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 <Col span={10} offset={10}>
                                     <Row type="flex" align="middle" gutter={16}>
                                         <Col span={10}>
-                                            <FormItem>
+                                            <FormItem className={"error-position"}>
                                                 {getFieldDecorator("daily_budget", {
                                                     initialValue: this.state.currentCampaign.daily_budget || null,
                                                     rules: [{
                                                         required: true,
-                                                        message: this.i18n._t(" ")
-                                                    }],
+                                                        message: this.i18n._t("Please enter daily budget")
+                                                    },
+                                                        {
+                                                            validator: rangeCheck,
+                                                            minimum: 30000,
+                                                            message: this.i18n._t("Minimum price is 30,000 toman")
+                                                        }
+                                                    ],
                                                 })(
-                                                    <Input
+                                                    <Currency
                                                         className="input-campaign campaign-textfield"
                                                         placeholder={this.i18n._t("Daily Campaign's budget") as string}
-                                                        type="number"
                                                     />
                                                 )}
                                             </FormItem>
@@ -314,7 +326,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                     </label>
                                 </Col>
                                 <Col span={10} offset={10}>
-                                    <FormItem className="form-radio">
+                                    <FormItem className="form-radio error-position">
                                         {getFieldDecorator("strategy", {
                                             initialValue: this.state.currentCampaign.strategy || null,
                                         })(
@@ -338,7 +350,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 </Col>
                             </Row>
 
-                            <Row type="flex" align="middle" gutter={16}>
+                            <Row type="flex" align="middle" gutter={16} className={"mb-2"}>
                                 <Col span={4}>
                                     <Tooltip/>
                                     <label><Translate value="Click price"/></label>
@@ -346,27 +358,27 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 <Col span={10} offset={10}>
                                     <Row type="flex" align="middle" gutter={16}>
                                         <Col span={10}>
-                                            <FormItem>
+                                            <FormItem className={"error-position"}>
                                                 {getFieldDecorator("max_bid", {
                                                     initialValue: this.state.currentCampaign.max_bid || null,
                                                     rules: [{
                                                         required: true,
-                                                        message: this.i18n._t(" ")
+                                                        message: this.i18n._t("please enter max bid")
                                                     }],
                                                 })(
-                                                    <Input
+                                                    <Currency
+                                                        currencyLenght={5}
                                                         className="input-campaign campaign-textfield"
                                                         placeholder={this.i18n._t("click price") as string}
-                                                        type="number"
                                                     />
                                                 )}
+                                        <span className="per-click-description"><Translate
+                                            value={"Minimum price per click is get-from-server"}/></span>
                                             </FormItem>
                                         </Col>
                                         <Col span={14} className="currency">
                                             {this.i18n._t("Currency_Name")}
                                         </Col>
-                                        <span className="per-click-description"><Translate
-                                            value={"Minimum price per click is get-from-server"}/></span>
                                     </Row>
                                 </Col>
                             </Row>
@@ -394,9 +406,9 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                                     key={d.email}>{d.email}</Option>)}
                                             </Select>
                                         )}
-                                    </FormItem>
                                     <span className="subscriber-description"><Translate
                                         value={"Email of people that you want to notice in case of budget deficiency and recharge of account "}/></span>
+                                    </FormItem>
                                 </Col>
                             </Row>
                             <StickyFooter backAction={this.handleBack.bind(this)}

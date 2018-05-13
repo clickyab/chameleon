@@ -211,11 +211,13 @@ span[role="menuitem"] {
 }
 
 .per-click-description{
-  margin-top: -13px;
+  position: absolute;
+  white-space: nowrap;
   display: block;
 }
 .subscriber-description{
-  margin-top: -10px;
+  position: absolute;
+  white-space: nowrap;
   display: block;
 }
 .currency {
@@ -301,7 +303,10 @@ div[dir="rtl"] .table-icon {
     font-family: "clickyabdashboard" !important;
   }
 }
-
-
+.has-error{
+    .per-click-description{
+        visibility: hidden;
+    }
+}
 
 
