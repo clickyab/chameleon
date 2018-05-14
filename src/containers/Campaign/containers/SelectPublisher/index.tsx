@@ -329,7 +329,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                         dataFn={this.controllerApi.inventoryPublisherListGet}/>
                                 </Col>
                             </Row>
-                            <Row type="flex" align="middle">
+                            <Row type="flex" align="middle" className={"mb-2"}>
                                 <Col span={4}>
                                     <label>
                                         <Tooltip/>
@@ -358,6 +358,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                                     />
                                                 )}
                                             </FormItem>
+                                                <span className={"list-name-description"}><Translate value={"For easily accessing list of selected websites You should choose a name for them. you can choose maximum of 1,000 website/app for your list."}/></span>
                                         </Col>
                                         <Col span={10}>
                                             <FormItem>

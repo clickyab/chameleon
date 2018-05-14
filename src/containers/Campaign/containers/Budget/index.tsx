@@ -18,6 +18,7 @@ import StickyFooter from "../../components/StickyFooter";
 import {userInfo} from "os";
 import Currency from "../../../../components/Currency";
 import {rangeCheck} from "../../../../services/Utils/CustomValidations";
+import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 
 const Option = Select.Option;
 
@@ -265,7 +266,8 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                                         {
                                                             validator: rangeCheck,
                                                             minimum: 30000,
-                                                            message: this.i18n._t("Minimum price is 30,000 toman")
+                                                            maximum: this.state.currentCampaign.total_budget,
+                                                            message: this.i18n._t("Minimum price is 30,000 and maximum is %s" , {params: [currencyFormatter(this.state.currentCampaign.total_budget)]} )
                                                         }
                                                     ],
                                                 })(

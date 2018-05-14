@@ -35,7 +35,7 @@
         text-align: right !important;
     }
     .ant-table-column-sorter, .ant-table-filter-icon {
-        float: right !important;
+        margin: 0 5px;
     }
 }
 .ant-table-tbody > {
@@ -50,17 +50,20 @@
     box-shadow: -4px 4px 5px 0 rgba(0, 0, 0, 0.1);
     z-index: 9999;
     > th {
-      background: white;
+        font-size: 13px;
+        color: #2E3246;
+        height: 50px;
+        background: #F3F7F9 !important;
     }
   }
 }
 
-// Set Selected sorted header color to white
+
 .ant-table-thead > tr > th.ant-table-column-sort {
   > span {
     color: @primary-color;
   }
-  background: white !important;
+  background: #F3F7F9 !important;
 }
 
 .custom-filter-dropdown {
@@ -89,7 +92,32 @@
 
 .campaign-data-table {
   .ant-table-header {
+    background-color: #F3F7F9 !important;
     overflow: auto !important;
+  }
+    i{
+        color: #5A5D6C !important;
+    }
+    .ant-table-selection-column{
+        text-align: center !important;
+        label{
+            max-height: 16px;
+        }
+        .ant-checkbox {
+            position: relative;
+            top: -3px;
+            .ant-checkbox-inner {
+                height: 16px;
+                width: 16px;
+            }
+        }
+    }
+    .ant-checkbox-wrapper{
+    }
+  .ant-table-row{
+      height: 50px;
+      color: #5A5D6C;
+      font-size: 13px;
   }
   .ant-table-pagination {
     float: left;
@@ -208,7 +236,8 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-
+  margin-right: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
+  margin-left: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
   table {
     border-radius: 0 !important;
   }
@@ -222,21 +251,34 @@
     align-items: center;
     display: flex;
     margin-left: auto;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     width: 100%;
     padding-right: 15px;
-
+     i {
+         color: #5A5D6C;
+     }
     input, input:focus {
       box-shadow: none;
       border: none;
-      height: 48px;
+      height: 60px;
+      font-size: 13px;
     }
+      input::placeholder{
+          color: #A8ACB8;
+      }
 
   }
   .data-table-btns {
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
+    padding-right: 30px;
+    padding-left: 30px;
+      .ant-btn-clicked{
+         &:after{
+             display: none;
+         }
+      }
     button {
       margin : 0;
       padding: 0;

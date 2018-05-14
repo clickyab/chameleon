@@ -61,7 +61,7 @@ export const validateID = (rule, value , callback) => {
  */
 export const rangeCheck = (rule, value , callback) => {
     if (rule.minimum && rule.maximum) {
-        if ((value >= rule.minimum && value <= rule.maximum )|| value === "") {
+        if ((value >= rule.minimum && value <= rule.maximum ) || value === "") {
             callback();
             return true;
         }
@@ -83,6 +83,11 @@ export const rangeCheck = (rule, value , callback) => {
         }
         callback("error");
         return false;
+    }
+    // empty is not error (use require for this purpose)
+    if (value.length === 0) {
+        callback();
+        return true;
     }
     throw new Error("minimum or maximum should be defined for rangeCheck validation");
 };
