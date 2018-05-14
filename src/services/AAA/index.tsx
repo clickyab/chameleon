@@ -5,6 +5,7 @@
  */
 
 import * as Cookie from "cookies-js";
+import {UserResponseLoginOKAccount} from "../../api/api";
 
 /**
  * AAA service
@@ -12,104 +13,123 @@ import * as Cookie from "cookies-js";
  * @class
  */
 export default class AAA {
-  /**
-   * @prop instance
-   * @desc An instance of AAA.
-   * @private
-   * @static
-   * @type {Services.AAA}
-   * @memberof Services.AAA
-   */
-  private static instance: AAA;
+    /**
+     * @prop instance
+     * @desc An instance of AAA.
+     * @private
+     * @static
+     * @type {Services.AAA}
+     * @memberof Services.AAA
+     */
+    private static instance: AAA;
 
-  /**
-   * Declare Cookie name
-   * @type {string}
-   */
-  private CookieName: string = "USER_TOKEN";
+    private user: UserResponseLoginOKAccount;
 
-  /**
-   * @prop token
-   * @desc user token
-   * @private
-   * @type {string}
-   * @memberof Services.AAA
-   */
-  private token: string | null = null;
+    /**
+     * Declare Cookie name
+     * @type {string}
+     */
+    private CookieName: string = "USER_TOKEN";
 
-  /**
-   * @constructor
-   */
-  private constructor() {
-    /* empty */
-  }
+    /**
+     * @prop token
+     * @desc user token
+     * @private
+     * @type {string}
+     * @memberof Services.AAA
+     */
+    private token: string | null = null;
 
-  /**
-   * @func getInstance
-   * @desc The class constructor is private. This method creates an instance of AAA once
-   * and returns the instance every time you call it
-   * @returns {Services.AAA}
-   */
-  public static getInstance() {
-    if (!this.instance) {
-      this.instance = new AAA();
-    }
-    return this.instance;
-  }
-
-  /**
-   * Set session token and cookie
-   *
-   * @func
-   * @memberof Services.AAA
-   *
-   * @param {string}    token         session token
-   * @param {boolean}   remember      set cookie expire time or set session cookie
-   * @param {Date}      expireTime    define expire date time (default is 7 days)
-   */
-  public setToken(token: string, remember: boolean = true, expireTime?: Date): void {
-    const cookieOptions: any = {};
-
-    // Check for set time for cookie
-    if (remember) {
-      // define expire from argument or default
-      const expireTimestamp: Date = expireTime || new Date(Date.now() + (7 * 1000 * 60 * 60 * 24));
-      cookieOptions.expires = expireTimestamp;
+    /**
+     * @constructor
+     */
+    private constructor() {
+        /* empty */
     }
 
-    // set cookie
-    Cookie.set(this.CookieName, token, cookieOptions);
-
-    // set token in class
-    this.token = token;
-  }
-
-  /**
-   * Unset session token and remove token form class and remove cookie
-   *
-   * @func
-   * @memberof Services.AAA
-   */
-  public unsetToken(): void {
-    // remove cookie
-    Cookie.set(this.CookieName);
-
-    // unset token in class
-    this.token = null;
-  }
-
-  /**
-   *  Get session token
-   *  @func
-   *
-   * @returns {string | null}
-   */
-  public getToken(): string | null {
-    if (this.token) {
-      return this.token;
-    } else if (Cookie.get(this.CookieName)) {
-      return Cookie.get(this.CookieName);
+    /**
+     * @func getInstance
+     * @desc The class constructor is private. This method creates an instance of AAA once
+     * and returns the instance every time you call it
+     * @returns {Services.AAA}
+     */
+    public static getInstance() {
+        if (!this.instance) {
+            this.instance = new AAA();
+        }
+        return this.instance;
     }
-    return null;
-  }
+
+    /**
+     * Set session token and cookie
+     *
+     * @func
+     * @memberof Services.AAA
+     *
+     * @param {string}    token         session token
+     * @param {boolean}   remember      set cookie expire time or set session cookie
+     * @param {Date}      expireTime    define expire date time (default is 7 days)
+     */
+    public setToken(token: string, remember: boolean = true, expireTime?: Date): void {
+        const cookieOptions: any = {};
+
+        // Check for set time for cookie
+        if (remember) {
+            // define expire from argument or default
+            const expireTimestamp: Date = expireTime || new Date(Date.now() + (7 * 1000 * 60 * 60 * 24));
+            cookieOptions.expires = expireTimestamp;
+        }
+
+        // set cookie
+        Cookie.set(this.CookieName, token, cookieOptions);
+
+        // set token in class
+        this.token = token;
+    }
+
+    /**
+     * Unset session token and remove token form class and remove cookie
+     *
+     * @func
+     * @memberof Services.AAA
+     */
+    public unsetToken(): void {
+        // remove cookie
+        Cookie.set(this.CookieName);
+
+        // unset token in class
+        this.token = null;
+    }
+
+    /**
+     *  Get session token
+     *  @func
+     *
+     * @returns {string | null}
+     */
+    public getToken(): string | null {
+        if (this.token) {
+            return this.token;
+        } else if (Cookie.get(this.CookieName)) {
+            return Cookie.get(this.CookieName);
+        }
+        return null;
+    }
+
+    public setUser(user: UserResponseLoginOKAccount): void {
+        this.user = user;
+    }
+
+    /**
+     * Check User Permission
+     *
+     * @param {string} perm
+     * @returns {boolean}
+     */
+    public hasPerm(perm: string): boolean {
+        if (perm === "") return true;
+        if (!this.user) return false;
+        return this.user.perms.includes(perm);
+    }
+
 }

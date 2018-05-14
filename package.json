@@ -10,7 +10,7 @@
     "build": "webpack -p --progress --colors",
     "i18n": "tsc  ./bin/i18n-extractor.ts --skipLibCheck  && node ./bin/i18n-extractor.js --out=./dictionary --lang=en-US",
     "syncTranslation": "node ./bin/sync-translation.js --resource=./dictionary --out=./dictionary --lang=fa,en",
-    "swagger": "./bin/api-codegen.sh",
+    "swagger": "./bin/api-codegen.sh && node ./bin/permsmap-gen.js",
     "cypress:open": "cypress open"
   },
   "license": "MIT",
@@ -112,6 +112,7 @@
     "ts-loader": "3.2.0",
     "tslint": "5.5.0",
     "tslint-react": "3.2.0",
+    "typescript-formatter": "^7.2.0",
     "url-parse": "1.1.9",
     "whatwg-fetch": "2.0.3",
     "zanata-js": "2.1.4"

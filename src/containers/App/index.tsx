@@ -50,6 +50,7 @@ class App extends React.Component<IProps, IState> {
     this.state = {
       isLogin: this.props.isLogin
     };
+    AAA.getInstance().setUser(this.props.user);
   }
 
   public componentWillReceiveProps(newProps: IProps) {
@@ -69,6 +70,7 @@ class App extends React.Component<IProps, IState> {
       userApi.userPingGet({})
         .then((res) => {
           this.props.setUser(res.account);
+          AAA.getInstance().setUser(res.account);
           this.setState({isLogin: true});
         })
         .catch((error) => {
