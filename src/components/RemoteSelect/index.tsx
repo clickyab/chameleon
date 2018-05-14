@@ -71,7 +71,7 @@ export default class RemoteSelect extends React.Component <IProps, IState> {
                 filterOption={false}
                 onSearch={this.fetchData}
                 onChange={this.handleChange}
-                className="select-input full-width"
+                className="select-input select-input-arrow full-width"
                 dropdownClassName={"select-dropdown"}
                 style={{width: "100%"}}
                 disabled={data.length === 0}

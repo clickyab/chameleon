@@ -94,6 +94,15 @@ class UploadComponent extends React.Component <IProps, IState> {
             template: template
         });
     }
+    private handleBack() {
+        this.props.setCurrentStep(STEPS.TYPE);
+        if (this.props.match.params.id) {
+            this.props.history.push(`/campaign/select-publisher/${this.props.match.params.id}`);
+        }
+        else {
+            this.props.history.push("/campaign/select-publisher");
+        }
+    }
   /**
    * @func render
    * @desc render component
@@ -115,7 +124,7 @@ class UploadComponent extends React.Component <IProps, IState> {
                     <span className="dragdrop-description"><Translate value={"Please select your add type from right and drag and drop it over here"}/></span>
                     </div>
                 </div>
-            <StickyFooter customClass="sticky-footer-upload" backAction={() => {console.log("here"); } }  nextAction={() => {console.log("here"); } }/>
+            <StickyFooter customClass="sticky-footer-upload" backAction={this.handleBack}  nextAction={() => {console.log("here"); } }/>
             </div>
             }
             {/*{this.state.template === TEMPLATE.BANNER && this.state.currentCampaign &&*/}
