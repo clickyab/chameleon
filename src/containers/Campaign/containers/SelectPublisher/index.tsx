@@ -91,7 +91,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
             id: this.props.match.params.id,
         }).then(campaign => {
             let listType: List;
-            if (campaign.inventory_id !== 0) {
+            if (campaign.inventory_id !== 0 && campaign.inventory_id !== null) {
                 listType = List.PREVIOUS;
             } else if (!campaign.exchange && campaign.inventory_id === 0) {
                 listType = List.PREVIOUS;
@@ -182,7 +182,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                 notification.error({
                     message: this.i18n._t("Set publishers failed!"),
                     className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-                    description: error.message,
+                    description: error ? error.message : "",
                 });
             });
         });
@@ -193,7 +193,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
      * @desc handle back button
      */
     private handleBack() {
-        this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`);
+        this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
     }
 
     private handleTypeModal() {
@@ -219,21 +219,23 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
         const {getFieldDecorator} = this.props.form;
         return (
             <div dir={CONFIG.DIR} className="campaign-content">
+                <Row className={"campaign-title"}>
                 <h2><Translate value="Select Publishers"/></h2>
                 <p><Translate value="Select Publishers description"/></p>
+                </Row>
                 <Row type="flex" align="middle">
                     <Form onSubmit={this.handleSubmit.bind(this)} className="full-width">
                         {!this.state.showPublisherTable &&
                         <Row type="flex" className={"mt-4"}>
-                            <Col span={12}>
+                            <Col span={24}>
                                 <Row type="flex">
                                     <Col span={4}>
                                         <Tooltip/>
-                                        <label><Translate value="Select"/></label>
+                                        <label><Translate value="List type"/></label>
                                     </Col>
-                                    <Col span={20}>
+                                    <Col span={10}>
                                         <RadioButtonGroup defaultSelected={this.state.listType}
-                                                          className="campaign-radio-group" name="pricing"
+                                                          className="campaign-radio-group publisher-radio" name="pricing"
                                                           onChange={this.handleChangeList.bind(this)}>
                                             <RadioButton className="campaign-radio-button"
                                                          value={List.NEW}
@@ -247,13 +249,14 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                     </Col>
                                 </Row>
                                 {this.state.listType === List.PREVIOUS &&
-                                <Row type="flex">
+                                <Row type="flex" >
                                     <Col span={4}>
                                     </Col>
-                                    <Col span={20} className={"publisher-column"}>
-                                        <Row gutter={5} className="publisher-custom-list">
+                                    <Col span={10} className={"publisher-column"}>
+                                        <Row gutter={20} type={"flex"} className="publisher-custom-list" align={"bottom"}>
                                             <Col span={12}>
                                                 <FormItem>
+                                                    <span className="publisher-list-title"><Translate value={"Your lists:"}/></span>
                                                     {getFieldDecorator("listId", {
                                                         initialValue: this.state.currentCampaign.inventory,
                                                         rules: [{
@@ -265,6 +268,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                                             keyProps={"id"}
                                                             labelProps={"label"}
                                                             placeHolder={this.i18n._t("Select Inventory").toString()}
+                                                            placeHolderEmpty={this.i18n._t("There is no inventory").toString()}
                                                             dataFn={this.controllerApi.inventoryInventoryListGet}/>
                                                     )}
                                                 </FormItem>
@@ -272,7 +276,7 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                             <Col span={12}>
                                                 <FormItem>
                                                     {getFieldDecorator("listType", {
-                                                        initialValue: this.state.currentCampaign.inventory_type,
+                                                        initialValue: this.state.currentCampaign.inventory_type ? this.state.currentCampaign : LIST_TYPE.WHITE,
                                                         rules: [{
                                                             required: true,
                                                             message: this.i18n._t("Select inventory")
@@ -280,7 +284,8 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                                     })(
                                                         <Select
                                                             className="select-input full-width"
-                                                            dropdownClassName={"select-dropdown"}>
+                                                            dropdownClassName={"select-dropdown"}
+                                                        >
                                                             <Option key={LIST_TYPE.WHITE}
                                                                     value={LIST_TYPE.WHITE}>{this.i18n._t("Whitelist")}</Option>
                                                             <Option key={LIST_TYPE.BLACK}
@@ -331,29 +336,38 @@ class SelectPublisherComponent extends React.Component <IProps, IState> {
                                         <Translate value={"List Name"}/>
                                     </label>
                                 </Col>
-                                <Col span={14} offset={6}>
+                                <Col span={12} offset={6}>
                                     <Row type="flex" gutter={16}>
-                                        <Col span={12}>
-                                            <FormItem>
+                                        <Col span={14}>
+                                            <FormItem className={"error-position"}>
                                                 {getFieldDecorator("listName", {
                                                     initialValue: this.i18n._t("%s Publishers", {params: [this.state.currentCampaign.title]}).toString(),
                                                     rules: [{
                                                         required: true,
                                                         message: this.i18n._t("Enter inventory name")
-                                                    }],
+                                                    }, {
+                                                        whitespace: true,
+                                                        min: 3,
+                                                        message: this.i18n._t("Name should contain more than 3 character")
+                                                    }
+                                                    ],
                                                 })(
                                                     <Input
                                                         className={"input-campaign"}
+                                                        placeholder={this.i18n._t("exp: List of best iranian websites") as string}
                                                     />
                                                 )}
                                             </FormItem>
                                         </Col>
-                                        <Col span={12}>
+                                        <Col span={10}>
                                             <FormItem>
-                                                {getFieldDecorator("newListType", {})(
+                                                {getFieldDecorator("newListType", {
+                                                    initialValue: this.state.currentCampaign.inventory_type ? this.state.currentCampaign : LIST_TYPE.WHITE
+                                                })(
                                                     <Select
                                                         className="select-input full-width"
-                                                        dropdownClassName={"select-dropdown"}>
+                                                        dropdownClassName={"select-dropdown"}
+                                                    >
                                                         <Option key={LIST_TYPE.WHITE}
                                                                 value={LIST_TYPE.WHITE}>{this.i18n._t("White list")}</Option>
                                                         <Option key={LIST_TYPE.BLACK}
