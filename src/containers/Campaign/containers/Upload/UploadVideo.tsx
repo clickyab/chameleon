@@ -139,7 +139,7 @@ class UploadVideo extends React.Component <IProps, IState> {
         <Row type="flex" gutter={16}>
           <Col span={24} className={"column-border-bottom uploaders-container"}>
             <Col span={8} offset={16}>
-              <UploadFile label={"video poster(wide with 16:9 aspect ratio)"}
+              <UploadFile label={this.i18n._t("video poster(wide with 16:9 aspect ratio)") as string}
                           minDimension={{width: 640, height: 360}}
                           required={true}
                           fileType={[FILE_TYPE.VID_MP4, FILE_TYPE.IMG_GIF]}

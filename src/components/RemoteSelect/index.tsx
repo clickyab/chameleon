@@ -76,7 +76,6 @@ export default class RemoteSelect extends React.Component <IProps, IState> {
                 style={{width: "100%"}}
                 disabled={data.length === 0}
             >
-                {console.log("data" , data.length)}
                 {data.map(d => <Option value={JSON.stringify(d)} key={d[this.props.keyProps]}>{d[this.props.labelProps]}</Option>)}
             </Select>
         );

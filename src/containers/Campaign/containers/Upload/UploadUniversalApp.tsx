@@ -19,6 +19,7 @@ import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
 import UploadFile, {UPLOAD_MODULES} from "../../components/UploadFile";
 import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 import {assetObjGen, assetPushObjArray} from "../../../../services/Utils/assetInputFormatter";
+import Icon from "../../../../components/Icon";
 
 
 const Dragger = Upload.Dragger;
@@ -162,7 +163,8 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
             name: "phone",
             type: "textfield",
             number: true,
-            className: "dir-ltr"
+            className: "dir-ltr",
+            optional: true,
         }
     ];
 
@@ -292,7 +294,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                         {getFieldDecorator("icon", {
                                             required: true, message: this.i18n._t("Please upload Icon!")
                                         })(
-                                            <UploadFile label={"Icon of application"}
+                                            <UploadFile label={this.i18n._t("Icon of application") as string}
                                                         fileType={[FILE_TYPE.IMG_PNG]}
                                                         minDimension={this.minSizeIcon}
                                                         ratio={this.minSizeIcon}
@@ -304,7 +306,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                 <Col span={8}>
                                     <FormItem>
                                         {getFieldDecorator("video", {})(
-                                            <UploadFile label={"video"}
+                                            <UploadFile label={this.i18n._t("video") as string}
                                                         fileType={[FILE_TYPE.VID_MP4]}
                                                         minDimension={this.minVideoSize}
                                                         uploadModule={UPLOAD_MODULES.NATIVE_VIDEO}
@@ -317,7 +319,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                         {getFieldDecorator("imageVertical", {
                                             required: true, message: this.i18n._t("Please upload Image!")
                                         })(
-                                            <UploadFile label={"Ad image(vertical)"}
+                                            <UploadFile label={this.i18n._t("Ad image(vertical)") as string}
                                                         fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                         minDimension={this.minImageVerticalSize}
                                                         uploadModule={UPLOAD_MODULES.NATIVE_BANNER}
@@ -333,7 +335,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                 <Col span={5}>
                                     <FormItem>
                                     {getFieldDecorator("logo", {})(
-                                        <UploadFile label={"Logo of site, app or corporation"}
+                                        <UploadFile label={this.i18n._t("Logo of site, app or corporation") as string}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
                                                     minDimension={this.minLogoSize}
                                                     uploadModule={UPLOAD_MODULES.NATIVE_BANNER}
@@ -344,7 +346,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                                 <Col span={8}>
                                     <FormItem>
                                      {getFieldDecorator("imageHorizental", {})(
-                                    <UploadFile label={"Ad image(horizontal)"}
+                                    <UploadFile label={this.i18n._t("Ad image(horizontal)") as string}
                                                 fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                                 minDimension={this.minImageHorizentalSize}
                                                 ratio={this.minImageHorizentalSize}
@@ -357,22 +359,26 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
                             }
                             {!this.state.moreUploadOption &&
                             <div className="mb-2">
-                                <a onClick={() => this.setState({moreUploadOption: !this.state.moreUploadOption})}><Translate
-                                    value={"+show more option"}/></a>
+                                <div className="more-option" onClick={() => this.setState({moreUploadOption: !this.state.moreUploadOption})}>
+                                    <Icon name={"cif-plusbold"}/>
+                                    <Translate value={"show more option"}/>
+                                </div>
                             </div>
                             }
                         </Col>
                         <Col span={24} className={"column-border-bottom uploaders-container"}>
-                            <Row gutter={16}>
-                                <Col span={8} offset={16}>
+                            <Row gutter={16} type="flex">
+                                <Col span={8}>
                                     <Col span={24}>
                                         <div className="upload-setting">
-                        <span className="upload-title-setting span-block">
-                           <Translate value={"Ad general information"}/>
-                        </span>
+                                          <span className="upload-title-setting span-block">
+                                           <Translate value={"Ad general information"}/>
+                                           </span>
                                         </div>
                                     </Col>
                                     <CreativeGeneralInfo form={this.props.form}/>
+                                </Col>
+                                <Col span={16}>
                                 </Col>
                             </Row>
                         </Col>

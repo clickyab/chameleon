@@ -256,7 +256,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom uploaders-container"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                                <UploadFile label={"wide image"}
+                                <UploadFile label={this.i18n._t("wide image") as string}
                                             fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
                                             exactDimension={this.exactWideImageSize}
                                             uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
@@ -264,7 +264,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                                 />
                             </Col>
                             <Col span={5}>
-                                <UploadFile label={"Icon"}
+                                <UploadFile label={this.i18n._t("Icon") as string}
                                             fileType={[FILE_TYPE.IMG_PNG]}
                                             minDimension={this.minSizeIcon}
                                             ratio={{width: 1, height: 1}}
@@ -272,7 +272,7 @@ class UploadDynamicBanner extends React.Component <IProps, IState> {
                                 />
                             </Col>
                             <Col span={5}>
-                                <UploadFile label={"Logo"}
+                                <UploadFile label={this.i18n._t("Logo") as string}
                                             fileType={[FILE_TYPE.IMG_PNG]}
                                             minDimension={this.minLogoSize}
                                             ratio={{width: 1, height: 1}}

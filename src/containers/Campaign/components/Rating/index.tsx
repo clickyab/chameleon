@@ -21,7 +21,7 @@ export default class Rating extends React.Component<IProps, IState> {
     }
     render() {
         return (<div>
-            {this.state.value && <span className={"rating-value"}><Translate value={"%s from 5"} params={[this.state.value]}/></span>}
+            {this.state.value || this.state.value === 0 && <span className={"rating-value"}><Translate value={"%s from 5"} params={[this.state.value.toString()]}/></span>}
             <Rate {...this.props} onChange={(value) => this.handleValue(value)} value={this.state.value}/>
         </div>);
     }

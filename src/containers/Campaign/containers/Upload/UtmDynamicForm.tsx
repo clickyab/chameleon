@@ -13,6 +13,7 @@ import UtmForm from "./UtmForm";
 import Rating from "../../components/Rating";
 import CurrencySelector from "../../components/CurrencySelector";
 import {isValidUrl} from "../../../../services/Utils/CustomValidations";
+import Icon from "../../../../components/Icon";
 const FormItem = Form.Item;
 
 /**
@@ -136,7 +137,7 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             <FormItem>
                                 <span className={`span-block input-title ${value.required ? "require" : ""}`}>{value.title}</span>
                                 {getFieldDecorator(value.name, {
-                                    initialValue: 3,
+                                    initialValue: 0,
                                     rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                 })(
                                     <Rating allowHalf className={"rating-utm"}/>
@@ -159,8 +160,11 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                         }
                 })}
                     {this.state.moreOption && !this.state.showMoreOption &&
-                        <div className="mb-2">
-                        <a onClick={() => this.setState({showMoreOption: !this.state.showMoreOption})}><Translate value={"+show more option"}/></a>
+                        <div className="more-option-wrapper">
+                        <div className="more-option" onClick={() => this.setState({showMoreOption: !this.state.showMoreOption})}>
+                            <Icon name={"cif-plusbold"}/>
+                            <Translate value={"show more option"}/>
+                        </div>
                         </div>
                     }
                 </Form>

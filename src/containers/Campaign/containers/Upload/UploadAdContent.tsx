@@ -195,7 +195,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                             <Col span={8}>
                                 <FormItem>
                                     {getFieldDecorator("image", {})(
-                                        <UploadFile label={"wide image"}
+                                        <UploadFile label={this.i18n._t("wide image") as string}
                                                     minDimension={this.minSizeWide}
                                                     required={true}
                                                     fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
@@ -206,7 +206,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                             <Col span={5}>
                                 <FormItem>
                                     {getFieldDecorator("logo", {})(
-                                        <UploadFile label={"Logo"}
+                                        <UploadFile label={this.i18n._t("Logo") as string}
                                                     minDimension={this.minSizeWide}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
                                                     uploadModule={UPLOAD_MODULES.NATIVE_BANNER}/>
@@ -238,7 +238,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         <Button className="btn-general btn-submit ml-1"
                                 onClick={this.handleSubmit.bind(this)}
                         >
-                            <Translate value={"Save and creat new ad"}/>
+                            <Translate value={"Save and create new ad"}/>
                         </Button>
                         <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                     </Row>
