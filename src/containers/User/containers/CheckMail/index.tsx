@@ -120,7 +120,10 @@ class CheckMail extends React.Component<IProps, IState> {
               <FormItem className="login-input hide-ant-error">
                 {getFieldDecorator("email", {
                   initialValue: this.state.email,
-                  rules: [{required: true, type: "email", message: this.i18n._t("Please enter a valid email!")}],
+                  rules: [
+                      {required: true, message: " "},
+                      {type: "email", message: this.i18n._t("Please enter a valid email!")}
+                      ],
                 })(
                   <TextField
                     className={"login-textfield"}

@@ -13,6 +13,7 @@ import AAA from "./../services/AAA/index";
 import * as querystring from "querystring";
 import * as url from "url";
 import * as assign from "core-js/library/fn/object/assign";
+import permMap from "./permMap";
 import "whatwg-fetch";
 
 interface Dictionary<T> { [index: string]: T; }
@@ -51,9 +52,35 @@ export class BaseAPI {
 
         return objectInstance; // Return new object.
         };
+export interface AaaAccountType {
+}
+
+export interface AaaUserList {
+    "_actions"?: string;
+    "account_type"?: string;
+    "avatar"?: AaaUserListAvatar;
+    "balance"?: number;
+    "cellphone"?: AaaUserListAvatar;
+    "created_at"?: string;
+    "email"?: string;
+    "full_name"?: string;
+    "id"?: number;
+    "land_line"?: AaaUserListAvatar;
+    "ssn"?: AaaUserListAvatar;
+    "status"?: string;
+}
+
+export interface AaaUserListAvatar {
+    "String"?: string;
+    "Valid"?: boolean;
+}
+
 export interface AaaUserSearchResult {
     "email"?: string;
     "id"?: number;
+}
+
+export interface AaaUserValidStatus {
 }
 
 export interface ControllerErrorResponseSimple {
@@ -149,37 +176,32 @@ export interface ControllersBaseResult {
 
 export interface ControllersBaseResultSchedule {
     "campaign_id"?: number;
-    "h00"?: ControllersBaseResultScheduleH00;
-    "h01"?: ControllersBaseResultScheduleH00;
-    "h02"?: ControllersBaseResultScheduleH00;
-    "h03"?: ControllersBaseResultScheduleH00;
-    "h04"?: ControllersBaseResultScheduleH00;
-    "h05"?: ControllersBaseResultScheduleH00;
-    "h06"?: ControllersBaseResultScheduleH00;
-    "h07"?: ControllersBaseResultScheduleH00;
-    "h08"?: ControllersBaseResultScheduleH00;
-    "h09"?: ControllersBaseResultScheduleH00;
-    "h10"?: ControllersBaseResultScheduleH00;
-    "h11"?: ControllersBaseResultScheduleH00;
-    "h12"?: ControllersBaseResultScheduleH00;
-    "h13"?: ControllersBaseResultScheduleH00;
-    "h14"?: ControllersBaseResultScheduleH00;
-    "h15"?: ControllersBaseResultScheduleH00;
-    "h16"?: ControllersBaseResultScheduleH00;
-    "h17"?: ControllersBaseResultScheduleH00;
-    "h18"?: ControllersBaseResultScheduleH00;
-    "h19"?: ControllersBaseResultScheduleH00;
-    "h20"?: ControllersBaseResultScheduleH00;
-    "h21"?: ControllersBaseResultScheduleH00;
-    "h22"?: ControllersBaseResultScheduleH00;
-    "h23"?: ControllersBaseResultScheduleH00;
+    "h00"?: AaaUserListAvatar;
+    "h01"?: AaaUserListAvatar;
+    "h02"?: AaaUserListAvatar;
+    "h03"?: AaaUserListAvatar;
+    "h04"?: AaaUserListAvatar;
+    "h05"?: AaaUserListAvatar;
+    "h06"?: AaaUserListAvatar;
+    "h07"?: AaaUserListAvatar;
+    "h08"?: AaaUserListAvatar;
+    "h09"?: AaaUserListAvatar;
+    "h10"?: AaaUserListAvatar;
+    "h11"?: AaaUserListAvatar;
+    "h12"?: AaaUserListAvatar;
+    "h13"?: AaaUserListAvatar;
+    "h14"?: AaaUserListAvatar;
+    "h15"?: AaaUserListAvatar;
+    "h16"?: AaaUserListAvatar;
+    "h17"?: AaaUserListAvatar;
+    "h18"?: AaaUserListAvatar;
+    "h19"?: AaaUserListAvatar;
+    "h20"?: AaaUserListAvatar;
+    "h21"?: AaaUserListAvatar;
+    "h22"?: AaaUserListAvatar;
+    "h23"?: AaaUserListAvatar;
     "id"?: number;
     "updated_at"?: string;
-}
-
-export interface ControllersBaseResultScheduleH00 {
-    "String"?: string;
-    "Valid"?: boolean;
 }
 
 export interface ControllersBrowserResponse extends Array<ControllersBrowserResponseInner> {
@@ -295,30 +317,30 @@ export interface ControllersCampaignGetResponseReceivers {
 }
 
 export interface ControllersCampaignGetResponseSchedule {
-    "h00"?: ControllersBaseResultScheduleH00;
-    "h01"?: ControllersBaseResultScheduleH00;
-    "h02"?: ControllersBaseResultScheduleH00;
-    "h03"?: ControllersBaseResultScheduleH00;
-    "h04"?: ControllersBaseResultScheduleH00;
-    "h05"?: ControllersBaseResultScheduleH00;
-    "h06"?: ControllersBaseResultScheduleH00;
-    "h07"?: ControllersBaseResultScheduleH00;
-    "h08"?: ControllersBaseResultScheduleH00;
-    "h09"?: ControllersBaseResultScheduleH00;
-    "h10"?: ControllersBaseResultScheduleH00;
-    "h11"?: ControllersBaseResultScheduleH00;
-    "h12"?: ControllersBaseResultScheduleH00;
-    "h13"?: ControllersBaseResultScheduleH00;
-    "h14"?: ControllersBaseResultScheduleH00;
-    "h15"?: ControllersBaseResultScheduleH00;
-    "h16"?: ControllersBaseResultScheduleH00;
-    "h17"?: ControllersBaseResultScheduleH00;
-    "h18"?: ControllersBaseResultScheduleH00;
-    "h19"?: ControllersBaseResultScheduleH00;
-    "h20"?: ControllersBaseResultScheduleH00;
-    "h21"?: ControllersBaseResultScheduleH00;
-    "h22"?: ControllersBaseResultScheduleH00;
-    "h23"?: ControllersBaseResultScheduleH00;
+    "h00"?: AaaUserListAvatar;
+    "h01"?: AaaUserListAvatar;
+    "h02"?: AaaUserListAvatar;
+    "h03"?: AaaUserListAvatar;
+    "h04"?: AaaUserListAvatar;
+    "h05"?: AaaUserListAvatar;
+    "h06"?: AaaUserListAvatar;
+    "h07"?: AaaUserListAvatar;
+    "h08"?: AaaUserListAvatar;
+    "h09"?: AaaUserListAvatar;
+    "h10"?: AaaUserListAvatar;
+    "h11"?: AaaUserListAvatar;
+    "h12"?: AaaUserListAvatar;
+    "h13"?: AaaUserListAvatar;
+    "h14"?: AaaUserListAvatar;
+    "h15"?: AaaUserListAvatar;
+    "h16"?: AaaUserListAvatar;
+    "h17"?: AaaUserListAvatar;
+    "h18"?: AaaUserListAvatar;
+    "h19"?: AaaUserListAvatar;
+    "h20"?: AaaUserListAvatar;
+    "h21"?: AaaUserListAvatar;
+    "h22"?: AaaUserListAvatar;
+    "h23"?: AaaUserListAvatar;
 }
 
 export interface ControllersCatResponse extends Array<ControllersCatResponseInner> {
@@ -343,7 +365,21 @@ export interface ControllersChangeLabelPayload {
     "label"?: string;
 }
 
+export interface ControllersChangeStatus {
+    "status"?: string;
+}
+
 export interface ControllersChangeStatusPayload {
+    "status"?: string;
+}
+
+export interface ControllersChangeStatusResult {
+    "creatives_status"?: Array<ControllersChangeStatusResultCreativesStatus>;
+}
+
+export interface ControllersChangeStatusResultCreativesStatus {
+    "creative_id"?: number;
+    "reject_reason_id"?: number;
     "status"?: string;
 }
 
@@ -355,6 +391,19 @@ export interface ControllersCreateCampaignPayload {
     "status"?: string;
     "title"?: string;
     "tld"?: string;
+}
+
+export interface ControllersCreateDomainPayload {
+    "attributes"?: { [key: string]: string; };
+    "description"?: AaaUserListAvatar;
+    "name"?: string;
+    "status"?: string;
+}
+
+export interface ControllersCreateDomainResult {
+    "domain_id"?: number;
+    "name"?: string;
+    "status"?: string;
 }
 
 export interface ControllersCreateInventoryPayload {
@@ -384,6 +433,11 @@ export interface ControllersCreateNativePayloadAssets {
     "sale_price"?: Array<ControllersNativeAssetPayloadPrice>;
     "title"?: Array<ControllersNativeAssetPayloadCta>;
     "video"?: Array<ControllersNativeAssetPayloadCta>;
+}
+
+export interface ControllersCreativeStatusChangeResult {
+    "campaign"?: number;
+    "effected_creatives"?: number;
 }
 
 export interface ControllersDuplicateInventoryPayload {
@@ -813,7 +867,7 @@ export interface ControllersListPublisherdetailsResponseData {
     "conversion"?: number;
     "conversion_rate"?: number;
     "cpa"?: number;
-    "domain"?: ControllersBaseResultScheduleH00;
+    "domain"?: AaaUserListAvatar;
     "ecpc"?: number;
     "ecpm"?: number;
     "ectr"?: number;
@@ -861,6 +915,9 @@ export interface ControllersNativeAssetPayloadPrice {
     "val"?: number;
 }
 
+export interface ControllersNotifyUserTypes {
+}
+
 export interface ControllersOsResponse extends Array<ControllersManufacturersInner> {
 }
 
@@ -870,6 +927,17 @@ export interface ControllersPlatformResponse extends Array<ControllersManufactur
 export interface ControllersRegisterBankSnapPayload {
     "amount"?: number;
     "trace_number"?: number;
+}
+
+export interface ControllersRejectReasons extends Array<ControllersRejectReasonsInner> {
+}
+
+export interface ControllersRejectReasonsInner {
+    "created_at"?: string;
+    "id"?: number;
+    "reason"?: string;
+    "status"?: string;
+    "updated_at"?: ControllersCatResponseInnerDeletedAt;
 }
 
 export interface ControllersRemoveInventoryPayload {
@@ -1111,6 +1179,12 @@ export interface OrmCategory {
     "name"?: string;
 }
 
+export interface OrmChangeStatusReq {
+    "creative_id"?: number;
+    "reject_reason_id"?: number;
+    "status"?: string;
+}
+
 export interface OrmCreative {
     "archived_at"?: string;
     "attributes"?: { [key: string]: string; };
@@ -1119,6 +1193,7 @@ export interface OrmCreative {
     "id"?: number;
     "max_bid"?: number;
     "name"?: string;
+    "reject_reason_id"?: number;
     "status"?: string;
     "type"?: string;
     "updated_at"?: string;
@@ -1141,6 +1216,14 @@ export interface OrmCreativeDataTable {
     "type"?: string;
 }
 
+export interface OrmCreativeRejectReasons {
+    "created_at"?: string;
+    "id"?: number;
+    "reason"?: string;
+    "status"?: string;
+    "updated_at"?: ControllersCatResponseInnerDeletedAt;
+}
+
 export interface OrmCreativeSaveResult {
     "assets"?: { [key: string]: Array<string>; };
     "creative"?: OrmCreativeSaveResultCreative;
@@ -1154,6 +1237,7 @@ export interface OrmCreativeSaveResultCreative {
     "id"?: number;
     "max_bid"?: number;
     "name"?: string;
+    "reject_reason_id"?: number;
     "status"?: string;
     "type"?: string;
     "updated_at"?: string;
@@ -1173,7 +1257,7 @@ export interface OrmDefaultType {
 export interface OrmDomain {
     "attributes"?: { [key: string]: string; };
     "created_at"?: string;
-    "description"?: ControllersBaseResultScheduleH00;
+    "description"?: AaaUserListAvatar;
     "id"?: number;
     "name"?: string;
     "status"?: string;
@@ -1280,16 +1364,16 @@ export interface OrmOnlinePayment {
     "amount"?: number;
     "attr"?: { [key: string]: string; };
     "bank_status"?: number;
-    "cid"?: ControllersBaseResultScheduleH00;
+    "cid"?: AaaUserListAvatar;
     "created_at"?: string;
     "domain_id"?: number;
     "error_reason"?: OrmOnlinePaymentErrorReason;
     "gateway_id"?: number;
     "id"?: number;
-    "ref_num"?: ControllersBaseResultScheduleH00;
+    "ref_num"?: AaaUserListAvatar;
     "res_num"?: string;
     "status"?: string;
-    "trace_number"?: ControllersBaseResultScheduleH00;
+    "trace_number"?: AaaUserListAvatar;
     "updated_at"?: string;
     "user_id"?: number;
 }
@@ -1348,7 +1432,7 @@ export interface OrmPublisherDetails {
     "conversion"?: number;
     "conversion_rate"?: number;
     "cpa"?: number;
-    "domain"?: ControllersBaseResultScheduleH00;
+    "domain"?: AaaUserListAvatar;
     "ecpc"?: number;
     "ecpm"?: number;
     "ectr"?: number;
@@ -1375,31 +1459,34 @@ export interface OrmReceiver {
     "id"?: number;
 }
 
+export interface OrmRejectReasonStatusTypes {
+}
+
 export interface OrmScheduleSheet {
-    "h00"?: ControllersBaseResultScheduleH00;
-    "h01"?: ControllersBaseResultScheduleH00;
-    "h02"?: ControllersBaseResultScheduleH00;
-    "h03"?: ControllersBaseResultScheduleH00;
-    "h04"?: ControllersBaseResultScheduleH00;
-    "h05"?: ControllersBaseResultScheduleH00;
-    "h06"?: ControllersBaseResultScheduleH00;
-    "h07"?: ControllersBaseResultScheduleH00;
-    "h08"?: ControllersBaseResultScheduleH00;
-    "h09"?: ControllersBaseResultScheduleH00;
-    "h10"?: ControllersBaseResultScheduleH00;
-    "h11"?: ControllersBaseResultScheduleH00;
-    "h12"?: ControllersBaseResultScheduleH00;
-    "h13"?: ControllersBaseResultScheduleH00;
-    "h14"?: ControllersBaseResultScheduleH00;
-    "h15"?: ControllersBaseResultScheduleH00;
-    "h16"?: ControllersBaseResultScheduleH00;
-    "h17"?: ControllersBaseResultScheduleH00;
-    "h18"?: ControllersBaseResultScheduleH00;
-    "h19"?: ControllersBaseResultScheduleH00;
-    "h20"?: ControllersBaseResultScheduleH00;
-    "h21"?: ControllersBaseResultScheduleH00;
-    "h22"?: ControllersBaseResultScheduleH00;
-    "h23"?: ControllersBaseResultScheduleH00;
+    "h00"?: AaaUserListAvatar;
+    "h01"?: AaaUserListAvatar;
+    "h02"?: AaaUserListAvatar;
+    "h03"?: AaaUserListAvatar;
+    "h04"?: AaaUserListAvatar;
+    "h05"?: AaaUserListAvatar;
+    "h06"?: AaaUserListAvatar;
+    "h07"?: AaaUserListAvatar;
+    "h08"?: AaaUserListAvatar;
+    "h09"?: AaaUserListAvatar;
+    "h10"?: AaaUserListAvatar;
+    "h11"?: AaaUserListAvatar;
+    "h12"?: AaaUserListAvatar;
+    "h13"?: AaaUserListAvatar;
+    "h14"?: AaaUserListAvatar;
+    "h15"?: AaaUserListAvatar;
+    "h16"?: AaaUserListAvatar;
+    "h17"?: AaaUserListAvatar;
+    "h18"?: AaaUserListAvatar;
+    "h19"?: AaaUserListAvatar;
+    "h20"?: AaaUserListAvatar;
+    "h21"?: AaaUserListAvatar;
+    "h22"?: AaaUserListAvatar;
+    "h23"?: AaaUserListAvatar;
 }
 
 export interface OrmSinglePublisherDataTable {
@@ -1445,6 +1532,24 @@ export interface TransT9Base {
     "text"?: string;
 }
 
+export interface UserAddUserToWhitelabelPayload {
+    "account_type"?: string;
+    "corporation_info"?: UserAddUserToWhitelabelPayloadCorporationInfo;
+    "email"?: string;
+    "first_name"?: string;
+    "last_name"?: string;
+    "mobile"?: string;
+    "notify_user"?: boolean;
+    "password"?: string;
+    "role_id"?: number;
+}
+
+export interface UserAddUserToWhitelabelPayloadCorporationInfo {
+    "economic_code"?: string;
+    "legal_name"?: string;
+    "legal_register"?: string;
+}
+
 export interface UserAvatarPayload {
     "avatar"?: string;
 }
@@ -1470,11 +1575,32 @@ export interface UserCheckMailResponse {
 export interface UserCheckMailResponseDomains {
     "attributes"?: { [key: string]: string; };
     "created_at"?: string;
-    "description"?: ControllersBaseResultScheduleH00;
+    "description"?: AaaUserListAvatar;
     "id"?: number;
     "name"?: string;
     "status"?: string;
     "updated_at"?: string;
+}
+
+export interface UserEditAdminResp {
+    "account"?: UserResponseLoginOKAccount;
+    "managers"?: Array<string>;
+}
+
+export interface UserEditUserPayload {
+    "address"?: string;
+    "cell_phone"?: string;
+    "city_id"?: number;
+    "economic_code"?: string;
+    "first_name"?: string;
+    "gender"?: string;
+    "land_line"?: string;
+    "last_name"?: string;
+    "legal_name"?: string;
+    "legal_register"?: string;
+    "managers"?: Array<number>;
+    "postal_code"?: string;
+    "ssn"?: string;
 }
 
 export interface UserForgetCodePayload {
@@ -1484,6 +1610,38 @@ export interface UserForgetCodePayload {
 
 export interface UserForgetPayload {
     "email"?: string;
+}
+
+export interface UserListUsersListDefResponse {
+    "checkable"?: boolean;
+    "columns"?: Array<ControllersListBasePublisherStatisticsDefResponseColumns>;
+    "datefilter"?: string;
+    "hash"?: string;
+    "multiselect"?: boolean;
+    "searchkey"?: string;
+}
+
+export interface UserListUsersListResponse {
+    "data"?: Array<UserListUsersListResponseData>;
+    "hash"?: string;
+    "page"?: number;
+    "per_page"?: number;
+    "total"?: number;
+}
+
+export interface UserListUsersListResponseData {
+    "_actions"?: string;
+    "account_type"?: string;
+    "avatar"?: AaaUserListAvatar;
+    "balance"?: number;
+    "cellphone"?: AaaUserListAvatar;
+    "created_at"?: string;
+    "email"?: string;
+    "full_name"?: string;
+    "id"?: number;
+    "land_line"?: AaaUserListAvatar;
+    "ssn"?: AaaUserListAvatar;
+    "status"?: string;
 }
 
 export interface UserLoginPayload {
@@ -1502,6 +1660,7 @@ export interface UserRegisterPayload {
 
 export interface UserResponseLoginOK {
     "account"?: UserResponseLoginOKAccount;
+    "perms"?: Array<string>;
     "token"?: string;
 }
 
@@ -1524,8 +1683,9 @@ export interface UserResponseLoginOKAccount {
     "last_name"?: string;
     "legal_name"?: string;
     "legal_register"?: string;
+    "perms"?: Array<string>;
     "postal_code"?: string;
-    "province_id"?: number;
+    "province"?: string;
     "province_name"?: string;
     "ssn"?: string;
 }
@@ -1572,8 +1732,9 @@ export interface UserUserResponse {
     "last_name"?: string;
     "legal_name"?: string;
     "legal_register"?: string;
+    "perms"?: Array<string>;
     "postal_code"?: string;
-    "province_id"?: number;
+    "province"?: string;
     "province_name"?: string;
     "ssn"?: string;
 }
@@ -1596,6 +1757,42 @@ export interface UserVerifyResendPayload {
  * ControllersApi - fetch parameter creator
  */
 export const ControllersApiFetchParamCreator = {
+    /**
+     * @func
+     * adCampaignCreativeStatusIdPatch
+     * @param id  param
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    adCampaignCreativeStatusIdPatch(params: {  id: string; token?: string; payloadData?: ControllersChangeStatus; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling adCampaignCreativeStatusIdPatch");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/ad/campaign-creative-status/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "PATCH" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        params["payloadData"] = removeEmpty(params["payloadData"]);
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
     /**
      * @func
      * adCampaignIdDefinitionGet
@@ -1634,14 +1831,14 @@ export const ControllersApiFetchParamCreator = {
      * @param c  count per page param
      * @param q  parameter for search param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param status  param
-     * @param type  param
-     * @param name  search the name field param
-     * @param p  page number param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param sort  param
+     * @param status  param
+     * @param p  page number param
+     * @param type  param
+     * @param name  search the name field param
      */
-    adCampaignIdGet(params: {  id: string; token?: string; c?: string; q?: string; from?: string; status?: string; type?: string; name?: string; p?: string; to?: string; sort?: string; }, options: any = {}): FetchArgs {
+    adCampaignIdGet(params: {  id: string; token?: string; c?: string; q?: string; from?: string; to?: string; sort?: string; status?: string; p?: string; type?: string; name?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling adCampaignIdGet");
@@ -1663,8 +1860,17 @@ export const ControllersApiFetchParamCreator = {
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
         }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
+        }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
         if (params["status"] !== undefined) {
             urlObj.query["status"] = params["status"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
         }
         if (params["type"] !== undefined) {
             urlObj.query["type"] = params["type"];
@@ -1672,18 +1878,45 @@ export const ControllersApiFetchParamCreator = {
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
         }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
-        }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * adChangeCreativesStatusIdPut
+     * @param id  param
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    adChangeCreativesStatusIdPut(params: {  id: string; token?: string; payloadData?: ControllersChangeStatusPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling adChangeCreativesStatusIdPut");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/ad/change-creatives-status/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        params["payloadData"] = removeEmpty(params["payloadData"]);
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
         fetchOptions.headers = assign({
             "token": params["token"],
         }, contentTypeHeader, fetchOptions.headers);
@@ -1710,6 +1943,30 @@ export const ControllersApiFetchParamCreator = {
         }
         const baseUrl = `/ad/creative/{id}`
             .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * adCreativeRejectReasonsGet
+     * @param token the security token, get it from login route param
+     */
+    adCreativeRejectReasonsGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/ad/creative-reject-reasons`;
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2262,14 +2519,14 @@ export const ControllersApiFetchParamCreator = {
      * campaignDailyIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param q  parameter for search param
+     * @param c  count per page param
      * @param p  page number param
+     * @param q  parameter for search param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param sort  param
-     * @param c  count per page param
      */
-    campaignDailyIdGet(params: {  id: string; token?: string; q?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; }, options: any = {}): FetchArgs {
+    campaignDailyIdGet(params: {  id: string; token?: string; c?: string; p?: string; q?: string; from?: string; to?: string; sort?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling campaignDailyIdGet");
@@ -2282,11 +2539,14 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
@@ -2296,9 +2556,6 @@ export const ControllersApiFetchParamCreator = {
         }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2376,13 +2633,13 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * campaignGraphAllGet
      * @param token the security token, get it from login route param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param kind  param
-     * @param ownerEmail  search the owner_email field param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param kind  param
      * @param title  search the title field param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param ownerEmail  search the owner_email field param
      */
-    campaignGraphAllGet(params: {  token?: string; from?: string; kind?: string; ownerEmail?: string; to?: string; title?: string; }, options: any = {}): FetchArgs {
+    campaignGraphAllGet(params: {  token?: string; to?: string; kind?: string; title?: string; from?: string; ownerEmail?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -2390,20 +2647,20 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/campaign/graph/all`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         if (params["kind"] !== undefined) {
             urlObj.query["kind"] = params["kind"];
         }
-        if (params["ownerEmail"] !== undefined) {
-            urlObj.query["owner_email"] = params["ownerEmail"];
-        }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
-        }
         if (params["title"] !== undefined) {
             urlObj.query["title"] = params["title"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["ownerEmail"] !== undefined) {
+            urlObj.query["owner_email"] = params["ownerEmail"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2520,20 +2777,20 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * campaignListGet
      * @param token the security token, get it from login route param
-     * @param exchange  param
-     * @param kind  param
-     * @param status  param
-     * @param q  parameter for search param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param title  search the title field param
-     * @param ownerEmail  search the owner_email field param
      * @param p  page number param
+     * @param q  parameter for search param
      * @param sort  param
      * @param strategy  param
      * @param c  count per page param
+     * @param kind  param
+     * @param status  param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param exchange  param
+     * @param title  search the title field param
+     * @param ownerEmail  search the owner_email field param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      */
-    campaignListGet(params: {  token?: string; exchange?: string; kind?: string; status?: string; q?: string; from?: string; to?: string; title?: string; ownerEmail?: string; p?: string; sort?: string; strategy?: string; c?: string; }, options: any = {}): FetchArgs {
+    campaignListGet(params: {  token?: string; p?: string; q?: string; sort?: string; strategy?: string; c?: string; kind?: string; status?: string; from?: string; exchange?: string; title?: string; ownerEmail?: string; to?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -2541,32 +2798,11 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/campaign/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["exchange"] !== undefined) {
-            urlObj.query["exchange"] = params["exchange"];
-        }
-        if (params["kind"] !== undefined) {
-            urlObj.query["kind"] = params["kind"];
-        }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
         }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
-        }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
-        }
-        if (params["title"] !== undefined) {
-            urlObj.query["title"] = params["title"];
-        }
-        if (params["ownerEmail"] !== undefined) {
-            urlObj.query["owner_email"] = params["ownerEmail"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
         }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
@@ -2576,6 +2812,27 @@ export const ControllersApiFetchParamCreator = {
         }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
+        }
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
+        }
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["exchange"] !== undefined) {
+            urlObj.query["exchange"] = params["exchange"];
+        }
+        if (params["title"] !== undefined) {
+            urlObj.query["title"] = params["title"];
+        }
+        if (params["ownerEmail"] !== undefined) {
+            urlObj.query["owner_email"] = params["ownerEmail"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2654,15 +2911,15 @@ export const ControllersApiFetchParamCreator = {
      * campaignPublisherDetailsIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param sort  param
-     * @param domain  search the domain field param
      * @param c  count per page param
-     * @param q  parameter for search param
-     * @param p  page number param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param sort  param
+     * @param p  page number param
+     * @param q  parameter for search param
+     * @param domain  search the domain field param
      */
-    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; from?: string; sort?: string; domain?: string; c?: string; q?: string; p?: string; to?: string; }, options: any = {}): FetchArgs {
+    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; c?: string; from?: string; to?: string; sort?: string; p?: string; q?: string; domain?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling campaignPublisherDetailsIdGet");
@@ -2675,26 +2932,26 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
         }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
         }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
         }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2728,6 +2985,36 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "PATCH" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        params["payloadData"] = removeEmpty(params["payloadData"]);
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * domainCreatePost
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    domainCreatePost(params: {  token?: string; payloadData?: ControllersCreateDomainPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/domain/create`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
@@ -2802,19 +3089,19 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * financialBillingGet
      * @param token the security token, get it from login route param
-     * @param userId  search the user_id field param
-     * @param firstName  search the first_name field param
+     * @param p  page number param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param sort  param
      * @param email  search the email field param
+     * @param payModel  param
+     * @param firstName  search the first_name field param
+     * @param c  count per page param
      * @param q  parameter for search param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param payModel  param
+     * @param sort  param
+     * @param userId  search the user_id field param
      * @param lastName  search the last_name field param
-     * @param p  page number param
-     * @param c  count per page param
      */
-    financialBillingGet(params: {  token?: string; userId?: string; firstName?: string; from?: string; sort?: string; email?: string; q?: string; to?: string; payModel?: string; lastName?: string; p?: string; c?: string; }, options: any = {}): FetchArgs {
+    financialBillingGet(params: {  token?: string; p?: string; from?: string; email?: string; payModel?: string; firstName?: string; c?: string; q?: string; to?: string; sort?: string; userId?: string; lastName?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -2822,20 +3109,23 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/financial/billing`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["userId"] !== undefined) {
-            urlObj.query["user_id"] = params["userId"];
-        }
-        if (params["firstName"] !== undefined) {
-            urlObj.query["first_name"] = params["firstName"];
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
         }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
         }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
         if (params["email"] !== undefined) {
             urlObj.query["email"] = params["email"];
+        }
+        if (params["payModel"] !== undefined) {
+            urlObj.query["pay_model"] = params["payModel"];
+        }
+        if (params["firstName"] !== undefined) {
+            urlObj.query["first_name"] = params["firstName"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
@@ -2843,17 +3133,14 @@ export const ControllersApiFetchParamCreator = {
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
-        if (params["payModel"] !== undefined) {
-            urlObj.query["pay_model"] = params["payModel"];
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
+        if (params["userId"] !== undefined) {
+            urlObj.query["user_id"] = params["userId"];
         }
         if (params["lastName"] !== undefined) {
             urlObj.query["last_name"] = params["lastName"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3103,18 +3390,18 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryBasePublishersStatisticsGet
      * @param token the security token, get it from login route param
-     * @param q  parameter for search param
-     * @param c  count per page param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param status  param
+     * @param c  count per page param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param kind  param
+     * @param q  parameter for search param
      * @param name  search the name field param
      * @param domain  search the domain field param
      * @param supplier  search the supplier field param
      * @param p  page number param
-     * @param status  param
-     * @param kind  param
      */
-    inventoryBasePublishersStatisticsGet(params: {  token?: string; q?: string; c?: string; from?: string; to?: string; name?: string; domain?: string; supplier?: string; p?: string; status?: string; kind?: string; }, options: any = {}): FetchArgs {
+    inventoryBasePublishersStatisticsGet(params: {  token?: string; from?: string; status?: string; c?: string; to?: string; kind?: string; q?: string; name?: string; domain?: string; supplier?: string; p?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3122,17 +3409,23 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/base-publishers/statistics`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
         }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
         }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
+        }
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
@@ -3145,12 +3438,6 @@ export const ControllersApiFetchParamCreator = {
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
-        }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
-        if (params["kind"] !== undefined) {
-            urlObj.query["kind"] = params["kind"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3325,15 +3612,15 @@ export const ControllersApiFetchParamCreator = {
      * inventoryInventoryListGet
      * @param token the security token, get it from login route param
      * @param status  param
+     * @param label  search the label field param
      * @param p  page number param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param sort  param
      * @param c  count per page param
      * @param q  parameter for search param
-     * @param sort  param
-     * @param label  search the label field param
      */
-    inventoryInventoryListGet(params: {  token?: string; status?: string; p?: string; from?: string; to?: string; c?: string; q?: string; sort?: string; label?: string; }, options: any = {}): FetchArgs {
+    inventoryInventoryListGet(params: {  token?: string; status?: string; label?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; q?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3344,6 +3631,9 @@ export const ControllersApiFetchParamCreator = {
         if (params["status"] !== undefined) {
             urlObj.query["status"] = params["status"];
         }
+        if (params["label"] !== undefined) {
+            urlObj.query["label"] = params["label"];
+        }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
         }
@@ -3353,17 +3643,14 @@ export const ControllersApiFetchParamCreator = {
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
         }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
-        }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
-        if (params["label"] !== undefined) {
-            urlObj.query["label"] = params["label"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3405,19 +3692,19 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryPublisherListGet
      * @param token the security token, get it from login route param
+     * @param kind  param
      * @param c  count per page param
      * @param q  parameter for search param
-     * @param sort  param
-     * @param name  search the name field param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param status  param
-     * @param domain  search the domain field param
-     * @param p  page number param
-     * @param kind  param
+     * @param sort  param
      * @param supplier  search the supplier field param
+     * @param p  page number param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param status  param
+     * @param name  search the name field param
+     * @param domain  search the domain field param
      */
-    inventoryPublisherListGet(params: {  token?: string; c?: string; q?: string; sort?: string; name?: string; from?: string; status?: string; domain?: string; p?: string; kind?: string; supplier?: string; to?: string; }, options: any = {}): FetchArgs {
+    inventoryPublisherListGet(params: {  token?: string; kind?: string; c?: string; q?: string; from?: string; sort?: string; supplier?: string; p?: string; to?: string; status?: string; name?: string; domain?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3425,38 +3712,38 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/publisher/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
+        }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
         }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
         }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
-        if (params["name"] !== undefined) {
-            urlObj.query["name"] = params["name"];
-        }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
         }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["kind"] !== undefined) {
-            urlObj.query["kind"] = params["kind"];
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
         }
         if (params["supplier"] !== undefined) {
             urlObj.query["supplier"] = params["supplier"];
         }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
+        }
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["name"] !== undefined) {
+            urlObj.query["name"] = params["name"];
+        }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3505,19 +3792,19 @@ export const ControllersApiFetchParamCreator = {
      * inventoryPublisherListSingleIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param supplier  search the supplier field param
-     * @param p  page number param
-     * @param q  parameter for search param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param status  param
-     * @param domain  search the domain field param
-     * @param kind  param
      * @param c  count per page param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param q  parameter for search param
      * @param sort  param
      * @param name  search the name field param
+     * @param supplier  search the supplier field param
+     * @param kind  param
+     * @param domain  search the domain field param
+     * @param p  page number param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      */
-    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; supplier?: string; p?: string; q?: string; from?: string; to?: string; status?: string; domain?: string; kind?: string; c?: string; sort?: string; name?: string; }, options: any = {}): FetchArgs {
+    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; status?: string; c?: string; to?: string; q?: string; sort?: string; name?: string; supplier?: string; kind?: string; domain?: string; p?: string; from?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling inventoryPublisherListSingleIdGet");
@@ -3530,38 +3817,38 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["supplier"] !== undefined) {
-            urlObj.query["supplier"] = params["supplier"];
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
         }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
-        }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
-        if (params["kind"] !== undefined) {
-            urlObj.query["kind"] = params["kind"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
         }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
+        }
+        if (params["supplier"] !== undefined) {
+            urlObj.query["supplier"] = params["supplier"];
+        }
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
+        }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3678,11 +3965,45 @@ export const ControllersApiFetchParamCreator = {
  */
 export const ControllersApiFp = {
     /**
+     * adCampaignCreativeStatusIdPatch
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    adCampaignCreativeStatusIdPatch(params: { id: string; token?: string; payloadData?: ControllersChangeStatus;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersCreativeStatusChangeResult> {
+        // check permission for adCampaignCreativeStatusIdPatch
+        if (permMap.adCampaignCreativeStatusIdPatch.protected && !AAA.getInstance().hasPerm(permMap.adCampaignCreativeStatusIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.adCampaignCreativeStatusIdPatch(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * adCampaignIdDefinitionGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
      */
     adCampaignIdDefinitionGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCreativecampaignreportDefResponse> {
+        // check permission for adCampaignIdDefinitionGet
+        if (permMap.adCampaignIdDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.adCampaignIdDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.adCampaignIdDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3709,15 +4030,49 @@ export const ControllersApiFp = {
      * @param c  count per page (def)
      * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param status  (def)
-     * @param type  (def)
-     * @param name  search the name field (def)
-     * @param p  page number (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
+     * @param status  (def)
+     * @param p  page number (def)
+     * @param type  (def)
+     * @param name  search the name field (def)
      */
-    adCampaignIdGet(params: { id: string; token?: string; c?: string; q?: string; from?: string; status?: string; type?: string; name?: string; p?: string; to?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCreativecampaignreportResponse> {
+    adCampaignIdGet(params: { id: string; token?: string; c?: string; q?: string; from?: string; to?: string; sort?: string; status?: string; p?: string; type?: string; name?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCreativecampaignreportResponse> {
+        // check permission for adCampaignIdGet
+        if (permMap.adCampaignIdGet.protected && !AAA.getInstance().hasPerm(permMap.adCampaignIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.adCampaignIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * adChangeCreativesStatusIdPut
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    adChangeCreativesStatusIdPut(params: { id: string; token?: string; payloadData?: ControllersChangeStatusPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersChangeStatusResult> {
+        // check permission for adChangeCreativesStatusIdPut
+        if (permMap.adChangeCreativesStatusIdPut.protected && !AAA.getInstance().hasPerm(permMap.adChangeCreativesStatusIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.adChangeCreativesStatusIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -3742,7 +4097,39 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     adCreativeIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCreativeSaveResult> {
+        // check permission for adCreativeIdGet
+        if (permMap.adCreativeIdGet.protected && !AAA.getInstance().hasPerm(permMap.adCreativeIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.adCreativeIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * adCreativeRejectReasonsGet
+     * @param token the security token, get it from login route (def)
+     */
+    adCreativeRejectReasonsGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersRejectReasons> {
+        // check permission for adCreativeRejectReasonsGet
+        if (permMap.adCreativeRejectReasonsGet.protected && !AAA.getInstance().hasPerm(permMap.adCreativeRejectReasonsGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.adCreativeRejectReasonsGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -3768,6 +4155,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     adNativeIdPut(params: { id: string; token?: string; payloadData?: ControllersEditNativePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCreativeSaveResult> {
+        // check permission for adNativeIdPut
+        if (permMap.adNativeIdPut.protected && !AAA.getInstance().hasPerm(permMap.adNativeIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.adNativeIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3793,6 +4184,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     adNativePost(params: { token?: string; payloadData?: ControllersCreateNativePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCreativeSaveResult> {
+        // check permission for adNativePost
+        if (permMap.adNativePost.protected && !AAA.getInstance().hasPerm(permMap.adNativePost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.adNativePost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3817,6 +4212,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetBrowserGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersBrowserResponse> {
+        // check permission for assetBrowserGet
+        if (permMap.assetBrowserGet.protected && !AAA.getInstance().hasPerm(permMap.assetBrowserGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetBrowserGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3841,6 +4240,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetCategoryGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersCatResponse> {
+        // check permission for assetCategoryGet
+        if (permMap.assetCategoryGet.protected && !AAA.getInstance().hasPerm(permMap.assetCategoryGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetCategoryGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3866,6 +4269,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetIspKindGet(params: { kind: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersIspResponse> {
+        // check permission for assetIspKindGet
+        if (permMap.assetIspKindGet.protected && !AAA.getInstance().hasPerm(permMap.assetIspKindGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetIspKindGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3890,6 +4297,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetManufacturersGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersManufacturers> {
+        // check permission for assetManufacturersGet
+        if (permMap.assetManufacturersGet.protected && !AAA.getInstance().hasPerm(permMap.assetManufacturersGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetManufacturersGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3914,6 +4325,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetOsGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersOsResponse> {
+        // check permission for assetOsGet
+        if (permMap.assetOsGet.protected && !AAA.getInstance().hasPerm(permMap.assetOsGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetOsGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3939,6 +4354,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetOsKindGet(params: { kind: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersOsResponse> {
+        // check permission for assetOsKindGet
+        if (permMap.assetOsKindGet.protected && !AAA.getInstance().hasPerm(permMap.assetOsKindGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetOsKindGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3963,6 +4382,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetPlatformGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersPlatformResponse> {
+        // check permission for assetPlatformGet
+        if (permMap.assetPlatformGet.protected && !AAA.getInstance().hasPerm(permMap.assetPlatformGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetPlatformGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -3988,6 +4411,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     assetPlatformKindGet(params: { kind: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersPlatformResponse> {
+        // check permission for assetPlatformKindGet
+        if (permMap.assetPlatformKindGet.protected && !AAA.getInstance().hasPerm(permMap.assetPlatformKindGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.assetPlatformKindGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4013,6 +4440,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignArchiveIdPatch(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for campaignArchiveIdPatch
+        if (permMap.campaignArchiveIdPatch.protected && !AAA.getInstance().hasPerm(permMap.campaignArchiveIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignArchiveIdPatch(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4039,6 +4470,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     campaignAttributesIdPut(params: { id: string; token?: string; payloadData?: ControllersAttributesPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersAttributesResult> {
+        // check permission for campaignAttributesIdPut
+        if (permMap.campaignAttributesIdPut.protected && !AAA.getInstance().hasPerm(permMap.campaignAttributesIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignAttributesIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4065,6 +4500,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     campaignBaseIdPut(params: { id: string; token?: string; payloadData?: ControllersCampaignBase;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersUpdateResult> {
+        // check permission for campaignBaseIdPut
+        if (permMap.campaignBaseIdPut.protected && !AAA.getInstance().hasPerm(permMap.campaignBaseIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignBaseIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4091,6 +4530,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     campaignBudgetIdPut(params: { id: string; token?: string; payloadData?: ControllersBudgetPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
+        // check permission for campaignBudgetIdPut
+        if (permMap.campaignBudgetIdPut.protected && !AAA.getInstance().hasPerm(permMap.campaignBudgetIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignBudgetIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4116,6 +4559,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignCopyIdPatch(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
+        // check permission for campaignCopyIdPatch
+        if (permMap.campaignCopyIdPatch.protected && !AAA.getInstance().hasPerm(permMap.campaignCopyIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignCopyIdPatch(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4141,6 +4588,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     campaignCreatePost(params: { token?: string; payloadData?: ControllersCreateCampaignPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersBaseResult> {
+        // check permission for campaignCreatePost
+        if (permMap.campaignCreatePost.protected && !AAA.getInstance().hasPerm(permMap.campaignCreatePost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignCreatePost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4166,6 +4617,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignCreativeIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGetCreativeResp> {
+        // check permission for campaignCreativeIdGet
+        if (permMap.campaignCreativeIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignCreativeIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignCreativeIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4191,6 +4646,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignDailyIdDefinitionGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaigndailyDefResponse> {
+        // check permission for campaignDailyIdDefinitionGet
+        if (permMap.campaignDailyIdDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.campaignDailyIdDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignDailyIdDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4214,14 +4673,18 @@ export const ControllersApiFp = {
      * campaignDailyIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
+     * @param c  count per page (def)
      * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
-     * @param c  count per page (def)
      */
-    campaignDailyIdGet(params: { id: string; token?: string; q?: string; p?: string; from?: string; to?: string; sort?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaigndailyResponse> {
+    campaignDailyIdGet(params: { id: string; token?: string; c?: string; p?: string; q?: string; from?: string; to?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaigndailyResponse> {
+        // check permission for campaignDailyIdGet
+        if (permMap.campaignDailyIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignDailyIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignDailyIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4247,6 +4710,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignFinalizeIdPut(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersFinalizeResult> {
+        // check permission for campaignFinalizeIdPut
+        if (permMap.campaignFinalizeIdPut.protected && !AAA.getInstance().hasPerm(permMap.campaignFinalizeIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignFinalizeIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4272,6 +4739,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignGetIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersCampaignGetResponse> {
+        // check permission for campaignGetIdGet
+        if (permMap.campaignGetIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignGetIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignGetIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4294,13 +4765,17 @@ export const ControllersApiFp = {
     /**
      * campaignGraphAllGet
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param kind  (def)
-     * @param ownerEmail  search the owner_email field (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param kind  (def)
      * @param title  search the title field (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param ownerEmail  search the owner_email field (def)
      */
-    campaignGraphAllGet(params: { token?: string; from?: string; kind?: string; ownerEmail?: string; to?: string; title?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartallResponse> {
+    campaignGraphAllGet(params: { token?: string; to?: string; kind?: string; title?: string; from?: string; ownerEmail?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartallResponse> {
+        // check permission for campaignGraphAllGet
+        if (permMap.campaignGraphAllGet.protected && !AAA.getInstance().hasPerm(permMap.campaignGraphAllGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignGraphAllGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4328,6 +4803,10 @@ export const ControllersApiFp = {
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
     campaignGraphDailyIdGet(params: { id: string; token?: string; from?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartdailyResponse> {
+        // check permission for campaignGraphDailyIdGet
+        if (permMap.campaignGraphDailyIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignGraphDailyIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignGraphDailyIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4354,6 +4833,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     campaignInventoryIdPut(params: { id: string; token?: string; payloadData?: ControllersAssignInventoryPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaign> {
+        // check permission for campaignInventoryIdPut
+        if (permMap.campaignInventoryIdPut.protected && !AAA.getInstance().hasPerm(permMap.campaignInventoryIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignInventoryIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4378,6 +4861,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignsDefResponse> {
+        // check permission for campaignListDefinitionGet
+        if (permMap.campaignListDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.campaignListDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignListDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4400,20 +4887,24 @@ export const ControllersApiFp = {
     /**
      * campaignListGet
      * @param token the security token, get it from login route (def)
-     * @param exchange  (def)
-     * @param kind  (def)
-     * @param status  (def)
-     * @param q  parameter for search (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param title  search the title field (def)
-     * @param ownerEmail  search the owner_email field (def)
      * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param sort  (def)
      * @param strategy  (def)
      * @param c  count per page (def)
+     * @param kind  (def)
+     * @param status  (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param exchange  (def)
+     * @param title  search the title field (def)
+     * @param ownerEmail  search the owner_email field (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    campaignListGet(params: { token?: string; exchange?: string; kind?: string; status?: string; q?: string; from?: string; to?: string; title?: string; ownerEmail?: string; p?: string; sort?: string; strategy?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignsResponse> {
+    campaignListGet(params: { token?: string; p?: string; q?: string; sort?: string; strategy?: string; c?: string; kind?: string; status?: string; from?: string; exchange?: string; title?: string; ownerEmail?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignsResponse> {
+        // check permission for campaignListGet
+        if (permMap.campaignListGet.protected && !AAA.getInstance().hasPerm(permMap.campaignListGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4439,6 +4930,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignProgressIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmCampaignProgress> {
+        // check permission for campaignProgressIdGet
+        if (permMap.campaignProgressIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignProgressIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignProgressIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4464,6 +4959,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     campaignPublisherDetailsIdDefinitionGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherdetailsDefResponse> {
+        // check permission for campaignPublisherDetailsIdDefinitionGet
+        if (permMap.campaignPublisherDetailsIdDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.campaignPublisherDetailsIdDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignPublisherDetailsIdDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4487,15 +4986,19 @@ export const ControllersApiFp = {
      * campaignPublisherDetailsIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
-     * @param domain  search the domain field (def)
      * @param c  count per page (def)
-     * @param q  parameter for search (def)
-     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
+     * @param p  page number (def)
+     * @param q  parameter for search (def)
+     * @param domain  search the domain field (def)
      */
-    campaignPublisherDetailsIdGet(params: { id: string; token?: string; from?: string; sort?: string; domain?: string; c?: string; q?: string; p?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherdetailsResponse> {
+    campaignPublisherDetailsIdGet(params: { id: string; token?: string; c?: string; from?: string; to?: string; sort?: string; p?: string; q?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherdetailsResponse> {
+        // check permission for campaignPublisherDetailsIdGet
+        if (permMap.campaignPublisherDetailsIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignPublisherDetailsIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignPublisherDetailsIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4522,7 +5025,40 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     campaignStatusIdPatch(params: { id: string; token?: string; payloadData?: ControllersChangeCampaignStatus;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for campaignStatusIdPatch
+        if (permMap.campaignStatusIdPatch.protected && !AAA.getInstance().hasPerm(permMap.campaignStatusIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.campaignStatusIdPatch(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * domainCreatePost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    domainCreatePost(params: { token?: string; payloadData?: ControllersCreateDomainPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersCreateDomainResult> {
+        // check permission for domainCreatePost
+        if (permMap.domainCreatePost.protected && !AAA.getInstance().hasPerm(permMap.domainCreatePost.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.domainCreatePost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -4547,6 +5083,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     financialAddPost(params: { token?: string; payloadData?: ControllersRegisterBankSnapPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmBankSnap> {
+        // check permission for financialAddPost
+        if (permMap.financialAddPost.protected && !AAA.getInstance().hasPerm(permMap.financialAddPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialAddPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4571,6 +5111,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     financialBillingDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBillingreportDefResponse> {
+        // check permission for financialBillingDefinitionGet
+        if (permMap.financialBillingDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.financialBillingDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialBillingDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4593,19 +5137,23 @@ export const ControllersApiFp = {
     /**
      * financialBillingGet
      * @param token the security token, get it from login route (def)
-     * @param userId  search the user_id field (def)
-     * @param firstName  search the first_name field (def)
+     * @param p  page number (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
      * @param email  search the email field (def)
+     * @param payModel  (def)
+     * @param firstName  search the first_name field (def)
+     * @param c  count per page (def)
      * @param q  parameter for search (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param payModel  (def)
+     * @param sort  (def)
+     * @param userId  search the user_id field (def)
      * @param lastName  search the last_name field (def)
-     * @param p  page number (def)
-     * @param c  count per page (def)
      */
-    financialBillingGet(params: { token?: string; userId?: string; firstName?: string; from?: string; sort?: string; email?: string; q?: string; to?: string; payModel?: string; lastName?: string; p?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBillingreportResponse> {
+    financialBillingGet(params: { token?: string; p?: string; from?: string; email?: string; payModel?: string; firstName?: string; c?: string; q?: string; to?: string; sort?: string; userId?: string; lastName?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBillingreportResponse> {
+        // check permission for financialBillingGet
+        if (permMap.financialBillingGet.protected && !AAA.getInstance().hasPerm(permMap.financialBillingGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialBillingGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4630,6 +5178,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     financialGatewaysGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGetGateResp> {
+        // check permission for financialGatewaysGet
+        if (permMap.financialGatewaysGet.protected && !AAA.getInstance().hasPerm(permMap.financialGatewaysGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialGatewaysGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4654,6 +5206,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     financialGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmBilling> {
+        // check permission for financialGet
+        if (permMap.financialGet.protected && !AAA.getInstance().hasPerm(permMap.financialGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4680,6 +5236,10 @@ export const ControllersApiFp = {
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
     financialGraphSpendGet(params: { token?: string; from?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphBillinggraphreportResponse> {
+        // check permission for financialGraphSpendGet
+        if (permMap.financialGraphSpendGet.protected && !AAA.getInstance().hasPerm(permMap.financialGraphSpendGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialGraphSpendGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4705,6 +5265,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     financialPaymentIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmOnlinePayment> {
+        // check permission for financialPaymentIdGet
+        if (permMap.financialPaymentIdGet.protected && !AAA.getInstance().hasPerm(permMap.financialPaymentIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialPaymentIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4730,6 +5294,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     financialPaymentInitPost(params: { token?: string; payloadData?: ControllersInitPaymentPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<PaymentInitPaymentResp> {
+        // check permission for financialPaymentInitPost
+        if (permMap.financialPaymentInitPost.protected && !AAA.getInstance().hasPerm(permMap.financialPaymentInitPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialPaymentInitPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4755,6 +5323,10 @@ export const ControllersApiFp = {
      * @param hash  (def)
      */
     financialPaymentReturnBankHashPost(params: { bank: string; hash: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<any> {
+        // check permission for financialPaymentReturnBankHashPost
+        if (permMap.financialPaymentReturnBankHashPost.protected && !AAA.getInstance().hasPerm(permMap.financialPaymentReturnBankHashPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.financialPaymentReturnBankHashPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4781,6 +5353,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     inventoryAddpubIdPatch(params: { id: string; token?: string; payloadData?: ControllersAddInventoryPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmInventory> {
+        // check permission for inventoryAddpubIdPatch
+        if (permMap.inventoryAddpubIdPatch.protected && !AAA.getInstance().hasPerm(permMap.inventoryAddpubIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryAddpubIdPatch(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4805,6 +5381,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     inventoryBasePublishersStatisticsDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBasePublisherStatisticsDefResponse> {
+        // check permission for inventoryBasePublishersStatisticsDefinitionGet
+        if (permMap.inventoryBasePublishersStatisticsDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryBasePublishersStatisticsDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryBasePublishersStatisticsDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4827,18 +5407,22 @@ export const ControllersApiFp = {
     /**
      * inventoryBasePublishersStatisticsGet
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
-     * @param c  count per page (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param status  (def)
+     * @param c  count per page (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param kind  (def)
+     * @param q  parameter for search (def)
      * @param name  search the name field (def)
      * @param domain  search the domain field (def)
      * @param supplier  search the supplier field (def)
      * @param p  page number (def)
-     * @param status  (def)
-     * @param kind  (def)
      */
-    inventoryBasePublishersStatisticsGet(params: { token?: string; q?: string; c?: string; from?: string; to?: string; name?: string; domain?: string; supplier?: string; p?: string; status?: string; kind?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBasePublisherStatisticsResponse> {
+    inventoryBasePublishersStatisticsGet(params: { token?: string; from?: string; status?: string; c?: string; to?: string; kind?: string; q?: string; name?: string; domain?: string; supplier?: string; p?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBasePublisherStatisticsResponse> {
+        // check permission for inventoryBasePublishersStatisticsGet
+        if (permMap.inventoryBasePublishersStatisticsGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryBasePublishersStatisticsGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryBasePublishersStatisticsGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4864,6 +5448,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     inventoryCreatePost(params: { token?: string; payloadData?: ControllersCreateInventoryPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmInventory> {
+        // check permission for inventoryCreatePost
+        if (permMap.inventoryCreatePost.protected && !AAA.getInstance().hasPerm(permMap.inventoryCreatePost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryCreatePost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4889,6 +5477,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     inventoryDuplicatePost(params: { token?: string; payloadData?: ControllersDuplicateInventoryPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmInventory> {
+        // check permission for inventoryDuplicatePost
+        if (permMap.inventoryDuplicatePost.protected && !AAA.getInstance().hasPerm(permMap.inventoryDuplicatePost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryDuplicatePost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4915,6 +5507,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     inventoryIdPut(params: { id: string; token?: string; payloadData?: ControllersChangeLabelPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmInventory> {
+        // check permission for inventoryIdPut
+        if (permMap.inventoryIdPut.protected && !AAA.getInstance().hasPerm(permMap.inventoryIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4941,6 +5537,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     inventoryInventoryIdPatch(params: { id: string; token?: string; payloadData?: ControllersChangeStatusPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmInventory> {
+        // check permission for inventoryInventoryIdPatch
+        if (permMap.inventoryInventoryIdPatch.protected && !AAA.getInstance().hasPerm(permMap.inventoryInventoryIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryInventoryIdPatch(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4965,6 +5565,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     inventoryInventoryListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryDefResponse> {
+        // check permission for inventoryInventoryListDefinitionGet
+        if (permMap.inventoryInventoryListDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryInventoryListDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryInventoryListDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -4988,15 +5592,19 @@ export const ControllersApiFp = {
      * inventoryInventoryListGet
      * @param token the security token, get it from login route (def)
      * @param status  (def)
+     * @param label  search the label field (def)
      * @param p  page number (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
      * @param c  count per page (def)
      * @param q  parameter for search (def)
-     * @param sort  (def)
-     * @param label  search the label field (def)
      */
-    inventoryInventoryListGet(params: { token?: string; status?: string; p?: string; from?: string; to?: string; c?: string; q?: string; sort?: string; label?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
+    inventoryInventoryListGet(params: { token?: string; status?: string; label?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; q?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
+        // check permission for inventoryInventoryListGet
+        if (permMap.inventoryInventoryListGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryInventoryListGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryInventoryListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5021,6 +5629,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     inventoryPublisherListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherDefResponse> {
+        // check permission for inventoryPublisherListDefinitionGet
+        if (permMap.inventoryPublisherListDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryPublisherListDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryPublisherListDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5043,19 +5655,23 @@ export const ControllersApiFp = {
     /**
      * inventoryPublisherListGet
      * @param token the security token, get it from login route (def)
+     * @param kind  (def)
      * @param c  count per page (def)
      * @param q  parameter for search (def)
-     * @param sort  (def)
-     * @param name  search the name field (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param status  (def)
-     * @param domain  search the domain field (def)
-     * @param p  page number (def)
-     * @param kind  (def)
+     * @param sort  (def)
      * @param supplier  search the supplier field (def)
+     * @param p  page number (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param status  (def)
+     * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
      */
-    inventoryPublisherListGet(params: { token?: string; c?: string; q?: string; sort?: string; name?: string; from?: string; status?: string; domain?: string; p?: string; kind?: string; supplier?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
+    inventoryPublisherListGet(params: { token?: string; kind?: string; c?: string; q?: string; from?: string; sort?: string; supplier?: string; p?: string; to?: string; status?: string; name?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
+        // check permission for inventoryPublisherListGet
+        if (permMap.inventoryPublisherListGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryPublisherListGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryPublisherListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5081,6 +5697,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     inventoryPublisherListSingleIdDefinitionGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInvpublisherDefResponse> {
+        // check permission for inventoryPublisherListSingleIdDefinitionGet
+        if (permMap.inventoryPublisherListSingleIdDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryPublisherListSingleIdDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryPublisherListSingleIdDefinitionGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5104,19 +5724,23 @@ export const ControllersApiFp = {
      * inventoryPublisherListSingleIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param supplier  search the supplier field (def)
-     * @param p  page number (def)
-     * @param q  parameter for search (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param status  (def)
-     * @param domain  search the domain field (def)
-     * @param kind  (def)
      * @param c  count per page (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param q  parameter for search (def)
      * @param sort  (def)
      * @param name  search the name field (def)
+     * @param supplier  search the supplier field (def)
+     * @param kind  (def)
+     * @param domain  search the domain field (def)
+     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    inventoryPublisherListSingleIdGet(params: { id: string; token?: string; supplier?: string; p?: string; q?: string; from?: string; to?: string; status?: string; domain?: string; kind?: string; c?: string; sort?: string; name?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInvpublisherResponse> {
+    inventoryPublisherListSingleIdGet(params: { id: string; token?: string; status?: string; c?: string; to?: string; q?: string; sort?: string; name?: string; supplier?: string; kind?: string; domain?: string; p?: string; from?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInvpublisherResponse> {
+        // check permission for inventoryPublisherListSingleIdGet
+        if (permMap.inventoryPublisherListSingleIdGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryPublisherListSingleIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryPublisherListSingleIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5143,6 +5767,10 @@ export const ControllersApiFp = {
      * @param payloadData  (def)
      */
     inventoryRemovepubIdPatch(params: { id: string; token?: string; payloadData?: ControllersRemoveInventoryPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmInventory> {
+        // check permission for inventoryRemovepubIdPatch
+        if (permMap.inventoryRemovepubIdPatch.protected && !AAA.getInstance().hasPerm(permMap.inventoryRemovepubIdPatch.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.inventoryRemovepubIdPatch(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5168,6 +5796,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     uploadModuleModulePost(params: { module: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersUploadResponse> {
+        // check permission for uploadModuleModulePost
+        if (permMap.uploadModuleModulePost.protected && !AAA.getInstance().hasPerm(permMap.uploadModuleModulePost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.uploadModuleModulePost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5193,6 +5825,10 @@ export const ControllersApiFp = {
      * @param token the security token, get it from login route (def)
      */
     uploadVideoIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGetVideoResponse> {
+        // check permission for uploadVideoIdGet
+        if (permMap.uploadVideoIdGet.protected && !AAA.getInstance().hasPerm(permMap.uploadVideoIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = ControllersApiFetchParamCreator.uploadVideoIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -5219,6 +5855,15 @@ export const ControllersApiFp = {
  */
 export class ControllersApi extends BaseAPI {
     /**
+     * adCampaignCreativeStatusIdPatch
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    adCampaignCreativeStatusIdPatch(params: {  id: string; token?: string; payloadData?: ControllersChangeStatus; }, options: any = {}) {
+        return ControllersApiFp.adCampaignCreativeStatusIdPatch(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * adCampaignIdDefinitionGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
@@ -5233,15 +5878,24 @@ export class ControllersApi extends BaseAPI {
      * @param c  count per page (def)
      * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param status  (def)
-     * @param type  (def)
-     * @param name  search the name field (def)
-     * @param p  page number (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
+     * @param status  (def)
+     * @param p  page number (def)
+     * @param type  (def)
+     * @param name  search the name field (def)
      */
-    adCampaignIdGet(params: {  id: string; token?: string; c?: string; q?: string; from?: string; status?: string; type?: string; name?: string; p?: string; to?: string; sort?: string; }, options: any = {}) {
+    adCampaignIdGet(params: {  id: string; token?: string; c?: string; q?: string; from?: string; to?: string; sort?: string; status?: string; p?: string; type?: string; name?: string; }, options: any = {}) {
         return ControllersApiFp.adCampaignIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * adChangeCreativesStatusIdPut
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    adChangeCreativesStatusIdPut(params: {  id: string; token?: string; payloadData?: ControllersChangeStatusPayload; }, options: any = {}) {
+        return ControllersApiFp.adChangeCreativesStatusIdPut(params, options)(this.fetch, this.basePath);
     }
     /**
      * adCreativeIdGet
@@ -5250,6 +5904,13 @@ export class ControllersApi extends BaseAPI {
      */
     adCreativeIdGet(params: {  id: string; token?: string; }, options: any = {}) {
         return ControllersApiFp.adCreativeIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * adCreativeRejectReasonsGet
+     * @param token the security token, get it from login route (def)
+     */
+    adCreativeRejectReasonsGet(params: {  token?: string; }, options: any = {}) {
+        return ControllersApiFp.adCreativeRejectReasonsGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * adNativeIdPut
@@ -5398,14 +6059,14 @@ export class ControllersApi extends BaseAPI {
      * campaignDailyIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
+     * @param c  count per page (def)
      * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
-     * @param c  count per page (def)
      */
-    campaignDailyIdGet(params: {  id: string; token?: string; q?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; }, options: any = {}) {
+    campaignDailyIdGet(params: {  id: string; token?: string; c?: string; p?: string; q?: string; from?: string; to?: string; sort?: string; }, options: any = {}) {
         return ControllersApiFp.campaignDailyIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5427,13 +6088,13 @@ export class ControllersApi extends BaseAPI {
     /**
      * campaignGraphAllGet
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param kind  (def)
-     * @param ownerEmail  search the owner_email field (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param kind  (def)
      * @param title  search the title field (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param ownerEmail  search the owner_email field (def)
      */
-    campaignGraphAllGet(params: {  token?: string; from?: string; kind?: string; ownerEmail?: string; to?: string; title?: string; }, options: any = {}) {
+    campaignGraphAllGet(params: {  token?: string; to?: string; kind?: string; title?: string; from?: string; ownerEmail?: string; }, options: any = {}) {
         return ControllersApiFp.campaignGraphAllGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5465,20 +6126,20 @@ export class ControllersApi extends BaseAPI {
     /**
      * campaignListGet
      * @param token the security token, get it from login route (def)
-     * @param exchange  (def)
-     * @param kind  (def)
-     * @param status  (def)
-     * @param q  parameter for search (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param title  search the title field (def)
-     * @param ownerEmail  search the owner_email field (def)
      * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param sort  (def)
      * @param strategy  (def)
      * @param c  count per page (def)
+     * @param kind  (def)
+     * @param status  (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param exchange  (def)
+     * @param title  search the title field (def)
+     * @param ownerEmail  search the owner_email field (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    campaignListGet(params: {  token?: string; exchange?: string; kind?: string; status?: string; q?: string; from?: string; to?: string; title?: string; ownerEmail?: string; p?: string; sort?: string; strategy?: string; c?: string; }, options: any = {}) {
+    campaignListGet(params: {  token?: string; p?: string; q?: string; sort?: string; strategy?: string; c?: string; kind?: string; status?: string; from?: string; exchange?: string; title?: string; ownerEmail?: string; to?: string; }, options: any = {}) {
         return ControllersApiFp.campaignListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5501,15 +6162,15 @@ export class ControllersApi extends BaseAPI {
      * campaignPublisherDetailsIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
-     * @param domain  search the domain field (def)
      * @param c  count per page (def)
-     * @param q  parameter for search (def)
-     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
+     * @param p  page number (def)
+     * @param q  parameter for search (def)
+     * @param domain  search the domain field (def)
      */
-    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; from?: string; sort?: string; domain?: string; c?: string; q?: string; p?: string; to?: string; }, options: any = {}) {
+    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; c?: string; from?: string; to?: string; sort?: string; p?: string; q?: string; domain?: string; }, options: any = {}) {
         return ControllersApiFp.campaignPublisherDetailsIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5520,6 +6181,14 @@ export class ControllersApi extends BaseAPI {
      */
     campaignStatusIdPatch(params: {  id: string; token?: string; payloadData?: ControllersChangeCampaignStatus; }, options: any = {}) {
         return ControllersApiFp.campaignStatusIdPatch(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * domainCreatePost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    domainCreatePost(params: {  token?: string; payloadData?: ControllersCreateDomainPayload; }, options: any = {}) {
+        return ControllersApiFp.domainCreatePost(params, options)(this.fetch, this.basePath);
     }
     /**
      * financialAddPost
@@ -5539,19 +6208,19 @@ export class ControllersApi extends BaseAPI {
     /**
      * financialBillingGet
      * @param token the security token, get it from login route (def)
-     * @param userId  search the user_id field (def)
-     * @param firstName  search the first_name field (def)
+     * @param p  page number (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
      * @param email  search the email field (def)
+     * @param payModel  (def)
+     * @param firstName  search the first_name field (def)
+     * @param c  count per page (def)
      * @param q  parameter for search (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param payModel  (def)
+     * @param sort  (def)
+     * @param userId  search the user_id field (def)
      * @param lastName  search the last_name field (def)
-     * @param p  page number (def)
-     * @param c  count per page (def)
      */
-    financialBillingGet(params: {  token?: string; userId?: string; firstName?: string; from?: string; sort?: string; email?: string; q?: string; to?: string; payModel?: string; lastName?: string; p?: string; c?: string; }, options: any = {}) {
+    financialBillingGet(params: {  token?: string; p?: string; from?: string; email?: string; payModel?: string; firstName?: string; c?: string; q?: string; to?: string; sort?: string; userId?: string; lastName?: string; }, options: any = {}) {
         return ControllersApiFp.financialBillingGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5620,18 +6289,18 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryBasePublishersStatisticsGet
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
-     * @param c  count per page (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param status  (def)
+     * @param c  count per page (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param kind  (def)
+     * @param q  parameter for search (def)
      * @param name  search the name field (def)
      * @param domain  search the domain field (def)
      * @param supplier  search the supplier field (def)
      * @param p  page number (def)
-     * @param status  (def)
-     * @param kind  (def)
      */
-    inventoryBasePublishersStatisticsGet(params: {  token?: string; q?: string; c?: string; from?: string; to?: string; name?: string; domain?: string; supplier?: string; p?: string; status?: string; kind?: string; }, options: any = {}) {
+    inventoryBasePublishersStatisticsGet(params: {  token?: string; from?: string; status?: string; c?: string; to?: string; kind?: string; q?: string; name?: string; domain?: string; supplier?: string; p?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryBasePublishersStatisticsGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5679,15 +6348,15 @@ export class ControllersApi extends BaseAPI {
      * inventoryInventoryListGet
      * @param token the security token, get it from login route (def)
      * @param status  (def)
+     * @param label  search the label field (def)
      * @param p  page number (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
      * @param c  count per page (def)
      * @param q  parameter for search (def)
-     * @param sort  (def)
-     * @param label  search the label field (def)
      */
-    inventoryInventoryListGet(params: {  token?: string; status?: string; p?: string; from?: string; to?: string; c?: string; q?: string; sort?: string; label?: string; }, options: any = {}) {
+    inventoryInventoryListGet(params: {  token?: string; status?: string; label?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; q?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryInventoryListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5700,19 +6369,19 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryPublisherListGet
      * @param token the security token, get it from login route (def)
+     * @param kind  (def)
      * @param c  count per page (def)
      * @param q  parameter for search (def)
-     * @param sort  (def)
-     * @param name  search the name field (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param status  (def)
-     * @param domain  search the domain field (def)
-     * @param p  page number (def)
-     * @param kind  (def)
+     * @param sort  (def)
      * @param supplier  search the supplier field (def)
+     * @param p  page number (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param status  (def)
+     * @param name  search the name field (def)
+     * @param domain  search the domain field (def)
      */
-    inventoryPublisherListGet(params: {  token?: string; c?: string; q?: string; sort?: string; name?: string; from?: string; status?: string; domain?: string; p?: string; kind?: string; supplier?: string; to?: string; }, options: any = {}) {
+    inventoryPublisherListGet(params: {  token?: string; kind?: string; c?: string; q?: string; from?: string; sort?: string; supplier?: string; p?: string; to?: string; status?: string; name?: string; domain?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryPublisherListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5727,19 +6396,19 @@ export class ControllersApi extends BaseAPI {
      * inventoryPublisherListSingleIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param supplier  search the supplier field (def)
-     * @param p  page number (def)
-     * @param q  parameter for search (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param status  (def)
-     * @param domain  search the domain field (def)
-     * @param kind  (def)
      * @param c  count per page (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param q  parameter for search (def)
      * @param sort  (def)
      * @param name  search the name field (def)
+     * @param supplier  search the supplier field (def)
+     * @param kind  (def)
+     * @param domain  search the domain field (def)
+     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; supplier?: string; p?: string; q?: string; from?: string; to?: string; status?: string; domain?: string; kind?: string; c?: string; sort?: string; name?: string; }, options: any = {}) {
+    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; status?: string; c?: string; to?: string; q?: string; sort?: string; name?: string; supplier?: string; kind?: string; domain?: string; p?: string; from?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryPublisherListSingleIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -5775,6 +6444,15 @@ export class ControllersApi extends BaseAPI {
 export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: string) {
     return {
         /**
+         * adCampaignCreativeStatusIdPatch
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        adCampaignCreativeStatusIdPatch(params: {  id: string; token?: string; payloadData?: ControllersChangeStatus; }, options: any = {}) {
+            return ControllersApiFp.adCampaignCreativeStatusIdPatch(params, options)(fetch, basePath);
+        },
+        /**
          * adCampaignIdDefinitionGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
@@ -5789,15 +6467,24 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * @param c  count per page (def)
          * @param q  parameter for search (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param status  (def)
-         * @param type  (def)
-         * @param name  search the name field (def)
-         * @param p  page number (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param sort  (def)
+         * @param status  (def)
+         * @param p  page number (def)
+         * @param type  (def)
+         * @param name  search the name field (def)
          */
-        adCampaignIdGet(params: {  id: string; token?: string; c?: string; q?: string; from?: string; status?: string; type?: string; name?: string; p?: string; to?: string; sort?: string; }, options: any = {}) {
+        adCampaignIdGet(params: {  id: string; token?: string; c?: string; q?: string; from?: string; to?: string; sort?: string; status?: string; p?: string; type?: string; name?: string; }, options: any = {}) {
             return ControllersApiFp.adCampaignIdGet(params, options)(fetch, basePath);
+        },
+        /**
+         * adChangeCreativesStatusIdPut
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        adChangeCreativesStatusIdPut(params: {  id: string; token?: string; payloadData?: ControllersChangeStatusPayload; }, options: any = {}) {
+            return ControllersApiFp.adChangeCreativesStatusIdPut(params, options)(fetch, basePath);
         },
         /**
          * adCreativeIdGet
@@ -5806,6 +6493,13 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          */
         adCreativeIdGet(params: {  id: string; token?: string; }, options: any = {}) {
             return ControllersApiFp.adCreativeIdGet(params, options)(fetch, basePath);
+        },
+        /**
+         * adCreativeRejectReasonsGet
+         * @param token the security token, get it from login route (def)
+         */
+        adCreativeRejectReasonsGet(params: {  token?: string; }, options: any = {}) {
+            return ControllersApiFp.adCreativeRejectReasonsGet(params, options)(fetch, basePath);
         },
         /**
          * adNativeIdPut
@@ -5954,14 +6648,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * campaignDailyIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param q  parameter for search (def)
+         * @param c  count per page (def)
          * @param p  page number (def)
+         * @param q  parameter for search (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param sort  (def)
-         * @param c  count per page (def)
          */
-        campaignDailyIdGet(params: {  id: string; token?: string; q?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; }, options: any = {}) {
+        campaignDailyIdGet(params: {  id: string; token?: string; c?: string; p?: string; q?: string; from?: string; to?: string; sort?: string; }, options: any = {}) {
             return ControllersApiFp.campaignDailyIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -5983,13 +6677,13 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * campaignGraphAllGet
          * @param token the security token, get it from login route (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param kind  (def)
-         * @param ownerEmail  search the owner_email field (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param kind  (def)
          * @param title  search the title field (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param ownerEmail  search the owner_email field (def)
          */
-        campaignGraphAllGet(params: {  token?: string; from?: string; kind?: string; ownerEmail?: string; to?: string; title?: string; }, options: any = {}) {
+        campaignGraphAllGet(params: {  token?: string; to?: string; kind?: string; title?: string; from?: string; ownerEmail?: string; }, options: any = {}) {
             return ControllersApiFp.campaignGraphAllGet(params, options)(fetch, basePath);
         },
         /**
@@ -6021,20 +6715,20 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * campaignListGet
          * @param token the security token, get it from login route (def)
-         * @param exchange  (def)
-         * @param kind  (def)
-         * @param status  (def)
-         * @param q  parameter for search (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param title  search the title field (def)
-         * @param ownerEmail  search the owner_email field (def)
          * @param p  page number (def)
+         * @param q  parameter for search (def)
          * @param sort  (def)
          * @param strategy  (def)
          * @param c  count per page (def)
+         * @param kind  (def)
+         * @param status  (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param exchange  (def)
+         * @param title  search the title field (def)
+         * @param ownerEmail  search the owner_email field (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          */
-        campaignListGet(params: {  token?: string; exchange?: string; kind?: string; status?: string; q?: string; from?: string; to?: string; title?: string; ownerEmail?: string; p?: string; sort?: string; strategy?: string; c?: string; }, options: any = {}) {
+        campaignListGet(params: {  token?: string; p?: string; q?: string; sort?: string; strategy?: string; c?: string; kind?: string; status?: string; from?: string; exchange?: string; title?: string; ownerEmail?: string; to?: string; }, options: any = {}) {
             return ControllersApiFp.campaignListGet(params, options)(fetch, basePath);
         },
         /**
@@ -6057,15 +6751,15 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * campaignPublisherDetailsIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param sort  (def)
-         * @param domain  search the domain field (def)
          * @param c  count per page (def)
-         * @param q  parameter for search (def)
-         * @param p  page number (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param sort  (def)
+         * @param p  page number (def)
+         * @param q  parameter for search (def)
+         * @param domain  search the domain field (def)
          */
-        campaignPublisherDetailsIdGet(params: {  id: string; token?: string; from?: string; sort?: string; domain?: string; c?: string; q?: string; p?: string; to?: string; }, options: any = {}) {
+        campaignPublisherDetailsIdGet(params: {  id: string; token?: string; c?: string; from?: string; to?: string; sort?: string; p?: string; q?: string; domain?: string; }, options: any = {}) {
             return ControllersApiFp.campaignPublisherDetailsIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -6076,6 +6770,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          */
         campaignStatusIdPatch(params: {  id: string; token?: string; payloadData?: ControllersChangeCampaignStatus; }, options: any = {}) {
             return ControllersApiFp.campaignStatusIdPatch(params, options)(fetch, basePath);
+        },
+        /**
+         * domainCreatePost
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        domainCreatePost(params: {  token?: string; payloadData?: ControllersCreateDomainPayload; }, options: any = {}) {
+            return ControllersApiFp.domainCreatePost(params, options)(fetch, basePath);
         },
         /**
          * financialAddPost
@@ -6095,19 +6797,19 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * financialBillingGet
          * @param token the security token, get it from login route (def)
-         * @param userId  search the user_id field (def)
-         * @param firstName  search the first_name field (def)
+         * @param p  page number (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param sort  (def)
          * @param email  search the email field (def)
+         * @param payModel  (def)
+         * @param firstName  search the first_name field (def)
+         * @param c  count per page (def)
          * @param q  parameter for search (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param payModel  (def)
+         * @param sort  (def)
+         * @param userId  search the user_id field (def)
          * @param lastName  search the last_name field (def)
-         * @param p  page number (def)
-         * @param c  count per page (def)
          */
-        financialBillingGet(params: {  token?: string; userId?: string; firstName?: string; from?: string; sort?: string; email?: string; q?: string; to?: string; payModel?: string; lastName?: string; p?: string; c?: string; }, options: any = {}) {
+        financialBillingGet(params: {  token?: string; p?: string; from?: string; email?: string; payModel?: string; firstName?: string; c?: string; q?: string; to?: string; sort?: string; userId?: string; lastName?: string; }, options: any = {}) {
             return ControllersApiFp.financialBillingGet(params, options)(fetch, basePath);
         },
         /**
@@ -6176,18 +6878,18 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryBasePublishersStatisticsGet
          * @param token the security token, get it from login route (def)
-         * @param q  parameter for search (def)
-         * @param c  count per page (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param status  (def)
+         * @param c  count per page (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param kind  (def)
+         * @param q  parameter for search (def)
          * @param name  search the name field (def)
          * @param domain  search the domain field (def)
          * @param supplier  search the supplier field (def)
          * @param p  page number (def)
-         * @param status  (def)
-         * @param kind  (def)
          */
-        inventoryBasePublishersStatisticsGet(params: {  token?: string; q?: string; c?: string; from?: string; to?: string; name?: string; domain?: string; supplier?: string; p?: string; status?: string; kind?: string; }, options: any = {}) {
+        inventoryBasePublishersStatisticsGet(params: {  token?: string; from?: string; status?: string; c?: string; to?: string; kind?: string; q?: string; name?: string; domain?: string; supplier?: string; p?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryBasePublishersStatisticsGet(params, options)(fetch, basePath);
         },
         /**
@@ -6235,15 +6937,15 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * inventoryInventoryListGet
          * @param token the security token, get it from login route (def)
          * @param status  (def)
+         * @param label  search the label field (def)
          * @param p  page number (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param sort  (def)
          * @param c  count per page (def)
          * @param q  parameter for search (def)
-         * @param sort  (def)
-         * @param label  search the label field (def)
          */
-        inventoryInventoryListGet(params: {  token?: string; status?: string; p?: string; from?: string; to?: string; c?: string; q?: string; sort?: string; label?: string; }, options: any = {}) {
+        inventoryInventoryListGet(params: {  token?: string; status?: string; label?: string; p?: string; from?: string; to?: string; sort?: string; c?: string; q?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryInventoryListGet(params, options)(fetch, basePath);
         },
         /**
@@ -6256,19 +6958,19 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryPublisherListGet
          * @param token the security token, get it from login route (def)
+         * @param kind  (def)
          * @param c  count per page (def)
          * @param q  parameter for search (def)
-         * @param sort  (def)
-         * @param name  search the name field (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param status  (def)
-         * @param domain  search the domain field (def)
-         * @param p  page number (def)
-         * @param kind  (def)
+         * @param sort  (def)
          * @param supplier  search the supplier field (def)
+         * @param p  page number (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param status  (def)
+         * @param name  search the name field (def)
+         * @param domain  search the domain field (def)
          */
-        inventoryPublisherListGet(params: {  token?: string; c?: string; q?: string; sort?: string; name?: string; from?: string; status?: string; domain?: string; p?: string; kind?: string; supplier?: string; to?: string; }, options: any = {}) {
+        inventoryPublisherListGet(params: {  token?: string; kind?: string; c?: string; q?: string; from?: string; sort?: string; supplier?: string; p?: string; to?: string; status?: string; name?: string; domain?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryPublisherListGet(params, options)(fetch, basePath);
         },
         /**
@@ -6283,19 +6985,19 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * inventoryPublisherListSingleIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param supplier  search the supplier field (def)
-         * @param p  page number (def)
-         * @param q  parameter for search (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param status  (def)
-         * @param domain  search the domain field (def)
-         * @param kind  (def)
          * @param c  count per page (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param q  parameter for search (def)
          * @param sort  (def)
          * @param name  search the name field (def)
+         * @param supplier  search the supplier field (def)
+         * @param kind  (def)
+         * @param domain  search the domain field (def)
+         * @param p  page number (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          */
-        inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; supplier?: string; p?: string; q?: string; from?: string; to?: string; status?: string; domain?: string; kind?: string; c?: string; sort?: string; name?: string; }, options: any = {}) {
+        inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; status?: string; c?: string; to?: string; q?: string; sort?: string; name?: string; supplier?: string; kind?: string; domain?: string; p?: string; from?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryPublisherListSingleIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -6411,6 +7113,10 @@ export const LocationApiFp = {
      * @param province  (def)
      */
     locationCitiesProvinceGet(params: { province: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<LocationCities> {
+        // check permission for locationCitiesProvinceGet
+        if (permMap.locationCitiesProvinceGet.protected && !AAA.getInstance().hasPerm(permMap.locationCitiesProvinceGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = LocationApiFetchParamCreator.locationCitiesProvinceGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -6434,6 +7140,10 @@ export const LocationApiFp = {
      * locationCountriesGet
      */
     locationCountriesGet(options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<LocationCountries> {
+        // check permission for locationCountriesGet
+        if (permMap.locationCountriesGet.protected && !AAA.getInstance().hasPerm(permMap.locationCountriesGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = LocationApiFetchParamCreator.locationCountriesGet(options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -6458,6 +7168,10 @@ export const LocationApiFp = {
      * @param countryId  (def)
      */
     locationProvincesCountryIdGet(params: { countryId: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<LocationProvinces> {
+        // check permission for locationProvincesCountryIdGet
+        if (permMap.locationProvincesCountryIdGet.protected && !AAA.getInstance().hasPerm(permMap.locationProvincesCountryIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = LocationApiFetchParamCreator.locationProvincesCountryIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -6538,6 +7252,36 @@ export const LocationApiFactory = function (fetch?: FetchAPI, basePath?: string)
  * UserApi - fetch parameter creator
  */
 export const UserApiFetchParamCreator = {
+    /**
+     * @func
+     * userAddToWhitelabelPost
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    userAddToWhitelabelPost(params: {  token?: string; payloadData?: UserAddUserToWhitelabelPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/add-to/whitelabel`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        params["payloadData"] = removeEmpty(params["payloadData"]);
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
     /**
      * @func
      * userAvatarPut
@@ -6637,6 +7381,103 @@ export const UserApiFetchParamCreator = {
         if (contentTypeHeader) {
             fetchOptions.headers = assign({}, contentTypeHeader, fetchOptions.headers);
         }
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * userListDefinitionGet
+     * @param token the security token, get it from login route param
+     */
+    userListDefinitionGet(params: {  token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/list/definition`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * userListGet
+     * @param token the security token, get it from login route param
+     * @param landLine  search the land_line field param
+     * @param c  count per page param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param sort  param
+     * @param email  search the email field param
+     * @param status  param
+     * @param ssn  search the ssn field param
+     * @param q  parameter for search param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param cellphone  search the cellphone field param
+     * @param p  page number param
+     * @param fullName  search the full_name field param
+     */
+    userListGet(params: {  token?: string; landLine?: string; c?: string; to?: string; sort?: string; email?: string; status?: string; ssn?: string; q?: string; from?: string; cellphone?: string; p?: string; fullName?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/list`;
+        let urlObj = url.parse(baseUrl, true);
+        urlObj.query =  assign({}, urlObj.query);
+        if (params["landLine"] !== undefined) {
+            urlObj.query["land_line"] = params["landLine"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
+        }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
+        if (params["email"] !== undefined) {
+            urlObj.query["email"] = params["email"];
+        }
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["ssn"] !== undefined) {
+            urlObj.query["ssn"] = params["ssn"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["cellphone"] !== undefined) {
+            urlObj.query["cellphone"] = params["cellphone"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["fullName"] !== undefined) {
+            urlObj.query["full_name"] = params["fullName"];
+        }
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
 
         return {
             url: url.format(urlObj),
@@ -6958,6 +7799,36 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
+     * userSearchManagersMailPost
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    userSearchManagersMailPost(params: {  token?: string; payloadData?: UserSearchUserPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/search/managers/mail`;
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        params["payloadData"] = removeEmpty(params["payloadData"]);
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * userStorePost
      * @param token the security token, get it from login route param
      * @param payloadData  param
@@ -6970,6 +7841,42 @@ export const UserApiFetchParamCreator = {
         const baseUrl = `/user/store`;
         let urlObj = url.parse(baseUrl, true);
         let fetchOptions: RequestInit = assign({}, { method: "POST" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        contentTypeHeader = { "Content-Type": "application/json" };
+        params["payloadData"] = removeEmpty(params["payloadData"]);
+        if (params["payloadData"]) {
+            fetchOptions.body = JSON.stringify(params["payloadData"] || {});
+        }
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * userUpdateIdPut
+     * @param id  param
+     * @param token the security token, get it from login route param
+     * @param payloadData  param
+     */
+    userUpdateIdPut(params: {  id: string; token?: string; payloadData?: UserEditUserPayload; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling userUpdateIdPut");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/update/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "PUT" }, options);
 
         let contentTypeHeader: Dictionary<string> = {};
         contentTypeHeader = { "Content-Type": "application/json" };
@@ -7023,11 +7930,44 @@ export const UserApiFetchParamCreator = {
  */
 export const UserApiFp = {
     /**
+     * userAddToWhitelabelPost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userAddToWhitelabelPost(params: { token?: string; payloadData?: UserAddUserToWhitelabelPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userAddToWhitelabelPost
+        if (permMap.userAddToWhitelabelPost.protected && !AAA.getInstance().hasPerm(permMap.userAddToWhitelabelPost.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = UserApiFetchParamCreator.userAddToWhitelabelPost(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * userAvatarPut
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
     userAvatarPut(params: { token?: string; payloadData?: UserAvatarPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userAvatarPut
+        if (permMap.userAvatarPut.protected && !AAA.getInstance().hasPerm(permMap.userAvatarPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userAvatarPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7052,6 +7992,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userEmailVerifyPost(params: { payloadData?: UserVerifyEmailCodePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userEmailVerifyPost
+        if (permMap.userEmailVerifyPost.protected && !AAA.getInstance().hasPerm(permMap.userEmailVerifyPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userEmailVerifyPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7076,6 +8020,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userEmailVerifyResendPost(params: { payloadData?: UserVerifyResendPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userEmailVerifyResendPost
+        if (permMap.userEmailVerifyResendPost.protected && !AAA.getInstance().hasPerm(permMap.userEmailVerifyResendPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userEmailVerifyResendPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7100,7 +8048,79 @@ export const UserApiFp = {
      * @param token  (def)
      */
     userEmailVerifyTokenGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userEmailVerifyTokenGet
+        if (permMap.userEmailVerifyTokenGet.protected && !AAA.getInstance().hasPerm(permMap.userEmailVerifyTokenGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userEmailVerifyTokenGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * userListDefinitionGet
+     * @param token the security token, get it from login route (def)
+     */
+    userListDefinitionGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserListUsersListDefResponse> {
+        // check permission for userListDefinitionGet
+        if (permMap.userListDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.userListDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = UserApiFetchParamCreator.userListDefinitionGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * userListGet
+     * @param token the security token, get it from login route (def)
+     * @param landLine  search the land_line field (def)
+     * @param c  count per page (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
+     * @param email  search the email field (def)
+     * @param status  (def)
+     * @param ssn  search the ssn field (def)
+     * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param cellphone  search the cellphone field (def)
+     * @param p  page number (def)
+     * @param fullName  search the full_name field (def)
+     */
+    userListGet(params: { token?: string; landLine?: string; c?: string; to?: string; sort?: string; email?: string; status?: string; ssn?: string; q?: string; from?: string; cellphone?: string; p?: string; fullName?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserListUsersListResponse> {
+        // check permission for userListGet
+        if (permMap.userListGet.protected && !AAA.getInstance().hasPerm(permMap.userListGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = UserApiFetchParamCreator.userListGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -7124,6 +8144,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userLoginPost(params: { payloadData?: UserLoginPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userLoginPost
+        if (permMap.userLoginPost.protected && !AAA.getInstance().hasPerm(permMap.userLoginPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userLoginPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7148,6 +8172,10 @@ export const UserApiFp = {
      * @param token the security token, get it from login route (def)
      */
     userLogoutCloseotherGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userLogoutCloseotherGet
+        if (permMap.userLogoutCloseotherGet.protected && !AAA.getInstance().hasPerm(permMap.userLogoutCloseotherGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userLogoutCloseotherGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7172,6 +8200,10 @@ export const UserApiFp = {
      * @param token the security token, get it from login route (def)
      */
     userLogoutGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userLogoutGet
+        if (permMap.userLogoutGet.protected && !AAA.getInstance().hasPerm(permMap.userLogoutGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userLogoutGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7196,6 +8228,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userMailCheckPost(params: { payloadData?: UserCheckMailPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserCheckMailResponse> {
+        // check permission for userMailCheckPost
+        if (permMap.userMailCheckPost.protected && !AAA.getInstance().hasPerm(permMap.userMailCheckPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userMailCheckPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7221,6 +8257,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userPasswordChangePut(params: { token?: string; payloadData?: UserChangePassword;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userPasswordChangePut
+        if (permMap.userPasswordChangePut.protected && !AAA.getInstance().hasPerm(permMap.userPasswordChangePut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userPasswordChangePut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7246,6 +8286,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userPasswordChangeTokenPut(params: { token?: string; payloadData?: UserCallBackPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userPasswordChangeTokenPut
+        if (permMap.userPasswordChangeTokenPut.protected && !AAA.getInstance().hasPerm(permMap.userPasswordChangeTokenPut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userPasswordChangeTokenPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7270,6 +8314,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userPasswordForgetPost(params: { payloadData?: UserForgetPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userPasswordForgetPost
+        if (permMap.userPasswordForgetPost.protected && !AAA.getInstance().hasPerm(permMap.userPasswordForgetPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userPasswordForgetPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7294,6 +8342,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userPasswordVerifyPost(params: { payloadData?: UserForgetCodePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userPasswordVerifyPost
+        if (permMap.userPasswordVerifyPost.protected && !AAA.getInstance().hasPerm(permMap.userPasswordVerifyPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userPasswordVerifyPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7318,6 +8370,10 @@ export const UserApiFp = {
      * @param token  (def)
      */
     userPasswordVerifyTokenGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userPasswordVerifyTokenGet
+        if (permMap.userPasswordVerifyTokenGet.protected && !AAA.getInstance().hasPerm(permMap.userPasswordVerifyTokenGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userPasswordVerifyTokenGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7342,6 +8398,10 @@ export const UserApiFp = {
      * @param token the security token, get it from login route (def)
      */
     userPingGet(params: { token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userPingGet
+        if (permMap.userPingGet.protected && !AAA.getInstance().hasPerm(permMap.userPingGet.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userPingGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7366,6 +8426,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userRegisterPost(params: { payloadData?: UserRegisterPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userRegisterPost
+        if (permMap.userRegisterPost.protected && !AAA.getInstance().hasPerm(permMap.userRegisterPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userRegisterPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7391,7 +8455,40 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userSearchMailPost(params: { token?: string; payloadData?: UserSearchUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserUserSearchResp> {
+        // check permission for userSearchMailPost
+        if (permMap.userSearchMailPost.protected && !AAA.getInstance().hasPerm(permMap.userSearchMailPost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userSearchMailPost(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * userSearchManagersMailPost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userSearchManagersMailPost(params: { token?: string; payloadData?: UserSearchUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserUserSearchResp> {
+        // check permission for userSearchManagersMailPost
+        if (permMap.userSearchManagersMailPost.protected && !AAA.getInstance().hasPerm(permMap.userSearchManagersMailPost.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = UserApiFetchParamCreator.userSearchManagersMailPost(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -7416,7 +8513,41 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userStorePost(params: { token?: string; payloadData?: UserStorePayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllerNormalResponse> {
+        // check permission for userStorePost
+        if (permMap.userStorePost.protected && !AAA.getInstance().hasPerm(permMap.userStorePost.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userStorePost(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * userUpdateIdPut
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userUpdateIdPut(params: { id: string; token?: string; payloadData?: UserEditUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserEditAdminResp> {
+        // check permission for userUpdateIdPut
+        if (permMap.userUpdateIdPut.protected && !AAA.getInstance().hasPerm(permMap.userUpdateIdPut.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = UserApiFetchParamCreator.userUpdateIdPut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -7441,6 +8572,10 @@ export const UserApiFp = {
      * @param payloadData  (def)
      */
     userUpdatePut(params: { token?: string; payloadData?: UserUserPayload;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserResponseLoginOK> {
+        // check permission for userUpdatePut
+        if (permMap.userUpdatePut.protected && !AAA.getInstance().hasPerm(permMap.userUpdatePut.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = UserApiFetchParamCreator.userUpdatePut(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
@@ -7466,6 +8601,14 @@ export const UserApiFp = {
  * UserApi - object-oriented interface
  */
 export class UserApi extends BaseAPI {
+    /**
+     * userAddToWhitelabelPost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userAddToWhitelabelPost(params: {  token?: string; payloadData?: UserAddUserToWhitelabelPayload; }, options: any = {}) {
+        return UserApiFp.userAddToWhitelabelPost(params, options)(this.fetch, this.basePath);
+    }
     /**
      * userAvatarPut
      * @param token the security token, get it from login route (def)
@@ -7494,6 +8637,32 @@ export class UserApi extends BaseAPI {
      */
     userEmailVerifyTokenGet(params: {  token?: string; }, options: any = {}) {
         return UserApiFp.userEmailVerifyTokenGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * userListDefinitionGet
+     * @param token the security token, get it from login route (def)
+     */
+    userListDefinitionGet(params: {  token?: string; }, options: any = {}) {
+        return UserApiFp.userListDefinitionGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * userListGet
+     * @param token the security token, get it from login route (def)
+     * @param landLine  search the land_line field (def)
+     * @param c  count per page (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
+     * @param email  search the email field (def)
+     * @param status  (def)
+     * @param ssn  search the ssn field (def)
+     * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param cellphone  search the cellphone field (def)
+     * @param p  page number (def)
+     * @param fullName  search the full_name field (def)
+     */
+    userListGet(params: {  token?: string; landLine?: string; c?: string; to?: string; sort?: string; email?: string; status?: string; ssn?: string; q?: string; from?: string; cellphone?: string; p?: string; fullName?: string; }, options: any = {}) {
+        return UserApiFp.userListGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * userLoginPost
@@ -7583,12 +8752,29 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userSearchMailPost(params, options)(this.fetch, this.basePath);
     }
     /**
+     * userSearchManagersMailPost
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userSearchManagersMailPost(params: {  token?: string; payloadData?: UserSearchUserPayload; }, options: any = {}) {
+        return UserApiFp.userSearchManagersMailPost(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * userStorePost
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
      */
     userStorePost(params: {  token?: string; payloadData?: UserStorePayload; }, options: any = {}) {
         return UserApiFp.userStorePost(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * userUpdateIdPut
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param payloadData  (def)
+     */
+    userUpdateIdPut(params: {  id: string; token?: string; payloadData?: UserEditUserPayload; }, options: any = {}) {
+        return UserApiFp.userUpdateIdPut(params, options)(this.fetch, this.basePath);
     }
     /**
      * userUpdatePut
@@ -7605,6 +8791,14 @@ export class UserApi extends BaseAPI {
  */
 export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
     return {
+        /**
+         * userAddToWhitelabelPost
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        userAddToWhitelabelPost(params: {  token?: string; payloadData?: UserAddUserToWhitelabelPayload; }, options: any = {}) {
+            return UserApiFp.userAddToWhitelabelPost(params, options)(fetch, basePath);
+        },
         /**
          * userAvatarPut
          * @param token the security token, get it from login route (def)
@@ -7633,6 +8827,32 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
          */
         userEmailVerifyTokenGet(params: {  token?: string; }, options: any = {}) {
             return UserApiFp.userEmailVerifyTokenGet(params, options)(fetch, basePath);
+        },
+        /**
+         * userListDefinitionGet
+         * @param token the security token, get it from login route (def)
+         */
+        userListDefinitionGet(params: {  token?: string; }, options: any = {}) {
+            return UserApiFp.userListDefinitionGet(params, options)(fetch, basePath);
+        },
+        /**
+         * userListGet
+         * @param token the security token, get it from login route (def)
+         * @param landLine  search the land_line field (def)
+         * @param c  count per page (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param sort  (def)
+         * @param email  search the email field (def)
+         * @param status  (def)
+         * @param ssn  search the ssn field (def)
+         * @param q  parameter for search (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param cellphone  search the cellphone field (def)
+         * @param p  page number (def)
+         * @param fullName  search the full_name field (def)
+         */
+        userListGet(params: {  token?: string; landLine?: string; c?: string; to?: string; sort?: string; email?: string; status?: string; ssn?: string; q?: string; from?: string; cellphone?: string; p?: string; fullName?: string; }, options: any = {}) {
+            return UserApiFp.userListGet(params, options)(fetch, basePath);
         },
         /**
          * userLoginPost
@@ -7722,12 +8942,29 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
             return UserApiFp.userSearchMailPost(params, options)(fetch, basePath);
         },
         /**
+         * userSearchManagersMailPost
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        userSearchManagersMailPost(params: {  token?: string; payloadData?: UserSearchUserPayload; }, options: any = {}) {
+            return UserApiFp.userSearchManagersMailPost(params, options)(fetch, basePath);
+        },
+        /**
          * userStorePost
          * @param token the security token, get it from login route (def)
          * @param payloadData  (def)
          */
         userStorePost(params: {  token?: string; payloadData?: UserStorePayload; }, options: any = {}) {
             return UserApiFp.userStorePost(params, options)(fetch, basePath);
+        },
+        /**
+         * userUpdateIdPut
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         * @param payloadData  (def)
+         */
+        userUpdateIdPut(params: {  id: string; token?: string; payloadData?: UserEditUserPayload; }, options: any = {}) {
+            return UserApiFp.userUpdateIdPut(params, options)(fetch, basePath);
         },
         /**
          * userUpdatePut

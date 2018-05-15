@@ -45,141 +45,123 @@
     }
     svg {
         height: @step-wizard-size !important;
-        width: @step-wizard-size  !important;
-        border:1px solid #EBECF2;
+        width: @step-wizard-size !important;
+        border: 1px solid #EBECF2;
         border-radius: 100px;
         background: #FFF;
     }
-    .active-step {
-        svg {
-            background: #FFF;
-            border:none;
-            fill: @step-active-color !important;
-            color: @step-active-color !important;
-            circle {
-                r: 12 !important;
-            }
-            text{
-                fill: #2E3246;
-            }
-        }
-        circle {
-            display: block;
-        }
-        text {
-            fill: @step-active-text;
-        }
-        span {
-            color: #2E3246;
-        }
-        &.final-step{
-            span {
-                color: #66C395;
-               > span:first-child {
-                    border: 1px solid transparent;
-                    border-radius: 100px;
-                    background: #66C395;
-                    height: 28px;
-                    width: 28px;
-                    i {
-                        position: relative;
-                        top: 5px;
-                        left: 1px;
-                        color: #FFF;
-                    }
-                }
-            }
+    .step-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 15px;
+        line-height: 28px;
+        font-size: 15px;
+    }
+    .active-step-icon {
+        background-color: #EBECF2;
+        color: #000000;
+    }
+
+    .passed-step-icon {
+        background-color: #00ABFB;
+
+        i {
+            color: #ffffff;
+            top: 3px;
+            position: relative;
+            font-size: 14px;
         }
     }
-    .complete-step {
-        svg {
-            background: #FFF;
-            border:none;
-        }
-        span {
-            color: @primary-color;
-        }
-        + div {
-            > span {
-                border-color: @primary-color !important;
-                transition: all 0.2s ease-in;
-            }
-        }
+
+    .next-step-icon {
+        background-color: #ffffff;
+        color: #BABDCF;
+        border: 1px solid #EBECF2;
     }
-    .final-step{
+
+    button  > span span {
+        padding-left: 0 !important;
+    }
+
+    .final-step {
         span > span:first-child {
             border: 1px solid #EBECF2;
             border-radius: 100px;
             background: #FFF;
             height: 28px;
             width: 28px;
-            i{
+            i {
                 position: relative;
-                top:6px;
-                left:1px;
+                top: 6px;
+                left: 1px;
                 color: #B6BBC2;
             }
         }
     }
 }
-    @media screen and (min-width: 1400px) {
-        text {
-            font-size: 16px !important;
-            margin: 0 5px;
-        }
-        .progress-bar {
-            .complete-step, .active-step {
-                svg {
-                    height: @step-wizard-size + 4 !important;
-                    width: @step-wizard-size + 4 !important;
-                    background: #FFF;
-                    circle{
-                        r:14px !important;
-                    }
-                    text {
-                        font-size: 12px !important;
-                    }
-                }
-            }
-        }
 
-        @media screen and (max-width: 1250px) {
-            text {
-                font-size: 14px;
-            }
+@media screen and (min-width: 1400px) {
+    text {
+        font-size: 16px !important;
+        margin: 0 5px;
+    }
 
-            span {
-                font-size: 14px;
-            }
-            .progress-bar {
-                .complete-step, .active-step {
-                    svg {
-                        height: @step-wizard-size - 6 !important;
-                        width: @step-wizard-size - 6 !important;
-                        background: red;
-                        margin: 0 2px;
-                    }
+    .progress-bar {
+        .complete-step, .active-step {
+            svg {
+                height: @step-wizard-size + 4 !important;
+                width: @step-wizard-size + 4 !important;
+                background: #FFF;
+                circle {
+                    r: 14px !important;
                 }
-            }
-        }
-
-        @media screen and (max-width: 1000px) {
-            span {
-                font-size: 12px;
-            }
-            .progress-bar {
-                .complete-step, .active-step {
-                    svg {
-                        height: @step-wizard-size - 15 !important;
-                        width: @step-wizard-size - 15 !important;
-                        background: #FFF;
-                    }
-                }
-            }
-            div {
-                > div {
-                    width: auto;
+                text {
+                    font-size: 12px !important;
                 }
             }
         }
     }
+
+    @media screen and (max-width: 1250px) {
+        text {
+            font-size: 14px;
+        }
+
+        span {
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            .complete-step, .active-step {
+                svg {
+                    height: @step-wizard-size - 6 !important;
+                    width: @step-wizard-size - 6 !important;
+                    background: red;
+                    margin: 0 2px;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+        span {
+            font-size: 12px;
+        }
+
+        .progress-bar {
+            .complete-step, .active-step {
+                svg {
+                    height: @step-wizard-size - 15 !important;
+                    width: @step-wizard-size - 15 !important;
+                    background: #FFF;
+                }
+            }
+        }
+
+        div {
+            > div {
+                width: auto;
+            }
+        }
+    }
+}

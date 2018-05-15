@@ -1,23 +1,19 @@
 ///<reference path="../../../../../node_modules/@types/react-router/index.d.ts"/>
 import * as React from "react";
 import {RouteComponentProps, withRouter} from "react-router";
-import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import {UserApi, UserResponseLoginOKAccount} from "../../../../api/api";
-import {Card, Col, Form, message, notification, Row, Switch} from "antd";
-import {Checkbox, FontIcon, RaisedButton, TextField, Toggle} from "material-ui";
+import {Card, Checkbox, Form, message, notification, Row} from "antd";
+import {RaisedButton, TextField} from "material-ui";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import AAA from "../../../../services/AAA/index";
 import Icon from "../../../../components/Icon/index";
-import PasswordStrength from "../../../../components/PasswordStrength/index";
 
 import "./style.less";
-import PhoneInput from "../../../../components/PhoneInput/index";
 import CONFIG from "../../../../constants/config";
-import Resend from "../RecoverPassword/Resend/index";
 import ServerStore from "../../../../services/ServerStore";
 
 const FormItem = Form.Item;
@@ -163,7 +159,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               <FormItem>
                 <div className="custom-checkbox">
                   {getFieldDecorator("rememberMe")(
-                    <Checkbox label={this.i18n._t("Remember me")}/>
+                      <Checkbox>{this.i18n._t("Remember me")}</Checkbox>
                   )}
                 </div>
               </FormItem>

@@ -5,6 +5,7 @@ import * as url from "url";
 {{^supportsES6}}
 import * as assign from "core-js/library/fn/object/assign";
 {{/supportsES6}}
+import permMap from "./permMap";
 import "whatwg-fetch";
 
 interface Dictionary<T> { [index: string]: T; }
@@ -200,6 +201,10 @@ export const {{classname}}Fp = {
      {{/allParams}}
      */
     {{nickname}}({{#hasParams}}params: { {{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}; {{/allParams}} }, {{/hasParams}}{{#hasAuthMethods}}configuration: Configuration, {{/hasAuthMethods}}options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+        // check permission for {{nickname}}
+        if (permMap.{{nickname}}.protected && !AAA.getInstance().hasPerm(permMap.{{nickname}}.resource)) {
+            throw new Error("Permission Error");
+        }
         const fetchArgs = {{classname}}FetchParamCreator.{{nickname}}({{#hasParams}}params, {{/hasParams}}{{#hasAuthMethods}}configuration, {{/hasAuthMethods}}options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
