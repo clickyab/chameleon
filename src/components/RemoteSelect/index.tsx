@@ -13,6 +13,7 @@ interface IProps {
     labelProps: string;
     multiple?: boolean;
     placeHolder?: string;
+    placeHolderEmpty?: string;
 }
 
 interface IState {
@@ -65,14 +66,16 @@ export default class RemoteSelect extends React.Component <IProps, IState> {
             <Select
                 mode={this.props.multiple ? "multiple" : "combobox"}
                 value={value && value[this.props.labelProps] !== undefined && value[this.props.labelProps] !== null ? value[this.props.labelProps] : value}
-                placeholder={this.props.placeHolder}
+                placeholder={data.length === 0 ? this.props.placeHolderEmpty : this.props.placeHolder }
                 notFoundContent={fetching ? <Spin size="small"/> : <Translate value={"Not Found"}/>}
                 filterOption={false}
                 onSearch={this.fetchData}
                 onChange={this.handleChange}
-                className="select-input full-width"
+                className="select-input select-input-arrow full-width"
                 dropdownClassName={"select-dropdown"}
-                style={{width: "100%"}}>
+                style={{width: "100%"}}
+                disabled={data.length === 0}
+            >
                 {data.map(d => <Option value={JSON.stringify(d)} key={d[this.props.keyProps]}>{d[this.props.labelProps]}</Option>)}
             </Select>
         );

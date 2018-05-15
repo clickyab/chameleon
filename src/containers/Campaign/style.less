@@ -2,8 +2,8 @@
 
 .campaign-content {
   margin-top: @campaign-top-distance;
-  margin-right: 14px;
-  margin-left: 14px;
+  margin-right: @campaign-content-side-margin;
+  margin-left: @campaign-content-side-margin;
   margin-bottom: 65px;
   padding-bottom: 50px;
   label {
@@ -59,9 +59,17 @@
     font-weight: 400;
   }
 }
-
+.progress-container{
+    padding-right: 30px !important;
+    padding-left: 50px !important;
+}
 .progress-bar-wrapper{
   margin: 0 -15px;
+  // next 2 lines are hack for removing breadcrumb border while we have progressbar
+  margin-top: -1px ;
+  border-top:1px solid #FFF;
+  padding-bottom:25px;
+  border-bottom: 1px solid #DFE0E6;
 }
 //Right to Left Form element,  Unfortunately most style are inline in Material. couldn't avoid !important
 // if we wrap selector with ant decorator
@@ -211,11 +219,13 @@ span[role="menuitem"] {
 }
 
 .per-click-description{
-  margin-top: -13px;
+  position: absolute;
+  white-space: nowrap;
   display: block;
 }
 .subscriber-description{
-  margin-top: -10px;
+  position: absolute;
+  white-space: nowrap;
   display: block;
 }
 .currency {
@@ -272,6 +282,7 @@ div[dir="rtl"] .table-icon {
     font-size: 40px;
     line-height: 50px;
     font-family: clickyabdashboard !important;
+    top:8px;
   }
 }
 .ant-notification-notice-close-x{
@@ -299,9 +310,13 @@ div[dir="rtl"] .table-icon {
     font-size: 40px;
     line-height: 50px;
     font-family: "clickyabdashboard" !important;
+    top:8px;
   }
 }
-
-
+.has-error{
+    .per-click-description{
+        visibility: hidden;
+    }
+}
 
 

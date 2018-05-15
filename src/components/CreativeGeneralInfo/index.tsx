@@ -41,7 +41,7 @@ class CreativeGeneralInfo extends React.Component<IProps> {
                             <InputLimit
                                 placeholder={this.i18n._t("Name for Creative") as string}
                                 className="input-campaign full-width"
-                                limit={10}
+                                limit={40}
                             />)}
                     </FormItem>
                     <span className="span-block input-title"><Translate value="Max Unit Cost"/></span>

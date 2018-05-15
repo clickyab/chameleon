@@ -61,7 +61,7 @@ export const validateID = (rule, value , callback) => {
  */
 export const rangeCheck = (rule, value , callback) => {
     if (rule.minimum && rule.maximum) {
-        if ((value >= rule.minimum && value <= rule.maximum )|| value === "") {
+        if ((value >= rule.minimum && value <= rule.maximum ) || value === "") {
             callback();
             return true;
         }
@@ -84,6 +84,11 @@ export const rangeCheck = (rule, value , callback) => {
         callback("error");
         return false;
     }
+    // empty is not error (use require for this purpose)
+    if (value.length === 0) {
+        callback();
+        return true;
+    }
     throw new Error("minimum or maximum should be defined for rangeCheck validation");
 };
 
@@ -97,5 +102,17 @@ export const isValidDomain = (rule, value , callback) => {
       }else {
           callback("error");
       }
+    }
+};
+export const isValidUrl = (rule, value , callback) => {
+    let urlRegx = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
+    if (urlRegx.test(value)) {
+        callback();
+    } else {
+        if (value.length === 0) {
+            callback();
+        }else {
+            callback("error");
+        }
     }
 };

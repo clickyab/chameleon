@@ -4,13 +4,17 @@
 
 .ant-upload.ant-upload-drag {
     border-radius: 0 !important;
-    border: 2px dashed @light-gray-color !important;
+    border: 1px dashed #DFE0E6 !important;
     height: 220px !important;
     &:hover {
-        border: 2px dashed @primary-color !important;
+        border: 1px dashed @primary-color !important;
     }
 }
-
+.dragger-dragover{
+    .ant-upload.ant-upload-drag {
+        border: 1px dashed @primary-color !important;
+    }
+}
 .ant-upload-list {
     display: none;
 }
@@ -310,10 +314,20 @@
 }
 
 .dragger-content {
-    color: #DBDDE1;
+    color: #9A9A9A;
+    font-size: 14px;
     .upload-image-link {
         display: inline;
         color: @primary-color;
+    }
+    &-inner{
+        i{
+            color: #D1D3DB;
+            font-size: 50px;
+            line-height: 1;
+            display: block;
+            margin-bottom: -5px;
+        }
     }
     span {
         margin: 0 2px;
@@ -443,6 +457,7 @@
     padding-top: 0;
     bottom: auto;
     line-height: 33px;
+    z-index: 99;
 }
 
 .native-item-icon {
@@ -638,7 +653,7 @@
         border-radius: 4px;
         width: 100%;
         text-align: center;
-        min-height: calc(~"100vh - 245px");
+        min-height: calc(~"100vh - 250px");
         position: relative;
         .vcenter {
             position: relative;
@@ -684,7 +699,9 @@
     }
     .drag-description {
         margin: 5px;
-        padding-bottom: 55px;
+        padding-bottom: 15px;
+        font-size: 13px;
+        color: #9A999A;
     }
     .upload-column-border {
         border-left: 1px solid #DFE0E6;
@@ -710,6 +727,9 @@
         border: @input-border-style;
         padding: 0 10px;
         font-size: 13px;
+        color: #5A5D6C;
+        // fix conflict between bottom error shadow and error description
+        z-index: 11;
         &::placeholder {
             color: #A4AAB2;
         }
@@ -732,6 +752,7 @@
 }
 
 .input-title {
+    margin-bottom: 2px;
     font-size: 13px;
     color: #000;
 }
@@ -871,6 +892,35 @@
     .ant-form-item {
         margin-bottom: 15px !important;
     }
+    .more-option-wrapper{
+        margin-top: 15px;
+        margin-bottom: 40px;
+        margin-right: 2px;
+        margin-left: 2px;
+    }
+}
+    .more-option{
+        color: @primary-color;
+        cursor: pointer;
+        text-align: left ;
+        direction: ltr ;
+        font-size: 14px;
+        span{
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+        i{
+            font-size: 10px;
+            line-height: 1;
+            margin-bottom: -3px;
+            display: inline-block;
+        }
+    }
+[dir="rtl"]{
+        .more-option{
+            text-align: right;
+            direction: rtl;
+        }
 }
 
 .upload-thumb-container {
@@ -930,6 +980,8 @@
     padding-left: 5px !important;
     height: 35px;
     position: relative;
+    font-size: 14px;
+    color: #5A5D6C;
 }
 
 .square {
@@ -969,3 +1021,96 @@
         border-top-color: #2E3246 !important;
     }
 }
+.dragdrop-icon{
+    .dragdrop-text{
+        .bold{
+            font-weight: 500;
+        }
+        span{
+            font-size: 36px;
+            color:#D2D4DC;
+        }
+    }
+    .dragdrop-description{
+        font-size: 14px;
+        color: #9499A9;
+    }
+    i{
+        display: block;
+        margin-bottom: -25px;
+        font-size: 80px;
+        line-height: 1;
+        color:#D2D4DC;
+    }
+}
+
+.dragger-progress-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    .dragger-progress{
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 100%;
+        .progress-info-wrapper{
+            display: flex;
+            margin-bottom: -8px;
+        .file-name{
+            display: block;
+            font-size: 11px;
+            color: #2E3246;
+            text-align: right;
+        }
+            .loading-icon{
+                display: block;
+                margin-right: auto;
+                margin-left: 5px;
+                font-size: 10px;
+                color: #EEBB3B;
+                animation-name: spin;
+                animation-duration: 1000ms;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+            }
+        }
+        .uploading{
+            font-size: 11px;
+            color: #9A999A;
+            margin-top: -2px;
+            display: block;
+            text-align: right;
+        }
+    }
+     > i{
+        padding-right: 10px;
+        font-size: 34px;
+        margin-bottom: -3px;
+        line-height: 1;
+        color:#2E3246;
+     }
+    .ant-progress-inner{
+      background: #DFE0E6;
+    }
+    .ant-progress-outer {
+        padding-right: 0 !important;
+        margin-right:0 !important;
+    }
+    .ant-progress-text{
+        display: none;
+    }
+    .ant-progress-bg{
+        background: #3DBE8B !important;
+        border-radius: 5px;
+    }
+    @keyframes spin {
+        from {
+            transform:rotate(0deg);
+            transform-origin: 5px 5px;
+        }
+        to {
+            transform:rotate(360deg);
+            transform-origin: 5px 5px;
+        }
+    }
+}
+

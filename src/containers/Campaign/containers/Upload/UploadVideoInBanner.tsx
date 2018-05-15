@@ -148,7 +148,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                     <Col span={24} className={"column-border-bottom"}>
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
-                              <UploadFile label={"video"}
+                              <UploadFile label={this.i18n._t("video") as string}
                                           required={true}
                                           exactDimension={{width: 640 , height: 360}}
                                           fileType={[FILE_TYPE.VID_MP4]}
@@ -156,7 +156,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                               />
                             </Col>
                             <Col span={8}>
-                              <UploadFile label={"video poster(wide with 16:9 aspect ratio)"}
+                              <UploadFile label={this.i18n._t("video poster(wide with 16:9 aspect ratio)") as string}
                                           minDimension={{width: 640 , height: 360}}
                                           required={true}
                                           fileType={[FILE_TYPE.IMG_JPG, FILE_TYPE.IMG_PNG, FILE_TYPE.IMG_GIF]}
@@ -184,7 +184,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                             <UTMDynamicForm form={this.props.form} inputObject={this.FormObject} />
                         </Row>
                     </Col>
-                    <Row type="flex" align="middle" className="full-width">
+                    <Row type="flex" align="middle" className="full-width mb-3">
                         <Button className="btn-general btn-submit ml-1"
                                 onClick={this.handleSubmit.bind(this)}
                         >

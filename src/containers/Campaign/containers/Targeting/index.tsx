@@ -672,11 +672,12 @@ class TargetingComponent extends React.Component <IProps, IState> {
                                    label={this.i18n._t("Select Networks")}
                       />
                     </RadioButtonGroup>
-                    {this.state.showOtherNetwork &&
+                    {this.state.showOtherNetwork && this.props.currentCampaign.kind !== "web" &&
                     <div className="network-select">
                       <label className="network-select-label">
                         <Translate value={"Connection type"}/>
                       </label>
+                        {console.log(this.props.currentCampaign)}
                       <Select
                         className={"select-input campaign-select"}
                         dropdownClassName={"select-dropdown"}
@@ -689,7 +690,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                       </Select>
                     </div>
                     }
-                    {this.state.showISP && this.state.showOtherNetwork &&
+                    {this.state.showOtherNetwork && (this.state.showISP || this.props.currentCampaign.kind === "web") &&
                     <FormItem>
                       {getFieldDecorator("isps", {
                         initialValue: this.state.isps,
@@ -700,12 +701,13 @@ class TargetingComponent extends React.Component <IProps, IState> {
                           allOption={false}
                           placeholder={this.i18n._t("Select ISPs").toString()}
                           type={this.i18n._t("ISP").toString()}
+                          hasLabel
                           data={this.ISPs.map(c => ({value: c.name, name: c.name}))}
                         />
                       )}
                     </FormItem>
                     }
-                    {this.state.showCellar && this.state.showOtherNetwork &&
+                    {this.state.showCellar && this.state.showOtherNetwork &&  this.props.currentCampaign.kind !== "web" &&
                     <FormItem>
                       {getFieldDecorator("cellular", {
                         initialValue: this.state.cellulars,
@@ -716,6 +718,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
                           allOption={false}
                           placeholder={this.i18n._t("Select Cellular").toString()}
                           type={this.i18n._t("Cellular").toString()}
+                          hasLabel
                           data={this.Cellular.map(c => ({value: c.name, name: c.name}))}
                         />
                       )}

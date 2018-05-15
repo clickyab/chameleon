@@ -40,14 +40,19 @@
     margin-top: 10px;
   }
   .network-select {
-    margin-top: 10px;
+    margin-top: 15px;
+    margin-bottom: 3px;
     &-label {
+      color:#9A9A9A;
       display: block;
-      font-size: 13px;
+      font-size: 12px;
     }
   }
   .select-label {
     margin-top: 20px;
+    margin-bottom: -20px;
+    font-size:12px;
+    color:#9A9A9A;
   }
 }
 .targeting-select-tag{
@@ -141,6 +146,17 @@
   }
 
 }
+.select-input-arrow{
+    &:after{
+        content: "\e04b";
+        position: absolute;
+        left: 10px;
+        top: 2px;
+        font-family: clickyabdashboard;
+        font-size:8px;
+        color: #5A5D6C;
+    }
+}
 .select-input {
   &.campaign-select {
     width: @select-tag-width;
@@ -148,6 +164,11 @@
   &.network-ad-select{
     width: 50%;
   }
+    .ant-select-selection__placeholder{
+        top:17px;
+        color: #5A5D6C;
+        font-size: 13px;
+    }
 }
     .ant-select-selection--multiple {
         padding-bottom: 0 !important;

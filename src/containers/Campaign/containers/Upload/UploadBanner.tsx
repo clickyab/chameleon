@@ -72,6 +72,7 @@ export interface IStateUpload {
     globalUtm?: string;
     adSize?: any;
     fileSelected?: number | null;
+    dragOver?: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -93,6 +94,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
             adSize: (props.currentCampaign && props.currentCampaign.id === this.props.match.params.id) ?
                 ((this.state.currentCampaign.kind === DEVICE_TYPES.APPLICATION) ? AppSize : BannerSize)
                 : BannerSize,
+            dragOver: false,
         };
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
     }
@@ -435,16 +437,20 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                             <Row type={"flex"} gutter={66}>
                                 <Col span={8} className="upload-column-border">
                                     <Col span={24} className={"column-border-bottom"}>
-                                        <span className="image-drag-upload"><Translate value={"Image*"}/></span>
+                                        <span className="image-drag-upload require"><Translate value={"Image"}/></span>
+                                        <div onDragOver={() => this.setState({dragOver: true}) } onDragLeave={() => this.setState({dragOver: false})} onMouseLeave={() => this.setState({dragOver: false})}>
                                         <Dragger
                                             beforeUpload={this.uploadFile.bind(this)}
-                                            className="banner-dragger-comp"
+                                            className={`banner-dragger-comp ${this.state.dragOver ? "dragger-dragover" : ""}`}
+                                            multiple
                                         >
                                             <div className="dragger-content">
-                                                <span className="upload-image-link"><Translate
-                                                    value={"upload it"}/></span>
-                                                <Translate value={"Drag your image over here or"}/>
-                                            </div>
+                                                    <div className={"dragger-content-inner"} >
+                                                        <Icon name={"cif-img-upload"}/>
+                                                        <Translate value={"Drag your image over here or"}/>
+                                                    </div>
+                                                    <span className="upload-image-link"><Translate value={"upload it"}/></span>
+                                                </div>
                                         </Dragger>
                                         <div className="drag-description">
                                             <Translate value={"Image size:"}/>
@@ -455,6 +461,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                                 value={"maximum size: 200KB"}/></span>
                                             <span className="span-block"><Translate
                                                 value={"allowed extentions: GIF/PNG/JPG"}/></span>
+                                        </div>
                                         </div>
                                     </Col>
                                     <Col span={24} className={"column-border-bottom uploaders-container"}>
@@ -548,7 +555,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                     </Row>
                                 </Col>
                             </Row>
-                            <Row type="flex" align="middle">
+                            <Row type="flex" align="middle" className={"mb-3"}>
                                 <Button className="btn-general btn-submit ml-1"
                                         onClick={this.handleSubmit.bind(this)}
                                 >
