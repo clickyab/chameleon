@@ -6,6 +6,11 @@
     margin-right: 25px;
     margin-bottom: 5px;
     div {
+        > div {
+            margin-left: -10px;
+        }
+    }
+    div {
         div {
             > span {
                 border-width: 2px !important;
@@ -50,6 +55,15 @@
         border-radius: 100px;
         background: #FFF;
     }
+    .complete-step{
+         > button{
+            > span {
+               > span:last-child {
+                   color: @primary-color;
+               }
+            }
+        }
+    }
     .step-icon {
         width: 28px;
         height: 28px;
@@ -82,7 +96,26 @@
     button  > span span {
         padding-left: 0 !important;
     }
-
+    .active-step {
+        &.final-step {
+            span {
+                color: #66C395;
+                > span:first-child {
+                    border: 1px solid transparent;
+                    border-radius: 100px;
+                    background: #66C395;
+                    height: 28px;
+                    width: 28px;
+                    i {
+                        position: relative;
+                        top: 5px;
+                        left: 1px;
+                        color: #FFF;
+                    }
+                }
+            }
+        }
+    }
     .final-step {
         span > span:first-child {
             border: 1px solid #EBECF2;
@@ -90,11 +123,53 @@
             background: #FFF;
             height: 28px;
             width: 28px;
+            margin-right: 5px;
             i {
                 position: relative;
                 top: 6px;
                 left: 1px;
                 color: #B6BBC2;
+            }
+        }
+    }
+    .complete-step + div {
+        > span {
+            &:after{
+                content: "";
+                width: 100%;
+                height: 2px;
+                background: @primary-color;
+                display: block;
+                margin-top: -2px;
+                transition: all 0.5s linear;
+            }
+        }
+    }
+    .active-step + div {
+        > span {
+            &:after{
+                content: "";
+                width: 0;
+                height: 2px;
+                background: @primary-color;
+                display: block;
+                margin-top: -2px;
+                transition: all 0.2s linear;
+            }
+        }
+    }
+}
+[dir="ltr"] {
+    .final-step {
+        margin-right: 0;
+        margin-left: 5px !important;
+    }
+    .progress-bar {
+        margin-right: 15px;
+        div {
+            > div {
+                margin-right: -10px;
+                margin-left: 0;
             }
         }
     }
