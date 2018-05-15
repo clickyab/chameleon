@@ -127,9 +127,9 @@ class UploadComponent extends React.Component <IProps, IState> {
             <StickyFooter customClass="sticky-footer-upload" backAction={this.handleBack}  nextAction={() => {console.log("here"); } }/>
             </div>
             }
-            {/*{this.state.template === TEMPLATE.BANNER && this.state.currentCampaign &&*/}
-            {/*<UploadBanner currentCampaign={this.state.currentCampaign} />*/}
-            {/*}*/}
+            {this.state.template === TEMPLATE.BANNER && this.state.currentCampaign &&
+            <UploadBanner currentCampaign={this.state.currentCampaign} />
+            }
             {/*{this.state.template === TEMPLATE.VAST && this.state.currentCampaign &&*/}
             {/*<UploadVideo currentCampaign={this.state.currentCampaign} />*/}
             {/*}*/}

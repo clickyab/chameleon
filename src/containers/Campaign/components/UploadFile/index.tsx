@@ -55,6 +55,7 @@ interface IState {
     showCropModal: boolean;
     imageType?: string;
     progress: number;
+    dragOver?: boolean;
 }
 
 class UploadFile extends React.Component<IProps, IState> {
@@ -62,6 +63,8 @@ class UploadFile extends React.Component<IProps, IState> {
     private disableUpload: boolean = false;
     private ratio: IDimension = {width: 1, height: 1};
     private tmpImg: Blob;
+    private mediaType: FILE_TYPE;
+    private fileName: string;
     id = "tmp_" + Date.now() + Math.random();
 
     constructor(props: IProps) {
@@ -74,6 +77,7 @@ class UploadFile extends React.Component<IProps, IState> {
             showCropModal: false,
             videoFile: null,
             progress: 0,
+            dragOver: false,
         };
         this.setRatio();
         this.changeFileProgressState = this.changeFileProgressState.bind(this);
@@ -255,6 +259,9 @@ class UploadFile extends React.Component<IProps, IState> {
      * @returns {boolean}
      */
     private uploadFile(file, type) {
+        // mediaType & fileName set for choosing proper icon
+        this.mediaType = file.type;
+        this.fileName = file.name;
         if (!this.disableUpload) {
             let fileItem = {
                 id: this.id,
@@ -369,30 +376,59 @@ class UploadFile extends React.Component<IProps, IState> {
         return false;
     }
 
+    private selectIcon(type: FILE_TYPE) {
+        switch (type) {
+            case FILE_TYPE.IMG_JPG:
+                return "cif-extensions-jpg";
+            case FILE_TYPE.IMG_GIF:
+                return "cif-extensions-gif";
+            case FILE_TYPE.IMG_PNG:
+                return "cif-extensions-png";
+            case FILE_TYPE.VID_MP4:
+                return "cif-extensions-mp4";
+        }
+    }
     public render() {
         return (
             <div>
         <span className={`image-drag-upload ${this.props.required ? "require" : ""}`}><Translate
             value={this.props.label}/></span>
+                <div onDragOver={() => this.setState({dragOver: true}) } onDragLeave={() => this.setState({dragOver: false})} onMouseLeave={() => this.setState({dragOver: false})}>
                 <Dragger
                     beforeUpload={(file) => this.uploadFile(file, this.props.fileType)}
-                    className="banner-dragger-comp"
+                    className={`banner-dragger-comp ${this.state.dragOver ? "dragger-dragover" : ""}`}
                     disabled={this.state.disableDragger}
                 >
                     {this.state.progress > 0 && !(this.state.imgUrlCropped && this.state.progress === 100) &&
-                    <Progress type={"line"} percent={parseInt((this.state.progress).toString())} width={100}/>
+                    <div className="dragger-progress-container">
+                        <Icon name={this.selectIcon(this.mediaType)}/>
+                        <div className="dragger-progress">
+                            <div className="progress-info-wrapper">
+                            <span className="file-name">{this.fileName}</span>
+                            <Icon className="loading-icon" name={"cif-loading-circle"}/>
+                            </div>
+                         <Progress strokeWidth={5} type={"line"} percent={parseInt((this.state.progress).toString())} width={100}/>
+                         <span className={"uploading"}><Translate value={"uploading"}/></span>
+                        </div>
+                    </div>
                     }
                     {this.state.progress === 0 && !this.state.imgUrlCropped &&
                     <div className="dragger-content">
                         {!this.props.customDragDisc &&
                         <div>
+                            {this.props.uploadModule.includes("image") &&
+                             <div className={"dragger-content-inner"} >
+                              <Icon name={"cif-img-upload"}/>
+                              <Translate value={"Drag your image over here or"}/>
+                             </div>
+                            }
+                            {this.props.uploadModule.includes("video") &&
+                            <div className={"dragger-content-inner"}>
+                              <Icon name={"cif-vid-upload"}/>
+                              <Translate value={"Drag your video over here or"}/>
+                            </div>
+                            }
                             <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                            {this.props.uploadModule === "image" &&
-                            <Translate value={"Drag your image over here or"}/>
-                            }
-                            {this.props.uploadModule === "video" &&
-                            <Translate value={"Drag your video over here or"}/>
-                            }
                         </div>
                         }
                         {this.props.customDragDisc &&
@@ -458,6 +494,7 @@ class UploadFile extends React.Component<IProps, IState> {
                     </div>
                 </Modal>
                 }
+                </div>
             </div>
         );
     }

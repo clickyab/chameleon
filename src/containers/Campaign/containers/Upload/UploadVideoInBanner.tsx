@@ -184,7 +184,7 @@ class UploadVideoInBanner extends React.Component <IProps, IState> {
                             <UTMDynamicForm form={this.props.form} inputObject={this.FormObject} />
                         </Row>
                     </Col>
-                    <Row type="flex" align="middle" className="full-width">
+                    <Row type="flex" align="middle" className="full-width mb-3">
                         <Button className="btn-general btn-submit ml-1"
                                 onClick={this.handleSubmit.bind(this)}
                         >

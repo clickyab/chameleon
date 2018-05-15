@@ -4,13 +4,17 @@
 
 .ant-upload.ant-upload-drag {
     border-radius: 0 !important;
-    border: 2px dashed @light-gray-color !important;
+    border: 1px dashed #DFE0E6 !important;
     height: 220px !important;
     &:hover {
-        border: 2px dashed @primary-color !important;
+        border: 1px dashed @primary-color !important;
     }
 }
-
+.dragger-dragover{
+    .ant-upload.ant-upload-drag {
+        border: 1px dashed @primary-color !important;
+    }
+}
 .ant-upload-list {
     display: none;
 }
@@ -310,10 +314,20 @@
 }
 
 .dragger-content {
-    color: #DBDDE1;
+    color: #9A9A9A;
+    font-size: 14px;
     .upload-image-link {
         display: inline;
         color: @primary-color;
+    }
+    &-inner{
+        i{
+            color: #D1D3DB;
+            font-size: 50px;
+            line-height: 1;
+            display: block;
+            margin-bottom: -5px;
+        }
     }
     span {
         margin: 0 2px;
@@ -685,6 +699,8 @@
     .drag-description {
         margin: 5px;
         padding-bottom: 55px;
+        font-size: 13px;
+        color: #9A999A;
     }
     .upload-column-border {
         border-left: 1px solid #DFE0E6;
@@ -733,6 +749,7 @@
 }
 
 .input-title {
+    margin-bottom: 2px;
     font-size: 13px;
     color: #000;
 }
@@ -990,5 +1007,75 @@
         font-size: 80px;
         line-height: 1;
         color:#D2D4DC;
+    }
+}
+
+.dragger-progress-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    .dragger-progress{
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 100%;
+        .progress-info-wrapper{
+            display: flex;
+            margin-bottom: -8px;
+        .file-name{
+            display: block;
+            font-size: 11px;
+            color: #2E3246;
+            text-align: right;
+        }
+            .loading-icon{
+                display: block;
+                margin-right: auto;
+                margin-left: 5px;
+                font-size: 10px;
+                color: #EEBB3B;
+                animation-name: spin;
+                animation-duration: 1000ms;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+            }
+        }
+        .uploading{
+            font-size: 11px;
+            color: #9A999A;
+            margin-top: -2px;
+            display: block;
+            text-align: right;
+        }
+    }
+     > i{
+        padding-right: 10px;
+        font-size: 34px;
+        margin-bottom: -3px;
+        line-height: 1;
+        color:#2E3246;
+     }
+    .ant-progress-inner{
+      background: #DFE0E6;
+    }
+    .ant-progress-outer {
+        padding-right: 0 !important;
+        margin-right:0 !important;
+    }
+    .ant-progress-text{
+        display: none;
+    }
+    .ant-progress-bg{
+        background: #3DBE8B !important;
+        border-radius: 5px;
+    }
+    @keyframes spin {
+        from {
+            transform:rotate(0deg);
+            transform-origin: 5px 5px;
+        }
+        to {
+            transform:rotate(360deg);
+            transform-origin: 5px 5px;
+        }
     }
 }

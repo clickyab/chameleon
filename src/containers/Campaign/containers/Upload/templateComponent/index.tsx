@@ -65,12 +65,12 @@ export class AdTemplate extends React.Component<IProps, IState> {
                 <div className="title"><Translate value="Ad Type"/></div>
                 {this.props.campaignType === CAMPAIGN_TYPE.WEB &&
                 <div>
-                    {/*<div draggable={true}*/}
-                         {/*className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
-                         {/*onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}*/}
-                         {/*onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>*/}
-                        {/*<Banner/>*/}
-                    {/*</div>*/}
+                    <div draggable={true}
+                         className={`template-type${this.state.template === TEMPLATE.BANNER ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}
+                         onClick={() => this.handleActiveTemp(TEMPLATE.BANNER)}
+                         onDragStart={(e) => this.handleActiveTemp(TEMPLATE.BANNER, e)}>
+                        <Banner/>
+                    </div>
                     {/*<div draggable={true}*/}
                          {/*className={`template-type${this.state.template === TEMPLATE.VAST ? " active" : (this.state.template !== TEMPLATE.NONE) ? " disable" : ""}`}*/}
                          {/*onClick={() => this.handleActiveTemp(TEMPLATE.VAST)}*/}
