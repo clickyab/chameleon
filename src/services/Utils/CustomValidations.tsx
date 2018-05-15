@@ -104,3 +104,15 @@ export const isValidDomain = (rule, value , callback) => {
       }
     }
 };
+export const isValidUrl = (rule, value , callback) => {
+    let urlRegx = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
+    if (urlRegx.test(value)) {
+        callback();
+    } else {
+        if (value.length === 0) {
+            callback();
+        }else {
+            callback("error");
+        }
+    }
+};

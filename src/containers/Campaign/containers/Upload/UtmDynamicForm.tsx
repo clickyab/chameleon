@@ -12,6 +12,7 @@ import {withRouter} from "react-router";
 import UtmForm from "./UtmForm";
 import Rating from "../../components/Rating";
 import CurrencySelector from "../../components/CurrencySelector";
+import {isValidUrl} from "../../../../services/Utils/CustomValidations";
 const FormItem = Form.Item;
 
 /**
@@ -118,7 +119,12 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             <FormItem>
                                     {getFieldDecorator(value.name, {
                                         initialValue: value.value,
-                                        rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
+                                        rules: [
+                                            value.rules ?
+                                                value.rules :
+                                                {required: value.required ? value.required : false , message: this.i18n._t("This field is required")},
+                                                {validator: isValidUrl , message: this.i18n._t("Please enter valid URL") }
+                                        ],
                                     })(
                                 <UTMInput />
                                     )}
