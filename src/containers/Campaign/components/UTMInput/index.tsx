@@ -220,7 +220,7 @@ export default class UTMInput extends React.Component<IProps, IState> {
                     }}
                     onKeyDown={() => this.handleKeyPress()}
                 />
-                <Checkbox className={`checkbox${this.state.showUTMdetails ? "-checked" : ""} stick`}
+                <Checkbox className={`checkbox-item-normal`}
                           checked={this.state.showUTMdetails}
                           onChange={() => this.showUTMdetails()}
                 ><Translate value={"Setting UTM parameters"}/></Checkbox>

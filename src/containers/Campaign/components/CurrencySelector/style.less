@@ -13,6 +13,10 @@
     border-right: 0;
     width: 50%;
     direction: rtl;
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+    outline-style:none;
+    box-shadow:none;
   }
 }
 
@@ -22,6 +26,17 @@
       direction: ltr;
       border-right: @input-border-style ;
       border-left: 0;
+      border-bottom-right-radius: 2px;
+      border-top-right-radius: 2px;
     }
+    border-bottom-left-radius: 2px !important;
+    border-top-left-radius: 2px  !important;
+    border-bottom-right-radius: 0 ;
+    border-top-right-radius: 0;
   }
+}
+
+.currency-selector{
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0  !important;
 }
