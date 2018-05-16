@@ -140,7 +140,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
               <br/>
               {this.state.email}
             </h5>
-            <form onSubmit={this.submitLogin.bind(this)}>
+            <form onSubmit={this.submitLogin.bind(this)} className="login-form">
               <FormItem>
                 {getFieldDecorator("password", {
                   rules: [{required: true, message: this.i18n._t("Please input your username!")}],
@@ -157,7 +157,7 @@ class PublicLoginForm extends React.Component<IProps, IState> {
                 )}
               </FormItem>
               <FormItem>
-                <div className="custom-checkbox">
+                <div className="checkbox-item-normal">
                   {getFieldDecorator("rememberMe")(
                       <Checkbox>{this.i18n._t("Remember me")}</Checkbox>
                   )}
