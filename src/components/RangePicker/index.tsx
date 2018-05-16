@@ -27,6 +27,7 @@ export enum rangeType {
     LAST_MONTH = "last month",
     LAST_TREE_MONTH = "last tree month",
     CUSTOM = "custom",
+    LAST_THIRTY_DAYS = "last 30 days",
 }
 
 export interface IRangeObject {

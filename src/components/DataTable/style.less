@@ -76,20 +76,18 @@
 
 .table-total-number {
   margin-top: 20px;
+  padding: 0 30px;
   margin-bottom: -20px;
   display: block;
-  text-align: left;
-  i {
-    position: relative;
-    top: 3px;
-    font-size: 16px;
-    color: @normal-gray-color;
-    text-align: right;
-    margin-right: 5px;
-    margin-left: 5px;
-  }
+  color: #5A5D6C;
+  font-size:13px;
+  text-align: right;
 }
-
+[dir="ltr"]{
+    .table-total-number {
+        text-align: left;
+    }
+}
 .campaign-data-table {
   .ant-table-header {
     background-color: #F3F7F9 !important;
@@ -236,13 +234,35 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  margin-right: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
-  margin-left: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
   table {
     border-radius: 0 !important;
   }
 }
-
+.campaign-content {
+    .data-table-wrapper {
+        margin-right: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
+        margin-left: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
+    }
+}
+.content-container{
+    .data-table-wrapper {
+      margin-right: 0 - (@content-side-padding) !important;
+      margin-left: 0 - (@content-side-padding) !important;
+    }
+}
+.datatable-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .action-icon {
+        display: flex;
+        font-size: 16px;
+        color: #A8ACB8;
+    }
+    &:focus{
+        text-decoration: none;
+    }
+}
 .data-table-header {
   border-top: 1px solid #D8DDE1;
   display: flex;

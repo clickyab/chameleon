@@ -71,10 +71,10 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   chartInc;
   monthFormat = this.props.isGregorian ? "month" : "jMonth";
   defaultRange: IRangeObject = {range: {
-            from: moment().subtract(2, this.monthFormat).startOf(this.monthFormat),
+            from: moment().subtract(29 , "day"),
             to: moment() ,
         },
-        type: rangeType.LAST_TREE_MONTH
+        type: rangeType.LAST_THIRTY_DAYS
     };
 
   constructor(props) {
@@ -162,7 +162,8 @@ private createXaxis(obj) {
     let options = {
       grid: {
         top: 30,
-        containLabel: true
+        containLabel: true,
+        left: -30,
       },
       tooltip: {
         formatter: (a) => {
@@ -180,7 +181,7 @@ private createXaxis(obj) {
                     <tr>
                       <td>${c.marker}</td>
                       <td>${this.i18n._t(c.seriesName)}</td>
-                      <td>${c.value}</td>
+                      <td>${currencyFormatter(c.value)}</td>
                     </tr>
                  `;
             return (hidden) ? "" : tr;
@@ -214,7 +215,24 @@ private createXaxis(obj) {
         show: true,
         // data: ["a", "b", "c"]
       },
-      yAxis: {},
+      yAxis: {
+          show: true,
+          offset: -30,
+          axisLabel: {
+              formatter: function(data){
+                  if (data >= 1000 && data < 1000000) {
+                      return  (data / 1000).toFixed(1) + "K";
+                  }
+                  if (data >= 1000000 ) {
+                      return (data / 1000).toFixed(1) + "M";
+                  }
+                  else {
+                      return data;
+                  }
+              },
+          verticalAlign: "bottom",
+          }
+      },
       data: this.state.chartData.data,
       series: (this.state.chartData.data) ? this.state.chartData.data.map(d => {
          if (d.hidden === false || d.hidden === undefined) {

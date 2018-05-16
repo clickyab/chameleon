@@ -164,8 +164,8 @@ export class DataTableDataParser {
             );
 
             return <Dropdown overlay={menu} trigger={["click"]}>
-                <a className="ant-dropdown-link dropdown-link" href="#">
-                    ...
+                <a className="ant-dropdown-link dropdown-link datatable-action" href="#">
+                    <Icon className={"action-icon"} name={"cif-more"}/>
                 </a>
             </Dropdown>;
         };
