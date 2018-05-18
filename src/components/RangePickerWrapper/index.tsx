@@ -81,7 +81,8 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
                 </div>
                 {this.state.display &&
                 <div className="range-inside-wrapper">
-                    <RangePicker {...this.props} onChange={(value) => this.handleChange(value)}/>
+                    <RangePicker {...this.props} onChange={(value) => this.handleChange(value)}
+                                 isCancel={(val: boolean) => this.setState({display: !val}) }/>
                 </div>
                 }
             </div>

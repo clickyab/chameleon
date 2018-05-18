@@ -209,7 +209,7 @@ private createXaxis(obj) {
       },
       theme: "CampaignTimeSeries",
       xAxis: {
-        data: this.state.chartData.xaxis
+        data: this.state.chartData.xaxis,
       },
       legend: {
         show: true,
@@ -218,6 +218,20 @@ private createXaxis(obj) {
       yAxis: {
           show: true,
           offset: -30,
+          zlevel: 1,
+          splitLine: {
+              show: true,
+              lineStyle: {
+                  color: ["#000"],
+                  opacity: 0.03
+              }
+          },
+          axisLine: {
+              show: false
+          },
+          axisTick: {
+              show: false
+          },
           axisLabel: {
               formatter: function(data){
                   if (data >= 1000 && data < 1000000) {

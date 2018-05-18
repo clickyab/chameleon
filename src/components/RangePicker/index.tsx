@@ -9,6 +9,7 @@ import {Moment} from "moment";
 interface IProps {
     onChange?: (value: IRangeObject) => void;
     value?: IRangeObject | string;
+    isCancel?: (value: boolean) => void;
 }
 
 interface IState {
@@ -159,16 +160,8 @@ class RangePicker extends React.Component<IProps, IState> {
     }
 
     private handleCancel() {
-        let nullRange = {
-            range: {
-                  from: null,
-                  to: null,
-                   },
-            type: null,
-    };
-        this.setState({value: nullRange });
-        if (this.props.onChange) {
-            this.props.onChange(nullRange);
+        if (this.props.isCancel) {
+            this.props.isCancel(true);
         }
     }
     private renderMonth(date) {
@@ -270,11 +263,11 @@ class RangePicker extends React.Component<IProps, IState> {
                 <div className="header-rangePicker">
                     <div className="header-column">
                         <Translate value={"end Date:"}/>
-                        <input className="date-input" type="text" value={((this.state.value).range && (this.state.value).range.to) ? moment(((this.state.value).range).to).format("jYYYY/jM/jD") : ""}/>
+                        <input className="date-input" readOnly type="text" value={((this.state.value).range && (this.state.value).range.to) ? moment(((this.state.value).range).to).format("jYYYY/jM/jD") : ""}/>
                     </div>
                     <div className="header-column right">
                         <Translate value={"start Date:"}/>
-                        <input className="date-input" type="text" value={((this.state.value).range && (this.state.value).range.from) ? moment(((this.state.value).range).from).format("jYYYY/jM/jD") : ""}/>
+                        <input className="date-input" readOnly type="text" value={((this.state.value).range && (this.state.value).range.from) ? moment(((this.state.value).range).from).format("jYYYY/jM/jD") : ""}/>
                     </div>
                     <div className="filter-header"><Translate value={"shortcuts"}/></div>
                 </div>
