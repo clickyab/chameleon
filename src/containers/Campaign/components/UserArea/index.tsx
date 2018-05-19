@@ -19,6 +19,8 @@ import input = Simulate.input;
 import FlowUpload from "../../../../services/Upload/flowUpload";
 import {UPLOAD_MODULES} from "../../../Campaign/components/UploadFile";
 import FinancialVerify from "../../../User/containers/FinancialVerify";
+import Icon from "../../../../components/Icon";
+import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 
 const TabPane = Tabs.TabPane;
 
@@ -32,7 +34,7 @@ interface IOwnProps {
 }
 
 enum COMP_TAB_USR {
-    PROFILE = "Profile",
+    PROFILE = "",
     TRANSACTION = "Transaction",
     CHARGE = "Charge",
     LOGOUT = "Logout",
@@ -169,7 +171,13 @@ class UserArea extends React.Component<IProps, IState> {
                     <input style={{display: "none"}} id="uploadAvatar" type="file"
                            onChange={(e) => this.uploadAvatar(e.target.files[0])} ref="avatar"
                            accept="image/*"/>
-                    <h2>{this.state.user.first_name} {this.state.user.last_name}</h2>
+                    <div className="userarea-info-wrapper">
+                    <div className="userarea-name">{this.state.user.first_name} {this.state.user.last_name}</div>
+                    <div className="userarea-balance">
+                        <Icon name={"cif-money-outline"}/>
+                        <div className="balance">{currencyFormatter(this.state.user.balance)} {this.i18n._t("Toman")}</div>
+                    </div>
+                    </div>
                 </div>
                 <Switch>
                     <Row type="flex" align="middle">
@@ -177,7 +185,7 @@ class UserArea extends React.Component<IProps, IState> {
                               onChange={this.handleTab.bind(this)}
                               type="editable-card"
                               hideAdd={true}
-                              className="tabs-container mt-2 mr-4 ml-4">
+                              className="tabs-container">
                             <TabPane tab={this.i18n._t("Profile")} key="profile" closable={false}>
                                 <div>
                                     <PrivateRoute path={`${match.url}/profile`} component={PublicProfileContainer}/>

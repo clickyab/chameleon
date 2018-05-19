@@ -38,7 +38,7 @@ componentWillReceiveProps(nextProps: IProps) {
   render() {
     return (
       <div>
-        <Translate value="gender"/>
+        <Translate className={"gender-title"} value="gender"/>
         <div className="gender">
           <br/>
           <div className={`gender-item ${this.state.value === "female" ? "active" : ""}`} onClick={() => {
