@@ -4,7 +4,6 @@ import "./style.less";
 import * as moment from "moment-jalaali";
 import I18n from "../../services/i18n/index";
 import Translate from "../i18n/Translate";
-import {Moment} from "moment";
 
 interface IProps {
     onChange?: (value: IRangeObject) => void;

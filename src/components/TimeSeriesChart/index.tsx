@@ -10,6 +10,7 @@ import RangePickerWrapper, {IRangeObject} from "../RangePickerWrapper/index";
 import {rangeType} from "../RangePicker";
 import ServerStore from "../../services/ServerStore";
 import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
+import {renderMonth} from "../../services/Utils/renderMonth";
 
 
 echarts.registerTheme("CampaignTimeSeries", theme);
@@ -210,6 +211,18 @@ private createXaxis(obj) {
       theme: "CampaignTimeSeries",
       xAxis: {
         data: this.state.chartData.xaxis,
+        axisLabel: {
+            fontFamily: "IRANSans",
+            color: "#485465",
+            fontSize: 12,
+            formatter: (data) =>  {
+                if ( data.length > 2  && (this.range.from.jYear() === this.range.to.jYear() && moment().jYear() === this.range.to.jYear())) {
+                    return moment(data, "jYYYY/jM/jDD").jDate() + " " + renderMonth(moment(data, "jYYYY/jM/jDD") , false)  ;
+                } else {
+                    return data;
+                }
+            },
+        }
       },
       legend: {
         show: true,
