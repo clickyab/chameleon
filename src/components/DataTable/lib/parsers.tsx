@@ -5,7 +5,7 @@ import {ColumnProps} from "antd/lib/table/Column";
 import {IActionsFn, IColumn, IColumnParserParams, IData, IDefinition} from "./interfaces";
 import {Dropdown, Menu, Button} from "antd";
 import * as React from "react";
-import {TextField} from "material-ui";
+import CONFIG from "../../../constants/config";
 import Icon from "../../Icon/index";
 import I18n from "../../../services/i18n/index";
 
@@ -150,7 +150,7 @@ export class DataTableDataParser {
             }
 
             const menu = (
-                <Menu className="data-table-action-dropdown">
+                <Menu className={`data-table-action-dropdown ${CONFIG.DIR === "rtl" ? "dropdown-rtl" : ""}`}>
                     {record._actions.split(",").map((text, i) => (
                         <Menu.Item key={i}>
                             <a onClick={() => {
@@ -163,7 +163,7 @@ export class DataTableDataParser {
                 </Menu>
             );
 
-            return <Dropdown overlay={menu} trigger={["click"]}>
+            return <Dropdown overlay={menu} trigger={["hover"]}>
                 <a className="ant-dropdown-link dropdown-link datatable-action" href="#">
                     <Icon className={"action-icon"} name={"cif-more"}/>
                 </a>

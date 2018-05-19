@@ -651,7 +651,7 @@ class DataTable extends React.Component<IProps, IState> {
                                         }
                                         return (
                                             <Col key={index} span={12}>
-                                                <Checkbox key={index} value={key.name}>{key.title}</Checkbox>
+                                                <Checkbox className={"checkbox-item-normal"} key={index} value={key.name}>{key.title}</Checkbox>
                                             </Col>
                                         );
                                     }
