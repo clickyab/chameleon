@@ -48,11 +48,15 @@ class List extends React.Component<IProps, IState> {
                 <Col>
                     <div dir={CONFIG.DIR}>
                         <Row className="mb-2">
-                            <h3><Translate value={"campaigns"}/></h3>
+                            <div className="page-title">
+                              <h2><Translate value={"campaigns"}/></h2>
+                              <p><Translate value={"You can view and edit your and your user campaigns in this page"}/></p>
+                            </div>
                         </Row>
                         <DataTableChartWrapper
                             ref={"dataTableChart"}
                             name="myCampaign"
+                            infinitTable={true}
                             chartDataFn={this.controllerApi.campaignGraphAllGet}
                             chartDefinitionFn={this.controllerApi.campaignListDefinitionGet}
                             dataTableDefinitionFn={this.controllerApi.campaignListDefinitionGet}

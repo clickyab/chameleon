@@ -16,26 +16,34 @@
   .range-wrapper-input{
     position: relative;
     cursor: pointer;
-    input {
-      width: 165px;
-      height: 30px;
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      height: 24px;
+      font-size: 11px;
+      color: #9A99A9;
       border: 1px solid #DBDDE1;
-      text-align: right;
-      padding-right: 10px;
-      padding-left: 10px;
+      text-align: left;
+      padding: 0 10px;
       direction: rtl;
+      border-radius: 2px;
     }
-    &:after{
-      content: "\e04b";
-      font-size: 8px;
-      font-family: clickyabdashboard;
-      position: absolute;
-      left: 10px;
-      top:10px;
+    .date-text{
+        position: relative;
+        top: 1px;
+    }
+    .icon{
+        display: flex;
+        margin-left: 5px;
+        font-size: 14px;
     }
   }
 }
 [dir="ltr"] .range-wrapper {
+    .icon{
+        margin-left: 0;
+        margin-right: 0;
+    }
   .range-inside-wrapper {
     right:0;
     direction: rtl; // Some kind of reverse --> RTL for LTR display

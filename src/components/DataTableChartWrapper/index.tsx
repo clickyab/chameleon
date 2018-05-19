@@ -18,6 +18,7 @@ interface IProps {
      * @params actionsFn - an object with keys of each action function
      */
     dataTableActionsFn?: IActionsFn;
+    infinitTable?: boolean;
 
 }
 
@@ -72,6 +73,7 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
                 />
                 <DataTable
                     ref={"table"}
+                    infinite={!!this.props.infinitTable}
                     name={this.props.name}
                     dateRange={(this.state.rangeObj) ? this.state.rangeObj.range : null}
                     onQueryChange={this.onQueryChange}

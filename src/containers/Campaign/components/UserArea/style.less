@@ -1,7 +1,7 @@
 @import "../../../App/theme";
 
 .user-area {
-  margin-top: 35px;
+  margin-top: 30px;
   .profile-progress {
 
     circle {
@@ -79,7 +79,6 @@
       }
     }
   }
-
 }
 
 .user-area-avatar {
@@ -91,3 +90,36 @@
   }
 }
 
+.tabs-container{
+    margin-right: 24px;
+    margin-left: 24px;
+    margin-top: 20px;
+    .ant-tabs-nav{
+        [role="tab"]{
+            margin-right: 0 !important;
+        }
+    }
+}
+.userarea-info-wrapper {
+    margin-right: 15px;
+    margin-left: 15px;
+    color: #6E7682;
+    .userarea-name {
+        font-weight: 500;
+        font-size: 20px;
+    }
+    .userarea-balance{
+        font-size: 14px;
+        margin-top: -5px;
+        i{
+            line-height: 1;
+            font-size: 20px;
+            position: relative;
+            top:6px;
+        }
+        .balance{
+            display: inline-block;
+            margin: 0 10px;
+        }
+    }
+}

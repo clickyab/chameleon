@@ -161,6 +161,7 @@ class UploadUniversalApp extends React.Component <IProps, IState> {
         {
             title: this.i18n._t("Contact number") as string,
             name: "phone",
+            placeholder: "+98-----------",
             type: "textfield",
             number: true,
             className: "dir-ltr",

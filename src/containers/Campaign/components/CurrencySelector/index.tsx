@@ -14,6 +14,7 @@ interface IProps  {
     onSubmit?: (type, value) => void;
     className?: string;
     placeholder?: string;
+    currencyLimit?: number;
 }
 
 interface IState {
@@ -68,7 +69,8 @@ export default class CurrencySelector extends React.Component<IProps, IState> {
         return(
             <div className={`currency-selector ${this.props.className ? this.props.className : ""}`}>
                 <Currency placeholder={this.props.placeholder}
-                          className={"input-campaign"} value={this.state.value}
+                          currencyLenght={this.props.currencyLimit ? this.props.currencyLimit : 9}
+                          className={"input-campaign currency-selector"} value={this.state.value}
                           onChange={(item) => this.handleCurrency(item)}/>
                 <select className="selector" value={this.state.type} onChange={this.handleType.bind(this)}>
                     {Object.values(this.CurrencyTypes).map((item, index) => {

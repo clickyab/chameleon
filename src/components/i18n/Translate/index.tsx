@@ -25,6 +25,10 @@ interface ITranslateProps {
    * render html object or not
    */
   html ?: boolean;
+  /**
+   * render html object or not
+   */
+  className ?: string;
 }
 
 interface IState {
@@ -45,7 +49,7 @@ export default class Translate extends React.Component<ITranslateProps, IState> 
   public render() {
     const i18n = I18n.getInstance();
     return (
-      <span>
+      <span className={this.props.className ? this.props.className : ""}>
         {i18n._t(this.props.value,
           {html : this.props.html || false , params : this.state.params || []})}
       </span>

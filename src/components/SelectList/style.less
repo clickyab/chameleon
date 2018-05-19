@@ -264,3 +264,39 @@
         }
     }
 }
+.checkbox-item-normal {
+    display: flex !important;
+    align-items: center;
+    padding-right: 5px;
+    padding-left: 5px;
+    span {
+        font-size: 13px;
+        color: #5E6670;
+    }
+
+    .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+        margin-left: 0 !important;
+    }
+    .ant-checkbox-wrapper {
+        display: flex !important;
+        align-items: center !important;
+    }
+    .ant-checkbox {
+        input {
+            height: 16px !important;
+            width: 16px !important;
+        }
+        &:after {
+            border: none;
+            border-radius: 2px !important;
+        }
+        .ant-checkbox-inner {
+            height: 16px !important;
+            width: 16px !important;
+            border-radius: 2px !important;
+            &:after {
+                transform: rotate(45deg) scale(1) translate(1px);
+            }
+        }
+    }
+}

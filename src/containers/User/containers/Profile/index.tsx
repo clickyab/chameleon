@@ -173,7 +173,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                   </FormItem>
                               </Col>
                           </Row>
-                          <Row gutter={16} className={(this.state.isDisable) ? "column-disable" : "column-enable"}
+                          <Row gutter={16}
                                type="flex"
                                align="top">
                               <Col span={12}>
@@ -295,6 +295,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                       })(
                                           <Input
                                               className="input-campaign"
+                                              type="number"
                                               onChange={() => this.handleButton()}
                                           />)}
                                   </FormItem>
@@ -403,7 +404,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                       </FormItem>
                                   </Col>
                               </Row>
-                              <Row gutter={16} className={(this.state.isDisable) ? "column-disable" : "column-enable"}
+                              <Row gutter={16}
                                    type="flex"
                                    align="top">
                                   <Col span={12}>
@@ -533,6 +534,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                           })(
                                               <Input
                                                   className="input-campaign"
+                                                  type="number"
                                                   onChange={() => this.handleButton()}
                                               />)}
                                       </FormItem>

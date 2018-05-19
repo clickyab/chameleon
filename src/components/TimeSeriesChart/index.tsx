@@ -10,6 +10,7 @@ import RangePickerWrapper, {IRangeObject} from "../RangePickerWrapper/index";
 import {rangeType} from "../RangePicker";
 import ServerStore from "../../services/ServerStore";
 import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
+import {renderMonth} from "../../services/Utils/renderMonth";
 
 
 echarts.registerTheme("CampaignTimeSeries", theme);
@@ -71,10 +72,10 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   chartInc;
   monthFormat = this.props.isGregorian ? "month" : "jMonth";
   defaultRange: IRangeObject = {range: {
-            from: moment().subtract(2, this.monthFormat).startOf(this.monthFormat),
+            from: moment().subtract(29 , "day"),
             to: moment() ,
         },
-        type: rangeType.LAST_TREE_MONTH
+        type: rangeType.LAST_THIRTY_DAYS
     };
 
   constructor(props) {
@@ -162,7 +163,8 @@ private createXaxis(obj) {
     let options = {
       grid: {
         top: 30,
-        containLabel: true
+        containLabel: true,
+        left: -30,
       },
       tooltip: {
         formatter: (a) => {
@@ -180,7 +182,7 @@ private createXaxis(obj) {
                     <tr>
                       <td>${c.marker}</td>
                       <td>${this.i18n._t(c.seriesName)}</td>
-                      <td>${c.value}</td>
+                      <td>${currencyFormatter(c.value)}</td>
                     </tr>
                  `;
             return (hidden) ? "" : tr;
@@ -208,13 +210,56 @@ private createXaxis(obj) {
       },
       theme: "CampaignTimeSeries",
       xAxis: {
-        data: this.state.chartData.xaxis
+        data: this.state.chartData.xaxis,
+        axisLabel: {
+            fontFamily: "IRANSans",
+            color: "#485465",
+            fontSize: 12,
+            formatter: (data) =>  {
+                if ( data.length > 2  && (this.range.from.jYear() === this.range.to.jYear() && moment().jYear() === this.range.to.jYear())) {
+                    return moment(data, "jYYYY/jM/jDD").jDate() + " " + renderMonth(moment(data, "jYYYY/jM/jDD") , false)  ;
+                } else {
+                    return data;
+                }
+            },
+        }
       },
       legend: {
         show: true,
         // data: ["a", "b", "c"]
       },
-      yAxis: {},
+      yAxis: {
+          show: true,
+          offset: -30,
+          zlevel: 1,
+          splitLine: {
+              show: true,
+              lineStyle: {
+                  color: ["#000"],
+                  opacity: 0.03
+              }
+          },
+          axisLine: {
+              show: false
+          },
+          axisTick: {
+              show: false
+          },
+          axisLabel: {
+              formatter: function(data){
+                  if (data >= 1000 && data < 1000000) {
+                      return  (data / 1000).toFixed(1) + "K";
+                  }
+                  if (data >= 1000000 ) {
+                      return (data / 1000).toFixed(1) + "M";
+                  }
+                  else {
+                      return data;
+                  }
+              },
+          verticalAlign: "bottom",
+          }
+      },
       data: this.state.chartData.data,
       series: (this.state.chartData.data) ? this.state.chartData.data.map(d => {
          if (d.hidden === false || d.hidden === undefined) {

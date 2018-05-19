@@ -76,20 +76,18 @@
 
 .table-total-number {
   margin-top: 20px;
+  padding: 0 30px;
   margin-bottom: -20px;
   display: block;
-  text-align: left;
-  i {
-    position: relative;
-    top: 3px;
-    font-size: 16px;
-    color: @normal-gray-color;
-    text-align: right;
-    margin-right: 5px;
-    margin-left: 5px;
-  }
+  color: #5A5D6C;
+  font-size:13px;
+  text-align: right;
 }
-
+[dir="ltr"]{
+    .table-total-number {
+        text-align: left;
+    }
+}
 .campaign-data-table {
   .ant-table-header {
     background-color: #F3F7F9 !important;
@@ -158,7 +156,6 @@
   .ant-table-tbody {
     box-shadow: 4px 4px 5px 0 rgba(0, 0, 0, 0.1);
   }
-
   // customized Scrollbar Works only on webkit support browsers
   *::-webkit-scrollbar {
     width: .4em;
@@ -195,37 +192,48 @@
 
 .data-table-action-dropdown {
   &.ant-dropdown-menu {
-    box-shadow: 0 0 0;
-    border: 2px solid #E4E9EC;
+    box-shadow: none;
+    border: 1px solid #DFE0E6;
+    border-radius: 4px;
     position: relative;
     &:before {
       content: "";
       position: absolute;
       width: 0;
       height: 0;
-      top: -8px;
-      left: 12px;
+      top: -7.7px;
+      left: 12.25px;
       border-style: solid;
-      border-width: 0 11px 8px 11px;
-      border-color: transparent transparent #dbdde1 transparent;
+      border-width: 0 9.5px 7.5px 9.5px;
+      border-color: transparent transparent #DFE0E6 transparent;
+
     }
     &:after {
       position: absolute;
-      top: -5px;
-      left: 16px;
+      top: -6.5px;
+      left: 15px;
       content: "";
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 0 7px 5px 7px;
+      border-width: 0 7px 6px 7px;
       border-color: transparent transparent #FFF transparent;
     }
   }
   .ant-dropdown-menu-item {
     min-width: 120px;
+      &:hover{
+          background: #F6F6F6;
+      }
   }
 }
-
+.dropdown-rtl{
+    &.data-table-action-dropdown{
+        .ant-dropdown-menu-item {
+            text-align: right;
+        }
+    }
+}
 .dropdown-link {
   width: 50px;
   display: inline-block;
@@ -236,13 +244,35 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  margin-right: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
-  margin-left: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
   table {
     border-radius: 0 !important;
   }
 }
-
+.campaign-content {
+    .data-table-wrapper {
+        margin-right: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
+        margin-left: 0 - (@campaign-content-side-margin + @content-side-padding) !important;
+    }
+}
+.content-container{
+    .data-table-wrapper {
+      margin-right: 0 - (@content-side-padding) !important;
+      margin-left: 0 - (@content-side-padding) !important;
+    }
+}
+.datatable-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .action-icon {
+        display: flex;
+        font-size: 16px;
+        color: #A8ACB8;
+    }
+    &:focus{
+        text-decoration: none;
+    }
+}
 .data-table-header {
   border-top: 1px solid #D8DDE1;
   display: flex;
@@ -288,7 +318,7 @@
 }
 
 .customize-table-modal {
-  min-width: 370px;
+  max-width: 370px;
   display: table;
   .ant-checkbox-wrapper {
     margin-left: 5px;

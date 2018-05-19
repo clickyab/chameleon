@@ -24,6 +24,7 @@ import I18n from "../../services/i18n/index";
 import CONFIG from "../../constants/config";
 import * as moment from "moment-jalaali";
 import ServerStore from "./../../services/ServerStore";
+import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
@@ -650,7 +651,7 @@ class DataTable extends React.Component<IProps, IState> {
                                         }
                                         return (
                                             <Col key={index} span={12}>
-                                                <Checkbox key={index} value={key.name}>{key.title}</Checkbox>
+                                                <Checkbox className={"checkbox-item-normal"} key={index} value={key.name}>{key.title}</Checkbox>
                                             </Col>
                                         );
                                     }
@@ -685,8 +686,7 @@ class DataTable extends React.Component<IProps, IState> {
                 <div className={(this.props.infinite) ? "table-total-number" : "mt-2"}>
                     {this.props.infinite &&
                     <div>
-                        <Icon name={"cif-target"}/>
-                        <Translate value={"%s result"} params={[this.state.data.total]}/>
+                        <Translate value={"%s result"} params={[currencyFormatter(this.state.data.total)]}/>
                     </div>
                     }
                 </div>

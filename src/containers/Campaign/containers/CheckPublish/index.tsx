@@ -209,8 +209,8 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                                 <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
                                 <Translate value="Edit"/>
                             </Button>
-                            <Icon name="cif-summary" className="check-title-icon"/><Translate
-                            value={"Basic informations"}/>
+                            <Icon name="cif-summary" className="check-title-icon"/>
+                            <Translate className="summary-section-title" value={"Basic informations"}/>
                         </div>
                         <Row className="summary-field-wrapper">
                             <Col span={16} className="status">
@@ -226,7 +226,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.type}
                             </Col>
                             <Col span={8}>
@@ -234,7 +234,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.title}
                             </Col>
                             <Col span={8}>
@@ -242,7 +242,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.i18n._d(this.state.startDate)}
                             </Col>
                             <Col span={8}>
@@ -250,7 +250,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.endDate && this.i18n._d(this.state.endDate)}
                                 {!this.state.endDate &&
                                 <Translate value={"No End date Provided"}/>}
@@ -262,44 +262,6 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                         <div className="check-title">
                             <Button className="edit-btn"
                                     onClick={() => {
-                                        this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
-                                    }}>
-                                <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
-                                <Translate value="Edit"/>
-                            </Button>
-                            <Icon name="cif-budget" className="check-title-icon"/><Translate value={"Budget"}/>
-                        </div>
-                        <Row className="summary-field-wrapper">
-                            <Col span={16}>
-                                {this.state.costType}
-                            </Col>
-                            <Col span={8}>
-                                <label><Translate value={"Unit price"}/></label>
-                            </Col>
-                        </Row>
-                        <Row className="summary-field-wrapper">
-                            <Col span={16}>
-                                <b>{currencyFormatter(this.state.currentCampaign.total_budget) + " "}</b>
-                                <Translate value={"Currency_Name"}/>
-                            </Col>
-                            <Col span={8}>
-                                <label><Translate value={"campaign total budget"}/></label>
-                            </Col>
-                        </Row>
-                        <Row className="summary-field-wrapper">
-                            <Col span={16}>
-                                <b>{currencyFormatter(this.state.currentCampaign.total_budget) + " "}</b>
-                                <Translate value={"Currency_Name"}/>
-                            </Col>
-                            <Col span={8}>
-                                <label><Translate value={"Campaign daily budget"}/></label>
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col span={12}>
-                        <div className="check-title">
-                            <Button className="edit-btn"
-                                    onClick={() => {
                                         this.props.history.push(`/campaign/targeting/${this.props.match.params.id}`);
                                     }}>
                                 <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
@@ -308,7 +270,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             <Icon name="cif-target" className="check-title-icon"/><Translate value={"Targeting"}/>
                         </div>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.currentCampaign.attributes.region && this.state.currentCampaign.attributes.region.length === 0 &&
                                 <Translate value={"All Iran Area"}/>
                                 }
@@ -325,7 +287,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.currentCampaign.attributes.device && this.state.currentCampaign.attributes.device.length === 0 &&
                                 <Translate value={"All devices"}/>
                                 }
@@ -337,7 +299,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.currentCampaign.attributes.iab && this.state.currentCampaign.attributes.iab.length === 0 &&
                                 <Translate value={"All categories"}/>
                                 }
@@ -345,7 +307,45 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                                 {!this.state.currentCampaign.attributes.iab && "-"}
                             </Col>
                             <Col span={8}>
-                                <label><Translate value={"IAB Catagories"}/></label>
+                                <label><Translate value={"IAB Categories"}/></label>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col span={12}>
+                        <div className="check-title">
+                            <Button className="edit-btn"
+                                    onClick={() => {
+                                        this.props.history.push(`/campaign/budget/${this.props.match.params.id}`);
+                                    }}>
+                                <Icon name={"cif-gear-outline"} className="edit-btn-icon"/>
+                                <Translate value="Edit"/>
+                            </Button>
+                            <Icon name="cif-budget" className="check-title-icon"/><Translate value={"Budget"}/>
+                        </div>
+                        <Row className="summary-field-wrapper">
+                            <Col span={16} className="summary-info">
+                                {this.state.costType}
+                            </Col>
+                            <Col span={8}>
+                                <label><Translate value={"Unit price"}/></label>
+                            </Col>
+                        </Row>
+                        <Row className="summary-field-wrapper">
+                            <Col span={16} className="summary-info">
+                                <b>{currencyFormatter(this.state.currentCampaign.total_budget) + " "}</b>
+                                <Translate value={"Currency_Name"}/>
+                            </Col>
+                            <Col span={8}>
+                                <label><Translate value={"campaign total budget"}/></label>
+                            </Col>
+                        </Row>
+                        <Row className="summary-field-wrapper">
+                            <Col span={16} className="summary-info">
+                                <b>{currencyFormatter(this.state.currentCampaign.total_budget) + " "}</b>
+                                <Translate value={"Currency_Name"}/>
+                            </Col>
+                            <Col span={8}>
+                                <label><Translate value={"Campaign daily budget"}/></label>
                             </Col>
                         </Row>
                         <div className="check-title">
@@ -359,7 +359,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             <Icon name="cif-compass" className="check-title-icon"/><Translate value={"Publishers"}/>
                         </div>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.currentCampaign.inventory.label}
                                 {!this.state.currentCampaign.inventory.label && "-"}
                             </Col>
@@ -368,7 +368,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.currentCampaign.inventory_type === "white_list" &&
                                 <Translate value={"White List"}/>
                                 }
@@ -385,7 +385,7 @@ class CheckPublishComponent extends React.Component <IProps, IState> {
                             </Col>
                         </Row>
                         <Row className="summary-field-wrapper">
-                            <Col span={16}>
+                            <Col span={16} className="summary-info">
                                 {this.state.currentCampaign.inventory.publisher_count} websites selected
                             </Col>
                             <Col span={8}>

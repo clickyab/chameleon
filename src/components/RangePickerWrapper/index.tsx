@@ -4,6 +4,8 @@ import RangePicker , {rangeType} from "../RangePicker";
 import * as moment from "moment-jalaali";
 import onClickOutside from "react-onclickoutside";
 import I18n from "../../services/i18n/index";
+import Icon from "../Icon";
+import Translate from "../i18n/Translate";
 
 export interface IRangeObject {
     range: {
@@ -72,11 +74,15 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
         return (
             <div className="range-wrapper" >
                 <div className="range-wrapper-input" onClick={this.handleClick.bind(this)}>
-                    <input value={(this.state.value.type) ? this.i18n._t(this.state.value.type).toString() : this.i18n._t("Choose Date").toString()}/>
+                    <div className="input-wrapper">
+                        <Icon className="icon" name={"cif-calendar"}/>
+                        {(this.state.value.type) ? <Translate className="date-text" value={this.state.value.type}/> : <Translate className="date-text" value={"Choose Date"}/>}
+                    </div>
                 </div>
                 {this.state.display &&
                 <div className="range-inside-wrapper">
-                    <RangePicker {...this.props} onChange={(value) => this.handleChange(value)}/>
+                    <RangePicker {...this.props} onChange={(value) => this.handleChange(value)}
+                                 isCancel={(val: boolean) => this.setState({display: !val}) }/>
                 </div>
                 }
             </div>
