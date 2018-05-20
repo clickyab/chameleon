@@ -143,10 +143,12 @@ private createXaxis(obj) {
     let config = {};
     this.range = this.state.range.range ;
     if (this.range && this.range.from) {
-        config["from"] = moment(this.range.from).add(3, "hours").add(30 , "minutes").toISOString();
+        let fromTime = new Date(moment(this.range.from).toISOString()).getTimezoneOffset();
+        config["from"] = moment(this.range.from).add(-fromTime , "minutes").toISOString();
     }
     if (this.range && this.range.to) {
-        config["to"] = moment(this.range.to).add(3, "hours").add(30, "minutes").toISOString();
+        let toTime = new Date(moment(this.range.from).toISOString()).getTimezoneOffset();
+        config["to"] = moment(this.range.to).add(5, "hours").add(-toTime , "minutes").toISOString();
     }
     this.props.dataFn(config).then((respond: any) => {
         let tempData = this.state.chartData;

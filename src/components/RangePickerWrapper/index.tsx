@@ -50,6 +50,7 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
     }
 
     private handleChange(value) {
+        console.log("value" , value);
         if (value.type === "custom") {
             let temp = value;
             temp.type = (temp.range.from.toString() === temp.range.to.toString()) ? moment(temp.range.from).format("jYYYY/jM/jD") : moment(temp.range.from).format("jYYYY/jM/jD") + this.i18n._t(" to ").toString() + ((temp.range.to) ? moment(temp.range.to).format("jYYYY/jM/jD") : "");
