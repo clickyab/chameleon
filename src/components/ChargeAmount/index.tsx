@@ -45,7 +45,7 @@ class ChargeAmountSelector extends React.Component<IProps, IState> {
 
     public componentDidMount() {
         if (this.props.hasDefault) {
-            this.handleActiveAmount(1, 500000);
+            this.handleActiveAmount(1, 1000000);
         }
     }
 
@@ -102,23 +102,15 @@ class ChargeAmountSelector extends React.Component<IProps, IState> {
                 <div className="amount-container first">
                     <div className={`amount-box ${this.state.activeAmount === 1 ? "active" : "" }`}
                          onClick={() => {
-                             this.handleActiveAmount(1, 500000);
-                         }}>
-                        <Translate value={"500,000 Toman"}/>
-                    </div>
-                </div>
-                <div className="amount-container">
-                    <div className={`amount-box ${this.state.activeAmount === 2 ? "active" : "" }`}
-                         onClick={() => {
-                             this.handleActiveAmount(2, 1000000);
+                             this.handleActiveAmount(1, 1000000);
                          }}>
                         <Translate value={"1,000,000 Toman"}/>
                     </div>
                 </div>
                 <div className="amount-container">
-                    <div className={`amount-box ${this.state.activeAmount === 3 ? "active" : "" }`}
+                    <div className={`amount-box ${this.state.activeAmount === 2 ? "active" : "" }`}
                          onClick={() => {
-                             this.handleActiveAmount(3, 4000000);
+                             this.handleActiveAmount(2, 4000000);
                          }}>
                         <Translate value={"4,000,000 Toman"}/>
                     </div>
@@ -127,9 +119,9 @@ class ChargeAmountSelector extends React.Component<IProps, IState> {
                     }
                 </div>
                 <div className="amount-container" onClick={() => {
-                    this.handleActiveAmount(4, 10000000);
+                    this.handleActiveAmount(3, 10000000);
                 }}>
-                    <div className={`amount-box ${this.state.activeAmount === 4 ? "active" : "" }`}>
+                    <div className={`amount-box ${this.state.activeAmount === 3 ? "active" : "" }`}>
                         <Translate value={"10,000,000 Toman"}/>
                     </div>
                     {this.state.isOffer &&
@@ -156,6 +148,7 @@ class ChargeAmountSelector extends React.Component<IProps, IState> {
                                 onChange={this.handleInputChange}
                                 value={this.state.amountValue}
                             />
+                        <Translate className={"mr-1 ml-1"} value={"Toman"}/>
                     </div>
                 </div>
             </Row>

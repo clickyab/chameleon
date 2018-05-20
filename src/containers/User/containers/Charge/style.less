@@ -1,8 +1,12 @@
 @import "../../../App/theme";
+.charge-titles{
+    color: #5A5D6C;
+    font-size: 14px;
+}
 .circle-number {
   border-radius: 100%;
-  border: 1px solid #5D656F;
-  color: #5D656F;
+  border: 1px solid #5A5D6C;
+  color: #5A5D6C;
   height: 20px;
   width: 20px;
   text-align: center;
@@ -85,12 +89,13 @@
   .amount-text{
     color:@primary-color;
     font-size: 12px;
-    text-decoration: underline;
+    border-bottom: 1px solid @primary-color ;
     cursor: pointer;
+    height: 25px;
   }
   .amount-input{
     width: 135px !important;
-    height: 45px ;
+    height: 45px !important;
   }
     .has-error{
         .ant-form-explain {
@@ -99,7 +104,6 @@
         }
     }
 }
-
 .receipt-input{
   width: 100% !important;
 
@@ -131,6 +135,12 @@
     margin-bottom: 20px;
     padding-right: 25px;
     padding-left: 25px;
+    color: #9A99A9;
+    span{
+        font-weight: 500;
+        font-size: 12px;
+        color: #5A5D6C;
+    }
     .button-next-step{
       margin-top: 0 !important;
       margin-bottom: 0 !important;
@@ -138,6 +148,12 @@
       padding-left: 0 !important;
       float: left;
       margin-right: -25px;
+      span{
+          max-width: 100%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          color: #FFF;
+      }
     }
     &.border-left{
       border-left: 1px solid #E7E9EC;
@@ -147,7 +163,7 @@
       border-left: 1px solid #E7E9EC;
     }
     .green{
-      color:green;
+      color: #3DBE8B;
     }
     span{
       display: block;
@@ -158,4 +174,35 @@
     visibility: hidden;
     height: 0;
     width: 0;
+}
+.charge-container {
+    .select-box-justify {
+      i{
+          line-height: 1;
+          font-size: 61px;
+          height: 70px;
+          margin-bottom: 30px;
+       }
+        span,h6,i{
+            color: #7794A0;
+        }
+        .active{
+            span,h6,i{
+                color: @primary-color;
+            }
+        }
+    }
+}
+.remove-legend{
+    .legend-item{
+        visibility: hidden !important;
+    }
+}
+.payment-receipt{
+    .ant-form-item{
+        .ant-form-explain{
+            margin-top: 5px;
+            margin-bottom: -23px !important;
+        }
+    }
 }

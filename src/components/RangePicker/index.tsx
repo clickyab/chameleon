@@ -162,7 +162,6 @@ class RangePicker extends React.Component<IProps, IState> {
         if (this.props.isCancel) {
             this.props.isCancel(true);
         }
-        console.log("moment", moment("1397/2/1"));
     }
     private renderMonth(date) {
         let monthName;

@@ -148,7 +148,7 @@ private createXaxis(obj) {
     }
     if (this.range && this.range.to) {
         let toTime = new Date(moment(this.range.from).toISOString()).getTimezoneOffset();
-        config["to"] = moment(this.range.to).add(5, "hours").add(-toTime , "minutes").toISOString();
+        config["to"] = moment(this.range.to).add(-toTime , "minutes").toISOString();
     }
     this.props.dataFn(config).then((respond: any) => {
         let tempData = this.state.chartData;
