@@ -24,11 +24,10 @@ class translationApi {
   pushPoFile() {
     let project = new ZanataClient.Project(options);
     return project
-      .on('fail', (e) => console.error)
       .on('data', (d) => {
         console.log(d);
       })
-      .on('end', (r) => {
+      .on('fail', (r) => {
         console.log(r);
       })
       .on("end_push", (data) => {
@@ -82,7 +81,7 @@ class translationApi {
       fs.mkdirSync(this.out);
     }
 
-    fs.writeFileSync(`${this.out}/${lang}.json`, new Buffer(JSON.stringify(newJsonObject)));
+    fs.writeFileSync(`${this.out}/${lang}.json`, new Buffer.from(JSON.stringify(newJsonObject)));
     console.log(`Translation file stored for ${this.out}/${lang}.json`);
     return newJsonObject;
 
