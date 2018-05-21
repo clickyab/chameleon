@@ -84,7 +84,7 @@ class TransactionHistory extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div className={(CONFIG.DIR === "rtl") ? "charge-container-rtl" : "charge-container"}>
+            <div className={"charge-container remove-legend"}>
                 <DataTableChartWrapper
                     name="campaignDetails"
                     chartDataFn={this.controllerApi.financialGraphSpendGet}

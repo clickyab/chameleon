@@ -163,7 +163,6 @@ class UserArea extends React.Component<IProps, IState> {
                 <div className="avatar-wrapper">
                     {this.state.user && <div className="avatar-click" onClick={() => {
                         document.getElementById("uploadAvatar").click();
-                        console.log("clicked");
                     }}>
                         <Avatar user={this.state.user} className="user-area-avatar avatar-hover" radius={32}
                                 progress={0}/>
