@@ -3,53 +3,79 @@ import {Button, Checkbox, Col, Form, Input, notification, Radio, Row, Select} fr
 import CONFIG from "../../../../../../constants/config";
 import Translate from "../../../../../../components/i18n/Translate/index";
 import I18n from "../../../../../../services/i18n/index";
+import {ControllersApi} from "../../../../../../api/api";
 import "./style.less";
 import {FormComponentProps} from "antd/lib/form/Form";
-import Dragger from "antd/es/upload/Dragger";
-import {default as UploadService, UPLOAD_MODULES} from "../../../../../../services/Upload";
 import Icon from "../../../../../../components/Icon";
+import UploadFile, {FILE_TYPE , UPLOAD_MODULES} from "../../../../../Campaign/components/UploadFile";
+import {connect} from "react-redux";
+import {RootState} from "../../../../../../redux/reducers/index";
+import ChangePasswordModal from "../../../../../../components/ChangePasswordModal";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
+interface IOwnProps {
+    match?: any;
+    history?: any;
+}
+
 interface IProps extends FormComponentProps {
+    match: any;
+    history: any;
 }
 
 interface IState {
   createMode: boolean;
   editMode: boolean;
+  showPasswordModal: boolean;
 }
-
+@connect(mapStateToProps)
 class WhiteLabel extends React.Component<IProps, IState> {
   private i18n = I18n.getInstance();
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      createMode: false,
-      editMode: false,
+      createMode: !this.props.match.params.id,
+      editMode: !this.props.match.params.id,
+      showPasswordModal: false,
     };
   }
 
-  uploadLogo(file) {
-    const uploader = new UploadService(UPLOAD_MODULES.BANNER, file);
+ public componentDidMount() {
+     let id = this.props.match.params.id;
+ }
 
-    uploader.upload((state) => {
-      // this.changeFileProgressState(id, state);
-    }).then((state) => {
-      // this.changeFileProgressState(id, state);
-    }).catch((err) => {
-      // fixme:: handle error
-      notification.error({
-        message: this.i18n._t("Error").toString(),
-        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
-        description: this.i18n._t("Error in upload progress!").toString(),
-      });
-    });
-    return false;
-  }
+ public handleSubmit(e) {
+     e.preventDefault();
+     this.props.form.validateFields((err, values) => {
+         if (err) {
+             notification.error({
+                 message: this.i18n._t("Submit failed!").toString(),
+                 className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                 description: this.i18n._t("Please check all fields and try again!").toString(),
+             });
+             return;
+         }
+         const controllerApi = new ControllersApi();
+         controllerApi.domainCreatePost({
+             payloadData: {
+             attributes: {
+                 corporationName: values.corporation_name,
+                 color: values.color,
+                 domain: values.domain,
+                 email: values.email,
+         },
+             description: "",
+             name: values.name,
+             status: "enable"
+         }
+         });
 
+ });
+ }
   public render() {
     const {getFieldDecorator} = this.props.form;
     return (
@@ -121,7 +147,7 @@ class WhiteLabel extends React.Component<IProps, IState> {
                 </FormItem>
               </Col>
               <Col span={12}>
-                <FormItem className="has-error-help">
+                <FormItem className="has-error-help" style={{marginBottom: "5px"}}>
                   <span className="input-title require"><Translate value="Password"/></span>
                   {getFieldDecorator("password", {
                     rules: [{
@@ -136,31 +162,16 @@ class WhiteLabel extends React.Component<IProps, IState> {
                       placeholder={this.i18n._t("******") as string}
                     />)}
                 </FormItem>
-              </Col>
-              <Col span={12}>
-                <FormItem>
-                  <Row gutter={8}>
-                    <Col span={24}>
-                      <span className="input-title require"><Translate value="Percent of profit increase"/></span>
-                    </Col>
-                    <Col span={18}>
-                      <Translate value="Percent"/>
-                    </Col>
-                    <Col span={6}>
-                      {getFieldDecorator("profit", {
-                        rules: [{
-                          required: true,
-                          message: this.i18n._t("Please input profit").toString(),
-                        }],
-                      })(
-                        <Input
-                          disabled={this.state.createMode || this.state.editMode}
-                          className="input-campaign"
-                          placeholder={this.i18n._t("25") as string}
-                        />)}
-                    </Col>
-                  </Row>
-                </FormItem>
+                  {!this.state.createMode &&
+                  <p><Translate
+                      value="If you want to change your password"/>
+                      <a onClick={() => {
+                          this.setState({
+                              showPasswordModal: true,
+                          });
+                      }}><Translate value="Click here"/></a>
+                  </p>
+                  }
               </Col>
             </Row>
           </Col>
@@ -214,42 +225,44 @@ class WhiteLabel extends React.Component<IProps, IState> {
                   </div>
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem>
+              <Col span={8}>
+                <FormItem className="whitelabel-logo-dragger">
                   <span className="input-title require"><Translate value={"Logo"}/></span>
-                  <Dragger
-                    beforeUpload={this.uploadLogo.bind(this)}
-                    className="banner-dragger-comp"
-                  >
-                    <div className="dragger-content">
-                      <span className="upload-image-link"><Translate value={"upload it"}/></span>
-                      <Translate value={"Drag your image over here or"}/>
-                    </div>
-                  </Dragger>
+                    <UploadFile
+                    fileType={[FILE_TYPE.IMG_PNG]}
+                    showBelowDragDescription={false}
+                    uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
+                  />
                 </FormItem>
               </Col>
             </Row>
           </Col>
           {this.state.createMode &&
-          <div>
+          <Col span={24}>
             <hr className={"full-width mb-3 line"}/>
+            <Col span={6}>
+            </Col>
             <Col span={18}>
               <Checkbox className="checkbox-input"><Translate
                 value={"Do you want to send information to the email?"}/></Checkbox>
             </Col>
-            <Col span={6}>
-            </Col>
-          </div>
+          </Col>
           }
           <div className="input-btn-wrapper">
             <Button><Translate value={"Cancel"}/></Button>
-            <Button type={"primary"}><Translate value={"Create white label"}/></Button>
+            <Button type={"primary"} onClick={(e) => this.handleSubmit(e)}><Translate value={"Create white label"}/></Button>
           </div>
-
         </Row>
+          <ChangePasswordModal visible={this.state.showPasswordModal}/>
       </div>
     );
   }
 }
 
-export default Form.create()(WhiteLabel);
+function mapStateToProps(state: RootState, ownProps: IOwnProps) {
+    return {
+        match: ownProps.match,
+        history: ownProps.history,
+    };
+}
+export default Form.create()((WhiteLabel) as any);

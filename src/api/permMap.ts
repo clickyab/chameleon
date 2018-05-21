@@ -146,7 +146,11 @@ const permMap = {
     },
     "domainCreatePost": {
         "protected": true,
-        "resource": "create_new_domain:global"
+        "resource": "god:global"
+    },
+    "domainEditIdPut": {
+        "protected": true,
+        "resource": "god:global"
     },
     "financialGet": {
         "protected": true,
@@ -276,10 +280,6 @@ const permMap = {
         "protected": true,
         "resource": ""
     },
-    "userAddToWhitelabelPost": {
-        "protected": true,
-        "resource": "add_to_whitelabel_user:global"
-    },
     "userAdminPasswordChangeIdPatch": {
         "protected": true,
         "resource": "edit_user:global"
@@ -291,6 +291,10 @@ const permMap = {
     "userChangeUserStatusIdPatch": {
         "protected": true,
         "resource": "change_user_status:global"
+    },
+    "userDetailIdGet": {
+        "protected": true,
+        "resource": "get_detail_user:global"
     },
     "userEmailVerifyPost": {
         "protected": false,
@@ -379,6 +383,10 @@ const permMap = {
     "userUpdateIdPut": {
         "protected": true,
         "resource": "edit_user:global"
+    },
+    "userWhitelabelAddPost": {
+        "protected": true,
+        "resource": "add_to_whitelabel_user:global"
     }
 };
 export default permMap;
