@@ -683,10 +683,15 @@ class DataTable extends React.Component<IProps, IState> {
                     onChange={this.handleTableChange.bind(this)}
                     className="campaign-data-table"
                 />
-                <div className={(this.props.infinite) ? "table-total-number" : "mt-2"}>
-                    {this.props.infinite &&
+                <div className={"table-total-number"}>
+                    {this.props.infinite || this.state.data.total === 0 &&
                     <div>
-                        <Translate value={"%s result"} params={[currencyFormatter(this.state.data.total)]}/>
+                        {this.state.data.total !== 0 &&
+                        < Translate value={"%s results"} params={[currencyFormatter(this.state.data.total)]}/>
+                        }
+                        {this.state.data.total === 0 &&
+                        < Translate value={"%s result"} params={[currencyFormatter(this.state.data.total)]}/>
+                        }
                     </div>
                     }
                 </div>

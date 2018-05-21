@@ -225,7 +225,7 @@ class Details extends React.Component<IProps, IState> {
                                   onChange={this.handleTab.bind(this)}
                                   type="editable-card"
                                   hideAdd={true}
-                                  className="tabs-container mt-2 mr-4 ml-4">
+                                  className="tabs-container">
                                 <TabPane tab={this.i18n._t("Creative list")} key="DailyStatistics" closable={false}>
                                     <DataTable
                                         name="campaignInventories"

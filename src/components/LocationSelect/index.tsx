@@ -79,6 +79,7 @@ interface IState {
      * @param {LocationCities} list of loaded cities
      */
     cities: LocationCities;
+    provinceSearch?: string;
 }
 
 
@@ -100,6 +101,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
             countries: [],
             provinces: [],
             cities: [],
+            provinceSearch: "",
         };
         this.country_id = props.countryId || 1;
         this.province_id = props.provinceId;
@@ -244,8 +246,11 @@ export default class LocationSelect extends React.Component<IProps, IState> {
                                 value={(this.state.province ? this.state.province.code : "").toString()}
                                 onChange={(value) => this.setProvince(value as string)}
                                 disabled={this.props.disabled}
+                                optionFilterProp="children"
+                                showSearch
+                                filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         >
-                            {this.state.provinces.map((province) => {
+                            {this.state.provinces && this.state.provinces.map((province) => {
                                 return (
                                     <Option key={`p_${province.code}`}
                                             value={province.code}>{province.name}</Option>);
@@ -259,7 +264,11 @@ export default class LocationSelect extends React.Component<IProps, IState> {
                         <Select className={"select-input"} dropdownClassName={"select-dropdown"}
                                 value={(this.state.city ? this.state.city.id : "").toString()}
                                 onChange={(value) => this.setCity(parseInt(value as string))}
-                                disabled={this.props.disabled}>
+                                disabled={this.props.disabled}
+                                optionFilterProp="children"
+                                showSearch
+                                filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
                             {this.state.cities.map((city) => {
                                 return (<Option key={`ci_${city.id}`} value={city.id.toString()}>{city.name}</Option>);
                             })}

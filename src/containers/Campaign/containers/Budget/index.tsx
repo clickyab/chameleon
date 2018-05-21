@@ -220,7 +220,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 <Col span={10} offset={10}>
                                     <Row type="flex" align="middle" gutter={16}>
                                         <Col span={10}>
-                                            <FormItem className={"error-position"}>
+                                            <FormItem>
                                                 {getFieldDecorator("total_budget", {
                                                     initialValue: this.state.currentCampaign.total_budget || null,
                                                     rules: [{
@@ -256,7 +256,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 <Col span={10} offset={10}>
                                     <Row type="flex" align="middle" gutter={16}>
                                         <Col span={10}>
-                                            <FormItem className={"error-position"}>
+                                            <FormItem>
                                                 {getFieldDecorator("daily_budget", {
                                                     initialValue: this.state.currentCampaign.daily_budget || null,
                                                     rules: [{
@@ -359,7 +359,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                 <Col span={10} offset={10}>
                                     <Row type="flex" align="middle" gutter={16}>
                                         <Col span={10}>
-                                            <FormItem className={"error-position"}>
+                                            <FormItem>
                                                 {getFieldDecorator("max_bid", {
                                                     initialValue: this.state.currentCampaign.max_bid || null,
                                                     rules: [{

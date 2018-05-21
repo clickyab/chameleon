@@ -73,7 +73,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
         {
             title: this.i18n._t("Online payment").toString(),
             value: PAYMENT.ONLINE,
-            icon: <Icon name="cif-money-charge" className={"campaign-icon"}/>,
+            icon: <Icon name="cif-handcreditcard" className={"campaign-icon"}/>,
         },
         {
             title: this.i18n._t("With bank receipt").toString(),
@@ -123,10 +123,10 @@ class ChargeContainer extends React.Component<IProps, IState> {
      * @param currency is optional (shown in front of number)
      */
     private amountFormatter(amount, currency = "") {
-        if (amount > 0 && currency !== "") {
+        if (amount >= 0 && currency !== "") {
             return currencyFormatter(amount) + " " + currency;
         }
-        if (amount > 0) {
+        if (amount >= 0) {
             return currencyFormatter(amount)("en-US");
         }
     }
@@ -211,10 +211,10 @@ class ChargeContainer extends React.Component<IProps, IState> {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <div className={(CONFIG.DIR === "rtl") ? "charge-container-rtl" : "charge-container"}>
+            <div className={"charge-container"}>
                 <Row type="flex">
                     <Col span={17}>
-                        <Row>
+                        <Row className="charge-titles">
                             <span className="circle-number">1</span>
                             <Translate value={"Ways to charge your account"}/>
                         </Row>
@@ -226,7 +226,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                         </Row>
                         {this.state.selectedPayment === PAYMENT.ONLINE &&
                         <div>
-                            <Row>
+                            <Row className="charge-titles">
                                 <span className="circle-number">2</span>
                                 <Translate value={"Account charge amount"}/>
                             </Row>
@@ -237,8 +237,8 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                         {required: true, message: this.i18n._t("This field is required")},
                                         {
                                             validator: rangeCheck,
-                                            minimum: 500000,
-                                            message: this.i18n._t("Minimum price is 500,000 toman per click")
+                                            minimum: 1000000,
+                                            message: this.i18n._t("Minimum price is 1,000,000 toman per click")
                                         }
                                     ],
                                 })(
@@ -271,8 +271,8 @@ class ChargeContainer extends React.Component<IProps, IState> {
                         </div>
                         }
                         {this.state.selectedPayment === PAYMENT.RECEIPT &&
-                        <div>
-                            <Row>
+                        <div className="payment-receipt">
+                            <Row className="charge-titles">
                                 <span className="circle-number">2</span>
                                 <Translate value={"Receipt information"}/>
                             </Row>
@@ -280,12 +280,13 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                 <Col span={7}>
                                     <span
                                         className="span-block input-title">{this.i18n._t("Follow up transaction number")}</span>
-                                    <FormItem className={"reset-margin error-position"}>
+                                    <FormItem className={"reset-margin"}>
                                         {getFieldDecorator("TransactionNumber", {
                                             rules: [{required: true, message: this.i18n._t("This field is required")}],
                                         })(
                                             <Input
                                                 className={"input-campaign receipt-input"}
+                                                type={"number"}
                                             />)}
                                     </FormItem>
                                 </Col>
@@ -302,7 +303,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                             })(
                                                 <Currency
                                                     className={"receipt-input input-campaign"}
-                                                    currencyLenght={10}
+                                                    currencyLenght={9}
                                                 />)}
                                         </FormItem>
                                         <span className={"receipt-currency"}><Translate value={"Toman"}/></span>
@@ -312,16 +313,16 @@ class ChargeContainer extends React.Component<IProps, IState> {
                             <Row type="flex" align="middle" className="payment-box">
                                 <Col className="payment-content" span={6}>
                                     <Translate value={"Amount of your charge"}/>
-                                    {(this.props.form.getFieldValue("bankAmount") === null) ? "_____" : this.amountFormatter(this.props.form.getFieldValue("bankAmount"), "Toman")}
+                                    {(this.props.form.getFieldValue("bankAmount") === null) ? "_____" : this.amountFormatter(this.props.form.getFieldValue("bankAmount"), this.i18n._t("Toman").toString())}
                                 </Col>
                                 <Col className="payment-content border" span={6}>
                                     <Translate value={"Amount after decrease 9% of tax"}/>
-                                    {(this.props.form.getFieldValue("bankAmount") === null) ? "_____" : this.amountFormatter(Math.floor(this.props.form.getFieldValue("bankAmount") * 0.91).toFixed(0), "Toman")}
+                                    {(this.props.form.getFieldValue("bankAmount") === null) ? "_____" : this.amountFormatter(Math.floor(this.props.form.getFieldValue("bankAmount") * 0.91).toFixed(0), this.i18n._t("Toman").toString())}
                                 </Col>
                                 <Col className="payment-content" span={8}>
                                     <Translate value={"Amount of account after deposits approval"}/>
                                     <span
-                                        className="green">{this.amountFormatter(this.props.form.getFieldValue("bankAmount") * 0.91 + this.state.accountDeposit, "Toman")}</span>
+                                        className="green">{this.amountFormatter(this.props.form.getFieldValue("bankAmount") * 0.91 + this.state.accountDeposit, this.i18n._t("Toman").toString())}</span>
                                 </Col>
                                 <Col className="payment-content" span={4}>
                                     <RaisedButton
@@ -336,7 +337,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                         }
                         {this.state.selectedPayment === PAYMENT.COUPON &&
                         <div>
-                            <Row>
+                            <Row className="charge-titles">
                                 <span className="circle-number">2</span>
                                 <Translate value={"Receipt information"}/>
                             </Row>
