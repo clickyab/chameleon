@@ -126,7 +126,7 @@ export default class PhoneInput extends React.Component<IProps, IState> {
    * @param phone
    */
   handleChangePhone(event, phone) {
-    if (this.props.maxLength && phone.length > this.props.maxLength){
+    if (this.props.maxLength && phone.length > this.props.maxLength) {
         return;
     }
     this.setState({phone});

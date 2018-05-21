@@ -1,0 +1,132 @@
+.backoffice-content{
+  padding: 30px;
+  padding-bottom: 50px;
+}
+.select-input{
+  .ant-select-selection__placeholder{
+    text-align: right;
+  }
+  .ant-select-selection-selected-value{
+    float:right;
+    line-height: 35px;
+    padding-right: 5px;
+  }
+  .ant-select-selection{
+    height: 35px;
+    border-radius: 2px;
+    .ant-select-arrow{
+      left: 8px;
+      right: auto !important;
+      &::before{
+        font-family: clickyabdashboard !important;
+        content:"\E04B" ;
+        font-size: 11px;
+        color: #5A5D6C;
+      }
+    }
+  }
+}
+.select-dropdown{
+  .ant-select-dropdown-menu-item{
+    text-align: right;
+  }
+}
+.input-description{
+  position: relative;
+  display: block;
+  margin-bottom: -35px;
+  height: 35px;
+}
+.has-error-help{
+  &.ant-form-item-with-help{
+    margin-bottom: 24px !important;
+  }
+  .ant-form-explain{
+    position: absolute;
+    bottom:-40px;
+  }
+}
+.form-item-align{
+  .ant-form-item{
+    margin-bottom: 15px;
+  }
+}
+.row-add-user{
+  border-bottom: 1px solid #DFE0E6;
+}
+.line{
+  border: 0;
+  height: 1px;
+  background-color: #DFE0E6;
+  color: #DFE0E6;
+  display: block;
+}
+.checkbox-input{
+  display: flex;
+  .ant-checkbox-inner{
+    height: 16px;
+    width: 16px;
+    &:after{
+      transform: translateY(1px) rotate(45deg) scale(1);
+    }
+  }
+}
+.black{
+  color: #000000;
+}
+.ant-btn {
+    border-radius: 2px;
+  }
+.input-btn-wrapper{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  .ant-btn {
+    height: 35px;
+  }
+  > button {
+    margin: 0 5px;
+    &:first-child{
+      margin-right: 0
+    }
+    &:last-child{
+      margin-left: 0;
+    }
+  }
+}
+div[dir="ltr"] {
+  .input-btn-wrapper{
+    > button {
+      margin: 0 5px;
+      &:first-child{
+        margin-left: 0
+      }
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+  }
+}
+.require{
+  &:after{
+    content: "*";
+    font-size: 14px;
+    color: red;
+    margin: 2px;
+  }
+}
+.content{
+  border-top: 1px solid #DFE0E6;
+}
+.border-top{
+  border-top: 1px solid #DFE0E6;
+}
+.border-left{
+  border-left: 1px solid #DFE0E6;
+}
+.border-right{
+  border-right: 1px solid #DFE0E6;
+}
+.border-bottom{
+  border-bottom: 1px solid #DFE0E6;
+}
