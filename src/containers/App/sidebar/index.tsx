@@ -41,7 +41,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
     const menu = MENUS.find((m) => m.key === key);
     if (menu) {
         this.setState({selectedKey: key});
-        return this.props.history.push(menu.key);
+        return this.props.history.push(menu.to);
     }
 
   }
