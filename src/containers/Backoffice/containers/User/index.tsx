@@ -1,26 +1,23 @@
 import * as React from "react";
 import {Switch, Route, RouteComponentProps} from "react-router";
-import {RootState} from "../../redux/reducers/index";
+import {RootState} from "./../../../../redux/reducers/index";
 import {connect} from "react-redux";
-import {UserUserPayload} from "../../api/api";
-import {PrivateRoute} from "../../components/PrivateRoute/index";
-import UserContainer from "./containers/User";
-import WhiteLabel from "./containers/WhiteLabel/containers/whiteLabelAdd/index";
+import {PrivateRoute} from "../../../../components/PrivateRoute";
+import AddUser from "./containers/AddUser";
+import UserList from "./containers/UserList";
+import UserProfile from "./containers/UserProfile";
 
 interface IProps extends RouteComponentProps<void> {
     routes: any;
-    user: UserUserPayload;
 }
 
-interface IState {
-    user: UserUserPayload;
-}
+interface IState {}
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class BackofficeContainer extends React.Component<IProps, IState> {
     constructor(props) {
         super(props);
-        this.state = {user: this.props.user};
+        this.state = {};
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,14 +27,13 @@ export default class BackofficeContainer extends React.Component<IProps, IState>
     public render() {
         const {match} = this.props;
         return (
-            <div>
-                {console.log("props", this.props)}
-                <Switch>
-                    <PrivateRoute path={`${match.url}/user`} component={UserContainer}/>
-                    <PrivateRoute path={`${match.url}/whitelabel`} component={WhiteLabel}/>
-                </Switch>
-            </div>
-        );
+        <Switch>
+            <PrivateRoute path={`${match.url}/list`} component={UserList}/>
+            <PrivateRoute path={`${match.url}/add`} component={AddUser}/>
+            <PrivateRoute path={`${match.url}/edit/:id`} component={UserProfile}/>
+        </Switch>
+
+    );
     }
 }
 

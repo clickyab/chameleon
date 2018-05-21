@@ -168,9 +168,25 @@ const permMap = {
         "protected": true,
         "resource": ""
     },
+    "financialGatewaysPost": {
+        "protected": true,
+        "resource": "add_gateway:global"
+    },
+    "financialGatewaysIdPatch": {
+        "protected": true,
+        "resource": "set_default_gateway:global"
+    },
+    "financialGatewaysIdPut": {
+        "protected": true,
+        "resource": "edit_gateway:global"
+    },
     "financialGraphSpendGet": {
         "protected": true,
         "resource": "get_billing:self"
+    },
+    "financialManualChangeCashPut": {
+        "protected": true,
+        "resource": "manual_change_cash:global"
     },
     "financialPaymentInitPost": {
         "protected": true,
@@ -264,9 +280,17 @@ const permMap = {
         "protected": true,
         "resource": "add_to_whitelabel_user:global"
     },
+    "userAdminPasswordChangeIdPatch": {
+        "protected": true,
+        "resource": "edit_user:global"
+    },
     "userAvatarPut": {
         "protected": true,
         "resource": ""
+    },
+    "userChangeUserStatusIdPatch": {
+        "protected": true,
+        "resource": "change_user_status:global"
     },
     "userEmailVerifyPost": {
         "protected": false,
@@ -339,6 +363,10 @@ const permMap = {
     "userSearchManagersMailPost": {
         "protected": true,
         "resource": ""
+    },
+    "userStartImpersonatePost": {
+        "protected": true,
+        "resource": "impersonate_user:global"
     },
     "userStorePost": {
         "protected": true,

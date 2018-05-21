@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Row, Col, Form, Input, Select, Radio, Checkbox, Button} from "antd";
-import CONFIG from "../../../../constants/config";
-import Translate from "../../../../components/i18n/Translate";
-import I18n from "../../../../services/i18n";
+import CONFIG from "../../../../../../constants/config";
+import Translate from "../../../../../../components/i18n/Translate/index";
+import I18n from "../../../../../../services/i18n/index";
 import "./style.less";
 
 const FormItem = Form.Item;
@@ -29,7 +29,7 @@ class AddUser extends React.Component<IProps, IState> {
                     <Col>
                         <h2><Translate value="Create new user account"/></h2>
                         <p><Translate
-                            value="Fill below form and register your user. informations will be sent automatically after registration "/>
+                            value="Fill below form and register your user. Information will be sent automatically after registration "/>
                         </p>
                     </Col>
                 </Row>

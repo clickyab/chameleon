@@ -3,7 +3,6 @@ import map from "./map";
 import "./style.less";
 import {Row, Col, Checkbox} from "antd";
 import I18n from "../../services/i18n";
-//import {Checkbox} from "material-ui";
 
 /**
  * @interface IProps

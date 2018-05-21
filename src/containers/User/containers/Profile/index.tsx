@@ -14,7 +14,7 @@ import CONFIG from "../../../../constants/config" ;
 import "./style.less";
 import LocationSelect from "../../../../components/LocationSelect/index";
 import Gender from "../../../../components/Gender/index";
-import ChangePassword from "./components/ChangePassword/index";
+import ChangePassword from "../../../../components/ChangePasswordModal/index";
 import {validateID} from "../../../../services/Utils/CustomValidations";
 
 const FormItem = Form.Item;
