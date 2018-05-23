@@ -156,7 +156,7 @@ class ListOfPublishersInventoryComponent extends React.Component <IProps, IState
                             dataFn={this.loadData.bind(this)}
                             tableButtons={
                                 [{
-                                    title: this.i18n._t("Remove pulishers from list").toString(),
+                                    title: this.i18n._t("Remove publishers from list").toString(),
                                     icon: "cif-trashbin",
                                     onClick: () => {
                                         this.updateList();

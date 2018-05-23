@@ -176,6 +176,10 @@ const permMap = {
         "protected": true,
         "resource": "add_gateway:global"
     },
+    "financialGatewaysIdGet": {
+        "protected": true,
+        "resource": "god:global"
+    },
     "financialGatewaysIdPatch": {
         "protected": true,
         "resource": "set_default_gateway:global"

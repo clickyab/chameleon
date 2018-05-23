@@ -25,6 +25,7 @@ export const enum UPLOAD_MODULES {
     NATIVE_VIDEO = "native-video",
     VAST_IMAGE = "vast-image",
     VAST_VIDEO = "vast-video",
+    DOMAIN_IMAGE= "domain-image"
 }
 
 interface IDimension {

@@ -3,7 +3,7 @@ import {Button, Checkbox, Col, Form, Input, notification, Radio, Row, Select} fr
 import CONFIG from "../../../../../../constants/config";
 import Translate from "../../../../../../components/i18n/Translate/index";
 import I18n from "../../../../../../services/i18n/index";
-import {ControllersApi} from "../../../../../../api/api";
+import {ControllersApi, ControllersCampaignGetResponse} from "../../../../../../api/api";
 import "./style.less";
 import {FormComponentProps} from "antd/lib/form/Form";
 import Icon from "../../../../../../components/Icon";
@@ -44,9 +44,6 @@ class WhiteLabel extends React.Component<IProps, IState> {
     };
   }
 
- public componentDidMount() {
-     let id = this.props.match.params.id;
- }
 
  public handleSubmit(e) {
      e.preventDefault();
@@ -63,15 +60,32 @@ class WhiteLabel extends React.Component<IProps, IState> {
          controllerApi.domainCreatePost({
              payloadData: {
              attributes: {
-                 corporationName: values.corporation_name,
-                 color: values.color,
-                 domain: values.domain,
-                 email: values.email,
          },
+             company: values.corporation_name,
              description: "",
-             name: values.name,
+             domain_base: values.domain,
+             email: values.email,
+             first_name: values.firts_name,
+             last_name: values.last_name,
+             password: values.password,
+             logo: values.domainImage,
+             send_mail: values.send_mail,
+             theme: values.theme,
+             title: values.name,
              status: "enable"
          }
+         }).then(data => {
+             notification.success({
+                 message: this.i18n._t("whitelabel created successfully"),
+                 className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                 description: "",
+             });
+         }).catch((error) => {
+             notification.error({
+                 message: this.i18n._t("Create whitelabel failed").toString(),
+                 className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                 description: error.text,
+             });
          });
 
  });
@@ -102,31 +116,78 @@ class WhiteLabel extends React.Component<IProps, IState> {
             </p>
           </Col>
         </Row>
-        <Row type="flex">
+        <Row type="flex" className="whitelabel-page">
           <Col span={24} className={"mb-2"}>
             <h4 className={"black"}><Translate value={"General Information"}/></h4>
           </Col>
           <Col span={18}>
             <Row gutter={16} align={"top"} type={"flex"} className={"mb-2"}>
+                {this.state.createMode &&
+                <Col span={12}>
+                    <FormItem>
+                        <span className="input-title require"><Translate value="First name"/></span>
+                        {getFieldDecorator("first_name", {
+                            rules: [{
+                                required: true,
+                                message: this.i18n._t("Please enter first name").toString()
+                            }],
+                        })(
+                            <Input
+                                disabled={!this.state.editMode}
+                                className="input-campaign"
+                                placeholder={this.i18n._t("Ehsan") as string}
+                            />)}
+                    </FormItem>
+                    <FormItem>
+                        <span className="input-title require"><Translate value="Last name"/></span>
+                        {getFieldDecorator("last_name", {
+                            rules: [{
+                                required: true,
+                                message: this.i18n._t("Please enter last name").toString()
+                            }],
+                        })(
+                            <Input
+                                disabled={!this.state.editMode}
+                                className="input-campaign"
+                                placeholder={this.i18n._t("Hosseini") as string}
+                            />)}
+                    </FormItem>
+                </Col>
+                }
               <Col span={12}>
-                <FormItem className="has-error-help">
-                  <span className="input-title require"><Translate value="Email"/></span>
-                  {getFieldDecorator("email", {
-                    rules: [{
-                      required: true,
-                      message: this.i18n._t("Please input the Email address!").toString()
-                    }],
-                  })(
-                    <Input
-                      disabled={!this.state.createMode}
-                      className="input-campaign dir-ltr"
-                      placeholder={this.i18n._t("example@gmail.com") as string}
-                    />)}
-                  <span className="input-description"><Translate
-                    value="Can't change email after registration"/></span>
-                </FormItem>
-              </Col>
-              <Col span={12}>
+                  <FormItem >
+                      <span className="input-title require"><Translate value="Email"/></span>
+                      {getFieldDecorator("email", {
+                          rules: [{
+                              required: true,
+                              message: this.i18n._t("Please input the Email address!").toString()
+                          }],
+                      })(
+                          <Input
+                              disabled={!this.state.createMode}
+                              className="input-campaign dir-ltr"
+                              placeholder={this.i18n._t("example@gmail.com") as string}
+                          />)}
+                      <span className="input-description"><Translate
+                          value="Can't change email after registration"/></span>
+                  </FormItem>
+                  {this.state.createMode &&
+                  <FormItem style={{marginBottom: "5px"}}>
+                      <span className="input-title require"><Translate value="Password"/></span>
+                      {getFieldDecorator("password", {
+                          rules: [{
+                              required: true,
+                              message: this.i18n._t("Please input password").toString(),
+                          }],
+                      })(
+                          <Input
+                              type={"password"}
+                              disabled={!this.state.createMode}
+                              className="input-campaign"
+                              placeholder={this.i18n._t("******") as string}
+                          />)}
+                  </FormItem>
+                  }
                 <FormItem className={"has-error-help"}>
                   <span className="input-title require"><Translate value="Domain"/></span>
                   {getFieldDecorator("domain", {
@@ -138,40 +199,15 @@ class WhiteLabel extends React.Component<IProps, IState> {
                     <Input
                       disabled={!this.state.editMode}
                       className="input-campaign dir-ltr"
-                      placeholder={this.i18n._t("https://camp.clickyab.com") as string}
+                      placeholder={this.i18n._t("camp.clickyab.com") as string}
                     />)}
                   <span className="input-description">
                                     <Translate value="Temporary access address:"/>
-                                    <a href=" https://tmp_5445.clickyab.com"> https://tmp_5445.clickyab.com</a>
+                                    <a href="tmp_5445.clickyab.com"> tmp_5445.clickyab.com</a>
                                   </span>
                 </FormItem>
               </Col>
               <Col span={12}>
-                <FormItem className="has-error-help" style={{marginBottom: "5px"}}>
-                  <span className="input-title require"><Translate value="Password"/></span>
-                  {getFieldDecorator("password", {
-                    rules: [{
-                      required: true,
-                      message: this.i18n._t("Please input password").toString(),
-                    }],
-                  })(
-                    <Input
-                      type={"password"}
-                      disabled={!this.state.createMode}
-                      className="input-campaign"
-                      placeholder={this.i18n._t("******") as string}
-                    />)}
-                </FormItem>
-                  {!this.state.createMode &&
-                  <p><Translate
-                      value="If you want to change your password"/>
-                      <a onClick={() => {
-                          this.setState({
-                              showPasswordModal: true,
-                          });
-                      }}><Translate value="Click here"/></a>
-                  </p>
-                  }
               </Col>
             </Row>
           </Col>
@@ -180,7 +216,7 @@ class WhiteLabel extends React.Component<IProps, IState> {
             <Row gutter={16} align={"middle"} type={"flex"} className={"mb-2"}>
               <Col span={12} className="form-item-align">
                 <h4 className="black mb-2"><Translate value={"Corporation Identification Information"}/></h4>
-                <FormItem className="has-error-help">
+                <FormItem>
                   <span className="input-title require"><Translate value="White label name"/></span>
                   {getFieldDecorator("name", {
                     rules: [{
@@ -209,11 +245,11 @@ class WhiteLabel extends React.Component<IProps, IState> {
                 <FormItem>
                   <span className="input-title require"><Translate value="Organization color pallet"/></span>
                   <div>
-                    {getFieldDecorator("color", {
+                    {getFieldDecorator("theme", {
                       initialValue: "default",
                       rules: [{
                         required: true,
-                        message: this.i18n._t("Please select color pallet").toString(),
+                        message: this.i18n._t("Please select theme pallet").toString(),
                       }],
                     })(
                       <Select
@@ -228,11 +264,12 @@ class WhiteLabel extends React.Component<IProps, IState> {
               <Col span={8}>
                 <FormItem className="whitelabel-logo-dragger">
                   <span className="input-title require"><Translate value={"Logo"}/></span>
+                    {getFieldDecorator("domainImage", {})(
                     <UploadFile
                     fileType={[FILE_TYPE.IMG_PNG]}
                     showBelowDragDescription={false}
-                    uploadModule={UPLOAD_MODULES.BANNER_IMAGE}
-                  />
+                    uploadModule={UPLOAD_MODULES.DOMAIN_IMAGE}
+                  />)}
                 </FormItem>
               </Col>
             </Row>
@@ -243,8 +280,10 @@ class WhiteLabel extends React.Component<IProps, IState> {
             <Col span={6}>
             </Col>
             <Col span={18}>
+                {getFieldDecorator("send_mail", {})(
               <Checkbox className="checkbox-input"><Translate
                 value={"Do you want to send information to the email?"}/></Checkbox>
+                )}
             </Col>
           </Col>
           }

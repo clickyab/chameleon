@@ -109,7 +109,7 @@ class Explore extends React.Component <IProps, IState> {
                         <TabPane tab={this.i18n._t("All publishers")} key="AllPublishers" closable={false}>
                             <ListOfPublishers/>
                         </TabPane>
-                        <TabPane tab={this.i18n._t("My List")} key="MyLists" closable={false}>
+                        <TabPane className="tab-contain-datatable" tab={this.i18n._t("My List")} key="MyLists" closable={false}>
                             <ListOfInventories
                                 ref={ListOfInventories => {
                                     this.ListOfInventories = ListOfInventories;
