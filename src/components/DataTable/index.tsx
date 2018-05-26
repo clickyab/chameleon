@@ -178,6 +178,30 @@ class DataTable extends React.Component<IProps, IState> {
         );
     }
 
+    /**
+     * @func downloadCSV
+     * @desc Download CSV file
+     */
+    private downloadCSV() {
+        let rows = [
+            [...Object.keys(this.state.data.data[0])],
+            ...this.state.data.data.map(r => Object.values(r))
+        ];
+        let csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function (rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+        let encodedUri = encodeURI(csvContent);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `${this.props.name}.csv`);
+        link.innerHTML = "Click Here to download";
+        document.body.appendChild(link); // Required for FF
+
+        link.click();
+    }
+
     private selectPageSize(value) {
         this.setState({
             pageSize: parseInt(value)
@@ -609,6 +633,13 @@ class DataTable extends React.Component<IProps, IState> {
                             }}>
                             <Icon name={"cif-gear-outline"} className="custom-icon"/>
                         </Button>
+                        <Button
+                            className="add-customize-btn"
+                            onClick={() => {
+                                this.downloadCSV();
+                            }}>
+                            <Icon name={"cif-export-report"} className="custom-icon"/>
+                        </Button>
                         {this.props.tableButtons &&
                         this.props.tableButtons.map((button, index) => {
                             return <Button
@@ -651,7 +682,8 @@ class DataTable extends React.Component<IProps, IState> {
                                         }
                                         return (
                                             <Col key={index} span={12}>
-                                                <Checkbox className={"checkbox-item-normal"} key={index} value={key.name}>{key.title}</Checkbox>
+                                                <Checkbox className={"checkbox-item-normal"} key={index}
+                                                          value={key.name}>{key.title}</Checkbox>
                                             </Col>
                                         );
                                     }
