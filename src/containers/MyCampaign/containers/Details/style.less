@@ -61,15 +61,18 @@
             #2DA1DC 4px,
             #2DA1DC 8px /* determines size */
     );
-
     height: 24.5px;
     margin: 2px;
     margin-right: 1px;
     border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
+      &.border-strip-bar{
+          border-top-left-radius: 100px;
+          border-bottom-left-radius: 100px;
+          width: calc(~"100% - 3px") !important;
+      }
   }
   .statistic {
-
     text-align: center;
 
     .stat {

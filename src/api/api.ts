@@ -719,6 +719,40 @@ export interface ControllersListCampaigndailyResponseData {
     "spend"?: number;
 }
 
+export interface ControllersListCampaignlogDefResponse {
+    "checkable"?: boolean;
+    "columns"?: Array<ControllersListBasePublisherStatisticsDefResponseColumns>;
+    "datefilter"?: string;
+    "hash"?: string;
+    "multiselect"?: boolean;
+    "searchkey"?: string;
+}
+
+export interface ControllersListCampaignlogResponse {
+    "data"?: Array<ControllersListCampaignlogResponseData>;
+    "hash"?: string;
+    "page"?: number;
+    "per_page"?: number;
+    "total"?: number;
+}
+
+export interface ControllersListCampaignlogResponseData {
+    "action"?: string;
+    "campaign_name"?: string;
+    "created_at"?: string;
+    "daily_budget"?: number;
+    "data"?: { [key: string]: string; };
+    "end_at"?: string;
+    "impersonator_email"?: AaaUserListAvatar;
+    "kind"?: string;
+    "manipulator_email"?: AaaUserListAvatar;
+    "max_bid"?: number;
+    "owner_email"?: AaaUserListAvatar;
+    "start_at"?: string;
+    "strategy"?: string;
+    "total_budget"?: number;
+}
+
 export interface ControllersListCampaignsDefResponse {
     "checkable"?: boolean;
     "columns"?: Array<ControllersListBasePublisherStatisticsDefResponseColumns>;
@@ -1185,6 +1219,23 @@ export interface OrmCampaignDetails {
 }
 
 export interface OrmCampaignKind {
+}
+
+export interface OrmCampaignLog {
+    "action"?: string;
+    "campaign_name"?: string;
+    "created_at"?: string;
+    "daily_budget"?: number;
+    "data"?: { [key: string]: string; };
+    "end_at"?: string;
+    "impersonator_email"?: AaaUserListAvatar;
+    "kind"?: string;
+    "manipulator_email"?: AaaUserListAvatar;
+    "max_bid"?: number;
+    "owner_email"?: AaaUserListAvatar;
+    "start_at"?: string;
+    "strategy"?: string;
+    "total_budget"?: number;
 }
 
 export interface OrmCampaignProgress {
@@ -1738,6 +1789,7 @@ export interface UserResponseLoginOKAccount {
     "postal_code"?: string;
     "province"?: string;
     "province_name"?: string;
+    "roles"?: Array<string>;
     "ssn"?: string;
 }
 
@@ -1791,6 +1843,7 @@ export interface UserUserResponse {
     "postal_code"?: string;
     "province"?: string;
     "province_name"?: string;
+    "roles"?: Array<string>;
     "ssn"?: string;
 }
 
@@ -1883,17 +1936,17 @@ export const ControllersApiFetchParamCreator = {
      * adCampaignIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param name  search the name field param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param status  param
+     * @param type  param
+     * @param sort  param
+     * @param name  search the name field param
+     * @param c  count per page param
      * @param p  page number param
      * @param q  parameter for search param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param sort  param
-     * @param status  param
-     * @param type  param
-     * @param c  count per page param
      */
-    adCampaignIdGet(params: {  id: string; token?: string; name?: string; to?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; type?: string; c?: string; }, options: any = {}): FetchArgs {
+    adCampaignIdGet(params: {  id: string; token?: string; to?: string; status?: string; type?: string; sort?: string; name?: string; c?: string; p?: string; q?: string; from?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling adCampaignIdGet");
@@ -1906,11 +1959,23 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
+        }
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["type"] !== undefined) {
+            urlObj.query["type"] = params["type"];
+        }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
         }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
@@ -1920,18 +1985,6 @@ export const ControllersApiFetchParamCreator = {
         }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
-        }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
-        if (params["type"] !== undefined) {
-            urlObj.query["type"] = params["type"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2574,14 +2627,14 @@ export const ControllersApiFetchParamCreator = {
      * campaignDailyIdGet
      * @param id  param
      * @param token the security token, get it from login route param
+     * @param p  page number param
      * @param q  parameter for search param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param c  count per page param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param sort  param
-     * @param c  count per page param
-     * @param p  page number param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      */
-    campaignDailyIdGet(params: {  id: string; token?: string; q?: string; to?: string; sort?: string; c?: string; p?: string; from?: string; }, options: any = {}): FetchArgs {
+    campaignDailyIdGet(params: {  id: string; token?: string; p?: string; q?: string; from?: string; c?: string; to?: string; sort?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling campaignDailyIdGet");
@@ -2594,23 +2647,23 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2688,13 +2741,13 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * campaignGraphAllGet
      * @param token the security token, get it from login route param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param ownerEmail  search the owner_email field param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param kind  param
      * @param title  search the title field param
      */
-    campaignGraphAllGet(params: {  token?: string; from?: string; ownerEmail?: string; to?: string; kind?: string; title?: string; }, options: any = {}): FetchArgs {
+    campaignGraphAllGet(params: {  token?: string; ownerEmail?: string; from?: string; to?: string; kind?: string; title?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -2702,11 +2755,11 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/campaign/graph/all`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
         if (params["ownerEmail"] !== undefined) {
             urlObj.query["owner_email"] = params["ownerEmail"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
         }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
@@ -2734,10 +2787,10 @@ export const ControllersApiFetchParamCreator = {
      * campaignGraphDailyIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      */
-    campaignGraphDailyIdGet(params: {  id: string; token?: string; from?: string; to?: string; }, options: any = {}): FetchArgs {
+    campaignGraphDailyIdGet(params: {  id: string; token?: string; to?: string; from?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling campaignGraphDailyIdGet");
@@ -2750,11 +2803,11 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -2832,20 +2885,20 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * campaignListGet
      * @param token the security token, get it from login route param
+     * @param status  param
+     * @param title  search the title field param
      * @param q  parameter for search param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param sort  param
+     * @param strategy  param
      * @param exchange  param
      * @param ownerEmail  search the owner_email field param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param status  param
      * @param kind  param
-     * @param strategy  param
-     * @param title  search the title field param
+     * @param c  count per page param
      * @param p  page number param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param sort  param
-     * @param c  count per page param
      */
-    campaignListGet(params: {  token?: string; q?: string; exchange?: string; ownerEmail?: string; from?: string; status?: string; kind?: string; strategy?: string; title?: string; p?: string; to?: string; sort?: string; c?: string; }, options: any = {}): FetchArgs {
+    campaignListGet(params: {  token?: string; status?: string; title?: string; q?: string; from?: string; sort?: string; strategy?: string; exchange?: string; ownerEmail?: string; kind?: string; c?: string; p?: string; to?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -2853,8 +2906,23 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/campaign/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["title"] !== undefined) {
+            urlObj.query["title"] = params["title"];
+        }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
+        if (params["strategy"] !== undefined) {
+            urlObj.query["strategy"] = params["strategy"];
         }
         if (params["exchange"] !== undefined) {
             urlObj.query["exchange"] = params["exchange"];
@@ -2862,20 +2930,11 @@ export const ControllersApiFetchParamCreator = {
         if (params["ownerEmail"] !== undefined) {
             urlObj.query["owner_email"] = params["ownerEmail"];
         }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
-        }
         if (params["kind"] !== undefined) {
             urlObj.query["kind"] = params["kind"];
         }
-        if (params["strategy"] !== undefined) {
-            urlObj.query["strategy"] = params["strategy"];
-        }
-        if (params["title"] !== undefined) {
-            urlObj.query["title"] = params["title"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
@@ -2883,8 +2942,83 @@ export const ControllersApiFetchParamCreator = {
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * campaignLogIdDefinitionGet
+     * @param id  param
+     * @param token the security token, get it from login route param
+     */
+    campaignLogIdDefinitionGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling campaignLogIdDefinitionGet");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/campaign/log/{id}/definition`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
+     * campaignLogIdGet
+     * @param id  param
+     * @param token the security token, get it from login route param
+     * @param p  page number param
+     * @param q  parameter for search param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param c  count per page param
+     */
+    campaignLogIdGet(params: {  id: string; token?: string; p?: string; q?: string; from?: string; to?: string; c?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling campaignLogIdGet");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/campaign/log/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        urlObj.query =  assign({}, urlObj.query);
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         if (params["c"] !== undefined) {
             urlObj.query["c"] = params["c"];
@@ -2966,15 +3100,15 @@ export const ControllersApiFetchParamCreator = {
      * campaignPublisherDetailsIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param q  parameter for search param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param c  count per page param
      * @param p  page number param
+     * @param q  parameter for search param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param sort  param
+     * @param c  count per page param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param domain  search the domain field param
      */
-    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; q?: string; from?: string; c?: string; p?: string; to?: string; sort?: string; domain?: string; }, options: any = {}): FetchArgs {
+    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; p?: string; q?: string; to?: string; sort?: string; c?: string; from?: string; domain?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling campaignPublisherDetailsIdGet");
@@ -2987,23 +3121,23 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
-        }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
         }
         if (params["domain"] !== undefined) {
             urlObj.query["domain"] = params["domain"];
@@ -3124,6 +3258,36 @@ export const ControllersApiFetchParamCreator = {
     },
     /**
      * @func
+     * domainIdGet
+     * @param id  param
+     * @param token the security token, get it from login route param
+     */
+    domainIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling domainIdGet");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/domain/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * financialAddPost
      * @param token the security token, get it from login route param
      * @param payloadData  param
@@ -3180,19 +3344,19 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * financialBillingGet
      * @param token the security token, get it from login route param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param p  page number param
-     * @param sort  param
+     * @param c  count per page param
+     * @param q  parameter for search param
+     * @param firstName  search the first_name field param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param payModel  param
+     * @param userId  search the user_id field param
+     * @param p  page number param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param lastName  search the last_name field param
      * @param email  search the email field param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param q  parameter for search param
-     * @param userId  search the user_id field param
-     * @param firstName  search the first_name field param
-     * @param c  count per page param
+     * @param sort  param
      */
-    financialBillingGet(params: {  token?: string; to?: string; p?: string; sort?: string; payModel?: string; lastName?: string; email?: string; from?: string; q?: string; userId?: string; firstName?: string; c?: string; }, options: any = {}): FetchArgs {
+    financialBillingGet(params: {  token?: string; c?: string; q?: string; firstName?: string; from?: string; payModel?: string; userId?: string; p?: string; to?: string; lastName?: string; email?: string; sort?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3200,17 +3364,29 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/financial/billing`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
+        }
+        if (params["firstName"] !== undefined) {
+            urlObj.query["first_name"] = params["firstName"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["payModel"] !== undefined) {
+            urlObj.query["pay_model"] = params["payModel"];
+        }
+        if (params["userId"] !== undefined) {
+            urlObj.query["user_id"] = params["userId"];
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
         }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
-        if (params["payModel"] !== undefined) {
-            urlObj.query["pay_model"] = params["payModel"];
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         if (params["lastName"] !== undefined) {
             urlObj.query["last_name"] = params["lastName"];
@@ -3218,20 +3394,8 @@ export const ControllersApiFetchParamCreator = {
         if (params["email"] !== undefined) {
             urlObj.query["email"] = params["email"];
         }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
-        }
-        if (params["userId"] !== undefined) {
-            urlObj.query["user_id"] = params["userId"];
-        }
-        if (params["firstName"] !== undefined) {
-            urlObj.query["first_name"] = params["firstName"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3637,18 +3801,18 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryBasePublishersStatisticsGet
      * @param token the security token, get it from login route param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param q  parameter for search param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param supplier  search the supplier field param
-     * @param c  count per page param
-     * @param p  page number param
      * @param kind  param
+     * @param supplier  search the supplier field param
+     * @param p  page number param
+     * @param status  param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param name  search the name field param
      * @param domain  search the domain field param
-     * @param status  param
+     * @param c  count per page param
+     * @param q  parameter for search param
      */
-    inventoryBasePublishersStatisticsGet(params: {  token?: string; to?: string; q?: string; from?: string; supplier?: string; c?: string; p?: string; kind?: string; name?: string; domain?: string; status?: string; }, options: any = {}): FetchArgs {
+    inventoryBasePublishersStatisticsGet(params: {  token?: string; from?: string; kind?: string; supplier?: string; p?: string; status?: string; to?: string; name?: string; domain?: string; c?: string; q?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3656,26 +3820,23 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/base-publishers/statistics`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
-        }
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
-        }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
+        }
+        if (params["kind"] !== undefined) {
+            urlObj.query["kind"] = params["kind"];
         }
         if (params["supplier"] !== undefined) {
             urlObj.query["supplier"] = params["supplier"];
         }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
         }
-        if (params["kind"] !== undefined) {
-            urlObj.query["kind"] = params["kind"];
+        if (params["status"] !== undefined) {
+            urlObj.query["status"] = params["status"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
@@ -3683,8 +3844,11 @@ export const ControllersApiFetchParamCreator = {
         if (params["domain"] !== undefined) {
             urlObj.query["domain"] = params["domain"];
         }
-        if (params["status"] !== undefined) {
-            urlObj.query["status"] = params["status"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3858,16 +4022,16 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryInventoryListGet
      * @param token the security token, get it from login route param
-     * @param c  count per page param
-     * @param p  page number param
+     * @param label  search the label field param
      * @param q  parameter for search param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param p  page number param
      * @param sort  param
      * @param status  param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param label  search the label field param
+     * @param c  count per page param
      */
-    inventoryInventoryListGet(params: {  token?: string; c?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; to?: string; label?: string; }, options: any = {}): FetchArgs {
+    inventoryInventoryListGet(params: {  token?: string; label?: string; q?: string; from?: string; to?: string; p?: string; sort?: string; status?: string; c?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3875,11 +4039,8 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/inventory/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
+        if (params["label"] !== undefined) {
+            urlObj.query["label"] = params["label"];
         }
         if (params["q"] !== undefined) {
             urlObj.query["q"] = params["q"];
@@ -3887,17 +4048,20 @@ export const ControllersApiFetchParamCreator = {
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
         }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
         if (params["sort"] !== undefined) {
             urlObj.query["sort"] = params["sort"];
         }
         if (params["status"] !== undefined) {
             urlObj.query["status"] = params["status"];
         }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
-        }
-        if (params["label"] !== undefined) {
-            urlObj.query["label"] = params["label"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -3939,19 +4103,19 @@ export const ControllersApiFetchParamCreator = {
      * @func
      * inventoryPublisherListGet
      * @param token the security token, get it from login route param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param sort  param
      * @param kind  param
      * @param status  param
-     * @param supplier  search the supplier field param
-     * @param c  count per page param
-     * @param p  page number param
-     * @param q  parameter for search param
      * @param domain  search the domain field param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param supplier  search the supplier field param
+     * @param p  page number param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param sort  param
      * @param name  search the name field param
+     * @param c  count per page param
+     * @param q  parameter for search param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      */
-    inventoryPublisherListGet(params: {  token?: string; from?: string; sort?: string; kind?: string; status?: string; supplier?: string; c?: string; p?: string; q?: string; domain?: string; to?: string; name?: string; }, options: any = {}): FetchArgs {
+    inventoryPublisherListGet(params: {  token?: string; kind?: string; status?: string; domain?: string; supplier?: string; p?: string; from?: string; sort?: string; name?: string; c?: string; q?: string; to?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -3959,38 +4123,38 @@ export const ControllersApiFetchParamCreator = {
         const baseUrl = `/inventory/publisher/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
-        }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
         if (params["kind"] !== undefined) {
             urlObj.query["kind"] = params["kind"];
         }
         if (params["status"] !== undefined) {
             urlObj.query["status"] = params["status"];
         }
+        if (params["domain"] !== undefined) {
+            urlObj.query["domain"] = params["domain"];
+        }
         if (params["supplier"] !== undefined) {
             urlObj.query["supplier"] = params["supplier"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
         }
         if (params["p"] !== undefined) {
             urlObj.query["p"] = params["p"];
         }
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
         }
-        if (params["domain"] !== undefined) {
-            urlObj.query["domain"] = params["domain"];
-        }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
         }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
+        }
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -4039,19 +4203,19 @@ export const ControllersApiFetchParamCreator = {
      * inventoryPublisherListSingleIdGet
      * @param id  param
      * @param token the security token, get it from login route param
-     * @param q  parameter for search param
-     * @param sort  param
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param sort  param
      * @param name  search the name field param
-     * @param supplier  search the supplier field param
+     * @param c  count per page param
      * @param kind  param
+     * @param p  page number param
+     * @param q  parameter for search param
      * @param status  param
      * @param domain  search the domain field param
-     * @param c  count per page param
-     * @param p  page number param
+     * @param supplier  search the supplier field param
      */
-    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; q?: string; sort?: string; from?: string; to?: string; name?: string; supplier?: string; kind?: string; status?: string; domain?: string; c?: string; p?: string; }, options: any = {}): FetchArgs {
+    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; from?: string; to?: string; sort?: string; name?: string; c?: string; kind?: string; p?: string; q?: string; status?: string; domain?: string; supplier?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "id" is set
         if (params["id"] == null) {
             throw new Error("Missing required parameter id when calling inventoryPublisherListSingleIdGet");
@@ -4064,26 +4228,29 @@ export const ControllersApiFetchParamCreator = {
             .replace(`{${"id"}}`, `${ params["id"] }`);
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
-        }
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
-        }
         if (params["from"] !== undefined) {
             urlObj.query["from"] = params["from"];
         }
         if (params["to"] !== undefined) {
             urlObj.query["to"] = params["to"];
         }
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
         if (params["name"] !== undefined) {
             urlObj.query["name"] = params["name"];
         }
-        if (params["supplier"] !== undefined) {
-            urlObj.query["supplier"] = params["supplier"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
         }
         if (params["kind"] !== undefined) {
             urlObj.query["kind"] = params["kind"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
         if (params["status"] !== undefined) {
             urlObj.query["status"] = params["status"];
@@ -4091,11 +4258,8 @@ export const ControllersApiFetchParamCreator = {
         if (params["domain"] !== undefined) {
             urlObj.query["domain"] = params["domain"];
         }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
+        if (params["supplier"] !== undefined) {
+            urlObj.query["supplier"] = params["supplier"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -4274,17 +4438,17 @@ export const ControllersApiFp = {
      * adCampaignIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param name  search the name field (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param status  (def)
+     * @param type  (def)
+     * @param sort  (def)
+     * @param name  search the name field (def)
+     * @param c  count per page (def)
      * @param p  page number (def)
      * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
-     * @param status  (def)
-     * @param type  (def)
-     * @param c  count per page (def)
      */
-    adCampaignIdGet(params: { id: string; token?: string; name?: string; to?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; type?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCreativecampaignreportResponse> {
+    adCampaignIdGet(params: { id: string; token?: string; to?: string; status?: string; type?: string; sort?: string; name?: string; c?: string; p?: string; q?: string; from?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCreativecampaignreportResponse> {
         // check permission for adCampaignIdGet
         if (permMap.adCampaignIdGet.protected && !AAA.getInstance().hasPerm(permMap.adCampaignIdGet.resource)) {
             throw new Error("Permission Error");
@@ -4920,14 +5084,14 @@ export const ControllersApiFp = {
      * campaignDailyIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
+     * @param p  page number (def)
      * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param c  count per page (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    campaignDailyIdGet(params: { id: string; token?: string; q?: string; to?: string; sort?: string; c?: string; p?: string; from?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaigndailyResponse> {
+    campaignDailyIdGet(params: { id: string; token?: string; p?: string; q?: string; from?: string; c?: string; to?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaigndailyResponse> {
         // check permission for campaignDailyIdGet
         if (permMap.campaignDailyIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignDailyIdGet.resource)) {
             throw new Error("Permission Error");
@@ -5012,13 +5176,13 @@ export const ControllersApiFp = {
     /**
      * campaignGraphAllGet
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param ownerEmail  search the owner_email field (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param kind  (def)
      * @param title  search the title field (def)
      */
-    campaignGraphAllGet(params: { token?: string; from?: string; ownerEmail?: string; to?: string; kind?: string; title?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartallResponse> {
+    campaignGraphAllGet(params: { token?: string; ownerEmail?: string; from?: string; to?: string; kind?: string; title?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartallResponse> {
         // check permission for campaignGraphAllGet
         if (permMap.campaignGraphAllGet.protected && !AAA.getInstance().hasPerm(permMap.campaignGraphAllGet.resource)) {
             throw new Error("Permission Error");
@@ -5046,10 +5210,10 @@ export const ControllersApiFp = {
      * campaignGraphDailyIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    campaignGraphDailyIdGet(params: { id: string; token?: string; from?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartdailyResponse> {
+    campaignGraphDailyIdGet(params: { id: string; token?: string; to?: string; from?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersGraphChartdailyResponse> {
         // check permission for campaignGraphDailyIdGet
         if (permMap.campaignGraphDailyIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignGraphDailyIdGet.resource)) {
             throw new Error("Permission Error");
@@ -5134,25 +5298,88 @@ export const ControllersApiFp = {
     /**
      * campaignListGet
      * @param token the security token, get it from login route (def)
+     * @param status  (def)
+     * @param title  search the title field (def)
      * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
+     * @param strategy  (def)
      * @param exchange  (def)
      * @param ownerEmail  search the owner_email field (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param status  (def)
      * @param kind  (def)
-     * @param strategy  (def)
-     * @param title  search the title field (def)
+     * @param c  count per page (def)
      * @param p  page number (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
-     * @param c  count per page (def)
      */
-    campaignListGet(params: { token?: string; q?: string; exchange?: string; ownerEmail?: string; from?: string; status?: string; kind?: string; strategy?: string; title?: string; p?: string; to?: string; sort?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignsResponse> {
+    campaignListGet(params: { token?: string; status?: string; title?: string; q?: string; from?: string; sort?: string; strategy?: string; exchange?: string; ownerEmail?: string; kind?: string; c?: string; p?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignsResponse> {
         // check permission for campaignListGet
         if (permMap.campaignListGet.protected && !AAA.getInstance().hasPerm(permMap.campaignListGet.resource)) {
             throw new Error("Permission Error");
         }
         const fetchArgs = ControllersApiFetchParamCreator.campaignListGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * campaignLogIdDefinitionGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    campaignLogIdDefinitionGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignlogDefResponse> {
+        // check permission for campaignLogIdDefinitionGet
+        if (permMap.campaignLogIdDefinitionGet.protected && !AAA.getInstance().hasPerm(permMap.campaignLogIdDefinitionGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.campaignLogIdDefinitionGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
+     * campaignLogIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param p  page number (def)
+     * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param c  count per page (def)
+     */
+    campaignLogIdGet(params: { id: string; token?: string; p?: string; q?: string; from?: string; to?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListCampaignlogResponse> {
+        // check permission for campaignLogIdGet
+        if (permMap.campaignLogIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignLogIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.campaignLogIdGet(params, options);
         return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
             return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
                 if (response.status >= 200 && response.status < 300) {
@@ -5233,15 +5460,15 @@ export const ControllersApiFp = {
      * campaignPublisherDetailsIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param c  count per page (def)
      * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
+     * @param c  count per page (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param domain  search the domain field (def)
      */
-    campaignPublisherDetailsIdGet(params: { id: string; token?: string; q?: string; from?: string; c?: string; p?: string; to?: string; sort?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherdetailsResponse> {
+    campaignPublisherDetailsIdGet(params: { id: string; token?: string; p?: string; q?: string; to?: string; sort?: string; c?: string; from?: string; domain?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherdetailsResponse> {
         // check permission for campaignPublisherDetailsIdGet
         if (permMap.campaignPublisherDetailsIdGet.protected && !AAA.getInstance().hasPerm(permMap.campaignPublisherDetailsIdGet.resource)) {
             throw new Error("Permission Error");
@@ -5355,6 +5582,35 @@ export const ControllersApiFp = {
         };
     },
     /**
+     * domainIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    domainIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<OrmDomain> {
+        // check permission for domainIdGet
+        if (permMap.domainIdGet.protected && !AAA.getInstance().hasPerm(permMap.domainIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = ControllersApiFetchParamCreator.domainIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * financialAddPost
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
@@ -5414,19 +5670,19 @@ export const ControllersApiFp = {
     /**
      * financialBillingGet
      * @param token the security token, get it from login route (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param p  page number (def)
-     * @param sort  (def)
+     * @param c  count per page (def)
+     * @param q  parameter for search (def)
+     * @param firstName  search the first_name field (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param payModel  (def)
+     * @param userId  search the user_id field (def)
+     * @param p  page number (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param lastName  search the last_name field (def)
      * @param email  search the email field (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param q  parameter for search (def)
-     * @param userId  search the user_id field (def)
-     * @param firstName  search the first_name field (def)
-     * @param c  count per page (def)
+     * @param sort  (def)
      */
-    financialBillingGet(params: { token?: string; to?: string; p?: string; sort?: string; payModel?: string; lastName?: string; email?: string; from?: string; q?: string; userId?: string; firstName?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBillingreportResponse> {
+    financialBillingGet(params: { token?: string; c?: string; q?: string; firstName?: string; from?: string; payModel?: string; userId?: string; p?: string; to?: string; lastName?: string; email?: string; sort?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBillingreportResponse> {
         // check permission for financialBillingGet
         if (permMap.financialBillingGet.protected && !AAA.getInstance().hasPerm(permMap.financialBillingGet.resource)) {
             throw new Error("Permission Error");
@@ -5830,18 +6086,18 @@ export const ControllersApiFp = {
     /**
      * inventoryBasePublishersStatisticsGet
      * @param token the security token, get it from login route (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param supplier  search the supplier field (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
      * @param kind  (def)
+     * @param supplier  search the supplier field (def)
+     * @param p  page number (def)
+     * @param status  (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param name  search the name field (def)
      * @param domain  search the domain field (def)
-     * @param status  (def)
+     * @param c  count per page (def)
+     * @param q  parameter for search (def)
      */
-    inventoryBasePublishersStatisticsGet(params: { token?: string; to?: string; q?: string; from?: string; supplier?: string; c?: string; p?: string; kind?: string; name?: string; domain?: string; status?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBasePublisherStatisticsResponse> {
+    inventoryBasePublishersStatisticsGet(params: { token?: string; from?: string; kind?: string; supplier?: string; p?: string; status?: string; to?: string; name?: string; domain?: string; c?: string; q?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListBasePublisherStatisticsResponse> {
         // check permission for inventoryBasePublishersStatisticsGet
         if (permMap.inventoryBasePublishersStatisticsGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryBasePublishersStatisticsGet.resource)) {
             throw new Error("Permission Error");
@@ -6014,16 +6270,16 @@ export const ControllersApiFp = {
     /**
      * inventoryInventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
+     * @param label  search the label field (def)
      * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param p  page number (def)
      * @param sort  (def)
      * @param status  (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param label  search the label field (def)
+     * @param c  count per page (def)
      */
-    inventoryInventoryListGet(params: { token?: string; c?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; to?: string; label?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
+    inventoryInventoryListGet(params: { token?: string; label?: string; q?: string; from?: string; to?: string; p?: string; sort?: string; status?: string; c?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInventoryResponse> {
         // check permission for inventoryInventoryListGet
         if (permMap.inventoryInventoryListGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryInventoryListGet.resource)) {
             throw new Error("Permission Error");
@@ -6078,19 +6334,19 @@ export const ControllersApiFp = {
     /**
      * inventoryPublisherListGet
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
      * @param kind  (def)
      * @param status  (def)
-     * @param supplier  search the supplier field (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param q  parameter for search (def)
      * @param domain  search the domain field (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param supplier  search the supplier field (def)
+     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
      * @param name  search the name field (def)
+     * @param c  count per page (def)
+     * @param q  parameter for search (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    inventoryPublisherListGet(params: { token?: string; from?: string; sort?: string; kind?: string; status?: string; supplier?: string; c?: string; p?: string; q?: string; domain?: string; to?: string; name?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
+    inventoryPublisherListGet(params: { token?: string; kind?: string; status?: string; domain?: string; supplier?: string; p?: string; from?: string; sort?: string; name?: string; c?: string; q?: string; to?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListPublisherResponse> {
         // check permission for inventoryPublisherListGet
         if (permMap.inventoryPublisherListGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryPublisherListGet.resource)) {
             throw new Error("Permission Error");
@@ -6147,19 +6403,19 @@ export const ControllersApiFp = {
      * inventoryPublisherListSingleIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
-     * @param sort  (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
      * @param name  search the name field (def)
-     * @param supplier  search the supplier field (def)
+     * @param c  count per page (def)
      * @param kind  (def)
+     * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param status  (def)
      * @param domain  search the domain field (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
+     * @param supplier  search the supplier field (def)
      */
-    inventoryPublisherListSingleIdGet(params: { id: string; token?: string; q?: string; sort?: string; from?: string; to?: string; name?: string; supplier?: string; kind?: string; status?: string; domain?: string; c?: string; p?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInvpublisherResponse> {
+    inventoryPublisherListSingleIdGet(params: { id: string; token?: string; from?: string; to?: string; sort?: string; name?: string; c?: string; kind?: string; p?: string; q?: string; status?: string; domain?: string; supplier?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<ControllersListInvpublisherResponse> {
         // check permission for inventoryPublisherListSingleIdGet
         if (permMap.inventoryPublisherListSingleIdGet.protected && !AAA.getInstance().hasPerm(permMap.inventoryPublisherListSingleIdGet.resource)) {
             throw new Error("Permission Error");
@@ -6298,17 +6554,17 @@ export class ControllersApi extends BaseAPI {
      * adCampaignIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param name  search the name field (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param status  (def)
+     * @param type  (def)
+     * @param sort  (def)
+     * @param name  search the name field (def)
+     * @param c  count per page (def)
      * @param p  page number (def)
      * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
-     * @param status  (def)
-     * @param type  (def)
-     * @param c  count per page (def)
      */
-    adCampaignIdGet(params: {  id: string; token?: string; name?: string; to?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; type?: string; c?: string; }, options: any = {}) {
+    adCampaignIdGet(params: {  id: string; token?: string; to?: string; status?: string; type?: string; sort?: string; name?: string; c?: string; p?: string; q?: string; from?: string; }, options: any = {}) {
         return ControllersApiFp.adCampaignIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6482,14 +6738,14 @@ export class ControllersApi extends BaseAPI {
      * campaignDailyIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
+     * @param p  page number (def)
      * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param c  count per page (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    campaignDailyIdGet(params: {  id: string; token?: string; q?: string; to?: string; sort?: string; c?: string; p?: string; from?: string; }, options: any = {}) {
+    campaignDailyIdGet(params: {  id: string; token?: string; p?: string; q?: string; from?: string; c?: string; to?: string; sort?: string; }, options: any = {}) {
         return ControllersApiFp.campaignDailyIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6511,23 +6767,23 @@ export class ControllersApi extends BaseAPI {
     /**
      * campaignGraphAllGet
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param ownerEmail  search the owner_email field (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param kind  (def)
      * @param title  search the title field (def)
      */
-    campaignGraphAllGet(params: {  token?: string; from?: string; ownerEmail?: string; to?: string; kind?: string; title?: string; }, options: any = {}) {
+    campaignGraphAllGet(params: {  token?: string; ownerEmail?: string; from?: string; to?: string; kind?: string; title?: string; }, options: any = {}) {
         return ControllersApiFp.campaignGraphAllGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * campaignGraphDailyIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    campaignGraphDailyIdGet(params: {  id: string; token?: string; from?: string; to?: string; }, options: any = {}) {
+    campaignGraphDailyIdGet(params: {  id: string; token?: string; to?: string; from?: string; }, options: any = {}) {
         return ControllersApiFp.campaignGraphDailyIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6549,21 +6805,42 @@ export class ControllersApi extends BaseAPI {
     /**
      * campaignListGet
      * @param token the security token, get it from login route (def)
+     * @param status  (def)
+     * @param title  search the title field (def)
      * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
+     * @param strategy  (def)
      * @param exchange  (def)
      * @param ownerEmail  search the owner_email field (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param status  (def)
      * @param kind  (def)
-     * @param strategy  (def)
-     * @param title  search the title field (def)
+     * @param c  count per page (def)
      * @param p  page number (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
+     */
+    campaignListGet(params: {  token?: string; status?: string; title?: string; q?: string; from?: string; sort?: string; strategy?: string; exchange?: string; ownerEmail?: string; kind?: string; c?: string; p?: string; to?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignListGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * campaignLogIdDefinitionGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    campaignLogIdDefinitionGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignLogIdDefinitionGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
+     * campaignLogIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     * @param p  page number (def)
+     * @param q  parameter for search (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param c  count per page (def)
      */
-    campaignListGet(params: {  token?: string; q?: string; exchange?: string; ownerEmail?: string; from?: string; status?: string; kind?: string; strategy?: string; title?: string; p?: string; to?: string; sort?: string; c?: string; }, options: any = {}) {
-        return ControllersApiFp.campaignListGet(params, options)(this.fetch, this.basePath);
+    campaignLogIdGet(params: {  id: string; token?: string; p?: string; q?: string; from?: string; to?: string; c?: string; }, options: any = {}) {
+        return ControllersApiFp.campaignLogIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
      * campaignProgressIdGet
@@ -6585,15 +6862,15 @@ export class ControllersApi extends BaseAPI {
      * campaignPublisherDetailsIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param c  count per page (def)
      * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param sort  (def)
+     * @param c  count per page (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param domain  search the domain field (def)
      */
-    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; q?: string; from?: string; c?: string; p?: string; to?: string; sort?: string; domain?: string; }, options: any = {}) {
+    campaignPublisherDetailsIdGet(params: {  id: string; token?: string; p?: string; q?: string; to?: string; sort?: string; c?: string; from?: string; domain?: string; }, options: any = {}) {
         return ControllersApiFp.campaignPublisherDetailsIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6623,6 +6900,14 @@ export class ControllersApi extends BaseAPI {
         return ControllersApiFp.domainEditIdPut(params, options)(this.fetch, this.basePath);
     }
     /**
+     * domainIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    domainIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return ControllersApiFp.domainIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * financialAddPost
      * @param token the security token, get it from login route (def)
      * @param payloadData  (def)
@@ -6640,19 +6925,19 @@ export class ControllersApi extends BaseAPI {
     /**
      * financialBillingGet
      * @param token the security token, get it from login route (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param p  page number (def)
-     * @param sort  (def)
+     * @param c  count per page (def)
+     * @param q  parameter for search (def)
+     * @param firstName  search the first_name field (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param payModel  (def)
+     * @param userId  search the user_id field (def)
+     * @param p  page number (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param lastName  search the last_name field (def)
      * @param email  search the email field (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param q  parameter for search (def)
-     * @param userId  search the user_id field (def)
-     * @param firstName  search the first_name field (def)
-     * @param c  count per page (def)
+     * @param sort  (def)
      */
-    financialBillingGet(params: {  token?: string; to?: string; p?: string; sort?: string; payModel?: string; lastName?: string; email?: string; from?: string; q?: string; userId?: string; firstName?: string; c?: string; }, options: any = {}) {
+    financialBillingGet(params: {  token?: string; c?: string; q?: string; firstName?: string; from?: string; payModel?: string; userId?: string; p?: string; to?: string; lastName?: string; email?: string; sort?: string; }, options: any = {}) {
         return ControllersApiFp.financialBillingGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6762,18 +7047,18 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryBasePublishersStatisticsGet
      * @param token the security token, get it from login route (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param supplier  search the supplier field (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
      * @param kind  (def)
+     * @param supplier  search the supplier field (def)
+     * @param p  page number (def)
+     * @param status  (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param name  search the name field (def)
      * @param domain  search the domain field (def)
-     * @param status  (def)
+     * @param c  count per page (def)
+     * @param q  parameter for search (def)
      */
-    inventoryBasePublishersStatisticsGet(params: {  token?: string; to?: string; q?: string; from?: string; supplier?: string; c?: string; p?: string; kind?: string; name?: string; domain?: string; status?: string; }, options: any = {}) {
+    inventoryBasePublishersStatisticsGet(params: {  token?: string; from?: string; kind?: string; supplier?: string; p?: string; status?: string; to?: string; name?: string; domain?: string; c?: string; q?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryBasePublishersStatisticsGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6820,16 +7105,16 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryInventoryListGet
      * @param token the security token, get it from login route (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
+     * @param label  search the label field (def)
      * @param q  parameter for search (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param p  page number (def)
      * @param sort  (def)
      * @param status  (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param label  search the label field (def)
+     * @param c  count per page (def)
      */
-    inventoryInventoryListGet(params: {  token?: string; c?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; to?: string; label?: string; }, options: any = {}) {
+    inventoryInventoryListGet(params: {  token?: string; label?: string; q?: string; from?: string; to?: string; p?: string; sort?: string; status?: string; c?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryInventoryListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6842,19 +7127,19 @@ export class ControllersApi extends BaseAPI {
     /**
      * inventoryPublisherListGet
      * @param token the security token, get it from login route (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param sort  (def)
      * @param kind  (def)
      * @param status  (def)
-     * @param supplier  search the supplier field (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
-     * @param q  parameter for search (def)
      * @param domain  search the domain field (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param supplier  search the supplier field (def)
+     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
      * @param name  search the name field (def)
+     * @param c  count per page (def)
+     * @param q  parameter for search (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      */
-    inventoryPublisherListGet(params: {  token?: string; from?: string; sort?: string; kind?: string; status?: string; supplier?: string; c?: string; p?: string; q?: string; domain?: string; to?: string; name?: string; }, options: any = {}) {
+    inventoryPublisherListGet(params: {  token?: string; kind?: string; status?: string; domain?: string; supplier?: string; p?: string; from?: string; sort?: string; name?: string; c?: string; q?: string; to?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryPublisherListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6869,19 +7154,19 @@ export class ControllersApi extends BaseAPI {
      * inventoryPublisherListSingleIdGet
      * @param id  (def)
      * @param token the security token, get it from login route (def)
-     * @param q  parameter for search (def)
-     * @param sort  (def)
      * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param sort  (def)
      * @param name  search the name field (def)
-     * @param supplier  search the supplier field (def)
+     * @param c  count per page (def)
      * @param kind  (def)
+     * @param p  page number (def)
+     * @param q  parameter for search (def)
      * @param status  (def)
      * @param domain  search the domain field (def)
-     * @param c  count per page (def)
-     * @param p  page number (def)
+     * @param supplier  search the supplier field (def)
      */
-    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; q?: string; sort?: string; from?: string; to?: string; name?: string; supplier?: string; kind?: string; status?: string; domain?: string; c?: string; p?: string; }, options: any = {}) {
+    inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; from?: string; to?: string; sort?: string; name?: string; c?: string; kind?: string; p?: string; q?: string; status?: string; domain?: string; supplier?: string; }, options: any = {}) {
         return ControllersApiFp.inventoryPublisherListSingleIdGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -6937,17 +7222,17 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * adCampaignIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param name  search the name field (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param status  (def)
+         * @param type  (def)
+         * @param sort  (def)
+         * @param name  search the name field (def)
+         * @param c  count per page (def)
          * @param p  page number (def)
          * @param q  parameter for search (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param sort  (def)
-         * @param status  (def)
-         * @param type  (def)
-         * @param c  count per page (def)
          */
-        adCampaignIdGet(params: {  id: string; token?: string; name?: string; to?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; type?: string; c?: string; }, options: any = {}) {
+        adCampaignIdGet(params: {  id: string; token?: string; to?: string; status?: string; type?: string; sort?: string; name?: string; c?: string; p?: string; q?: string; from?: string; }, options: any = {}) {
             return ControllersApiFp.adCampaignIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -7121,14 +7406,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * campaignDailyIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
+         * @param p  page number (def)
          * @param q  parameter for search (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param c  count per page (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param sort  (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          */
-        campaignDailyIdGet(params: {  id: string; token?: string; q?: string; to?: string; sort?: string; c?: string; p?: string; from?: string; }, options: any = {}) {
+        campaignDailyIdGet(params: {  id: string; token?: string; p?: string; q?: string; from?: string; c?: string; to?: string; sort?: string; }, options: any = {}) {
             return ControllersApiFp.campaignDailyIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -7150,23 +7435,23 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * campaignGraphAllGet
          * @param token the security token, get it from login route (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param ownerEmail  search the owner_email field (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param kind  (def)
          * @param title  search the title field (def)
          */
-        campaignGraphAllGet(params: {  token?: string; from?: string; ownerEmail?: string; to?: string; kind?: string; title?: string; }, options: any = {}) {
+        campaignGraphAllGet(params: {  token?: string; ownerEmail?: string; from?: string; to?: string; kind?: string; title?: string; }, options: any = {}) {
             return ControllersApiFp.campaignGraphAllGet(params, options)(fetch, basePath);
         },
         /**
          * campaignGraphDailyIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          */
-        campaignGraphDailyIdGet(params: {  id: string; token?: string; from?: string; to?: string; }, options: any = {}) {
+        campaignGraphDailyIdGet(params: {  id: string; token?: string; to?: string; from?: string; }, options: any = {}) {
             return ControllersApiFp.campaignGraphDailyIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -7188,21 +7473,42 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * campaignListGet
          * @param token the security token, get it from login route (def)
+         * @param status  (def)
+         * @param title  search the title field (def)
          * @param q  parameter for search (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param sort  (def)
+         * @param strategy  (def)
          * @param exchange  (def)
          * @param ownerEmail  search the owner_email field (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param status  (def)
          * @param kind  (def)
-         * @param strategy  (def)
-         * @param title  search the title field (def)
+         * @param c  count per page (def)
          * @param p  page number (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param sort  (def)
+         */
+        campaignListGet(params: {  token?: string; status?: string; title?: string; q?: string; from?: string; sort?: string; strategy?: string; exchange?: string; ownerEmail?: string; kind?: string; c?: string; p?: string; to?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignListGet(params, options)(fetch, basePath);
+        },
+        /**
+         * campaignLogIdDefinitionGet
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         */
+        campaignLogIdDefinitionGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignLogIdDefinitionGet(params, options)(fetch, basePath);
+        },
+        /**
+         * campaignLogIdGet
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         * @param p  page number (def)
+         * @param q  parameter for search (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param c  count per page (def)
          */
-        campaignListGet(params: {  token?: string; q?: string; exchange?: string; ownerEmail?: string; from?: string; status?: string; kind?: string; strategy?: string; title?: string; p?: string; to?: string; sort?: string; c?: string; }, options: any = {}) {
-            return ControllersApiFp.campaignListGet(params, options)(fetch, basePath);
+        campaignLogIdGet(params: {  id: string; token?: string; p?: string; q?: string; from?: string; to?: string; c?: string; }, options: any = {}) {
+            return ControllersApiFp.campaignLogIdGet(params, options)(fetch, basePath);
         },
         /**
          * campaignProgressIdGet
@@ -7224,15 +7530,15 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * campaignPublisherDetailsIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param q  parameter for search (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param c  count per page (def)
          * @param p  page number (def)
+         * @param q  parameter for search (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param sort  (def)
+         * @param c  count per page (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param domain  search the domain field (def)
          */
-        campaignPublisherDetailsIdGet(params: {  id: string; token?: string; q?: string; from?: string; c?: string; p?: string; to?: string; sort?: string; domain?: string; }, options: any = {}) {
+        campaignPublisherDetailsIdGet(params: {  id: string; token?: string; p?: string; q?: string; to?: string; sort?: string; c?: string; from?: string; domain?: string; }, options: any = {}) {
             return ControllersApiFp.campaignPublisherDetailsIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -7262,6 +7568,14 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
             return ControllersApiFp.domainEditIdPut(params, options)(fetch, basePath);
         },
         /**
+         * domainIdGet
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         */
+        domainIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return ControllersApiFp.domainIdGet(params, options)(fetch, basePath);
+        },
+        /**
          * financialAddPost
          * @param token the security token, get it from login route (def)
          * @param payloadData  (def)
@@ -7279,19 +7593,19 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * financialBillingGet
          * @param token the security token, get it from login route (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param p  page number (def)
-         * @param sort  (def)
+         * @param c  count per page (def)
+         * @param q  parameter for search (def)
+         * @param firstName  search the first_name field (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param payModel  (def)
+         * @param userId  search the user_id field (def)
+         * @param p  page number (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param lastName  search the last_name field (def)
          * @param email  search the email field (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param q  parameter for search (def)
-         * @param userId  search the user_id field (def)
-         * @param firstName  search the first_name field (def)
-         * @param c  count per page (def)
+         * @param sort  (def)
          */
-        financialBillingGet(params: {  token?: string; to?: string; p?: string; sort?: string; payModel?: string; lastName?: string; email?: string; from?: string; q?: string; userId?: string; firstName?: string; c?: string; }, options: any = {}) {
+        financialBillingGet(params: {  token?: string; c?: string; q?: string; firstName?: string; from?: string; payModel?: string; userId?: string; p?: string; to?: string; lastName?: string; email?: string; sort?: string; }, options: any = {}) {
             return ControllersApiFp.financialBillingGet(params, options)(fetch, basePath);
         },
         /**
@@ -7401,18 +7715,18 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryBasePublishersStatisticsGet
          * @param token the security token, get it from login route (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param q  parameter for search (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param supplier  search the supplier field (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
          * @param kind  (def)
+         * @param supplier  search the supplier field (def)
+         * @param p  page number (def)
+         * @param status  (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param name  search the name field (def)
          * @param domain  search the domain field (def)
-         * @param status  (def)
+         * @param c  count per page (def)
+         * @param q  parameter for search (def)
          */
-        inventoryBasePublishersStatisticsGet(params: {  token?: string; to?: string; q?: string; from?: string; supplier?: string; c?: string; p?: string; kind?: string; name?: string; domain?: string; status?: string; }, options: any = {}) {
+        inventoryBasePublishersStatisticsGet(params: {  token?: string; from?: string; kind?: string; supplier?: string; p?: string; status?: string; to?: string; name?: string; domain?: string; c?: string; q?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryBasePublishersStatisticsGet(params, options)(fetch, basePath);
         },
         /**
@@ -7459,16 +7773,16 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryInventoryListGet
          * @param token the security token, get it from login route (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
+         * @param label  search the label field (def)
          * @param q  parameter for search (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param p  page number (def)
          * @param sort  (def)
          * @param status  (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param label  search the label field (def)
+         * @param c  count per page (def)
          */
-        inventoryInventoryListGet(params: {  token?: string; c?: string; p?: string; q?: string; from?: string; sort?: string; status?: string; to?: string; label?: string; }, options: any = {}) {
+        inventoryInventoryListGet(params: {  token?: string; label?: string; q?: string; from?: string; to?: string; p?: string; sort?: string; status?: string; c?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryInventoryListGet(params, options)(fetch, basePath);
         },
         /**
@@ -7481,19 +7795,19 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
         /**
          * inventoryPublisherListGet
          * @param token the security token, get it from login route (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param sort  (def)
          * @param kind  (def)
          * @param status  (def)
-         * @param supplier  search the supplier field (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
-         * @param q  parameter for search (def)
          * @param domain  search the domain field (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param supplier  search the supplier field (def)
+         * @param p  page number (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param sort  (def)
          * @param name  search the name field (def)
+         * @param c  count per page (def)
+         * @param q  parameter for search (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          */
-        inventoryPublisherListGet(params: {  token?: string; from?: string; sort?: string; kind?: string; status?: string; supplier?: string; c?: string; p?: string; q?: string; domain?: string; to?: string; name?: string; }, options: any = {}) {
+        inventoryPublisherListGet(params: {  token?: string; kind?: string; status?: string; domain?: string; supplier?: string; p?: string; from?: string; sort?: string; name?: string; c?: string; q?: string; to?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryPublisherListGet(params, options)(fetch, basePath);
         },
         /**
@@ -7508,19 +7822,19 @@ export const ControllersApiFactory = function (fetch?: FetchAPI, basePath?: stri
          * inventoryPublisherListSingleIdGet
          * @param id  (def)
          * @param token the security token, get it from login route (def)
-         * @param q  parameter for search (def)
-         * @param sort  (def)
          * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param sort  (def)
          * @param name  search the name field (def)
-         * @param supplier  search the supplier field (def)
+         * @param c  count per page (def)
          * @param kind  (def)
+         * @param p  page number (def)
+         * @param q  parameter for search (def)
          * @param status  (def)
          * @param domain  search the domain field (def)
-         * @param c  count per page (def)
-         * @param p  page number (def)
+         * @param supplier  search the supplier field (def)
          */
-        inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; q?: string; sort?: string; from?: string; to?: string; name?: string; supplier?: string; kind?: string; status?: string; domain?: string; c?: string; p?: string; }, options: any = {}) {
+        inventoryPublisherListSingleIdGet(params: {  id: string; token?: string; from?: string; to?: string; sort?: string; name?: string; c?: string; kind?: string; p?: string; q?: string; status?: string; domain?: string; supplier?: string; }, options: any = {}) {
             return ControllersApiFp.inventoryPublisherListSingleIdGet(params, options)(fetch, basePath);
         },
         /**
@@ -7879,36 +8193,6 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
-     * userDetailIdGet
-     * @param id  param
-     * @param token the security token, get it from login route param
-     */
-    userDetailIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
-        // verify required parameter "id" is set
-        if (params["id"] == null) {
-            throw new Error("Missing required parameter id when calling userDetailIdGet");
-        }
-        // verify required parameter "token" is set
-        if (params["token"] == null) {
-            params["token"] = AAA.getInstance().getToken();
-        }
-        const baseUrl = `/user/detail/{id}`
-            .replace(`{${"id"}}`, `${ params["id"] }`);
-        let urlObj = url.parse(baseUrl, true);
-        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
-
-        let contentTypeHeader: Dictionary<string> = {};
-        fetchOptions.headers = assign({
-            "token": params["token"],
-        }, contentTypeHeader, fetchOptions.headers);
-
-        return {
-            url: url.format(urlObj),
-            options: fetchOptions,
-        };
-    },
-    /**
-     * @func
      * userEmailVerifyPost
      * @param payloadData  param
      */
@@ -7984,6 +8268,36 @@ export const UserApiFetchParamCreator = {
     },
     /**
      * @func
+     * userGetIdGet
+     * @param id  param
+     * @param token the security token, get it from login route param
+     */
+    userGetIdGet(params: {  id: string; token?: string; }, options: any = {}): FetchArgs {
+        // verify required parameter "id" is set
+        if (params["id"] == null) {
+            throw new Error("Missing required parameter id when calling userGetIdGet");
+        }
+        // verify required parameter "token" is set
+        if (params["token"] == null) {
+            params["token"] = AAA.getInstance().getToken();
+        }
+        const baseUrl = `/user/get/{id}`
+            .replace(`{${"id"}}`, `${ params["id"] }`);
+        let urlObj = url.parse(baseUrl, true);
+        let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
+
+        let contentTypeHeader: Dictionary<string> = {};
+        fetchOptions.headers = assign({
+            "token": params["token"],
+        }, contentTypeHeader, fetchOptions.headers);
+
+        return {
+            url: url.format(urlObj),
+            options: fetchOptions,
+        };
+    },
+    /**
+     * @func
      * userListDefinitionGet
      * @param token the security token, get it from login route param
      */
@@ -8010,20 +8324,20 @@ export const UserApiFetchParamCreator = {
      * @func
      * userListGet
      * @param token the security token, get it from login route param
-     * @param sort  param
+     * @param c  count per page param
+     * @param p  page number param
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param status  param
-     * @param email  search the email field param
      * @param cellphone  search the cellphone field param
      * @param landLine  search the land_line field param
-     * @param p  page number param
-     * @param q  parameter for search param
-     * @param c  count per page param
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z param
-     * @param ssn  search the ssn field param
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z param
      * @param fullName  search the full_name field param
+     * @param ssn  search the ssn field param
+     * @param q  parameter for search param
+     * @param sort  param
+     * @param email  search the email field param
      */
-    userListGet(params: {  token?: string; sort?: string; status?: string; email?: string; cellphone?: string; landLine?: string; p?: string; q?: string; c?: string; from?: string; ssn?: string; to?: string; fullName?: string; }, options: any = {}): FetchArgs {
+    userListGet(params: {  token?: string; c?: string; p?: string; from?: string; to?: string; status?: string; cellphone?: string; landLine?: string; fullName?: string; ssn?: string; q?: string; sort?: string; email?: string; }, options: any = {}): FetchArgs {
         // verify required parameter "token" is set
         if (params["token"] == null) {
             params["token"] = AAA.getInstance().getToken();
@@ -8031,14 +8345,20 @@ export const UserApiFetchParamCreator = {
         const baseUrl = `/user/list`;
         let urlObj = url.parse(baseUrl, true);
         urlObj.query =  assign({}, urlObj.query);
-        if (params["sort"] !== undefined) {
-            urlObj.query["sort"] = params["sort"];
+        if (params["c"] !== undefined) {
+            urlObj.query["c"] = params["c"];
+        }
+        if (params["p"] !== undefined) {
+            urlObj.query["p"] = params["p"];
+        }
+        if (params["from"] !== undefined) {
+            urlObj.query["from"] = params["from"];
+        }
+        if (params["to"] !== undefined) {
+            urlObj.query["to"] = params["to"];
         }
         if (params["status"] !== undefined) {
             urlObj.query["status"] = params["status"];
-        }
-        if (params["email"] !== undefined) {
-            urlObj.query["email"] = params["email"];
         }
         if (params["cellphone"] !== undefined) {
             urlObj.query["cellphone"] = params["cellphone"];
@@ -8046,26 +8366,20 @@ export const UserApiFetchParamCreator = {
         if (params["landLine"] !== undefined) {
             urlObj.query["land_line"] = params["landLine"];
         }
-        if (params["p"] !== undefined) {
-            urlObj.query["p"] = params["p"];
-        }
-        if (params["q"] !== undefined) {
-            urlObj.query["q"] = params["q"];
-        }
-        if (params["c"] !== undefined) {
-            urlObj.query["c"] = params["c"];
-        }
-        if (params["from"] !== undefined) {
-            urlObj.query["from"] = params["from"];
+        if (params["fullName"] !== undefined) {
+            urlObj.query["full_name"] = params["fullName"];
         }
         if (params["ssn"] !== undefined) {
             urlObj.query["ssn"] = params["ssn"];
         }
-        if (params["to"] !== undefined) {
-            urlObj.query["to"] = params["to"];
+        if (params["q"] !== undefined) {
+            urlObj.query["q"] = params["q"];
         }
-        if (params["fullName"] !== undefined) {
-            urlObj.query["full_name"] = params["fullName"];
+        if (params["sort"] !== undefined) {
+            urlObj.query["sort"] = params["sort"];
+        }
+        if (params["email"] !== undefined) {
+            urlObj.query["email"] = params["email"];
         }
         let fetchOptions: RequestInit = assign({}, { method: "GET" }, options);
 
@@ -8674,35 +8988,6 @@ export const UserApiFp = {
         };
     },
     /**
-     * userDetailIdGet
-     * @param id  (def)
-     * @param token the security token, get it from login route (def)
-     */
-    userDetailIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserUserResponse> {
-        // check permission for userDetailIdGet
-        if (permMap.userDetailIdGet.protected && !AAA.getInstance().hasPerm(permMap.userDetailIdGet.resource)) {
-            throw new Error("Permission Error");
-        }
-        const fetchArgs = UserApiFetchParamCreator.userDetailIdGet(params, options);
-        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
-            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else {
-                  return response.json()
-                  .then(res => {
-                    res.status = response.status;
-                    throw res;
-                  })
-                  .catch((err) => {
-                    err.status = response.status;
-                    throw err;
-                  });
-                }
-            });
-        };
-    },
-    /**
      * userEmailVerifyPost
      * @param payloadData  (def)
      */
@@ -8787,6 +9072,35 @@ export const UserApiFp = {
         };
     },
     /**
+     * userGetIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    userGetIdGet(params: { id: string; token?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserUserResponse> {
+        // check permission for userGetIdGet
+        if (permMap.userGetIdGet.protected && !AAA.getInstance().hasPerm(permMap.userGetIdGet.resource)) {
+            throw new Error("Permission Error");
+        }
+        const fetchArgs = UserApiFetchParamCreator.userGetIdGet(params, options);
+        return (fetchFn: FetchAPI = fetch, basePath: string = BASE_PATH) => {
+            return fetchFn(basePath + fetchArgs.url, fetchArgs.options).then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else {
+                  return response.json()
+                  .then(res => {
+                    res.status = response.status;
+                    throw res;
+                  })
+                  .catch((err) => {
+                    err.status = response.status;
+                    throw err;
+                  });
+                }
+            });
+        };
+    },
+    /**
      * userListDefinitionGet
      * @param token the security token, get it from login route (def)
      */
@@ -8817,20 +9131,20 @@ export const UserApiFp = {
     /**
      * userListGet
      * @param token the security token, get it from login route (def)
-     * @param sort  (def)
+     * @param c  count per page (def)
+     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param status  (def)
-     * @param email  search the email field (def)
      * @param cellphone  search the cellphone field (def)
      * @param landLine  search the land_line field (def)
-     * @param p  page number (def)
-     * @param q  parameter for search (def)
-     * @param c  count per page (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param ssn  search the ssn field (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param fullName  search the full_name field (def)
+     * @param ssn  search the ssn field (def)
+     * @param q  parameter for search (def)
+     * @param sort  (def)
+     * @param email  search the email field (def)
      */
-    userListGet(params: { token?: string; sort?: string; status?: string; email?: string; cellphone?: string; landLine?: string; p?: string; q?: string; c?: string; from?: string; ssn?: string; to?: string; fullName?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserListUsersListResponse> {
+    userListGet(params: { token?: string; c?: string; p?: string; from?: string; to?: string; status?: string; cellphone?: string; landLine?: string; fullName?: string; ssn?: string; q?: string; sort?: string; email?: string;  }, options: any = {}): (fetch: FetchAPI, basePath?: string) => Promise<UserListUsersListResponse> {
         // check permission for userListGet
         if (permMap.userListGet.protected && !AAA.getInstance().hasPerm(permMap.userListGet.resource)) {
             throw new Error("Permission Error");
@@ -9401,14 +9715,6 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userChangeUserStatusIdPatch(params, options)(this.fetch, this.basePath);
     }
     /**
-     * userDetailIdGet
-     * @param id  (def)
-     * @param token the security token, get it from login route (def)
-     */
-    userDetailIdGet(params: {  id: string; token?: string; }, options: any = {}) {
-        return UserApiFp.userDetailIdGet(params, options)(this.fetch, this.basePath);
-    }
-    /**
      * userEmailVerifyPost
      * @param payloadData  (def)
      */
@@ -9430,6 +9736,14 @@ export class UserApi extends BaseAPI {
         return UserApiFp.userEmailVerifyTokenGet(params, options)(this.fetch, this.basePath);
     }
     /**
+     * userGetIdGet
+     * @param id  (def)
+     * @param token the security token, get it from login route (def)
+     */
+    userGetIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+        return UserApiFp.userGetIdGet(params, options)(this.fetch, this.basePath);
+    }
+    /**
      * userListDefinitionGet
      * @param token the security token, get it from login route (def)
      */
@@ -9439,20 +9753,20 @@ export class UserApi extends BaseAPI {
     /**
      * userListGet
      * @param token the security token, get it from login route (def)
-     * @param sort  (def)
+     * @param c  count per page (def)
+     * @param p  page number (def)
+     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param status  (def)
-     * @param email  search the email field (def)
      * @param cellphone  search the cellphone field (def)
      * @param landLine  search the land_line field (def)
-     * @param p  page number (def)
-     * @param q  parameter for search (def)
-     * @param c  count per page (def)
-     * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-     * @param ssn  search the ssn field (def)
-     * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
      * @param fullName  search the full_name field (def)
+     * @param ssn  search the ssn field (def)
+     * @param q  parameter for search (def)
+     * @param sort  (def)
+     * @param email  search the email field (def)
      */
-    userListGet(params: {  token?: string; sort?: string; status?: string; email?: string; cellphone?: string; landLine?: string; p?: string; q?: string; c?: string; from?: string; ssn?: string; to?: string; fullName?: string; }, options: any = {}) {
+    userListGet(params: {  token?: string; c?: string; p?: string; from?: string; to?: string; status?: string; cellphone?: string; landLine?: string; fullName?: string; ssn?: string; q?: string; sort?: string; email?: string; }, options: any = {}) {
         return UserApiFp.userListGet(params, options)(this.fetch, this.basePath);
     }
     /**
@@ -9625,14 +9939,6 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
             return UserApiFp.userChangeUserStatusIdPatch(params, options)(fetch, basePath);
         },
         /**
-         * userDetailIdGet
-         * @param id  (def)
-         * @param token the security token, get it from login route (def)
-         */
-        userDetailIdGet(params: {  id: string; token?: string; }, options: any = {}) {
-            return UserApiFp.userDetailIdGet(params, options)(fetch, basePath);
-        },
-        /**
          * userEmailVerifyPost
          * @param payloadData  (def)
          */
@@ -9654,6 +9960,14 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
             return UserApiFp.userEmailVerifyTokenGet(params, options)(fetch, basePath);
         },
         /**
+         * userGetIdGet
+         * @param id  (def)
+         * @param token the security token, get it from login route (def)
+         */
+        userGetIdGet(params: {  id: string; token?: string; }, options: any = {}) {
+            return UserApiFp.userGetIdGet(params, options)(fetch, basePath);
+        },
+        /**
          * userListDefinitionGet
          * @param token the security token, get it from login route (def)
          */
@@ -9663,20 +9977,20 @@ export const UserApiFactory = function (fetch?: FetchAPI, basePath?: string) {
         /**
          * userListGet
          * @param token the security token, get it from login route (def)
-         * @param sort  (def)
+         * @param c  count per page (def)
+         * @param p  page number (def)
+         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
+         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param status  (def)
-         * @param email  search the email field (def)
          * @param cellphone  search the cellphone field (def)
          * @param landLine  search the land_line field (def)
-         * @param p  page number (def)
-         * @param q  parameter for search (def)
-         * @param c  count per page (def)
-         * @param from  from date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
-         * @param ssn  search the ssn field (def)
-         * @param to  to date rfc3339 ex:2002-10-02T15:00:00.05Z (def)
          * @param fullName  search the full_name field (def)
+         * @param ssn  search the ssn field (def)
+         * @param q  parameter for search (def)
+         * @param sort  (def)
+         * @param email  search the email field (def)
          */
-        userListGet(params: {  token?: string; sort?: string; status?: string; email?: string; cellphone?: string; landLine?: string; p?: string; q?: string; c?: string; from?: string; ssn?: string; to?: string; fullName?: string; }, options: any = {}) {
+        userListGet(params: {  token?: string; c?: string; p?: string; from?: string; to?: string; status?: string; cellphone?: string; landLine?: string; fullName?: string; ssn?: string; q?: string; sort?: string; email?: string; }, options: any = {}) {
             return UserApiFp.userListGet(params, options)(fetch, basePath);
         },
         /**

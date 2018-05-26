@@ -128,6 +128,14 @@ const permMap = {
         "protected": true,
         "resource": "campaign_list:self"
     },
+    "campaignLogIdGet": {
+        "protected": true,
+        "resource": "log_campaign:self"
+    },
+    "campaignLogIdDefinitionGet": {
+        "protected": true,
+        "resource": "log_campaign:self"
+    },
     "campaignProgressIdGet": {
         "protected": true,
         "resource": "get_campaign:self"
@@ -151,6 +159,10 @@ const permMap = {
     "domainEditIdPut": {
         "protected": true,
         "resource": "god:global"
+    },
+    "domainIdGet": {
+        "protected": true,
+        "resource": "get_detail_domain:global"
     },
     "financialGet": {
         "protected": true,
@@ -296,10 +308,6 @@ const permMap = {
         "protected": true,
         "resource": "change_user_status:global"
     },
-    "userDetailIdGet": {
-        "protected": true,
-        "resource": "get_detail_user:global"
-    },
     "userEmailVerifyPost": {
         "protected": false,
         "resource": ""
@@ -311,6 +319,10 @@ const permMap = {
     "userEmailVerifyTokenGet": {
         "protected": false,
         "resource": ""
+    },
+    "userGetIdGet": {
+        "protected": true,
+        "resource": "get_detail_user:global"
     },
     "userListGet": {
         "protected": true,
