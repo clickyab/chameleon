@@ -47,10 +47,18 @@
         height: 16px;
         width: 30px;
         margin: 8px 0 !important;
+        min-width: 30px;
         &:after {
+        transition: all 0.2s ease-in;
             width: 13px;
             height: 13px;
-            top: 0.5px;
+            left:13.5px;
+            top: 0.25px;
+            margin-left: -13.5px;        }
+        &.ant-switch-checked{
+            &:after {
+                left: 27px !important;
+            }
         }
     }
 }

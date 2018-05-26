@@ -310,21 +310,8 @@ class ChargeContainer extends React.Component<IProps, IState> {
                                     </div>
                                 </Col>
                             </Row>
-                            <Row type="flex" align="middle" className="payment-box">
-                                <Col className="payment-content" span={6}>
-                                    <Translate value={"Amount of your charge"}/>
-                                    {(this.props.form.getFieldValue("bankAmount") === null) ? "_____" : this.amountFormatter(this.props.form.getFieldValue("bankAmount"), this.i18n._t("Toman").toString())}
-                                </Col>
-                                <Col className="payment-content border" span={6}>
-                                    <Translate value={"Amount after decrease 9% of tax"}/>
-                                    {(this.props.form.getFieldValue("bankAmount") === null) ? "_____" : this.amountFormatter(Math.floor(this.props.form.getFieldValue("bankAmount") * 0.91).toFixed(0), this.i18n._t("Toman").toString())}
-                                </Col>
-                                <Col className="payment-content" span={8}>
-                                    <Translate value={"Amount of account after deposits approval"}/>
-                                    <span
-                                        className="green">{this.amountFormatter(this.props.form.getFieldValue("bankAmount") * 0.91 + this.state.accountDeposit, this.i18n._t("Toman").toString())}</span>
-                                </Col>
-                                <Col className="payment-content" span={4}>
+                            <Row type="flex" align="middle" className="mt-5">
+                                <Col span={5}>
                                     <RaisedButton
                                         label={<Translate value="Approve deposits"/>}
                                         onClick={this.handleSubmitReceipt}

@@ -25,6 +25,7 @@ export const enum UPLOAD_MODULES {
     NATIVE_VIDEO = "native-video",
     VAST_IMAGE = "vast-image",
     VAST_VIDEO = "vast-video",
+    DOMAIN_IMAGE= "domain-image"
 }
 
 interface IDimension {
@@ -33,7 +34,7 @@ interface IDimension {
 }
 
 interface IProps {
-    label: string;
+    label?: string;
     fileType: string[];
     minDimension?: IDimension;
     exactDimension?: IDimension;
@@ -43,6 +44,7 @@ interface IProps {
     className?: string;
     required?: boolean;
     customDragDisc?: JSX.Element;
+    showBelowDragDescription?: boolean;
     onChange?: (value: string) => void;
 }
 
@@ -391,8 +393,10 @@ class UploadFile extends React.Component<IProps, IState> {
     public render() {
         return (
             <div>
-        <span className={`image-drag-upload ${this.props.required ? "require" : ""}`}><Translate
-            value={this.props.label}/></span>
+                {this.props.label &&
+                <span className={`image-drag-upload ${this.props.required ? "require" : ""}`}><Translate
+                    value={this.props.label}/></span>
+                }
                 <div onDragOver={() => this.setState({dragOver: true}) } onDragLeave={() => this.setState({dragOver: false})} onMouseLeave={() => this.setState({dragOver: false})}>
                 <Dragger
                     beforeUpload={(file) => this.uploadFile(file, this.props.fileType)}
@@ -450,31 +454,33 @@ class UploadFile extends React.Component<IProps, IState> {
                     </div>
                     }
                 </Dragger>
-                <div className="drag-description">
+                    {(this.props.showBelowDragDescription === undefined || this.props.showBelowDragDescription) &&
+                    <div className="drag-description">
 
-                    {this.props.minDimension &&
-                    <span className="span-block">
+                        {this.props.minDimension &&
+                        <span className="span-block">
             <Translate value={"Minimum dimension: %sx%spx"}
                        params={[this.props.minDimension.width, this.props.minDimension.height]}/></span>
-                    }
+                        }
 
-                    {this.props.exactDimension &&
-                    <span className="span-block">
+                        {this.props.exactDimension &&
+                        <span className="span-block">
             <Translate value={"Allowed dimension: %sx%spx"}
                        params={[this.props.exactDimension.width, this.props.exactDimension.height]}/></span>
-                    }
+                        }
 
-                    {this.props.minSize &&
-                    <span className="span-block"><Translate value={"Allowed size: 20MB"}/></span>
-                    }
+                        {this.props.minSize &&
+                        <span className="span-block"><Translate value={"Allowed size: 20MB"}/></span>
+                        }
 
-                    {this.props.ratio &&
-                    <span className="span-block"><Translate value={"image ratio: %s.%s"}
-                                                            params={[this.ratio.width, this.ratio.height]}/></span>
+                        {this.props.ratio &&
+                        <span className="span-block"><Translate value={"image ratio: %s.%s"}
+                                                                params={[this.ratio.width, this.ratio.height]}/></span>
+                        }
+                        <span className="span-block"><Translate
+                            value={"allowed extensions:"}/>{this.props.fileType.join("/").replace(/image\//g, "").replace(/video\//g, "").toUpperCase()}</span>
+                    </div>
                     }
-                    <span className="span-block"><Translate
-                        value={"allowed extensions:"}/>{this.props.fileType.join("/").replace(/image\//g, "").replace(/video\//g, "").toUpperCase()}</span>
-                </div>
                 {this.state.imgUrlOriginal && this.state.showCropModal &&
                 <Modal
                     maskClosable={false}

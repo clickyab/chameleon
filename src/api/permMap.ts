@@ -128,6 +128,14 @@ const permMap = {
         "protected": true,
         "resource": "campaign_list:self"
     },
+    "campaignLogIdGet": {
+        "protected": true,
+        "resource": "log_campaign:self"
+    },
+    "campaignLogIdDefinitionGet": {
+        "protected": true,
+        "resource": "log_campaign:self"
+    },
     "campaignProgressIdGet": {
         "protected": true,
         "resource": "get_campaign:self"
@@ -146,7 +154,15 @@ const permMap = {
     },
     "domainCreatePost": {
         "protected": true,
-        "resource": "create_new_domain:global"
+        "resource": "god:global"
+    },
+    "domainEditIdPut": {
+        "protected": true,
+        "resource": "god:global"
+    },
+    "domainIdGet": {
+        "protected": true,
+        "resource": "get_detail_domain:global"
     },
     "financialGet": {
         "protected": true,
@@ -171,6 +187,10 @@ const permMap = {
     "financialGatewaysPost": {
         "protected": true,
         "resource": "add_gateway:global"
+    },
+    "financialGatewaysIdGet": {
+        "protected": true,
+        "resource": "god:global"
     },
     "financialGatewaysIdPatch": {
         "protected": true,
@@ -276,10 +296,6 @@ const permMap = {
         "protected": true,
         "resource": ""
     },
-    "userAddToWhitelabelPost": {
-        "protected": true,
-        "resource": "add_to_whitelabel_user:global"
-    },
     "userAdminPasswordChangeIdPatch": {
         "protected": true,
         "resource": "edit_user:global"
@@ -303,6 +319,10 @@ const permMap = {
     "userEmailVerifyTokenGet": {
         "protected": false,
         "resource": ""
+    },
+    "userGetIdGet": {
+        "protected": true,
+        "resource": "get_detail_user:global"
     },
     "userListGet": {
         "protected": true,
@@ -379,6 +399,10 @@ const permMap = {
     "userUpdateIdPut": {
         "protected": true,
         "resource": "edit_user:global"
+    },
+    "userWhitelabelAddPost": {
+        "protected": true,
+        "resource": "add_to_whitelabel_user:global"
     }
 };
 export default permMap;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Switch, Route, RouteComponentProps} from "react-router";
+import {Switch, Route, RouteComponentProps, withRouter} from "react-router";
 import {RootState} from "../../redux/reducers/index";
 import {connect} from "react-redux";
 import {UserUserPayload} from "../../api/api";
@@ -17,7 +17,7 @@ interface IState {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class BackofficeContainer extends React.Component<IProps, IState> {
+class BackofficeContainer extends React.Component<IProps, IState> {
     constructor(props) {
         super(props);
         this.state = {user: this.props.user};
@@ -34,7 +34,8 @@ export default class BackofficeContainer extends React.Component<IProps, IState>
                 {console.log("props", this.props)}
                 <Switch>
                     <PrivateRoute path={`${match.url}/user`} component={UserContainer}/>
-                    <PrivateRoute path={`${match.url}/whitelabel`} component={WhiteLabel}/>
+                    <PrivateRoute path={`${match.url}/whitelabel/create`} component={WhiteLabel}/>
+                    <PrivateRoute path={`${match.url}/whitelabel/edit/:id`} component={WhiteLabel}/>
                 </Switch>
             </div>
         );
@@ -52,3 +53,4 @@ function mapDispatchToProps(dispatch) {
         /* empty */
     };
 }
+export default withRouter(BackofficeContainer);

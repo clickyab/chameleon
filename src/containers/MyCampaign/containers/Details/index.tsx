@@ -158,7 +158,7 @@ class Details extends React.Component<IProps, IState> {
                                         <Col span={3}></Col>
                                         <Col span={16}>
                                             <div className={"dialog-wrapper"}
-                                                 style={{marginRight: this.state.progress.total_spend / this.state.progress.total_budget + "%"}}>
+                                                 style={{marginRight: ((this.state.progress.total_budget - this.state.progress.total_spend) / this.state.progress.total_budget) * 100 + "%"}}>
                                                 <div className={"dialog"}>
                                                     {this.i18n._t("Spent")}
                                                     <h6>{currencyFormatter(this.state.progress.total_spend)} {this.i18n._t("_currency_")}</h6>
@@ -172,8 +172,8 @@ class Details extends React.Component<IProps, IState> {
                                         <Col span={3} className="progress-start-text"><Translate value={"Spent"}/></Col>
                                         <Col span={16}>
                                             <div className="campaign-strip-bar-wrapper">
-                                                <div className="campaign-strip-bar"
-                                                     style={{width: (this.state.progress.total_budget) ? this.state.progress.total_spend / this.state.progress.total_budget * 100 + "%" : 0}}>
+                                                <div className={`campaign-strip-bar ${this.state.progress.total_spend === 0 ? "border-strip-bar" : ""}`}
+                                                     style={{width: (this.state.progress.total_budget) ? ((this.state.progress.total_budget - this.state.progress.total_spend) / this.state.progress.total_budget * 100)+ "%" : 0}}>
                                                 </div>
                                             </div>
                                         </Col>

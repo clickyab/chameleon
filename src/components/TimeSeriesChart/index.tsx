@@ -95,7 +95,7 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
       this.loadData();
   }
   public componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.query) {
+    if (nextProps.query !== this.props.query) {
       this.queryLocal = nextProps.query;
         this.loadData();
         this.getOption();
@@ -249,16 +249,19 @@ private createXaxis(obj) {
           },
           axisLabel: {
               formatter: function(data){
+                  if (this.state.chartData.data && this.state.chartData.data[0] && this.state.chartData.data[0].title === "Spend") {
+                      return currencyFormatter(data) + "T";
+                  }
                   if (data >= 1000 && data < 1000000) {
                       return  (data / 1000).toFixed(1) + "K";
                   }
                   if (data >= 1000000 ) {
-                      return (data / 1000).toFixed(1) + "M";
+                      return (data / 1000000).toFixed(1) + "M";
                   }
                   else {
                       return data;
                   }
-              },
+              }.bind(this),
           verticalAlign: "bottom",
           }
       },
