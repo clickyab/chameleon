@@ -15,6 +15,7 @@ import "./style.less";
 import Translate from "../../../../components/i18n/Translate";
 import {setBreadcrumb} from "../../../../redux/app/actions";
 import Switch from "antd/es/switch";
+import Icon from "../../../../components/Icon";
 
 const FormItem = Form.Item;
 
@@ -26,6 +27,7 @@ interface IProps extends RouteComponentProps<void> {
 interface IState {
 }
 enum CAMPAIGN_STATUS {
+    ARCHIVE = "archive",
     PAUSE = "pause",
     START = "start",
 }
@@ -79,7 +81,7 @@ class List extends React.Component<IProps, IState> {
                         <DataTableChartWrapper
                             name="myCampaign"
                             infinitTable={true}
-                            getInputRef={(table) => (this.table = table)}
+                            getTableRef={(table) => (this.table = table)}
                             chartDataFn={this.controllerApi.campaignGraphAllGet}
                             chartDefinitionFn={this.controllerApi.campaignListDefinitionGet}
                             dataTableDefinitionFn={this.controllerApi.campaignListDefinitionGet}
@@ -87,8 +89,12 @@ class List extends React.Component<IProps, IState> {
                             showRangePicker={true}
                             dataTableCustomRenderColumns={{
                                 "status": (value: string, row: ControllersListInventoryResponseData, index: number): JSX.Element => {
-                                    let switchValue = value === CAMPAIGN_STATUS.PAUSE ? false : true;
+                                    let switchValue = (value !== CAMPAIGN_STATUS.PAUSE);
                                     return <div>
+                                        {value === CAMPAIGN_STATUS.ARCHIVE &&
+                                            <Icon className={"archive-datatable"} name={"cif-archive"}/>
+                                        }
+                                        {value !== CAMPAIGN_STATUS.ARCHIVE &&
                                         <Switch
                                             checked={switchValue}
                                             className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
@@ -109,6 +115,7 @@ class List extends React.Component<IProps, IState> {
                                                 });
                                             }}
                                         />
+                                        }
                                     </div>;
                                 }
                             }}

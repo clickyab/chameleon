@@ -19,7 +19,7 @@ interface IProps {
      */
     dataTableActionsFn?: IActionsFn;
     infinitTable?: boolean;
-    getInputRef?: (ref: any) => void;
+    getTableRef?: (ref: any) => void;
 
 }
 
@@ -60,8 +60,8 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
     }
 
     componentDidMount() {
-        if (this.props.getInputRef) {
-            this.props.getInputRef(this.refs.table);
+        if (this.props.getTableRef) {
+            this.props.getTableRef(this.refs.table);
         }
     }
     render() {
