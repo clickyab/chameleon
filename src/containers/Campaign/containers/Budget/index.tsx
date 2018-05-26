@@ -119,7 +119,6 @@ class BudgetComponent extends React.Component <IProps, IState> {
             }
 
             const controllerApi = new ControllersApi();
-            console.log(values.receivers, this.cachedMails);
             controllerApi.campaignBudgetIdPut({
                 id: this.state.currentCampaign.id.toString(),
                 payloadData: {
@@ -128,7 +127,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                     total_budget: parseInt(values.total_budget),
                     strategy: values.strategy,
                     exchange: values.exchange,
-                    receivers: values.receivers.map(i => this.cachedMails[i]),
+               //   receivers: values.receivers.map(i => this.cachedMails[i]),
                 }
             }).then(data => {
                 this.props.setCurrentCampaign(data as ControllersCampaignGetResponse);
@@ -200,7 +199,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
 
         const {getFieldDecorator} = this.props.form;
         return (
-            <div dir={CONFIG.DIR} className="campaign-content">
+            <div dir={CONFIG.DIR} className="campaign-content budget-container">
                 <Row type="flex">
                     <Col span={18}>
                         <Row className="campaign-title">
@@ -389,7 +388,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                     </Row>
                                 </Col>
                             </Row>
-
+                            {false &&
                             <Row type="flex" align="middle" gutter={16}>
                                 <Col span={4}>
                                     <Tooltip/>
@@ -413,11 +412,12 @@ class BudgetComponent extends React.Component <IProps, IState> {
                                                     key={d.email}>{d.email}</Option>)}
                                             </Select>
                                         )}
-                                    <span className="subscriber-description"><Translate
-                                        value={"Email of people that you want to notice in case of budget deficiency and recharge of account "}/></span>
+                                        <span className="subscriber-description"><Translate
+                                            value={"Email of people that you want to notice in case of budget deficiency and recharge of account "}/></span>
                                     </FormItem>
                                 </Col>
                             </Row>
+                            }
                             <StickyFooter backAction={this.handleBack.bind(this)}
                                           nextAction={this.handleSubmit.bind(this)}/>
                         </Form>
