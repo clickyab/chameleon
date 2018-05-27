@@ -350,9 +350,6 @@ class NamingComponent extends React.Component <IProps, IState> {
                                     rules: [{
                                         validator: isValidDomain,
                                         message: this.i18n._t("Domain is not valid")
-                                    }, {
-                                        required: true,
-                                        message: this.i18n._t("Please input your TLD Domain")
                                     }],
                                 })(
                                     <Input

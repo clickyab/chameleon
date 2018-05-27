@@ -4,7 +4,7 @@ import {RouteComponentProps, withRouter} from "react-router";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
-import {ControllersApi, UserResponseLoginOKAccount} from "../../../../api/api";
+import {ControllersApi, ControllersListInventoryResponseData, UserResponseLoginOKAccount} from "../../../../api/api";
 import {Form, Row, Col, notification} from "antd";
 import {setIsLogin, setUser} from "../../../../redux/app/actions/index";
 import {Button} from "antd";
@@ -13,8 +13,9 @@ import DataTableChartWrapper from "../../../../components/DataTableChartWrapper/
 
 import "./style.less";
 import Translate from "../../../../components/i18n/Translate";
-import Icon from "../../../../components/Icon";
 import {setBreadcrumb} from "../../../../redux/app/actions";
+import Switch from "antd/es/switch";
+import Icon from "../../../../components/Icon";
 
 const FormItem = Form.Item;
 
@@ -25,12 +26,18 @@ interface IProps extends RouteComponentProps<void> {
 
 interface IState {
 }
-
+enum CAMPAIGN_STATUS {
+    ARCHIVE = "archive",
+    PAUSE = "pause",
+    START = "start",
+}
 
 @connect(mapStateToProps, mapDispatchToProps)
 class List extends React.Component<IProps, IState> {
 
+    private table: any;
     private i18n = I18n.getInstance();
+    private openedInventories = {};
     private controllerApi = new ControllersApi();
 
     constructor(props: IProps) {
@@ -38,10 +45,28 @@ class List extends React.Component<IProps, IState> {
         this.state = {};
     }
 
+    changeCampaignState(id: number, status: CAMPAIGN_STATUS, onerror: () => void) {
+        this.controllerApi.campaignStatusIdPatch({
+            id: id.toString(),
+            payloadData: {
+                status: status,
+            }
+        }).catch(error => {
+            onerror();
+            notification.error({
+                message: this.i18n._t("Change Campaign ").toString(),
+                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                description: this.i18n._t(error.error.text).toString(),
+            });
+        });
+    }
+
     public componentDidMount() {
         this.props.setBreadcrumb("campaigns", this.i18n._t("Campaigns").toString(), "home");
     }
-
+    private changeCampaignRecord(inventory) {
+        this.table.changeRecordData(this.openedInventories[inventory.id], inventory);
+    }
     public render() {
         return (
             <Row className={"content-container"}>
@@ -54,14 +79,46 @@ class List extends React.Component<IProps, IState> {
                             </div>
                         </Row>
                         <DataTableChartWrapper
-                            ref={"dataTableChart"}
                             name="myCampaign"
                             infinitTable={true}
+                            getTableRef={(table) => (this.table = table)}
                             chartDataFn={this.controllerApi.campaignGraphAllGet}
                             chartDefinitionFn={this.controllerApi.campaignListDefinitionGet}
                             dataTableDefinitionFn={this.controllerApi.campaignListDefinitionGet}
                             dataTableDataFn={this.controllerApi.campaignListGet}
                             showRangePicker={true}
+                            dataTableCustomRenderColumns={{
+                                "status": (value: string, row: ControllersListInventoryResponseData, index: number): JSX.Element => {
+                                    let switchValue = (value !== CAMPAIGN_STATUS.PAUSE);
+                                    return <div>
+                                        {value === CAMPAIGN_STATUS.ARCHIVE &&
+                                            <Icon className={"archive-datatable"} name={"cif-archive"}/>
+                                        }
+                                        {value !== CAMPAIGN_STATUS.ARCHIVE &&
+                                        <Switch
+                                            checked={switchValue}
+                                            className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
+                                            onChange={() => {
+                                                switchValue = !switchValue;
+                                                const newState = switchValue ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
+                                                this.table.changeRecordData(index, {
+                                                    ...row,
+                                                    status: newState,
+                                                });
+                                                this.changeCampaignState(row.id, newState, () => {
+                                                    switchValue = !switchValue;
+                                                    const newState = switchValue ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
+                                                    this.table.changeRecordData(index, {
+                                                        ...row,
+                                                        status: newState,
+                                                    });
+                                                });
+                                            }}
+                                        />
+                                        }
+                                    </div>;
+                                }
+                            }}
                             dataTableActionsFn={{
                                 "edit": (value, record) => {
                                     this.props.history.push(`/campaign/check-publish/${record.id}`);

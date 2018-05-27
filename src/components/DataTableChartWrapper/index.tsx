@@ -19,6 +19,7 @@ interface IProps {
      */
     dataTableActionsFn?: IActionsFn;
     infinitTable?: boolean;
+    getTableRef?: (ref: any) => void;
 
 }
 
@@ -58,6 +59,11 @@ export default class DataTableChartWrapper extends React.Component<IProps, IStat
         this.refs.chart["loadData"]();
     }
 
+    componentDidMount() {
+        if (this.props.getTableRef) {
+            this.props.getTableRef(this.refs.table);
+        }
+    }
     render() {
         return (
             <div>
