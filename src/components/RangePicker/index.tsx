@@ -133,6 +133,8 @@ class RangePicker extends React.Component<IProps, IState> {
             },
             selectedDay: [...days],
             currentMonth: days[0]
+        }, () => {
+            this.handleSubmit();
         });
     }
 
