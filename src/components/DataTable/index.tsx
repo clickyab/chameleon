@@ -524,6 +524,7 @@ class DataTable extends React.Component<IProps, IState> {
         }
         this.setState({
             searches: searches,
+            page: 1,
             data,
         }, () => {
             this.loadData();

@@ -1,6 +1,7 @@
 import * as React from "react";
 import "./style.less";
 import RangePicker , {rangeType} from "../RangePicker";
+import {Tooltip} from "antd";
 import * as moment from "moment-jalaali";
 import onClickOutside from "react-onclickoutside";
 import I18n from "../../services/i18n/index";
@@ -27,6 +28,7 @@ interface IState {
     enterSecond: boolean;
     isGregorian: boolean;
     display: boolean;
+    hasError: boolean;
 }
 
 
@@ -43,10 +45,12 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
             isGregorian: props.isGregorian ? props.isGregorian : false,
             enterSecond: false,
             display: false,
+            hasError: false,
         };
     }
     private handleClick() {
         this.setState({display: !this.state.display});
+        this.setState({hasError: !this.state.hasError});
     }
 
     private handleChange(value) {
@@ -72,17 +76,24 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div className="range-wrapper" >
+            <div className={`range-wrapper ${this.state.hasError && !this.state.display ? "date-error" : ""}`}>
+                <Tooltip overlayClassName={"guid-tooltip-popup"} visible={this.state.hasError && !this.state.display}
+                         arrowPointAtCenter
+                         title={this.i18n._t("You can't choose more than 90 days") as string}
+                >
                 <div className="range-wrapper-input" onClick={this.handleClick.bind(this)}>
                     <div className="input-wrapper">
                         <Icon className="icon" name={"cif-calendar"}/>
                         {(this.state.value.type) ? <Translate className="date-text" value={this.state.value.type}/> : <Translate className="date-text" value={"Choose Date"}/>}
                     </div>
                 </div>
+            </Tooltip>
                 {this.state.display &&
                 <div className="range-inside-wrapper">
                     <RangePicker {...this.props} onChange={(value) => this.handleChange(value)}
-                                 isCancel={(val: boolean) => this.setState({display: !val}) }/>
+                                 isCancel={(val: boolean) => this.setState({display: !val})}
+                                 isValid={(val: boolean) =>  this.setState({hasError: !val})}
+                    />
                 </div>
                 }
             </div>
