@@ -196,10 +196,11 @@ class DataTable extends React.Component<IProps, IState> {
         let link = document.createElement("a");
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", `${this.props.name}.csv`);
-        link.innerHTML = "Click Here to download";
-        document.body.appendChild(link); // Required for FF
+        link.innerHTML = "";
+        document.body.appendChild(link);
 
         link.click();
+        link.remove();
     }
 
     private selectPageSize(value) {
