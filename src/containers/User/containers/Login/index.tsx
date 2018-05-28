@@ -86,7 +86,6 @@ class PublicLoginForm extends React.Component<IProps, IState> {
           this.props.setIsLogin();
 
           ServerStore.getInstance().setItems(data.account.attributes);
-          console.log(ServerStore.getInstance());
 
           const aaa = AAA.getInstance();
           aaa.setToken(data.token, values.rememberMe);
