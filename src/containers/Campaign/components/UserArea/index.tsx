@@ -197,7 +197,7 @@ class UserArea extends React.Component<IProps, IState> {
                             </TabPane>
                             <TabPane tab={this.i18n._t("Charge Account")} key="charge" closable={false}>
                                 <div>
-                                    <PrivateRoute path={`${match.url}/charge`} component={ChargeContainer}/>
+                                    <PrivateRoute path={`${match.url}/charge:payment?:success?`} component={ChargeContainer}/>
                                 </div>
                             </TabPane>
                             <TabPane disabled={!this.state.showPaymentResult} tab={this.i18n._t("Payment Result")} key="financial-verify" closable={false}>
