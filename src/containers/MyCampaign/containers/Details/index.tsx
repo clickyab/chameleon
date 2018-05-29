@@ -118,10 +118,12 @@ class Details extends React.Component<IProps, IState> {
                                 {this.state.currentCampaign &&
                                 <div>
                                     <h5>{this.state.currentCampaign.title}
+                                    <Link to={`/campaign/check-publish/${this.props.match.params["id"]}`}>
                                         <Button size={"small"} className="add-customize-btn btn-margin">
                                             <Icon name={"cif-edit"} className="custom-icon"/>
                                             <Translate value={"Edit Campaign"}/>
                                         </Button>
+                                    </Link>
                                     </h5>
                                     <Row className={"details"}>
                                         <Row type="flex">
