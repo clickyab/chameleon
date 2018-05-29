@@ -206,7 +206,7 @@ class DataTable extends React.Component<IProps, IState> {
     private selectPageSize(value) {
         this.setState({
             pageSize: parseInt(value)
-        });
+        } , () => this.loadData() );
     }
 
 
@@ -294,6 +294,7 @@ class DataTable extends React.Component<IProps, IState> {
 
         let config = {
             p: this.state.page,
+            c: this.state.pageSize,
             loading: true,
             data: {data: []}
         };
@@ -326,12 +327,6 @@ class DataTable extends React.Component<IProps, IState> {
         this.quary = config;
 
         this.props.dataFn(config).then((data: IData) => {
-
-            // TODO:: remove me
-            // data.data = data.data.map(d => {
-            //     d["_actions"] = "edit, archive, copy";
-            //     return d;
-            // });
 
             if (this.state.data && this.props.infinite) {
                 data.data = [...this.state.data.data, ...data.data];
@@ -549,6 +544,7 @@ class DataTable extends React.Component<IProps, IState> {
         }
         this.setState({
             searches: searches,
+            page: 1,
             data,
         }, () => {
             this.loadData();

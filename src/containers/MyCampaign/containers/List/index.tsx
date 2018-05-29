@@ -16,6 +16,7 @@ import Translate from "../../../../components/i18n/Translate";
 import {setBreadcrumb} from "../../../../redux/app/actions";
 import Switch from "antd/es/switch";
 import Icon from "../../../../components/Icon";
+import Modal from "../../../../components/Modal";
 
 const FormItem = Form.Item;
 
@@ -25,6 +26,7 @@ interface IProps extends RouteComponentProps<void> {
 }
 
 interface IState {
+    showAlert?: boolean;
 }
 enum CAMPAIGN_STATUS {
     ARCHIVE = "archive",
@@ -36,13 +38,19 @@ enum CAMPAIGN_STATUS {
 class List extends React.Component<IProps, IState> {
 
     private table: any;
+    private statusRow: any;
+    private statusIndex: number;
+    private statusValue: any;
+    private statusSwitch: boolean;
     private i18n = I18n.getInstance();
     private openedInventories = {};
     private controllerApi = new ControllersApi();
 
     constructor(props: IProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            showAlert: false,
+        };
     }
 
     changeCampaignState(id: number, status: CAMPAIGN_STATUS, onerror: () => void) {
@@ -61,6 +69,29 @@ class List extends React.Component<IProps, IState> {
         });
     }
 
+    /**
+     * @func changeCampaignStatus
+     * @desc this function will change campaign status on dataTable (will fire onOk of Modal)
+     * @param row
+     * @param index
+     * @param statusSwitch
+     */
+    public changeCampaignStatus(row: any , index: number , statusSwitch) {
+        statusSwitch = !statusSwitch;
+        const newState = statusSwitch ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
+        this.table.changeRecordData(index, {
+            ...row,
+            status: newState,
+        });
+        this.changeCampaignState(row.id, newState, () => {
+            statusSwitch = !statusSwitch;
+            const newState = statusSwitch ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
+            this.table.changeRecordData(index, {
+                ...row,
+                status: newState,
+            });
+        });
+    }
     public componentDidMount() {
         this.props.setBreadcrumb("campaigns", this.i18n._t("Campaigns").toString(), "home");
     }
@@ -99,23 +130,32 @@ class List extends React.Component<IProps, IState> {
                                             checked={switchValue}
                                             className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
                                             onChange={() => {
-                                                switchValue = !switchValue;
-                                                const newState = switchValue ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
-                                                this.table.changeRecordData(index, {
-                                                    ...row,
-                                                    status: newState,
-                                                });
-                                                this.changeCampaignState(row.id, newState, () => {
-                                                    switchValue = !switchValue;
-                                                    const newState = switchValue ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
-                                                    this.table.changeRecordData(index, {
-                                                        ...row,
-                                                        status: newState,
-                                                    });
-                                                });
-                                            }}
+                                                this.setState({showAlert: true});
+                                                this.statusRow = row;
+                                                this.statusIndex = index;
+                                                this.statusValue = value;
+                                                this.statusSwitch = switchValue;
+                                                }
+                                            }
                                         />
                                         }
+                                            {/* Alert Modal for changing status of campaign*/}
+                                            <Modal visible={this.state.showAlert}
+                                                   closable={false}
+                                                   customClass="alert-modal"
+                                                   onOk={() => {this.changeCampaignStatus(this.statusRow, this.statusIndex, this.statusSwitch);
+                                                                this.setState({showAlert: false}); } }
+                                                   onCancel={() => {this.setState({showAlert: false})}}
+                                            >
+                                                <div className="alert-modal-container">
+                                                    <Icon name={"cif-alert"}/>
+                                                    <Translate
+                                                        className="alert-description"
+                                                        value={`Are you sure that you want to
+                                                        ${(value !== CAMPAIGN_STATUS.ARCHIVE ? this.statusSwitch ? "deactive" : "active" : "")}
+                                                        ${(this.statusRow) ?  (this.statusRow as any).title : ""}  ?`}/>
+                                                </div>
+                                            </Modal>
                                     </div>;
                                 }
                             }}

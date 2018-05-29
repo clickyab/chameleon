@@ -49,7 +49,7 @@ export default class Translate extends React.Component<ITranslateProps, IState> 
   public render() {
     const i18n = I18n.getInstance();
     return (
-      <span className={this.props.className ? this.props.className : ""}>
+      <span className={this.props.className ? this.props.className : null}>
         {i18n._t(this.props.value,
           {html : this.props.html || false , params : this.state.params || []})}
       </span>

@@ -223,7 +223,7 @@ class TargetingComponent extends React.Component <IProps, IState> {
       });
     this.collectionApi.assetPlatformGet({})
       .then((devices) => {
-        this.devices = devices.map((platform) => ({value: platform.name, title: this.i18n._t(platform.name)}));
+        this.devices = devices.map((platform) => ({value: platform.name, title: this.i18n._t(platform.name) , status: platform.status}));
         this.forceUpdate();
       });
   }
@@ -362,7 +362,8 @@ class TargetingComponent extends React.Component <IProps, IState> {
                               <div className="component-wrapper">
                                   <CheckBoxList
                                       items={this.devices}
-                                      value={this.state.devices}
+                                      value={this.state.devices.length ? this.state.devices : ["desktop" , "mobile"]}
+                                      disable={["mobile"]}
                                       onChange={this.updateDevices.bind(this)}
                                   />
                               </div>

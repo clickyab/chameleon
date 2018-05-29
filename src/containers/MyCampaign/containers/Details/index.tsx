@@ -118,10 +118,12 @@ class Details extends React.Component<IProps, IState> {
                                 {this.state.currentCampaign &&
                                 <div>
                                     <h5>{this.state.currentCampaign.title}
+                                    <Link to={`/campaign/check-publish/${this.props.match.params["id"]}`}>
                                         <Button size={"small"} className="add-customize-btn btn-margin">
                                             <Icon name={"cif-edit"} className="custom-icon"/>
                                             <Translate value={"Edit Campaign"}/>
                                         </Button>
+                                    </Link>
                                     </h5>
                                     <Row className={"details"}>
                                         <Row type="flex">
@@ -136,14 +138,6 @@ class Details extends React.Component<IProps, IState> {
                                             <Col span={6}>{this.i18n._t("Show Period")}</Col>
                                             <Col>{this.i18n._d(this.state.currentCampaign.start_at)} {this.state.currentCampaign.end_at && "- " + this.i18n._d(this.state.currentCampaign.end_at)}</Col>
                                         </Row>
-                                        {/*<Row type="flex">*/}
-                                        {/*<Col span={14}>{this.i18n._t("Owner's Email")}</Col>*/}
-                                        {/*<Col>: وب</Col>*/}
-                                        {/*</Row>*/}
-                                        {/*<Row type="flex">*/}
-                                        {/*<Col span={14}>{this.i18n._t("Manager's Email")}</Col>*/}
-                                        {/*<Col>: وب</Col>*/}
-                                        {/*</Row>*/}
                                         <Row type="flex">
                                             <Col span={6}>{this.i18n._t("CRM")}</Col>
                                             <Col>{this.state.currentCampaign.max_bid}</Col>
@@ -172,8 +166,8 @@ class Details extends React.Component<IProps, IState> {
                                         <Col span={3} className="progress-start-text"><Translate value={"Spent"}/></Col>
                                         <Col span={16}>
                                             <div className="campaign-strip-bar-wrapper">
-                                                <div className={`campaign-strip-bar ${this.state.progress.total_spend === 0 ? "border-strip-bar" : ""}`}
-                                                     style={{width: (this.state.progress.total_budget) ? ((this.state.progress.total_budget - this.state.progress.total_spend) / this.state.progress.total_budget * 100)+ "%" : 0}}>
+                                                <div className={`campaign-strip-bar ${this.state.progress.total_spend === 0 && this.state.progress.total_budget !== 0 ? "border-strip-bar" : ""}`}
+                                                     style={{width: (this.state.progress.total_budget) ? ((this.state.progress.total_budget - this.state.progress.total_spend) / this.state.progress.total_budget * 100) + "%" : "0"}}>
                                                 </div>
                                             </div>
                                         </Col>

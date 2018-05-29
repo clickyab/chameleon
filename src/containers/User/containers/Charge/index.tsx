@@ -5,7 +5,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {
     BASE_PATH,
-    ControllersApi,
+    ControllersApi, OrmOnlinePayment,
     PaymentInitPaymentResp,
     UserResponseLoginOKAccount
 } from "../../../../api/api";
@@ -13,7 +13,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 import Translate from "../../../../components/i18n/Translate/index";
-import {Form, Row, Col, notification, Input} from "antd";
+import {Form, Row, Col, notification, Input, Button} from "antd";
 import {RaisedButton} from "material-ui";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
@@ -23,6 +23,8 @@ import ChargeAmountSelector from "../../../../components/ChargeAmount";
 import SelectBox, {ISelectBoxItem} from "../../../Campaign/containers/Naming/Components/SelectBox";
 import Currency from "../../../../components/Currency";
 import {rangeCheck} from "../../../../services/Utils/CustomValidations";
+import Modal from "../../../../components/Modal";
+import {parseQueryString} from "../../../../services/Utils/parseQueryString";
 
 const FormItem = Form.Item;
 
@@ -35,6 +37,8 @@ export interface IProps {
     user: UserResponseLoginOKAccount;
     setBreadcrumb: (name: string, title: string, parent: string) => void;
     unsetBreadcrumb: (name: string) => void;
+    location?: any;
+    history?: any;
 }
 
 /**
@@ -46,16 +50,24 @@ export interface IState {
     amountValue: number | null;
     accountDeposit: number | null;
     couponInput: number | "";
+    showModal?: boolean;
     JSXForm: JSX.Element;
 }
 
 enum PAYMENT { ONLINE = "online", RECEIPT = "receipt", CHECK_BANK = "check bank", COUPON = "coupon"}
+enum PAYMENT_STATUS {SUCCESS = "success" , FAILED = "faild" , RECEIPT = "receipt"}
 
 @connect(mapStateToProps, mapDispatchToProps)
 
 class ChargeContainer extends React.Component<IProps, IState> {
 
     private i18n = I18n.getInstance();
+    private paymentStatus: PAYMENT_STATUS = PAYMENT_STATUS.SUCCESS;
+    private paymentAmount: number;
+    private clickyabResNumber: string;
+    private bankRefNumber: string;
+    private receiptTraceNumber: number;
+    private errorBank: string;
     disable: boolean = false;
 
     constructor(props: IProps) {
@@ -67,6 +79,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
             couponInput: "",
             JSXForm: null,
         };
+        this.handleTransactionTab = this.handleTransactionTab.bind(this);
     }
 
     PaymentTypes: ISelectBoxItem[] = [
@@ -90,6 +103,23 @@ class ChargeContainer extends React.Component<IProps, IState> {
     componentDidMount() {
         this.props.setBreadcrumb("charge", this.i18n._t("Charge").toString(), "home");
         const controllerApi = new ControllersApi();
+        let parsedQuery =  parseQueryString(this.props.location.search);
+        if (parsedQuery.payment) {
+           controllerApi.financialPaymentIdGet({id: parsedQuery.payment.toString()})
+               .then((res: OrmOnlinePayment) => {
+                   this.paymentAmount = res.amount;
+                   this.clickyabResNumber = res.res_num;
+                   this.bankRefNumber = res.ref_num.String;
+                   this.errorBank = res.error_reason.BankReason;
+            });
+           this.setState({showModal: true});
+            console.log("success", parsedQuery.success);
+           if (parsedQuery.success === "true") {
+               this.paymentStatus = PAYMENT_STATUS.SUCCESS;
+           } else {
+               this.paymentStatus =  PAYMENT_STATUS.FAILED;
+           }
+        }
     }
 
     /**
@@ -162,7 +192,14 @@ class ChargeContainer extends React.Component<IProps, IState> {
             });
         });
     }
-
+    /**
+     * @func handleTransactionTab
+     * @desc Redirect to transactions Tab
+     * @return {void}
+     */
+    private handleTransactionTab() {
+        this.props.history.push(`/user/transactions`);
+    }
     /**
      * @func handleSubmitReceipt
      * @desc will send request to submit bank receipt
@@ -185,7 +222,12 @@ class ChargeContainer extends React.Component<IProps, IState> {
                     amount: parseInt(values.bankAmount),
                     trace_number: parseInt(values.TransactionNumber)
                 }
-            });
+            })
+                .then((res) => {
+                    this.receiptTraceNumber = parseInt(values.TransactionNumber);
+                    this.paymentStatus = PAYMENT_STATUS.RECEIPT;
+                    this.setState({showModal: true});
+                });
         });
     }
 
@@ -375,6 +417,42 @@ class ChargeContainer extends React.Component<IProps, IState> {
                 <div className={"form-hide"}>
                     {this.state.JSXForm}
                 </div>
+                <Modal visible={this.state.showModal}
+                       footer={false}
+                       customClass="payment-modal"
+                >
+                   <div className="info-modal-container">
+                       {this.paymentStatus === PAYMENT_STATUS.SUCCESS &&
+                       <div className="content-container-modal success">
+                           <Icon name={"cif-checked-circle"} className={"info-modal-icon"}/>
+                           <Translate className="success-title" value={"Account successfully charged"}/>
+                           <span className={"amount-modal"}>{this.paymentAmount ? currencyFormatter(Math.floor(this.paymentAmount * 1.91 )) : null}</span>
+                           <span className={"currency-modal"}>{this.i18n._t("Toman")}</span>
+                           <Translate className="transaction-number" value={"number of transaction: %s"} params={[this.clickyabResNumber]}/>
+                       </div>
+                       }
+                       {this.paymentStatus === PAYMENT_STATUS.FAILED &&
+                           <div className="content-container-modal fail">
+                               <Icon name={"cif-alert"} className={"info-modal-icon"}/>
+                               <Translate className="fail-title" value={this.errorBank}/>
+                               <Translate className="modal-description" value={"If the amount of your account deducted by the bank it should return after 72 hours to ypur account."}/>
+                               <Translate className="transaction-number" value={"trace of bank: %s"} params={[this.bankRefNumber]}/>
+                           </div>
+                       }
+                       {this.paymentStatus === PAYMENT_STATUS.RECEIPT &&
+                       <div className="content-container-modal receipt">
+                           <Icon name={"cif-alert"} className={"info-modal-icon"}/>
+                           <Translate className="receipt-title" value={"Your account charge now added to financial department"}/>
+                           <Translate className="modal-description" value={"Your bank receipt will be checked and your account will be charged and an email will send to you."}/>
+                           <Translate className="transaction-number" value={"trace number: %s"} params={[this.receiptTraceNumber]}/>
+                       </div>
+                       }
+                       <Button className="gray-btn" onClick={this.handleTransactionTab}>
+                           <Icon name={"cif-arrow-left"}/>
+                           <Translate value={"Go to list of transaction"}/>
+                       </Button>
+                   </div>
+                </Modal>
             </div>
         );
     }

@@ -211,3 +211,101 @@
         white-space: nowrap;
     }
 }
+.payment-modal {
+    max-width: 370px !important;
+}
+
+.info-modal-container {
+    padding: 30px;
+    color: #2E3246;
+    text-align: center;
+    .content-container-modal {
+        align-items: center;
+    }
+    .amount-modal {
+        font-size: 33px;
+    }
+    .currency-modal {
+        font-size: 16px;
+        margin: 0 5px;
+    }
+    .info-modal-icon {
+        font-size: 80px;
+        margin-bottom: -8px;
+        line-height: 1;
+    }
+    .success {
+        .info-modal-icon {
+            color: #3DBE8B;
+        }
+        .success-title {
+            font-size: 18px;
+            color: #3DBE8B;
+            margin-bottom: 15px;
+            display: block;
+        }
+    }
+    .fail{
+        .fail-title{
+            font-size: 18px;
+            color: #EC4E32;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .info-modal-icon {
+            color: #EC4E32;
+        }
+    }
+    .gray-btn {
+        display: block !important;
+        margin: auto;
+    }
+    .transaction-number {
+        font-size: 13px;
+        color: #2E3246;
+        margin-bottom: 20px;
+        margin-top: 50px;
+        display: block;
+    }
+    .modal-description{
+        font-size: 13px;
+    }
+    .receipt{
+        .info-modal-icon {
+            color: #EEBB3B;
+            line-height: 1;
+            display: block;
+            margin-bottom: -10px;
+        }
+        .receipt-title{
+            color: #EEBB3B;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: block;
+        }
+    }
+}
+
+
+.ant-btn {
+    &.gray-btn , &.gray-btn:focus {
+        background: #5A5D6C;
+        color: #FFF;
+        height: 35px;
+        font-size: 14px;
+        border: none;
+        border-radius: 2px;
+        &:hover{
+            background: #7d7f8e;
+            border: none;
+            color: #FFF;
+        }
+        i{
+           font-size: 12px;
+           line-height: 1;
+           position: relative;
+           top:1px;
+            margin: 0 5px;
+        }
+    }
+}
