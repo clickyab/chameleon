@@ -1,5 +1,5 @@
 /**
- * @file Charge file
+ * @file WhiteLabel Deductible file
  */
 import * as React from "react";
 import {connect} from "react-redux";
@@ -48,16 +48,13 @@ export interface IProps {
  * @desc define state object
  */
 export interface IState {
-    selectedPayment: PAYMENT;
     amountValue: number | null;
     accountDeposit: number | null;
-    couponInput: number | "";
     showModal?: boolean;
     JSXForm: JSX.Element;
     usersEmail: UserUserSearchResp;
 }
 
-enum PAYMENT { ACCOUNT = "account", GIFT = "gift"}
 
 enum PAYMENT_STATUS {SUCCESS = "success", FAILED = "faild", RECEIPT = "receipt"}
 
@@ -78,28 +75,14 @@ class WhiteLabelDeductible extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            selectedPayment: PAYMENT.ACCOUNT,
             amountValue: null,
             accountDeposit: props.user.balance ? props.user.balance : null,
-            couponInput: "",
             JSXForm: null,
             usersEmail: [],
         };
         this.handleTransactionTab = this.handleTransactionTab.bind(this);
     }
 
-    PaymentTypes: ISelectBoxItem[] = [
-        {
-            title: this.i18n._t("Charge account").toString(),
-            value: PAYMENT.ACCOUNT,
-            icon: <Icon name="cif-money-charge"/>,
-        },
-        {
-            title: this.i18n._t("With bank receipt").toString(),
-            value: PAYMENT.GIFT,
-            icon: <Icon name="cif-gift-charge"/>,
-        },
-    ];
 
     componentDidMount() {
         this.props.setBreadcrumb("charge", this.i18n._t("Charge").toString(), "home");

@@ -1,5 +1,6 @@
 /**
- * @file Charge file
+ * @file Whitelabel Charge file
+ * @address backoffice/whitelabel/billing/charge
  */
 import * as React from "react";
 import {connect} from "react-redux";
@@ -51,7 +52,6 @@ export interface IState {
     selectedPayment: PAYMENT;
     amountValue: number | null;
     accountDeposit: number | null;
-    couponInput: number | "";
     showModal?: boolean;
     JSXForm: JSX.Element;
     usersEmail: UserUserSearchResp;
@@ -81,7 +81,6 @@ class WhiteLabelCharge extends React.Component<IProps, IState> {
             selectedPayment: PAYMENT.ACCOUNT,
             amountValue: null,
             accountDeposit: props.user.balance ? props.user.balance : null,
-            couponInput: "",
             JSXForm: null,
             usersEmail: [],
         };

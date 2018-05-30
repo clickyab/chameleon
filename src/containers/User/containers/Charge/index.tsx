@@ -49,7 +49,7 @@ export interface IState {
     selectedPayment: PAYMENT;
     amountValue: number | null;
     accountDeposit: number | null;
-    couponInput: number | "";
+    couponInput: number | null;
     showModal?: boolean;
     JSXForm: JSX.Element;
 }
@@ -76,7 +76,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
             selectedPayment: PAYMENT.ONLINE,
             amountValue: null,
             accountDeposit: props.user.balance ? props.user.balance : null,
-            couponInput: "",
+            couponInput: null,
             JSXForm: null,
         };
         this.handleTransactionTab = this.handleTransactionTab.bind(this);

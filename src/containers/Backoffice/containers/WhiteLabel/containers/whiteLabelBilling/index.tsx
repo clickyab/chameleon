@@ -1,7 +1,6 @@
 import * as React from "react";
 import {Redirect, RouteComponentProps, Switch} from "react-router";
 import {PrivateRoute} from "../../../../../../components/PrivateRoute/index";
-import TransactionHistory from "../../../../../User/containers/TransactionHistory/index";
 import {UserResponseLoginOKAccount} from "../../../../../../api/api";
 import {Tabs, Row} from "antd/lib";
 import I18n from "../../../../../../services/i18n/index";
