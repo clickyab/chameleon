@@ -152,6 +152,14 @@ const permMap = {
         "protected": true,
         "resource": "change_campaign_status:self"
     },
+    "domainChangeDomainStatusIdPut": {
+        "protected": true,
+        "resource": "god:global"
+    },
+    "domainConfigNameGet": {
+        "protected": false,
+        "resource": ""
+    },
     "domainCreatePost": {
         "protected": true,
         "resource": "god:global"
@@ -160,7 +168,7 @@ const permMap = {
         "protected": true,
         "resource": "god:global"
     },
-    "domainIdGet": {
+    "domainGetIdGet": {
         "protected": true,
         "resource": "get_detail_domain:global"
     },
