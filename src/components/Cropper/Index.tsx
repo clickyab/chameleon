@@ -1,13 +1,22 @@
 import * as React from "react";
 import * as ReactCrop from "react-image-crop";
 import Spin from "antd/es/spin";
+import FileSizeConvector from "../../services/Utils/FileSizeConvertor";
+import debounce from "../../services/Utils/debounce";
+
 
 interface IProps {
     source: string;
-    onChange: (file: Blob) => void;
+    onChange?: (file: Blob) => void;
     crop?: ICrop;
     aspect?: number;
     type?: string;
+    width?: number;
+    minWidth?: number;
+    maxWidth?: number;
+    height?: number;
+    minHeight?: number;
+    maxHeight?: number;
 }
 
 interface ICrop {
@@ -23,6 +32,10 @@ interface IState {
     source: string;
     preView?: string;
     loading: boolean;
+    selectedWidth?: number;
+    selectedHeight?: number;
+    fileSize?: number;
+
 }
 
 export default class Cropper extends React.Component<IProps, IState> {
@@ -44,6 +57,8 @@ export default class Cropper extends React.Component<IProps, IState> {
                 aspect: this.props.aspect || null
             }
         };
+
+        this.cropImageSource = debounce(this.cropImageSource.bind(this), 100);
     }
 
     componentWillReceiveProps(props: IProps) {
@@ -56,13 +71,17 @@ export default class Cropper extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        // this.imageRef.imageRef.setAttribute("crossorigin", "anonymous");
         this.loadImg();
     }
 
     cropImageSource(crop: ICrop) {
         this.getCroppedImg(crop)
             .then(file => {
+                this.setState({
+                    selectedWidth: Math.round(crop.width * this.sourceImage.width / 100),
+                    selectedHeight: Math.round(crop.height * this.sourceImage.height / 100),
+                    fileSize: file.size
+                });
                 if (this.props.onChange) {
                     this.props.onChange(file);
                 }
@@ -80,24 +99,27 @@ export default class Cropper extends React.Component<IProps, IState> {
         img.src = this.state.source;
         img.addEventListener("load", () => {
             this.sourceImage = img;
-            this.cropImageSource(this.state.crop);
+            // this.cropImageSource(this.state.crop);
 
             let width = 80;
             let height = 80;
-            if (this.props.aspect) {
-                let Wshadow = 0.8 * img.width;
-                let Hshadow = Wshadow / this.props.aspect;
-                height = Hshadow / img.height * 100;
+
+            if (this.props.aspect && this.sourceImage.width <= this.sourceImage.height) {
+                height = this.props.aspect * this.sourceImage.width * 80 / this.sourceImage.height;
+            } else if (this.props.aspect && this.sourceImage.width > this.sourceImage.height) {
+                width = this.props.aspect * this.sourceImage.height * 80 / this.sourceImage.width;
             }
 
             this.setState({
                 crop: {
                     x: 10,
                     y: 10,
-                    width: width,
-                    height: height,
-                    aspect: this.props.aspect || null
+                    width: this.props.aspect ? width : 80,
+                    height: this.props.aspect ? height : 80,
+                    aspect: this.props.aspect || null,
                 },
+                selectedWidth: width * this.sourceImage.width / 100,
+                selectedHeight: height * this.sourceImage.height / 100,
                 loading: false,
             }, () => {
                 this.cropImageSource(this.state.crop);
@@ -108,8 +130,8 @@ export default class Cropper extends React.Component<IProps, IState> {
     getCroppedImg(pixelCrop): Promise<Blob> {
 
         const canvas = document.createElement("canvas");
-        canvas.width = pixelCrop.width * this.sourceImage.width / 100;
-        canvas.height = pixelCrop.height * this.sourceImage.height / 100;
+        canvas.width = this.resizeToWidth(pixelCrop.width * this.sourceImage.width / 100);
+        canvas.height = this.resizeToHeight(pixelCrop.height * this.sourceImage.height / 100);
         const ctx = canvas.getContext("2d");
         ctx.drawImage(
             this.sourceImage,
@@ -119,8 +141,8 @@ export default class Cropper extends React.Component<IProps, IState> {
             pixelCrop.height * this.sourceImage.height / 100,
             0,
             0,
-            pixelCrop.width * this.sourceImage.width / 100,
-            pixelCrop.height * this.sourceImage.height / 100,
+            this.resizeToWidth(pixelCrop.width * this.sourceImage.width / 100),
+            this.resizeToHeight(pixelCrop.height * this.sourceImage.height / 100),
         );
         // As a blob
         return new Promise((resolve, reject) => {
@@ -130,6 +152,32 @@ export default class Cropper extends React.Component<IProps, IState> {
                 }, this.type);
             }
         );
+    }
+
+    private resizeToWidth(originalSelectedWidth: number): number {
+        if (this.props.width) {
+            return this.props.width;
+        }
+        if (this.props.minWidth && this.props.minWidth >= originalSelectedWidth) {
+            return this.props.minWidth;
+        }
+        if (this.props.maxWidth && this.props.maxWidth <= originalSelectedWidth) {
+            return this.props.maxWidth;
+        }
+        return originalSelectedWidth;
+    }
+
+    private resizeToHeight(originalSelectedHeight: number): number {
+        if (this.props.height) {
+            return this.props.height;
+        }
+        if (this.props.minHeight && this.props.minHeight >= originalSelectedHeight) {
+            return this.props.minHeight;
+        }
+        if (this.props.maxHeight && this.props.maxHeight <= originalSelectedHeight) {
+            return this.props.maxHeight;
+        }
+        return originalSelectedHeight;
     }
 
     extentionGenerate(type): string {
@@ -151,12 +199,18 @@ export default class Cropper extends React.Component<IProps, IState> {
                         }}
                         src={this.state.source}
                         crop={this.state.crop}
+                        onDragEnd={(status) => {
+                            console.log(status);
+                        }}
                         onChange={(crop: ICrop) => {
                             this.setState({crop}, () => {
                                 this.cropImageSource(crop);
                             });
                         }}
                     />
+                    {this.state.selectedWidth} × {this.state.selectedHeight} px
+                    <br/>
+                    {FileSizeConvector(this.state.fileSize)}
                 </Spin>
             </div>
         );
