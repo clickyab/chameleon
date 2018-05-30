@@ -7,23 +7,28 @@ import Icon from "../Icon/index";
 interface IProps {
   value?: string;
   onChange?: (gender: string) => void;
+  disabled?: boolean;
 }
 
 interface IState {
   value: string | null;
+  disabled: boolean;
 }
 
 export default class Gender extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: (props.value) ? props.value : null
+      value: (props.value) ? props.value : null,
+      disabled: !!props.disabled,
     };
 
     this.onClick = this.onClick.bind(this);
   }
 
   private onClick(gender: string) {
+    if (this.state.disabled) return;
+
     this.setState({
       value: gender,
     });
@@ -33,7 +38,7 @@ export default class Gender extends React.Component <IProps, IState> {
     }
   }
 componentWillReceiveProps(nextProps: IProps) {
-   this.setState({value: nextProps.value });
+   this.setState({value: nextProps.value , disabled: !!nextProps.disabled});
 }
   render() {
     return (
