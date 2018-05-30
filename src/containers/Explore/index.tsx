@@ -96,7 +96,7 @@ class Explore extends React.Component <IProps, IState> {
     public render() {
         return (
             <div dir={CONFIG.DIR} className={"content-container"}>
-                <Row className="page-title">
+                <Row className="page-title mb-4">
                     <h3><Translate value={"Explore"}/></h3>
                 </Row>
                 <Row type={"flex"} align={"middle"}>

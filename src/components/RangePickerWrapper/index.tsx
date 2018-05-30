@@ -49,8 +49,10 @@ class RangePickerWrapper extends React.Component<IProps, IState> {
         };
     }
     private handleClick() {
-        this.setState({display: !this.state.display});
-        this.setState({hasError: !this.state.hasError});
+        this.setState({
+            display: !this.state.display,
+            hasError: !this.state.hasError
+        });
     }
 
     private handleChange(value) {
