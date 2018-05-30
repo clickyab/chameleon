@@ -493,6 +493,11 @@ class UploadFile extends React.Component<IProps, IState> {
                         <Cropper
                             source={this.state.imgUrlOriginal}
                             type={this.state.imageType}
+                            aspect={this.props.minDimension.width / this.props.minDimension.height}
+                            minHeight={this.props.minDimension ? this.props.minDimension.height : null}
+                            minWidth={this.props.minDimension ? this.props.minDimension.width : null}
+                            height={this.props.exactDimension ? this.props.minDimension.height : null}
+                            width={this.props.exactDimension ? this.props.minDimension.width : null}
                             onChange={(img: Blob) => {
                                 this.tmpImg = img;
                                 this.setState({imgUrlCropped: ""});
