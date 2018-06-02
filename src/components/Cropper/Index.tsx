@@ -199,13 +199,11 @@ export default class Cropper extends React.Component<IProps, IState> {
                         }}
                         src={this.state.source}
                         crop={this.state.crop}
-                        onDragEnd={(status) => {
-                            console.log(status);
+                        onDragEnd={() => {
+                            this.cropImageSource(this.state.crop);
                         }}
                         onChange={(crop: ICrop) => {
-                            this.setState({crop}, () => {
-                                this.cropImageSource(crop);
-                            });
+                            this.setState({crop});
                         }}
                     />
                     {this.state.selectedWidth} × {this.state.selectedHeight} px
