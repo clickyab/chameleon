@@ -96,7 +96,7 @@ class Explore extends React.Component <IProps, IState> {
     public render() {
         return (
             <div dir={CONFIG.DIR} className={"content-container"}>
-                <Row className="page-title">
+                <Row className="page-title mb-4">
                     <h3><Translate value={"Explore"}/></h3>
                 </Row>
                 <Row type={"flex"} align={"middle"}>
@@ -109,7 +109,7 @@ class Explore extends React.Component <IProps, IState> {
                         <TabPane tab={this.i18n._t("All publishers")} key="AllPublishers" closable={false}>
                             <ListOfPublishers/>
                         </TabPane>
-                        <TabPane className="tab-contain-datatable" tab={this.i18n._t("My List")} key="MyLists" closable={false}>
+                        <TabPane className="tab-contain-datatable datatable-tab-alone" tab={this.i18n._t("My List")} key="MyLists" closable={false}>
                             <ListOfInventories
                                 ref={ListOfInventories => {
                                     this.ListOfInventories = ListOfInventories;

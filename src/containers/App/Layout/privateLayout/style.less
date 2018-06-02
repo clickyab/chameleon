@@ -281,14 +281,20 @@
 // need this much nested style for specification and avoid important
 .ant-layout-sider {
   .ant-layout-sider-children {
+      background: transparent;
     .ant-menu-dark {
+        background: transparent;
       .ant-menu-item {
         &.campaign-menu-item {
           font-weight: 500;
           display: flex;
+          font-size: 13px;
           color: @sidebar-menu-item;
-          padding-right: 20px !important;;
+          padding-right: 20px !important;
           padding-left: 20px !important;
+            &.ant-menu-item-selected , &.ant-menu-item-active{
+                background: transparent !important;
+            }
           .badge {
             margin: auto 15px;
           }

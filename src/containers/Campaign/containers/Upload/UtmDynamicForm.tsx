@@ -112,7 +112,7 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                                             multiLine={value.multiLine}
                                         />
                                     )}
-                                </FormItem>
+                              </FormItem>
                             </Col>;
                         }
                         else if (value.type === "url") {
