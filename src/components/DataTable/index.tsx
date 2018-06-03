@@ -88,6 +88,8 @@ interface IProps {
         from: moment.type,
         to: moment.type,
     };
+
+    headerHide?: boolean;
 }
 
 
@@ -205,7 +207,8 @@ class DataTable extends React.Component<IProps, IState> {
 
     private selectPageSize(value) {
         this.setState({
-            pageSize: parseInt(value)
+            pageSize: parseInt(value),
+            page: 1,
         } , () => this.loadData() );
     }
 
@@ -612,6 +615,7 @@ class DataTable extends React.Component<IProps, IState> {
 
         return (
             <div id={"data-table-wrapper-id"} className="data-table-wrapper">
+                {!this.props.headerHide &&
                 <div className="data-table-header">
                     <div className="data-table-search">
                         {/*{this.props.tableDescription}*/}
@@ -651,6 +655,7 @@ class DataTable extends React.Component<IProps, IState> {
                         }
                     </div>
                 </div>
+                }
                 {this.state.customizeModal &&
                 <Modal title={this.i18n._t("Customize Table").toString()}
                        visible={this.state.customizeModal}
