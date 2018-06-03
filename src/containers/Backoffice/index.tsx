@@ -6,6 +6,8 @@ import {UserUserPayload} from "../../api/api";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import UserContainer from "./containers/User";
 import WhiteLabel from "./containers/WhiteLabel/containers/whiteLabelAdd/index";
+import WhiteLabelBilling from "./containers/WhiteLabel/containers/whiteLabelBilling/index";
+import FinancialReport from "./containers/WhiteLabel/containers/financialReport";
 
 interface IProps extends RouteComponentProps<void> {
     routes: any;
@@ -31,11 +33,12 @@ class BackofficeContainer extends React.Component<IProps, IState> {
         const {match} = this.props;
         return (
             <div>
-                {console.log("props", this.props)}
                 <Switch>
                     <PrivateRoute path={`${match.url}/user`} component={UserContainer}/>
                     <PrivateRoute path={`${match.url}/whitelabel/create`} component={WhiteLabel}/>
                     <PrivateRoute path={`${match.url}/whitelabel/edit/:id`} component={WhiteLabel}/>
+                    <PrivateRoute path={`${match.url}/whitelabel/billing`} component={WhiteLabelBilling}/>
+                    <PrivateRoute path={`${match.url}/whitelabel/financial/report`} component={FinancialReport}/>
                 </Switch>
             </div>
         );

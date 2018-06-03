@@ -13,6 +13,7 @@ import "./style.less";
 export interface ICheckboxItem {
   title: string;
   value: string | number;
+  status: string;
 }
 
 /**
@@ -21,6 +22,7 @@ export interface ICheckboxItem {
 interface IProps {
   items: ICheckboxItem[];
   value: (string | number)[];
+  disable?: (string | number)[];
   onChange: (selectedValues: (string | number)[], selectedItems: ICheckboxItem[]) => void;
 }
 
@@ -94,6 +96,7 @@ export default class CheckBoxList extends React.Component<IProps, IState> {
               value={item.value}
               className={(this.state.value.indexOf(item.value) > -1) ? "checkbox-list-checked" : "checkbox-list" }
               checked={this.state.value.indexOf(item.value) > -1}
+              disabled={this.props.disable ? this.props.disable.indexOf(item.value) > -1 : item.status === "disable" }
               onChange={(e) => {
                 this.update(e.target as any, e.target.checked);
               }}

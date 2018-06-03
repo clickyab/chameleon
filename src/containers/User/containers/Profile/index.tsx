@@ -260,7 +260,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                       onChange={this.handleChangeLocation.bind(this)}
                                       countryId={1}
                                       cityId={this.state.user.city_id}
-                                      provinceId={this.state.user.province_name}
+                                      provinceId={this.state.user.province}
                                   />
                                   }
                               </Col>
@@ -499,7 +499,7 @@ class PublicProfileContainer extends React.Component<IProps, IState> {
                                           onChange={this.handleChangeLocation.bind(this)}
                                           countryId={1}
                                           cityId={this.state.user.city_id}
-                                          provinceId={this.state.user.province_name}
+                                          provinceId={this.state.user.province}
                                       />
                                       }
                                   </Col>

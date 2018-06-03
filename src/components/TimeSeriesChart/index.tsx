@@ -108,19 +108,19 @@ class TimeSeriesChart extends React.Component<IProps, IState> {
   }
 
   /**
-   * Store table definition in local storage
-   * @param {IDefinition} definition
+   * Store table legend in local storage
+   * @param  legend
    */
-  private storeDefinition(definition: IDefinition) {
-    ServerStore.getInstance().setItem(`TIME_SERIES_DEFINITION_${this.props.name}`, JSON.stringify(definition));
+  private storeLegend(legend) {
+    ServerStore.getInstance().setItem(`TIME_SERIES_LEGEND_${this.props.name}`, legend);
   }
 
   /**
-   * Try to load definition from local storage
-   * @returns {IDefinition}
+   * Try to load legend from local storage
+   * @returns
    */
-  private restoreDefinition(): IDefinition | null {
-    return ServerStore.getInstance().getItem(`TABALE_DEFINITION_${this.props.name}`);
+  private restoreLegend() {
+    return ServerStore.getInstance().getItem(`TABALE_SERIES_LEGEND_${this.props.name}`);
   }
 
 

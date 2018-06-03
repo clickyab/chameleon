@@ -124,29 +124,31 @@ export default class LocationSelect extends React.Component<IProps, IState> {
                             }
                         });
                 }
+                else {
+                    this.setProvince("0" , true);
+                }
             });
     }
 
-    // public componentWillReceiveProps(newProps: IProps) {
-    //   console.log(newProps);
-    //   if (newProps.countryId !== this.country_id &&
-    //     newProps.provinceId !== this.province_id &&
-    //     newProps.cityId !== this.city_id) {
-    //     if (!!newProps.countryId) {
-    //       this.loadCountries()
-    //         .then(() => {
-    //           if (newProps.provinceId) {
-    //             this.setProvince(null, -1, this.props.provinceId)
-    //               .then(() => {
-    //                 if (newProps.cityId) {
-    //                   this.setCity(null, -`, this.props.cityId);
-    //                 }
-    //               });
-    //           }
-    //         });
-    //     }
-    //   }
-    // }
+    public componentWillReceiveProps(newProps: IProps) {
+      if (newProps.countryId !== this.country_id &&
+        newProps.provinceId !== this.province_id &&
+        newProps.cityId !== this.city_id) {
+        if (!!newProps.countryId) {
+          this.loadCountries()
+            .then(() => {
+              if (newProps.provinceId) {
+                this.setProvince(newProps.provinceId, false)
+                  .then(() => {
+                    if (newProps.cityId) {
+                      this.setCity(newProps.cityId);
+                    }
+                  });
+              }
+            });
+        }
+      }
+    }
 
     /**
      * Load countries and check first item as default.
@@ -159,7 +161,7 @@ export default class LocationSelect extends React.Component<IProps, IState> {
                 this.setState({
                     countries,
                 });
-                return this.setCountry(null, 0, !!this.props.countryId ? this.props.countryId : countries[0].id);
+                return this.setCountry(0, !!this.props.countryId ? this.props.countryId : countries[0].id);
             });
     }
 
@@ -168,13 +170,12 @@ export default class LocationSelect extends React.Component<IProps, IState> {
      * set selected country and load provinces base on selected country.
      * Call `setProvince` with first item, if `selectedFirstItem` set as true.
      *
-     * @param event
      * @param {number} index
      * @param {number} countryId
      * @param {boolean} selectFirstItem
      * @returns {Promise<LocationProvinces>}
      */
-    private setCountry(event, index: number, countryId: number) {
+    private setCountry(index: number, countryId: number) {
         const country = this.state.countries.find((c) => (c.id === countryId));
         return this.api.locationProvincesCountryIdGet({countryId: country.id.toString()})
             .then((provinces) => {
@@ -196,17 +197,30 @@ export default class LocationSelect extends React.Component<IProps, IState> {
      * @returns {Promise<LocationCities>}
      */
     private setProvince(provinceId: string, selectFirstItem?: boolean) {
-        const province = this.state.provinces.find((c) => (c.code === provinceId));
-        return this.api.locationCitiesProvinceGet({province: province.name})
-            .then((cities) => {
-                this.setState({
-                    province,
-                    cities,
+        if (!selectFirstItem) {
+            const province = this.state.provinces.find((c) => (c.code === provinceId));
+            return this.api.locationCitiesProvinceGet({province: province.name})
+                .then((cities) => {
+                    this.setState({
+                        province,
+                        cities,
+                    });
+                    if (cities[0]) {
+                        this.setState({city: cities[0]});
+                    }
                 });
-                if (cities[0]) {
-                    this.setState({city: cities[0]});
-                }
-            });
+        } else {
+            return this.api.locationCitiesProvinceGet({province: this.state.provinces[0].name})
+                .then((cities) => {
+                    this.setState({
+                        province : this.state.provinces[0],
+                        cities,
+                    });
+                    if (cities[0]) {
+                        this.setState({city: cities[0]});
+                    }
+                });
+        }
     }
 
     /**

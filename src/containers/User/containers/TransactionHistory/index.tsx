@@ -1,5 +1,5 @@
 /**
- * @file Charge file
+ * @file Transaction History file
  */
 import * as React from "react";
 import {connect} from "react-redux";
@@ -10,10 +10,7 @@ import {
 import {RootState} from "../../../../redux/reducers/index";
 import I18n from "../../../../services/i18n/index";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
-import Icon from "../../../../components/Icon/index" ;
-import CONFIG from "../../../../constants/config" ;
 import "./style.less";
-import {ISelectBoxItem} from "../../../Campaign/containers/Naming/Components/SelectBox";
 import DataTableChartWrapper from "../../../../components/DataTableChartWrapper";
 
 /**
@@ -32,14 +29,8 @@ export interface IProps {
  * @desc define state object
  */
 export interface IState {
-    selectedPayment: PAYMENT;
-    amountValue: number | null;
-    accountDeposit: number | null;
-    couponInput: number | "";
-    JSXForm: JSX.Element;
 }
 
-enum PAYMENT { ONLINE = "online", RECEIPT = "receipt", CHECK_BANK = "check bank", COUPON = "coupon"}
 
 @connect(mapStateToProps, mapDispatchToProps)
 
@@ -51,32 +42,8 @@ class TransactionHistory extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            selectedPayment: PAYMENT.ONLINE,
-            amountValue: null,
-            accountDeposit: props.user.balance ? props.user.balance : null,
-            couponInput: "",
-            JSXForm: null,
-        };
     }
 
-    PaymentTypes: ISelectBoxItem[] = [
-        {
-            title: this.i18n._t("Online payment").toString(),
-            value: PAYMENT.ONLINE,
-            icon: <Icon name="cif-money-charge" className={"campaign-icon"}/>,
-        },
-        {
-            title: this.i18n._t("With bank receipt").toString(),
-            value: PAYMENT.RECEIPT,
-            icon: <Icon name="cif-bankwire" className={"campaign-icon"}/>,
-        },
-        // {
-        //     title: this.i18n._t("Coupon").toString(),
-        //     value: PAYMENT.COUPON,
-        //     icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
-        // }
-    ];
 
     componentDidMount() {
         this.props.setBreadcrumb("charge", this.i18n._t("Transaction History").toString(), "home");

@@ -8,6 +8,7 @@ import Translate from "../i18n/Translate";
 interface IProps {
     onChange?: (value: IRangeObject) => void;
     value?: IRangeObject | string;
+    isValid?:  (value: boolean) => void;
     isCancel?: (value: boolean) => void;
 }
 
@@ -133,6 +134,8 @@ class RangePicker extends React.Component<IProps, IState> {
             },
             selectedDay: [...days],
             currentMonth: days[0]
+        }, () => {
+            this.handleSubmit();
         });
     }
 
@@ -146,15 +149,34 @@ class RangePicker extends React.Component<IProps, IState> {
         this.setState({enterSecond: status});
     }
     private handleSubmit() {
-        if (this.props.onChange) {
-            if (this.state.value.range && this.state.value.range.to === undefined) {
-                let tempValue = this.state.value;
-                tempValue.range.to = tempValue.range.from;
-                this.props.onChange(this.state.value);
+        const monthFormat = this.state.isGregorian ? "month" : "jMonth";
+        let limitDate ;
+        if (this.state.isGregorian) {
+            limitDate = moment(this.state.value.range.from).add(3, monthFormat).startOf(monthFormat).add(moment().date(), "day");
+        }
+        else {
+            limitDate = moment(this.state.value.range.from).add(3, monthFormat).startOf(monthFormat).add(moment().jDate() , "day");
+        }
+        if (this.state.value.range.to.isBefore(limitDate)) {
+            if (this.props.onChange) {
+                if (this.state.value.range && this.state.value.range.to === undefined) {
+                    let tempValue = this.state.value;
+                    tempValue.range.to = tempValue.range.from;
+                    this.props.onChange(this.state.value);
+                }
+                else {
+                    this.props.onChange(this.state.value);
+                }
+                if (this.props.isValid) {
+                    this.props.isValid(true);
+                }
             }
-            else  {
-                this.props.onChange(this.state.value);
+        }
+        else {
+            if (this.props.isValid) {
+                this.props.isValid(false);
             }
+            this.handleCancel();
         }
     }
 
@@ -346,10 +368,10 @@ class RangePicker extends React.Component<IProps, IState> {
                         <div className="date-filter">
           <span onClick={() => {
             if (isGregorian) {
-              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat).add(moment().date(), "day"), moment()], rangeType.LAST_TREE_MONTH);
+              this.setRange([moment().subtract(3, monthFormat).startOf(monthFormat).add(moment().date(), "day"), moment()], rangeType.LAST_TREE_MONTH);
             }
             else {
-              this.setRange([moment().subtract(2, monthFormat).startOf(monthFormat).add(moment().jDate() - 1 , "day"), moment()], rangeType.LAST_TREE_MONTH);
+              this.setRange([moment().subtract(3, monthFormat).startOf(monthFormat).add(moment().jDate() , "day"), moment()], rangeType.LAST_TREE_MONTH);
             }
           }}>
             <Translate value={"last tree month"}/></span>

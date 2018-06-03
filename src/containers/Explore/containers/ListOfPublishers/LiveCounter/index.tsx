@@ -47,7 +47,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                 <Col span={8} className="item-wrapper">
                     <div className="item-container">
                         <div className="live-counter-icon-container">
-                            <Icon name={"cif-plusregular live-counter-icon"}/>
+                            <Icon name={"cif-globe live-counter-icon"}/>
                         </div>
                         <span className="live-counter-title">
                            <Translate value={"Total Publishers"}/>
@@ -58,7 +58,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                 <Col span={8} className="item-wrapper space">
                     <div className="item-container">
                         <div className="live-counter-icon-container">
-                        <Icon name={"cif-plusregular live-counter-icon"}/>
+                        <Icon name={"cif-impression live-counter-icon"}/>
                         </div>
                         <span className="live-counter-title">
                            <Translate value={"Average visit per month"}/>
@@ -69,7 +69,7 @@ class LiveCounter extends React.Component<IProps , IState> {
                 <Col span={8} className="item-wrapper">
                     <div className="item-container">
                         <div className="live-counter-icon-container">
-                            <Icon name={"cif-plusregular live-counter-icon"}/>
+                            <Icon name={"cif-exchangenet live-counter-icon"}/>
                         </div>
                         <span className="live-counter-title">
                            <Translate value={"Number of Exchanges"}/>

@@ -297,8 +297,6 @@ label{
 .reset-margin{
   margin: 0 !important;
 }
-.anticon-star:before{
-}
 
 .validate-form {
     margin-bottom: 10px !important;
@@ -346,6 +344,17 @@ label{
     .ant-select-arrow{
         &:before{
             color: #2E3246;
+        }
+    }
+}
+// Override ant-star icon with our own font glyph
+.ant-rate-star {
+    .anticon {
+        &.anticon-star {
+            &:before {
+                content: "\e054" !important;
+                font-family: clickyabdashboard !important;
+            }
         }
     }
 }

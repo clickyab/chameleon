@@ -120,3 +120,31 @@
 .verify-link{
   border-bottom: 1px solid @primary-color;
 }
+
+.alert-modal {
+    width: 370px !important;
+    .alert-modal-container {
+        display: flex;
+        color: #5A5D6C;
+        i {
+            font-size: 33px;
+        }
+        .alert-description {
+            margin: 0 10px;
+            font-size: 13px;
+        }
+    }
+    .ant-modal-footer {
+        padding-top: 0;
+    }
+    .ant-btn {
+        border: 1px solid #DFE0E6 !important;
+        &.ant-btn-primary {
+            background: #EC4E32;
+            border: none !important;
+            &:hover {
+                background: #f4774f;
+            }
+        }
+    }
+}
