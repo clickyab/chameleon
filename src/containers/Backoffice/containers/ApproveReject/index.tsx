@@ -34,7 +34,7 @@ interface IState {
 class ApproveReject extends React.Component<IProps, IState> {
 
     private i18n = I18n.getInstance();
-    private controllerApi = new ControllersApi();
+    private controllersApi = new ControllersApi();
 
     constructor(props: IProps) {
         super(props);
@@ -54,8 +54,8 @@ class ApproveReject extends React.Component<IProps, IState> {
                 </div>
                 <DataTable
                     headerHide={true}
-                    dataFn={this.controllerApi.campaignStatusListGet}
-                    definitionFn={this.controllerApi.campaignStatusListDefinitionGet}
+                    dataFn={this.controllersApi.campaignStatusListGet}
+                    definitionFn={this.controllersApi.campaignStatusListDefinitionGet}
                     name={"Approve Reject"}
                     customRenderColumns={{
                         "title": (value: string, row: ControllersListCampaignsResponseData, index: number): JSX.Element => {
