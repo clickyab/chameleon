@@ -109,7 +109,7 @@ class BackofficeProfileContainer extends React.Component<IProps, IState> {
                     city_id: this.state.user.city_id,
                 }
             }).then((data) => {
-                this.props.setUser(data.account as UserResponseLoginOKAccount);
+             //   this.props.setUser(data.account as UserResponseLoginOKAccount);
                 notification.success({
                     message: this.i18n._t("Update Profile"),
                     className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",

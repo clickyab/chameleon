@@ -28,6 +28,7 @@ import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
 import {UPLOAD_MODULES} from "../../components/UploadFile";
 import FlowUpload from "../../../../services/Upload/flowUpload";
 import Tooltip from "antd/es/tooltip";
+import {assetObjGen, assetPushObjArray} from "../../../../services/Utils/assetInputFormatter";
 
 const Dragger = Upload.Dragger;
 const FormItem = Form.Item;
@@ -559,7 +560,7 @@ class UploadBanner extends React.Component <IProps, IStateUpload> {
                                 <Button className="btn-general btn-submit ml-1"
                                         onClick={this.handleSubmit.bind(this)}
                                 >
-                                    <Translate value={"Save and creat new ad"}/>
+                                    <Translate value={"Save and create new ad"}/>
                                 </Button>
                                 <Button className="btn-general btn-cancel"><Translate value={"Cancel"}/></Button>
                             </Row>

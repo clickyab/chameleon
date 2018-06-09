@@ -179,7 +179,7 @@ class BudgetComponent extends React.Component <IProps, IState> {
         if (value.length < 4) return;
         this.setState({usersEmail: []});
         const userApi = new UserApi();
-        userApi.userSearchMailPost({
+        userApi.userSearchManagersMailPost({
             payloadData: {
                 email: value,
             }

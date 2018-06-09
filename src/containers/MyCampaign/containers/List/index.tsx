@@ -145,7 +145,7 @@ class List extends React.Component<IProps, IState> {
                                                    customClass="alert-modal"
                                                    onOk={() => {this.changeCampaignStatus(this.statusRow, this.statusIndex, this.statusSwitch);
                                                                 this.setState({showAlert: false}); } }
-                                                   onCancel={() => {this.setState({showAlert: false})}}
+                                                   onCancel={() => {this.setState({showAlert: false}); }}
                                             >
                                                 <div className="alert-modal-container">
                                                     <Icon name={"cif-alert"}/>

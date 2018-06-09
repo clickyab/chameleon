@@ -1,0 +1,137 @@
+.approve-reject-container {
+    min-width: 700px;
+    .ant-modal-body {
+        padding: 0;
+    }
+    .creative-check-container {
+        display: flex;
+        min-height: 500px;
+    }
+    .creative-check-sidebar {
+        padding: 20px;
+        background: #F6F6F6;
+        width: 250px;
+        .check-sidebar-title {
+            margin-top: 25px;
+            display: block;
+            font-size: 14px;
+            color: #5A5D6C;
+            font-weight: 500;
+        }
+        .sidebar-info-title {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #A8ACB8;
+        }
+        .sidebar-info-content {
+            font-size: 13px;
+            color: #5A5D6C;
+        }
+        .sidebar-info-link {
+            font-size: 14px;
+        }
+    }
+    .creative-check-ads {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        width: 450px;
+    }
+    .approve-reject-btn-container {
+        display: flex;
+        margin: auto -20px -20px -20px;
+        width: calc(~"100% + 40px");
+        .approve-reject-btn {
+            align-self: end;
+            display: inline-block;
+            width: 50%;
+            height: 40px;
+            color: #FFF;
+            font-size: 14px;
+            text-align: center;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: all .2s ease-in;
+            &.approve-btn {
+                background: #00ABFB;
+                &:hover{
+                    background: #00BAFB;
+                }
+            }
+            &.reject-btn {
+                background: #EC4E32;
+                &:hover{
+                    background: #EC5A35;
+                }
+            }
+        }
+    }
+    .approve-reject-progress-container{
+        display: flex;
+        align-self: start;
+        margin-top: -20px;
+        margin-left: -20px;
+        margin-right: -20px;
+        width: calc(~"100% + 40px");
+        height: 3px;
+        background: #EBECF2;
+        .approve-reject-progress{
+            background: #3DBE8B;
+        }
+    }
+    .controller-container{
+        margin-left: -20px;
+        margin-right: -20px;
+        width: calc(~"100% + 40px");
+        display: flex;
+        align-self: start;
+        margin-top: 15px;
+        color: #A8ACB8;
+        font-size: 13px;
+        .back-controller{
+            margin: 0 20px;
+            width: 33%;
+            display: flex;
+            justify-content: flex-start;
+            span {
+                margin: 0 5px;
+                cursor: pointer;
+            }
+            i{
+                position: relative;
+                top:2px;
+                line-height: 1;
+                cursor: pointer;
+            }
+        }
+        .show-counter{
+            margin: 0 20px;
+            text-align: center;
+            width: 33%;
+        }
+        .skip-controller{
+            margin: 0 20px;
+            width: 33%;
+            display: flex;
+            justify-content: flex-end;
+            span {
+                margin: 0 5px;
+                cursor: pointer;
+            }
+            i{
+                position: relative;
+                top:2px;
+                line-height: 1;
+                cursor: pointer;
+            }
+        }
+    }
+    .ad-container {
+        .square-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
