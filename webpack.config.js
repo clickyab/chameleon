@@ -32,6 +32,8 @@ module.exports = {
       "react-redux",
       "react-router",
       "redux",
+      "lodash",
+      "antd"
     ],
   },
   module: {
