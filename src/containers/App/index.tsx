@@ -11,12 +11,13 @@ import "./style.less";
 import AAA from "../../services/AAA/index";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import {setIsLogin, setUser, unsetIsLogin} from "../../redux/app/actions/index";
-import CampaignContainer from "../Campaign/index";
+// import CampaignContainer from "../Campaign/index";
 import MyCampaignContainer from "../MyCampaign/index";
 import CheckMail from "../User/containers/CheckMail";
 import {UserApi, UserResponseLoginOKAccount} from "../../api/api";
 import ExploreContainer from "../Explore/index";
 import BackofficeContainer from "../Backoffice";
+import DynamicImport from "../../components/DynamicImport";
 
 
 interface IProps {
@@ -91,7 +92,7 @@ class App extends React.Component<IProps, IState> {
           <Switch>
             <Route path={`/user`} component={PublicContainer}/>
             <PrivateRoute path={`/dashboard`} component={Dashboard}/>
-            <PrivateRoute path={`/campaign`} component={CampaignContainer}/>
+            <PrivateRoute path={`/campaign`} component={Campaign}/>
             <PrivateRoute path={`/my/campaign`} component={MyCampaignContainer}/>
             <PrivateRoute path={`/explore`} component={ExploreContainer}/>
             <PrivateRoute path={`/backoffice`} component={BackofficeContainer}/>
@@ -103,6 +104,13 @@ class App extends React.Component<IProps, IState> {
   }
 }
 
+const Campaign = (props) => (
+    <DynamicImport load={() => import("../Campaign/index")}>
+        {(Component) => Component === null
+            ? <p>Loading</p>
+            : <Component {...props} />}
+    </DynamicImport>
+)
 
 function mapStateToProps(state: RootState) {
   return {
