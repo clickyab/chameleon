@@ -157,7 +157,7 @@ class WhiteLabelDeductible extends React.Component<IProps, IState> {
         if (value.length < 4) return;
         this.setState({usersEmail: []});
         const userApi = new UserApi();
-        userApi.userSearchMailPost({
+        userApi.userSearchAdvertiserMailPost({
             payloadData: {
                 email: value,
             }

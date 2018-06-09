@@ -2,7 +2,7 @@
 const permMap = {
     "adCampaignCreativeStatusIdPatch": {
         "protected": true,
-        "resource": "change_creative_status:global"
+        "resource": "change_creative_status:superGlobal"
     },
     "adCampaignIdGet": {
         "protected": true,
@@ -14,7 +14,7 @@ const permMap = {
     },
     "adChangeCreativesStatusIdPut": {
         "protected": true,
-        "resource": "change_creatives_status:global"
+        "resource": "change_creatives_status:superGlobal"
     },
     "adCreativeRejectReasonsGet": {
         "protected": true,
@@ -26,7 +26,7 @@ const permMap = {
     },
     "adNativePost": {
         "protected": true,
-        "resource": "add_creative:self"
+        "resource": "create_creative:self"
     },
     "adNativeIdPut": {
         "protected": true,
@@ -86,7 +86,7 @@ const permMap = {
     },
     "campaignCreatePost": {
         "protected": true,
-        "resource": "edit_campaign:self"
+        "resource": "create_campaign:self"
     },
     "campaignCreativeIdGet": {
         "protected": true,
@@ -94,11 +94,11 @@ const permMap = {
     },
     "campaignDailyIdGet": {
         "protected": true,
-        "resource": "campaign_daily:self"
+        "resource": "daily_campaign:self"
     },
     "campaignDailyIdDefinitionGet": {
         "protected": true,
-        "resource": "campaign_daily:self"
+        "resource": "daily_campaign:self"
     },
     "campaignFinalizeIdPut": {
         "protected": true,
@@ -110,11 +110,11 @@ const permMap = {
     },
     "campaignGraphAllGet": {
         "protected": true,
-        "resource": "campaign_graph:self"
+        "resource": "graph_campaign:self"
     },
     "campaignGraphDailyIdGet": {
         "protected": true,
-        "resource": "campaign_graph:self"
+        "resource": "graph_daily_campaign:self"
     },
     "campaignInventoryIdPut": {
         "protected": true,
@@ -122,11 +122,11 @@ const permMap = {
     },
     "campaignListGet": {
         "protected": true,
-        "resource": "campaign_list:self"
+        "resource": "list_campaign:self"
     },
     "campaignListDefinitionGet": {
         "protected": true,
-        "resource": "campaign_list:self"
+        "resource": "list_campaign:self"
     },
     "campaignLogIdGet": {
         "protected": true,
@@ -148,13 +148,21 @@ const permMap = {
         "protected": true,
         "resource": "campaign_publisher:self"
     },
+    "campaignStatusListGet": {
+        "protected": true,
+        "resource": "list_campaign:superGlobal"
+    },
+    "campaignStatusListDefinitionGet": {
+        "protected": true,
+        "resource": "list_campaign:superGlobal"
+    },
     "campaignStatusIdPatch": {
         "protected": true,
         "resource": "change_campaign_status:self"
     },
     "domainChangeDomainStatusIdPut": {
         "protected": true,
-        "resource": "god:global"
+        "resource": "change_domain_status:superGlobal"
     },
     "domainConfigNameGet": {
         "protected": false,
@@ -162,11 +170,11 @@ const permMap = {
     },
     "domainCreatePost": {
         "protected": true,
-        "resource": "god:global"
+        "resource": "create_domain:superGlobal"
     },
     "domainEditIdPut": {
         "protected": true,
-        "resource": "god:global"
+        "resource": "edit_domain:superGlobal"
     },
     "domainGetIdGet": {
         "protected": true,
@@ -188,25 +196,29 @@ const permMap = {
         "protected": true,
         "resource": "get_billing:self"
     },
+    "financialChargeWhitelabelIdPost": {
+        "protected": true,
+        "resource": "charge_owner:superGlobal"
+    },
     "financialGatewaysGet": {
         "protected": true,
         "resource": ""
     },
     "financialGatewaysPost": {
         "protected": true,
-        "resource": "add_gateway:global"
+        "resource": "add_gateway:superGlobal"
     },
     "financialGatewaysIdGet": {
         "protected": true,
-        "resource": "god:global"
+        "resource": ""
     },
     "financialGatewaysIdPatch": {
         "protected": true,
-        "resource": "set_default_gateway:global"
+        "resource": "set_default_gateway:superGlobal"
     },
     "financialGatewaysIdPut": {
         "protected": true,
-        "resource": "edit_gateway:global"
+        "resource": "edit_gateway:superGlobal"
     },
     "financialGraphSpendGet": {
         "protected": true,
@@ -218,7 +230,7 @@ const permMap = {
     },
     "financialPaymentInitPost": {
         "protected": true,
-        "resource": "make_payment:self"
+        "resource": "make_online_payment:self"
     },
     "financialPaymentReturnBankHashPost": {
         "protected": false,
@@ -226,7 +238,7 @@ const permMap = {
     },
     "financialPaymentIdGet": {
         "protected": true,
-        "resource": "make_payment:self"
+        "resource": "get_online_transaction:self"
     },
     "inventoryAddpubIdPatch": {
         "protected": true,
@@ -242,7 +254,7 @@ const permMap = {
     },
     "inventoryCreatePost": {
         "protected": true,
-        "resource": "add_inventory:self"
+        "resource": "create_inventory:self"
     },
     "inventoryDuplicatePost": {
         "protected": true,
@@ -262,11 +274,11 @@ const permMap = {
     },
     "inventoryPublisherListGet": {
         "protected": true,
-        "resource": "publisher_list:self"
+        "resource": "list_publisher:self"
     },
     "inventoryPublisherListDefinitionGet": {
         "protected": true,
-        "resource": "publisher_list:self"
+        "resource": "list_publisher:self"
     },
     "inventoryPublisherListSingleIdGet": {
         "protected": true,
@@ -334,11 +346,11 @@ const permMap = {
     },
     "userListGet": {
         "protected": true,
-        "resource": "user_list:global"
+        "resource": "list_user:self"
     },
     "userListDefinitionGet": {
         "protected": true,
-        "resource": "user_list:global"
+        "resource": "list_user:self"
     },
     "userLoginPost": {
         "protected": false,
@@ -384,7 +396,7 @@ const permMap = {
         "protected": false,
         "resource": ""
     },
-    "userSearchMailPost": {
+    "userSearchAdvertiserMailPost": {
         "protected": true,
         "resource": ""
     },
@@ -392,9 +404,13 @@ const permMap = {
         "protected": true,
         "resource": ""
     },
+    "userSearchUserMailPost": {
+        "protected": true,
+        "resource": ""
+    },
     "userStartImpersonatePost": {
         "protected": true,
-        "resource": "impersonate_user:global"
+        "resource": "impersonate_user:self"
     },
     "userStorePost": {
         "protected": true,
@@ -411,6 +427,10 @@ const permMap = {
     "userWhitelabelAddPost": {
         "protected": true,
         "resource": "add_to_whitelabel_user:global"
+    },
+    "userWhitelabelRolesGet": {
+        "protected": true,
+        "resource": "get_assign_admin_roles:global"
     }
 };
 export default permMap;
