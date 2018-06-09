@@ -127,7 +127,7 @@ export default class AAA {
      * @returns {boolean}
      */
     public hasPerm(perm: string): boolean {
-        if (perm === "" || "god:global") return true;
+        if (perm === "") return true;
         if (!this.user) return false;
         return this.user.perms.includes(perm);
     }
