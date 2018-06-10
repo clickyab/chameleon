@@ -11,6 +11,7 @@
         padding: 20px;
         background: #F6F6F6;
         width: 250px;
+        z-index: 400;
         .check-sidebar-title {
             margin-top: 25px;
             display: block;
@@ -33,10 +34,13 @@
         }
     }
     .creative-check-ads {
+        position: relative;
         display: flex;
         flex-direction: column;
         padding: 20px;
         width: 450px;
+        .creative-ad-wrapper {
+        }
     }
     .approve-reject-btn-container {
         display: flex;
@@ -55,19 +59,24 @@
             transition: all .2s ease-in;
             &.approve-btn {
                 background: #00ABFB;
-                &:hover{
+                &:hover {
                     background: #00BAFB;
                 }
             }
             &.reject-btn {
                 background: #EC4E32;
-                &:hover{
+                &:hover {
                     background: #EC5A35;
                 }
             }
+            &.final-save-btn{
+                position: absolute;
+                bottom: 0;
+                background: #3DBE8B;
+            }
         }
     }
-    .approve-reject-progress-container{
+    .approve-reject-progress-container {
         display: flex;
         align-self: start;
         margin-top: -20px;
@@ -76,11 +85,11 @@
         width: calc(~"100% + 40px");
         height: 3px;
         background: #EBECF2;
-        .approve-reject-progress{
+        .approve-reject-progress {
             background: #3DBE8B;
         }
     }
-    .controller-container{
+    .controller-container {
         margin-left: -20px;
         margin-right: -20px;
         width: calc(~"100% + 40px");
@@ -89,39 +98,46 @@
         margin-top: 15px;
         color: #A8ACB8;
         font-size: 13px;
-        .back-controller{
+        .back-controller {
             margin: 0 20px;
             width: 33%;
             display: flex;
             justify-content: flex-start;
+            div{
+                display: flex;
+            }
             span {
+                display: flex;
                 margin: 0 5px;
                 cursor: pointer;
             }
-            i{
+            i {
+                display: flex;
                 position: relative;
-                top:2px;
+                top: 2px;
                 line-height: 1;
                 cursor: pointer;
             }
         }
-        .show-counter{
+        .show-counter {
             margin: 0 20px;
             text-align: center;
             width: 33%;
         }
-        .skip-controller{
+        .skip-controller {
             margin: 0 20px;
             width: 33%;
             display: flex;
             justify-content: flex-end;
             span {
+                display: flex;
                 margin: 0 5px;
                 cursor: pointer;
             }
-            i{
+            i {
+                display: flex;
                 position: relative;
-                top:2px;
+                top: 2px;
                 line-height: 1;
                 cursor: pointer;
             }
@@ -133,5 +149,183 @@
             justify-content: center;
             align-items: center;
         }
+    }
+}
+
+.ant-modal-close{
+    z-index: 500;
+}
+.reject-reasons {
+    position: absolute;
+    padding: 10px;
+    width: 50%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 500px;
+    background: #FFF;
+    z-index: 300;
+    .radio-reasons {
+        .ant-radio-wrapper {
+            display: block;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+        .ant-radio {
+            width: 16px;
+            height: 16px;
+            .ant-radio-input {
+                width: 16px;
+                height: 16px;
+            }
+            .ant-radio-inner {
+                width: 16px;
+                height: 16px;
+                border-color: #DFE0E6;
+                &:after {
+                    width: 8px;
+                    height: 8px;
+                    top: 3px;
+                    left: 3px;
+                    background-color: #5A5D6C;
+                }
+            }
+        }
+        .ant-radio-checked {
+            &:hover {
+                border-color: #DFE0E6 !important;
+            }
+            &:after {
+                animation: none;
+                border-color: #DFE0E6 !important;
+            }
+        }
+    }
+}
+
+.reason-overlay {
+    opacity: .5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000;
+}
+
+.reason-animation-enter {
+    position: absolute;
+    top: 0;
+    right: -50%;
+    width: 100%;
+    opacity: 1;
+    transition: all;
+    background: #FFF;
+}
+
+.reason-animation-enter.reason-animation-enter-active {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    opacity: 1;
+    transition: 300ms linear;
+    background: #FFF;
+}
+
+.reason-animation-leave {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 1;
+    width: 100%;
+    transition: 300ms linear;
+    background: #FFF;
+}
+
+.reason-animation-leave.reason-animation-leave-active {
+    position: absolute;
+    top: 0;
+    right: -50%;
+    opacity: 0.01;
+    width: 0;
+    transition: 300ms linear;
+    background: #FFF;
+}
+
+.reject-reason-btn {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 40px;
+    color: #FFF;
+    background: #EC4E32;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.back-controller-summary {
+    color: #A8ACB8;
+    font-size: 13px;
+    width: 33%;
+    display: flex;
+    justify-content: flex-start;
+    div{
+        display: flex;
+    }
+    span {
+        display: flex;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    i {
+        position: relative;
+        display: flex;
+        top: 2px;
+        line-height: 1;
+        cursor: pointer;
+    }
+}
+.summary-header{
+    display: flex;
+    margin-top: 25px;
+    color: #5A5D6C;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid #DFE0E6;
+    span , i{
+        display: flex;
+    }
+    span{
+        margin: 0 5px;
+    }
+    i{
+        position: relative;
+        top:2px;
+        line-height: 1;
+    }
+}
+.summary-detail{
+    padding-right: 16px;
+    .summary-item-info{
+        margin-top: 20px;
+        display: inline-block;
+        min-width: 40%;
+        color: #A8ACB8;
+        font-size: 14px;
+    }
+    .summary-item-value{
+        padding: 0 5%;
+        display: inline-block;
+        width: 50%;
+        color: #5A5D6C;
+        font-size: 13px;
+    }
+    .hour-summary{
+        margin: 0 5px;
     }
 }
