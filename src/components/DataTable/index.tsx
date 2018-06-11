@@ -481,18 +481,22 @@ class DataTable extends React.Component<IProps, IState> {
             itemRender: this.itemRender as any,
             pageSize: this.state.pageSize,
             showTotal: (total, range) => {
-                return <div className={"pagination-description"}>
-                    <Translate value={"Number of record show on page"}/>
-                    <Select className={"pagesize-selector"} defaultValue="10" style={{width: 50}}
-                            onChange={(value) => this.selectPageSize(value)}>
-                        <Option value="10">10</Option>
-                        <Option value="20">20</Option>
-                        <Option value="30">30</Option>
-                        <Option value="50">50</Option>
-                    </Select>
-                    <Translate value="(Show %s from %s)"
-                               params={[this.state.page, Math.ceil(this.state.data.total / this.state.pageSize)]}/>
-                </div>;
+                if (total !== 0) {
+                    return <div className={"pagination-description"}>
+                        <Translate value={"Number of record show on page"}/>
+                        <Select className={"pagesize-selector"} defaultValue="10" style={{width: 50}}
+                                onChange={(value) => this.selectPageSize(value)}>
+                            <Option value="10">10</Option>
+                            <Option value="20">20</Option>
+                            <Option value="30">30</Option>
+                            <Option value="50">50</Option>
+                        </Select>
+                        <Translate value="(Show %s from %s)"
+                                   params={[this.state.page, Math.ceil(this.state.data.total / this.state.pageSize)]}/>
+                    </div>;
+                } else {
+                    return null;
+                }
             },
             onChange: (page, pageSize) => {
                 this.setState({
@@ -721,10 +725,26 @@ class DataTable extends React.Component<IProps, IState> {
                     {this.props.infinite || this.state.data.total === 0 &&
                     <div>
                         {this.state.data.total !== 0 &&
-                        < Translate value={"%s results"} params={[currencyFormatter(this.state.data.total)]}/>
+                          <Translate value={"%s results"} params={[currencyFormatter(this.state.data.total)]}/>
                         }
                         {this.state.data.total === 0 &&
-                        < Translate value={"%s result"} params={[currencyFormatter(this.state.data.total)]}/>
+                            <div className="empty-table">
+                                <div className="icon-container">
+                                    <Icon name={"cif-money-charge"}/>
+                                </div>
+                                {this.state.searches &&
+                                    <div>
+                                        <Translate className="not-found-title" value={"Your search doesn't have any result"}/>
+                                        <Translate className="not-found-description" value={"Please reconsider your search keyword or your chosen filters"}/>
+                                    </div>
+                                }
+                                {!this.state.searches &&
+                                <div>
+                                    <Translate className="not-found-title" value={"No record has been found for this Table"}/>
+                                    <Translate className="not-found-description" value={"Please reconsider your search keyword or your chosen filters"}/>
+                                </div>
+                                }
+                            </div>
                         }
                     </div>
                     }
