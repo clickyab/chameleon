@@ -109,7 +109,7 @@ class WhiteLabelCharge extends React.Component<IProps, IState> {
                 .then((res: OrmOnlinePayment) => {
                     this.paymentAmount = res.amount;
                     this.clickyabResNumber = res.res_num;
-                    this.bankRefNumber = res.ref_num.String;
+                    this.bankRefNumber = res.ref_num;
                     this.errorBank = res.error_reason.BankReason;
                 });
             this.setState({showModal: true});

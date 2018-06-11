@@ -18,7 +18,7 @@ import {
     ControllersApi,
     ControllersCreateCampaignPayload,
     ControllersCampaignGetResponse,
-    ControllersCampaignGetResponseSchedule, ControllersCampaignBase, ControllersCampaignBaseSchedule,
+    ControllersCampaignBase, ControllersCampaignBaseSchedule, ControllersBaseResultSchedule,
 } from "../../../../api/api";
 import TimePeriod from "./Components/timePeriod/index";
 import {setBreadcrumb} from "../../../../redux/app/actions/index";
@@ -54,7 +54,7 @@ interface IState {
     status: CAMPAIGN_STATUS;
     currentCampaign: ControllersCampaignGetResponse;
     tld: string;
-    schedule ?: ControllersCampaignGetResponseSchedule;
+    schedule ?: ControllersBaseResultSchedule;
     timePeriods: any[];
     minRange: string;
 }
@@ -101,7 +101,7 @@ class NamingComponent extends React.Component <IProps, IState> {
         }
     }
 
-    private parseTimePeriodToState(schedule: ControllersCampaignGetResponseSchedule) {
+    private parseTimePeriodToState(schedule: ControllersBaseResultSchedule ) {
         let parsedSchedule = [];
         if (schedule) {
           Object.keys(schedule)
@@ -125,7 +125,7 @@ class NamingComponent extends React.Component <IProps, IState> {
     }
 
     private setStateForTimePeriods() {
-        let schedule: ControllersCampaignGetResponseSchedule = {};
+        let schedule: ControllersBaseResultSchedule = {};
         for (let i = 0; i <= 23; i++) {
             if (this.state.timePeriods.length !== 0) {
                 schedule[`h` + (`0` + i).slice(-2)] = "";

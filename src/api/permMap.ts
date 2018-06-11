@@ -180,6 +180,14 @@ const permMap = {
         "protected": true,
         "resource": "get_detail_domain:global"
     },
+    "domainListGet": {
+        "protected": true,
+        "resource": "list_domain:superGlobal"
+    },
+    "domainListDefinitionGet": {
+        "protected": true,
+        "resource": "list_domain:superGlobal"
+    },
     "financialGet": {
         "protected": true,
         "resource": "list_billing:self"
