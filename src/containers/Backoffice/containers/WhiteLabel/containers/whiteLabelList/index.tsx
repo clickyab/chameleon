@@ -6,39 +6,43 @@ import DataTable from "../../../../../../components/DataTable";
 import {
     ControllersApi,
     ControllersListCampaignsResponseData, ControllersListInventoryResponseData,
-    UserApi,
+    UserApi, UserResponseLoginOK,
     UserResponseLoginOKAccount
 } from "../../../../../../api/api";
-import ChangePasswordModal from "./../../../../../../components/ChangePasswordModal";
 import {withRouter, RouterProps} from "react-router";
-import {notification} from "antd";
+import {notification, Switch} from "antd";
 import {connect} from "react-redux";
 import {RootState} from "../../../../../../redux/reducers";
 import {setIsLogin, setUser} from "../../../../../../redux/app/actions";
-import {Link} from "react-router-dom";
 import Translate from "../../../../../../components/i18n/Translate";
+import Modal from "../../../../../../components/Modal";
+import Icon from "../../../../../../components/Icon";
 
-interface IProps extends RouterProps {
-    user: UserResponseLoginOKAccount;
-    setUser: (user: UserResponseLoginOKAccount) => {};
-    setIsLogin: () => {};
+interface IProps {
+    history?: any;
 }
+
 
 interface IState {
-    showPasswordModal: boolean;
-    selectedUserId?: number;
+    showAlert: boolean;
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
+const enum WHITELABEL_STATUS  {ENABLE = "enable" , DISABLE = "disable"}
+
 class WhiteLabelList extends React.Component<IProps, IState> {
     private i18n = I18n.getInstance();
     userApi = new UserApi();
     private controllersApi = new ControllersApi();
+    private table: any;
+    private statusRow: any;
+    private statusIndex: number;
+    private statusValue: any;
+    private statusSwitch: boolean;
 
     constructor(props: IProps) {
         super(props);
         this.state = {
-            showPasswordModal: false,
+            showAlert: false,
         };
     }
 
@@ -46,74 +50,102 @@ class WhiteLabelList extends React.Component<IProps, IState> {
         // empty
     }
 
+    /**
+     * @func changeCampaignStatus
+     * @desc this function will change campaign status on dataTable (will fire onOk of Modal)
+     * @param row
+     * @param index
+     * @param statusSwitch
+     */
+    public changeCampaignStatus(row: any , index: number , statusSwitch) {
+        statusSwitch = !statusSwitch;
+        const newState = statusSwitch ? WHITELABEL_STATUS.ENABLE : WHITELABEL_STATUS.DISABLE;
+        this.table.changeRecordData(index, {
+            ...row,
+            status: newState,
+        });
+        this.changeWhiteLabelStatusApi(row.id, newState, () => {
+            statusSwitch = !statusSwitch;
+            const newState = statusSwitch ? WHITELABEL_STATUS.ENABLE : WHITELABEL_STATUS.DISABLE;
+            this.table.changeRecordData(index, {
+                ...row,
+                status: newState,
+            });
+        });
+    }
+    private changeWhiteLabelStatusApi(id: number, status: WHITELABEL_STATUS, onerror: () => void) {
+        this.controllersApi.domainChangeDomainStatusIdPut({
+            id: id.toString(),
+            payloadData: {
+                domain_status: status,
+            }
+        }).catch(error => {
+            onerror();
+            notification.error({
+                message: this.i18n._t("Change Campaign ").toString(),
+                className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                description: this.i18n._t(error.error.text).toString(),
+            });
+        });
+    }
     public render() {
         return (
             <div dir={CONFIG.DIR} className="whitelabel-billing content-container">
                 <div className="page-info-container mb-1">
-                    <Translate className="page-title" value={"Approve and reject of banner"}/>
-                    <Translate className="page-description" value={"You can check, view, approve and reject of your ads."}/>
+                    <Translate className="page-title" value={"List of all of whitelabels"}/>
+                    <Translate className="page-description" value={"You can view and manage whitelabels in this page"}/>
                 </div>
                 <DataTable
-                    headerHide={true}
-                    dataFn={this.controllersApi.campaignStatusListDefinitionGet}
-                    definitionFn={this.controllersApi.campaignStatusListDefinitionGet}
-                    name={"Approve Reject"}
-                  //  customRenderColumns={{
-                        // "status": (value: string, row: ControllersListInventoryResponseData, index: number): JSX.Element => {
-                        //     let switchValue = (value !== CAMPAIGN_STATUS.PAUSE);
-                        //     return <div>
-                        //         {value !== CAMPAIGN_STATUS.ARCHIVE &&
-                        //         <Switch
-                        //             checked={switchValue}
-                        //             className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
-                        //             onChange={() => {
-                        //                 this.setState({showAlert: true});
-                        //                 this.statusRow = row;
-                        //                 this.statusIndex = index;
-                        //                 this.statusValue = value;
-                        //                 this.statusSwitch = switchValue;
-                        //             }
-                        //             }
-                        //         />
-                        //         }
-                        //         {/* Alert Modal for changing status of campaign*/}
-                        //         <Modal visible={this.state.showAlert}
-                        //                closable={false}
-                        //                customClass="alert-modal"
-                        //                onOk={() => {this.changeCampaignStatus(this.statusRow, this.statusIndex, this.statusSwitch);
-                        //                    this.setState({showAlert: false}); } }
-                        //                onCancel={() => {this.setState({showAlert: false}); }}
-                        //         >
-                        //             <div className="alert-modal-container">
-                        //                 <Icon name={"cif-alert"}/>
-                        //                 <Translate
-                        //                     className="alert-description"
-                        //                     value={`Are you sure that you want to
-                        //                                 ${(value !== CAMPAIGN_STATUS.ARCHIVE ? this.statusSwitch ? "deactive" : "active" : "")}
-                        //                                 ${(this.statusRow) ?  (this.statusRow as any).title : ""}  ?`}/>
-                        //             </div>
-                        //         </Modal>
-                        //    </div>;
-                      //  }
-                   // }}
+                    ref={(table) => (this.table = table)}
+                    dataFn={this.controllersApi.domainListGet}
+                    definitionFn={this.controllersApi.domainListDefinitionGet}
+                    name={"WhiteLabel_List"}
+                    customRenderColumns={{
+                        "status": (value: string, row: ControllersListInventoryResponseData, index: number): JSX.Element => {
+                            let switchValue = (value !== WHITELABEL_STATUS.DISABLE);
+                            return <div>
+                                <Switch
+                                    checked={switchValue}
+                                    className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
+                                    onChange={() => {
+                                        this.setState({showAlert: true});
+                                        this.statusRow = row;
+                                        this.statusIndex = index;
+                                        this.statusValue = value;
+                                        this.statusSwitch = switchValue;
+                                    }
+                                    }
+                                />
+                                {/* Alert Modal for changing status of campaign*/}
+                                <Modal visible={this.state.showAlert}
+                                       closable={false}
+                                       customClass="alert-modal"
+                                       onOk={() => {this.changeCampaignStatus(this.statusRow, this.statusIndex, this.statusSwitch);
+                                           this.setState({showAlert: false}); } }
+                                       onCancel={() => {this.setState({showAlert: false}); }}
+                                >
+                                    <div className="alert-modal-container">
+                                        <Icon name={"cif-alert"}/>
+                                        <Translate
+                                            className="alert-description"
+                                            value={`Are you sure that you want to
+                                                        ${this.statusSwitch ? "deactive" : "active"}
+                                                        ${(this.statusRow) ?  (this.statusRow as any).title : ""}  ?`}/>
+                                    </div>
+                                </Modal>
+                           </div>;
+                       }
+                   }}
+                    actionsFn={{
+                        "edit": (value, record, index) => {
+                            this.props.history.push(`/backoffice/whitelabel/edit/${record.id}`);
+                        },
+                    }}
                 />
             </div>
         );
     }
 }
 
-function mapStateToProps(state: RootState) {
-    return {
-        isLogin: state.app.isLogin,
-        user: state.app.user,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        setUser: (user: UserResponseLoginOKAccount) => dispatch(setUser(user)),
-        setIsLogin: () => dispatch(setIsLogin()),
-    };
-}
 
 export default withRouter(WhiteLabelList);
