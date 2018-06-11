@@ -729,19 +729,30 @@ class DataTable extends React.Component<IProps, IState> {
                         }
                         {this.state.data.total === 0 &&
                             <div className="empty-table">
-                                <div className="icon-container">
-                                    <Icon name={"cif-money-charge"}/>
-                                </div>
                                 {this.state.searches &&
-                                    <div>
-                                        <Translate className="not-found-title" value={"Your search doesn't have any result"}/>
-                                        <Translate className="not-found-description" value={"Please reconsider your search keyword or your chosen filters"}/>
+                                <div>
+                                    <div className="icon-container">
+                                        <Icon className="not-found" name={"cif-lostbottle"}/>
                                     </div>
+                                    <div>
+                                        <Translate className="not-found-title"
+                                                   value={"Your search doesn't have any result"}/>
+                                        <Translate className="not-found-description"
+                                                   value={"Please reconsider your search keyword or your chosen filters"}/>
+                                    </div>
+                                </div>
                                 }
                                 {!this.state.searches &&
                                 <div>
-                                    <Translate className="not-found-title" value={"No record has been found for this Table"}/>
-                                    <Translate className="not-found-description" value={"Please reconsider your search keyword or your chosen filters"}/>
+                                    <div className="icon-container">
+                                        <Icon  className="no-record" name={"cif-ghostfolder"}/>
+                                    </div>
+                                    <div>
+                                        <Translate className="not-found-title"
+                                                   value={"No record has been found for this Table"}/>
+                                        <Translate className="not-found-description"
+                                                   value={"Please reconsider your search keyword or your chosen filters"}/>
+                                    </div>
                                 </div>
                                 }
                             </div>
