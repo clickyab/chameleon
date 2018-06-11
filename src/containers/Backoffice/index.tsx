@@ -5,10 +5,8 @@ import {connect} from "react-redux";
 import {UserUserPayload} from "../../api/api";
 import {PrivateRoute} from "../../components/PrivateRoute/index";
 import UserContainer from "./containers/User";
-import WhiteLabel from "./containers/WhiteLabel/containers/whiteLabelAdd/index";
-import WhiteLabelBilling from "./containers/WhiteLabel/containers/whiteLabelBilling/index";
-import FinancialReport from "./containers/WhiteLabel/containers/financialReport";
 import ApproveReject from "./containers/ApproveReject";
+import WhiteLabelContainer from "./containers/WhiteLabel";
 
 interface IProps extends RouteComponentProps<void> {
     routes: any;
@@ -36,10 +34,7 @@ class BackofficeContainer extends React.Component<IProps, IState> {
             <div>
                 <Switch>
                     <PrivateRoute path={`${match.url}/user`} component={UserContainer}/>
-                    <PrivateRoute path={`${match.url}/whitelabel/create`} component={WhiteLabel}/>
-                    <PrivateRoute path={`${match.url}/whitelabel/edit/:id`} component={WhiteLabel}/>
-                    <PrivateRoute path={`${match.url}/whitelabel/billing`} component={WhiteLabelBilling}/>
-                    <PrivateRoute path={`${match.url}/whitelabel/financial/report`} component={FinancialReport}/>
+                    <PrivateRoute path={`${match.url}/whitelabel`} component={WhiteLabelContainer}/>
                     <PrivateRoute path={`${match.url}/approveReject`} component={ApproveReject}/>
                 </Switch>
             </div>
