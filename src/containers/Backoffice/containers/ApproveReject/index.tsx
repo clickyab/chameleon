@@ -9,20 +9,10 @@ import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";
 import DataTable from "../../../../components/DataTable";
 import ApproveRejectModal from "../../../../components/ApproveRejectModal";
-
-
-/**
- * @interface
- * @desc define component props
- */
-interface IOwnProps {
-    match?: any;
-    history?: any;
-}
-
-
+import {notification} from "antd";
 
 interface IProps {
+    history?: any;
 }
 
 interface IState {
@@ -34,6 +24,7 @@ interface IState {
 class ApproveReject extends React.Component<IProps, IState> {
 
     private i18n = I18n.getInstance();
+    private table;
     private controllersApi = new ControllersApi();
 
     constructor(props: IProps) {
@@ -54,6 +45,7 @@ class ApproveReject extends React.Component<IProps, IState> {
                 </div>
                 <DataTable
                     headerHide={true}
+                    ref={ref => this.table = ref}
                     dataFn={this.controllersApi.campaignStatusListGet}
                     definitionFn={this.controllersApi.campaignStatusListDefinitionGet}
                     name={"Approve Reject"}
@@ -73,10 +65,37 @@ class ApproveReject extends React.Component<IProps, IState> {
                             );
                     }
                     }}
+                    actionsFn={{
+                        "accept_reject": (value, record, index) => {
+                            this.setState({
+                                activeCampaign: record.id,
+                                showModal: true
+                            });
+                        },
+                        "bulk_accept": (value, record, index) => {
+                            this.controllersApi.adCampaignCreativeStatusIdPatch({id: record.id.toString() , payloadData: {status: "accepted"}})
+                                .then(respond => {
+                                    this.table.removeRecords([record.id]);
+                                    notification.success({
+                                        message: this.i18n._t("Batch accepted").toString(),
+                                        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                                        description: "",
+                                    });
+                                })
+                            .catch(error => {
+                                notification.error({
+                                    message: this.i18n._t("Can't batch accept").toString(),
+                                    className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                                    description: this.i18n._t(error.error.text).toString(),
+                                });
+                            });
+                        }
+                    }}
                 />
 
                 {this.state.showModal &&
-                <ApproveRejectModal visible={true} campaignId={this.state.activeCampaign} onCancel={() => {this.setState({showModal: false}); }}/>
+                <ApproveRejectModal visible={true} campaignId={this.state.activeCampaign}
+                                    onCancel={() => {this.setState({showModal: false}); }}/>
                 }
             </div>
         );

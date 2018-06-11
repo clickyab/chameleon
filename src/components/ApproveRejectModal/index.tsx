@@ -151,6 +151,24 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
         this.creativeStatus.push(creativeRejectObj);
         this.setState({currentCreativeNum: this.state.currentCreativeNum + 1});
     }
+
+    public finalizeCheck = () => {
+        this.controllerApi.adChangeCreativesStatusIdPut({id: this.props.campaignId.toString()})
+            .then((respond) => {
+            })
+            .catch((error) => {
+                if (error.error) {
+                    notification.error({
+                        message: this.i18n._t("Cant finalize creative check").toString(),
+                        className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
+                        description: this.i18n._t(error.error.text).toString(),
+                    });
+                }
+                if (this.props.onCancel) {
+                    this.props.onCancel();
+                }
+            });
+    }
     public render() {
         return (
             <Modal footer={false} wrapClassName={`vertical-center-modal modal-${CONFIG.DIR}`}
@@ -177,7 +195,8 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                     {this.state.pendingCreatives.length - 1 >= this.state.currentCreativeNum &&
                     <div className="creative-check-ads">
                         <div className="approve-reject-progress-container">
-                            <div className="approve-reject-progress" style={{width: "25%"}}></div>
+                            <div className="approve-reject-progress"
+                                 style={{width: `${(this.state.currentCreativeNum + 1) / this.state.pendingCreatives.length * 100}%`}} />
                         </div>
                         <div className="controller-container">
                             <div className="back-controller">
@@ -226,7 +245,7 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                             </div>
                             }
                         </ReactCSSTransitionGroup>
-                        <div hidden={!this.state.showReason} className={"reason-overlay"}>
+                        <div className={`reason-overlay ${this.state.showReason ? "show-reason" : "invisible-reason"}`}>
                         </div>
                     </div>
                     }

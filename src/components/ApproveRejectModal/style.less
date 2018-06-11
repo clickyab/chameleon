@@ -1,5 +1,6 @@
 .approve-reject-container {
     min-width: 700px;
+    max-width: 700px;
     .ant-modal-body {
         padding: 0;
     }
@@ -87,6 +88,8 @@
         background: #EBECF2;
         .approve-reject-progress {
             background: #3DBE8B;
+            width: 0;
+            transition: all linear .3s;
         }
     }
     .controller-container {
@@ -103,20 +106,19 @@
             width: 33%;
             display: flex;
             justify-content: flex-start;
+            cursor: pointer;
             div{
                 display: flex;
             }
             span {
                 display: flex;
                 margin: 0 5px;
-                cursor: pointer;
             }
             i {
                 display: flex;
                 position: relative;
                 top: 2px;
                 line-height: 1;
-                cursor: pointer;
             }
         }
         .show-counter {
@@ -129,17 +131,16 @@
             width: 33%;
             display: flex;
             justify-content: flex-end;
+            cursor: pointer;
             span {
                 display: flex;
                 margin: 0 5px;
-                cursor: pointer;
             }
             i {
                 display: flex;
                 position: relative;
                 top: 2px;
                 line-height: 1;
-                cursor: pointer;
             }
         }
     }
@@ -211,6 +212,15 @@
     left: 0;
     right: 0;
     background: #000;
+    &.show-reason{
+        opacity: 0.5;
+        visibility: visible;
+        transition: all linear .3s ;
+    }
+    &.invisible-reason{
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
 .reason-animation-enter {
@@ -274,20 +284,19 @@
     width: 33%;
     display: flex;
     justify-content: flex-start;
+    cursor: pointer;
     div{
         display: flex;
     }
     span {
         display: flex;
         margin: 0 5px;
-        cursor: pointer;
     }
     i {
         position: relative;
         display: flex;
         top: 2px;
         line-height: 1;
-        cursor: pointer;
     }
 }
 .summary-header{
