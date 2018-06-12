@@ -3,7 +3,7 @@
  * can change to any kind of footer from now on
  */
 import * as React from "react";
-import {RaisedButton} from "material-ui";
+import {RaisedButton} from "material-ui/RaisedButton";
 import "./style.less";
 import Translate from "../../../../components/i18n/Translate";
 import Icon from "../../../../components/Icon";

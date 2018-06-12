@@ -9,7 +9,7 @@ import Modal from "../Modal/index";
 import I18n from "../../services/i18n/index";
 import {Form, Row, Col, notification} from "antd";
 import {UserApi} from "../../api/api";
-import {TextField} from "material-ui";
+import {TextField} from "material-ui/TextField";
 import PasswordStrength from "../PasswordStrength/index";
 import CONFIG from "../../constants/config";
 

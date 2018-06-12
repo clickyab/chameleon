@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Card, Form, message, Row, notification} from "antd";
-import {RaisedButton, TextField} from "material-ui";
+import TextField from "material-ui/TextField";
+import RaisedButton from "material-ui/RaisedButton";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import Icon from "../../../../components/Icon/index";

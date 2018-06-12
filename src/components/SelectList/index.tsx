@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Row, Col, Checkbox} from "antd";
-import {RaisedButton} from "material-ui";
+import RaisedButton from "material-ui/RaisedButton";
 import Translate from "../i18n/Translate/index";
 import I18n from "../../services/i18n/index";
 import "./style.less";

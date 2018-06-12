@@ -16,7 +16,7 @@ import {setBreadcrumb} from "../../../../redux/app/actions/index";
 import Modal from "../../../../components/Modal/index";
 import Icon from "../../../../components/Icon/index";
 import Translate from "../../../../components/i18n/Translate/index";
-import {TextField} from "material-ui";
+import TextField from "material-ui/TextField";
 
 const Option = Select.Option;
 

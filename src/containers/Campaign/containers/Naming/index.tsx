@@ -5,7 +5,8 @@ import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../.
 import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {Col, Form, notification, Row, Spin, Input , Select} from "antd";
-import {MenuItem, RadioButton, RadioButtonGroup, RaisedButton, SelectField, TextField} from "material-ui";
+import RadioButtonGroup from "material-ui/RadioButton/RadioButtonGroup";
+import RadioButton from "material-ui/RadioButton";
 import I18n from "../../../../services/i18n/index";
 import Translate from "../../../../components/i18n/Translate/index";
 import Icon from "../../../../components/Icon";

@@ -12,7 +12,6 @@ import {Row, Col, Spin} from "antd";
 import SelectBox, {ISelectBoxItem} from "../Naming/Components/SelectBox/index";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
-import {RaisedButton} from "material-ui";
 import Translate from "../../../../components/i18n/Translate/index";
 import CONFIG from "../../../../constants/config" ;
 

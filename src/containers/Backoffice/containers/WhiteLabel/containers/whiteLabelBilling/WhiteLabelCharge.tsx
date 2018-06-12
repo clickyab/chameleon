@@ -15,7 +15,7 @@ import I18n from "../../../../../../services/i18n/index";
 import {currencyFormatter} from "../../../../../../services/Utils/CurrencyFormatter";
 import Translate from "../../../../../../components/i18n/Translate/index";
 import {Form, Row, Col, notification, Input, Button, Select} from "antd";
-import {RaisedButton} from "material-ui";
+import {RaisedButton} from "material-ui/RaisedButton";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../../../redux/app/actions/index";
 import Icon from "../../../../../../components/Icon/index" ;
 import CONFIG from "../../../../../../constants/config" ;

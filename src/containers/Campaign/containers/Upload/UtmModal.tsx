@@ -6,7 +6,8 @@
 import * as React from "react";
 import Modal from "../../../../components/Modal/index";
 import {Form, Row, Col, notification, Switch} from "antd";
-import {RaisedButton, TextField} from "material-ui";
+import TextField from "material-ui/TextField";
+import RaisedButton  from "material-ui/RaisedButton";
 import I18n from "../../../../services/i18n/index";
 import CONFIG from "../../../../constants/config";
 import Translate from "../../../../components/i18n/Translate/index";

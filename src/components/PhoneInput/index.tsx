@@ -6,7 +6,7 @@
 import * as React from "react";
 import countries from "./countries";
 import "./style.less";
-import {TextField} from "material-ui";
+import TextField from "material-ui/TextField";
 import I18n from "../../services/i18n/index";
 
 /**
