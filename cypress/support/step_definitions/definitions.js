@@ -1,5 +1,3 @@
-const {given, then} = require('cypress-cucumber-preprocessor');
-
 // you can have external state, and also require things!
 const url = 'http://localhost:3000/';
 const mailHog = 'http://staging.mailhog.clickyab.ae';
