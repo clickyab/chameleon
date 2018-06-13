@@ -1,8 +1,12 @@
 
 const permMap = {
-    "adCampaignCreativeStatusIdPatch": {
+    "adAcceptCampaignCreativeIdPatch": {
         "protected": true,
         "resource": "change_creative_status:superGlobal"
+    },
+    "adBannerPost": {
+        "protected": true,
+        "resource": "create_creative:self"
     },
     "adCampaignIdGet": {
         "protected": true,
@@ -187,6 +191,10 @@ const permMap = {
     "domainListDefinitionGet": {
         "protected": true,
         "resource": "list_domain:superGlobal"
+    },
+    "domainSuperGlobalConfigGet": {
+        "protected": true,
+        "resource": "get_global_config:superGlobal"
     },
     "financialGet": {
         "protected": true,

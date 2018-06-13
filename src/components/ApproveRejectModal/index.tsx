@@ -153,8 +153,11 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
     }
 
     public finalizeCheck = () => {
-        this.controllerApi.adChangeCreativesStatusIdPut({id: this.props.campaignId.toString()})
+        this.controllerApi.adChangeCreativesStatusIdPut({id: this.props.campaignId.toString(), payloadData: {new_status: this.creativeStatus}})
             .then((respond) => {
+                if (this.props.onCancel) {
+                    this.props.onCancel();
+                }
             })
             .catch((error) => {
                 if (error.error) {
@@ -163,9 +166,6 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                         className: (CONFIG.DIR === "rtl") ? "notif-rtl" : "",
                         description: this.i18n._t(error.error.text).toString(),
                     });
-                }
-                if (this.props.onCancel) {
-                    this.props.onCancel();
                 }
             });
     }
@@ -217,8 +217,10 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                             </div>
                         </div>
                         <div className="ad-container square">
-                            {this.state.pendingCreatives[this.state.currentCreativeNum] && this.state.pendingCreatives[this.state.currentCreativeNum].assets.image.map((item, index) =>
-                                <div key={index} className={"square-content"}>
+                            {/*TODO: this is protoType and not really great code should be fix after create banner and native approve reject modal design for native done*/}
+                            {this.state.pendingCreatives[this.state.currentCreativeNum] &&
+                            this.state.pendingCreatives[this.state.currentCreativeNum].assets.v_image.concat(this.state.pendingCreatives[this.state.currentCreativeNum].assets.h_image).map((item, index) =>
+                                <div key={index} className={"square-content"} style={{display: "flex"}}>
                                     <img key={index} src={"http://staging.crab.clickyab.ae/uploads/" + item.val}/>
                                 </div>
                             )}
@@ -292,7 +294,7 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                             </div>
                             <div className="approve-reject-btn-container">
                                 <div className="approve-reject-btn final-save-btn full-width"
-                                     onClick={() => this.addAcceptBanner()}>{this.i18n._t("Save final changes")}</div>
+                                     onClick={() => this.finalizeCheck()}>{this.i18n._t("Save final changes")}</div>
                             </div>
                         </div>
                     </div>

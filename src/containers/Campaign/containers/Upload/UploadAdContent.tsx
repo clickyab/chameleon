@@ -140,7 +140,7 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         cta: values.cta ? [{val: values.cta}] : null,
                         description: values.description ? [{val: values.description}] : null,
                         downloads: parseInt(values.download) ? [{val: parseInt(values.download)}] : null,
-                        images: values.images ? [{val: values.images}] : null,
+                        h_image: values.images ? [{val: values.images}] : null,
                         logo: values.logo,
                         phone: values.phone ? [{val: values.phone}] : null,
                         rating: parseFloat(values.rating) ? [{val: parseFloat(values.rating)}] : null,

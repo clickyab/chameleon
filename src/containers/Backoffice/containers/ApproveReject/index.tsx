@@ -73,7 +73,7 @@ class ApproveReject extends React.Component<IProps, IState> {
                             });
                         },
                         "bulk_accept": (value, record, index) => {
-                            this.controllersApi.adCampaignCreativeStatusIdPatch({id: record.id.toString() , payloadData: {status: "accepted"}})
+                            this.controllersApi.adAcceptCampaignCreativeIdPatch({id: record.id.toString()})
                                 .then(respond => {
                                     this.table.removeRecords([record.id]);
                                     notification.success({
