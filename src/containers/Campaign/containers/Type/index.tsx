@@ -106,7 +106,7 @@ class TypeComponent extends React.Component <IProps, IState> {
       title: this.i18n._t("Web").toString(),
       description: this.i18n._t("Show Advertising in Desktop, Mobile and tablet browsers.").toString(),
       value: DEVICE_TYPES.WEB,
-      icon: <Icon name="cif-browser-campaign-outline" className={"campaign-icon"}/>,
+      icon: <Icon name="cif-camp-web" className={"campaign-icon"}/>,
       hintText: <Link to={"#"}><Translate value={"Dont know what it is? click here"}/></Link>
     },
     {

@@ -70,7 +70,7 @@ class SidebarMenu extends React.Component<IProps, IState> {
 
     renderMenus() {
         const menus = [];
-        if (AAA.getInstance().hasPerm("campaign_creative:self")) {
+        if (AAA.getInstance().hasPerm("create_campaign:self")) {
             menus.push(
                 <Menu.Item key="createCampaign" className="campaignButton">
                     <Button className="ghostButton" size="large" ghost>

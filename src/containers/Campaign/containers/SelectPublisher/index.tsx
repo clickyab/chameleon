@@ -10,7 +10,7 @@ import {RootState} from "../../../../redux/reducers/index";
 import STEPS from "../../steps";
 import {setCurrentCampaign, setCurrentStep, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
 import RadioButton from "material-ui/RadioButton";
-import {RadioButtonGroup} from "material-ui/RadioButton/RadioButtonGroup";
+import RadioButtonGroup from "material-ui/RadioButton/RadioButtonGroup";
 import I18n from "../../../../services/i18n/index";
 import Icon from "../../../../components/Icon/index";
 import {ControllersApi, ControllersCampaignGetResponse} from "../../../../api/api";
