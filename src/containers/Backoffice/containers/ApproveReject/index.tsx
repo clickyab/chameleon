@@ -94,7 +94,7 @@ class ApproveReject extends React.Component<IProps, IState> {
                 />
 
                 {this.state.showModal &&
-                <ApproveRejectModal visible={true} campaignId={this.state.activeCampaign}
+                <ApproveRejectModal visible={true} campaignId={this.state.activeCampaign} tableRef ={this.table}
                                     onCancel={() => {this.setState({showModal: false}); }}/>
                 }
             </div>

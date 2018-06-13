@@ -23,6 +23,7 @@ interface IProps {
     campaignId:  number;
     visible?: boolean;
     onCancel?: () => void;
+    tableRef?: any;
 }
 
 /**
@@ -157,6 +158,11 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
             .then((respond) => {
                 if (this.props.onCancel) {
                     this.props.onCancel();
+                }
+                if (this.props.tableRef) {
+                    if (this.state.pendingCreatives.length - this.creativeStatus.filter((item => item.status === STATUS.REJECT)).length - this.creativeStatus.filter((item => item.status === STATUS.APPROVE)).length !==0) {
+                        this.props.tableRef.removeRecords([this.state.currentCreativeNum]);
+                    }
                 }
             })
             .catch((error) => {
