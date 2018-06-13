@@ -722,9 +722,8 @@ class DataTable extends React.Component<IProps, IState> {
                     className="campaign-data-table"
                 />
                 <div className={"table-total-number"}>
-                    {this.props.infinite || this.state.data.total === 0 &&
                     <div>
-                        {this.state.data.total !== 0 &&
+                        {this.props.infinite && this.state.data.total !== 0 &&
                           <Translate value={"%s results"} params={[currencyFormatter(this.state.data.total)]}/>
                         }
                         {this.state.data.total === 0 &&
@@ -758,7 +757,6 @@ class DataTable extends React.Component<IProps, IState> {
                             </div>
                         }
                     </div>
-                    }
                 </div>
             </div>
         );

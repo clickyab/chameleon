@@ -29,7 +29,7 @@ export default class Rating extends React.Component<IProps, IState> {
      * @param value{number}: void
      * @description change value of rating and reset after second select for UX purpose
      */
-    private handleValue(value: number): void{
+    private handleValue(value: number): void {
         if (this.state.value === 0 ) {
             this.setState({value});
         } else {
