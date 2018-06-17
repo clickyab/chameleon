@@ -53,7 +53,7 @@ class List extends React.Component<IProps, IState> {
         };
     }
 
-    changeCampaignState(id: number, status: CAMPAIGN_STATUS, onerror: () => void) {
+    changeCampaignStatusApi(id: number, status: CAMPAIGN_STATUS, onerror: () => void) {
         this.controllerApi.campaignStatusIdPatch({
             id: id.toString(),
             payloadData: {
@@ -83,7 +83,7 @@ class List extends React.Component<IProps, IState> {
             ...row,
             status: newState,
         });
-        this.changeCampaignState(row.id, newState, () => {
+        this.changeCampaignStatusApi(row.id, newState, () => {
             statusSwitch = !statusSwitch;
             const newState = statusSwitch ? CAMPAIGN_STATUS.START : CAMPAIGN_STATUS.PAUSE;
             this.table.changeRecordData(index, {

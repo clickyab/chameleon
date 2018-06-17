@@ -6,7 +6,7 @@
 import * as React from "react";
 import countries from "./countries";
 import "./style.less";
-import {TextField} from "material-ui";
+import TextField from "material-ui/TextField";
 import I18n from "../../services/i18n/index";
 
 /**
@@ -186,7 +186,7 @@ export default class PhoneInput extends React.Component<IProps, IState> {
             type="number"
             onChange={this.handleChangePhone.bind(this)}
             fullWidth={true}
-            value={this.state.phone}
+            value={this.state.phone ? this.state.phone : ""}
             className={"spin-btn-hide"}
           />
         </div>

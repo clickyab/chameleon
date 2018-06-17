@@ -14,7 +14,7 @@ import I18n from "../../../../services/i18n/index";
 import {currencyFormatter} from "../../../../services/Utils/CurrencyFormatter";
 import Translate from "../../../../components/i18n/Translate/index";
 import {Form, Row, Col, notification, Input, Button} from "antd";
-import {RaisedButton} from "material-ui";
+import RaisedButton from "material-ui/RaisedButton";
 import {setUser, setBreadcrumb, unsetBreadcrumb} from "../../../../redux/app/actions/index";
 import Icon from "../../../../components/Icon/index" ;
 import CONFIG from "../../../../constants/config" ;
@@ -109,7 +109,7 @@ class ChargeContainer extends React.Component<IProps, IState> {
                .then((res: OrmOnlinePayment) => {
                    this.paymentAmount = res.amount;
                    this.clickyabResNumber = res.res_num;
-                   this.bankRefNumber = res.ref_num.String;
+                   this.bankRefNumber = res.ref_num;
                    this.errorBank = res.error_reason.BankReason;
             });
            this.setState({showModal: true});
