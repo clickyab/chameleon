@@ -140,8 +140,9 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
         creativeRejectObj.reject_reason_id = this.selectedReason;
         creativeRejectObj.status = STATUS.REJECT;
         this.creativeStatus.push(creativeRejectObj);
-        this.setState({showReason: false});
-        this.setState({currentCreativeNum: this.state.currentCreativeNum + 1});
+        this.setState({
+            showReason: false,
+            currentCreativeNum: this.state.currentCreativeNum + 1});
     }
 
     public addAcceptBanner = () => {
