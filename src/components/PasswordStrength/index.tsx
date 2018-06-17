@@ -1,5 +1,5 @@
 import * as React from "react";
-import {TextField} from "material-ui";
+import TextField from "material-ui/TextField";
 import TextFieldProps = __MaterialUI.TextFieldProps;
 import "./style.less";
 import Icon from "../Icon/index";

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Step as MaterialStep} from "material-ui";
+import {Step as MaterialStep} from "material-ui/Stepper";
 /**
  * Step class add className props to material Step component
  *

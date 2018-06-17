@@ -127,9 +127,22 @@ export default class AAA {
      * @returns {boolean}
      */
     public hasPerm(perm: string): boolean {
-        if (perm === "" || "god:global") return true;
+        if (perm === "") return true;
+
+        let spitedPerm = perm.split(":");
+        let permission = spitedPerm[0];
+        let role = spitedPerm[1];
+
         if (!this.user) return false;
-        return this.user.perms.includes(perm);
+        let index = -1;
+        this.user.perms.forEach((item, itemIndex) => {
+            if (item.split(":")[0] === permission)  index = itemIndex;
+        });
+        if (index > -1) {
+            let userRole = this.user.perms[index].split(":")[1];
+            return (userRole === role || userRole === "superGlobal" || (userRole === "superGlobal" && role === "global"));
+        }
+        return false;
     }
 
 }

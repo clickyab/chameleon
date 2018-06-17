@@ -3,7 +3,6 @@
  * @desc Currency component formats currency on input
  */
 import * as React from "react";
-import {TextField, TextFieldProps} from "material-ui";
 import {currencyFormatter} from "../../services/Utils/CurrencyFormatter";
 import {InputProps} from "antd/lib/input/Input";
 import {Input} from "antd";

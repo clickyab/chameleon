@@ -16,7 +16,7 @@ const MENUS = [
         icon: "cif-campaign",
         name: i18n._t("Campaigns"),
         to: "/my/campaign/list",
-        perms: ["campaign_list:self"]
+        perms: ["list_campaign:self"]
     },
     {
         key: "explore",
@@ -24,7 +24,7 @@ const MENUS = [
         icon: "cif-inventory",
         name: i18n._t("explore"),
         to: "/explore",
-        perms: ["publisher_list:self"]
+        perms: ["list_publisher:self"]
     },
     {
         key: "reports",

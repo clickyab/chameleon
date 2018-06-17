@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Col, Row} from "antd";
-import {TextField} from "material-ui";
+import TextField from "material-ui/TextField";
 import {Circle, withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
 import I18n from "../../services/i18n";
 import {Theme} from "./mapTheme";

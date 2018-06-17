@@ -3,7 +3,7 @@ import Translate from "../../../../components/i18n/Translate";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import {Row, Col, notification, Input} from "antd";
 import I18n from "../../../../services/i18n/index";
-import {Checkbox} from "material-ui";
+import Checkbox from "material-ui/Checkbox";
 import {IFileItem} from "./UploadBanner";
 import CONFIG from "../../../../constants/config";
 
