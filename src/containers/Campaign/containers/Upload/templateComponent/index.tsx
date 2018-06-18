@@ -45,16 +45,18 @@ export class AdTemplate extends React.Component<IProps, IState> {
         }
     }
 
-    private handleActiveTemp(index: TEMPLATE, event?) {
-        if (event) {
-            event.dataTransfer.setData("template", JSON.stringify(index));
-        }
-        else {
-            this.setState({
-                template: index
-            });
-            if (this.props.onChange) {
-                this.props.onChange(index);
+    private handleActiveTemp(temp: TEMPLATE, event?) {
+        if (this.state.template === TEMPLATE.NONE ) {
+            if (event) {
+                event.dataTransfer.setData("template", JSON.stringify(temp));
+            }
+            else {
+                this.setState({
+                    template: temp
+                });
+                if (this.props.onChange) {
+                    this.props.onChange(temp);
+                }
             }
         }
     }
