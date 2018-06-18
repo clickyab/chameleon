@@ -136,11 +136,11 @@ export default class AAA {
         if (!this.user) return false;
         let index = -1;
         this.user.perms.forEach((item, itemIndex) => {
-            if (item.split(":")[0] === permission)  index = itemIndex;
+            if (item.split(":")[0] === permission) index = itemIndex;
         });
         if (index > -1) {
             let userRole = this.user.perms[index].split(":")[1];
-            return (userRole === role || userRole === "superGlobal" || (userRole === "superGlobal" && role === "global"));
+            return (userRole === role || userRole === "superGlobal" || (userRole === "superGlobal" && role === "global") || (userRole === "global" && role === "self"));
         }
         return false;
     }
