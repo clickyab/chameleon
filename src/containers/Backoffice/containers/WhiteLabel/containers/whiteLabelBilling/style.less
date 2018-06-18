@@ -1,7 +1,6 @@
 @import "../../../../../App/theme";
 .page-info-container {
     padding: 14px;
-    padding-top: 30px;
     padding-bottom: 10px;
     .page-title {
         color: #2E3246;
@@ -13,6 +12,25 @@
         font-size: 15px;
         display: block;
     }
+
+}
+.page-info-button-container{
+    display: flex;
+    align-items: center;
+    .action-button{
+        margin-right: auto;
+    }
+}
+[dir="ltr"] .page-info-button-container {
+    .action-button{
+        margin-right: 0;
+        margin-left: auto;
+    }
+}
+.action-button{
+    height: 35px;
+    width: 110px;
+    font-size: 14px;
 }
 .charge-form{
     margin-top: 15px;
