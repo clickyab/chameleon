@@ -1,11 +1,13 @@
 import * as React from "react";
-import {OrmCreativeCampaignResultCreatives} from "../../../../../../api/api";
+import {OrmCampaign, ControllersCreateBannerResponseInner} from "../../../../../../api/api";
 import "./style.less";
 import Icon from "../../../../../../components/Icon";
 import I18n from "../../../../../../services/i18n";
+import {Link} from "react-router-dom";
 
 interface IProps {
-    creative: OrmCreativeCampaignResultCreatives;
+    creative: ControllersCreateBannerResponseInner;
+    campaign: OrmCampaign;
 }
 
 const CreativeBoxRow = (props: IProps) => {
@@ -36,7 +38,11 @@ const CreativeBoxRow = (props: IProps) => {
             <div>
                 <span className={"creative-name"}>{props.creative.creative.name}</span>
                 <span>({getType()})</span>
-                <span className={"edit-btn"}><Icon name={"cif-edit"}/></span>
+                <span className={"edit-btn"}>
+                    <Link to={`/campaign/upload/${props.campaign.id}/creative/${props.creative.creative.id}`}>
+                        <Icon name={"cif-edit"}/>
+                    </Link>
+                </span>
             </div>
             <hr/>
             <div>

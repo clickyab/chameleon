@@ -1,13 +1,14 @@
 import * as React from "react";
-import {OrmCreativeCampaignResultCreatives} from "../../../../api/api";
+import {OrmCampaign, ControllersCreateBannerResponseInner} from "../../../../api/api";
 import CONFIG from "../../../../constants/config";
-import Translate from "../../../../components/i18n/Translate";
+import Translate from "../../../../components/i18n/Translate/index";
 import {Row, Col} from "antd";
 import CreativeBoxRow from "./Components/CreativeBoxRow/index";
 
 
 interface IProps {
-    creatives: Array<OrmCreativeCampaignResultCreatives>;
+    creatives: Array<ControllersCreateBannerResponseInner>;
+    campaign: OrmCampaign;
 }
 
 const UploadsList = function (props: IProps) {
@@ -18,33 +19,8 @@ const UploadsList = function (props: IProps) {
             </div>
             <Row type="flex" gutter={16}>
                 {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
-                    </Col>
-                ))}
-                {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
-                    </Col>
-                ))}  {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
-                    </Col>
-                ))}  {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
-                    </Col>
-                ))}  {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
-                    </Col>
-                ))}  {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
-                    </Col>
-                ))}  {props.creatives.map((creative) => (
-                    <Col span={12}>
-                        <CreativeBoxRow creative={creative} />
+                    <Col key={creative.creative.id} span={12}>
+                        <CreativeBoxRow creative={creative} campaign={props.campaign} />
                     </Col>
                 ))}
             </Row>

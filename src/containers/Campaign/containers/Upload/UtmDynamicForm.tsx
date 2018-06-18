@@ -1,14 +1,20 @@
 import * as React from "react";
-import Translate from "../../../../components/i18n/Translate";
+import Translate from "../../../../components/i18n/Translate/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
-import UTMInput from "../../components/UTMInput";
-import {Col, Input} from "antd";
+import UTMInput from "../../components/UTMInput/index";
+import {Row, Col, notification, Input} from "antd";
 import I18n from "../../../../services/i18n/index";
+import {Checkbox} from "material-ui";
+import {IFileItem} from "./UploadBanner";
 import {Form} from "antd";
-import Rating from "../../components/Rating";
-import CurrencySelector from "../../components/CurrencySelector";
+import CONFIG from "../../../../constants/config";
+import {withRouter} from "react-router";
+import UtmForm from "./UtmForm";
+import Rating from "../../components/Rating/index";
+import CurrencySelector from "../../components/CurrencySelector/index";
 import {isValidUrl} from "../../../../services/Utils/CustomValidations";
-import Icon from "../../../../components/Icon";
+import Icon from "../../../../components/Icon/index";
+import {valid} from "semver";
 const FormItem = Form.Item;
 
 /**
@@ -60,9 +66,10 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
         this.state = {
             value: props.value ? props.value : "",
             moreOption: false,
-            showMoreOption: false,
+            showMoreOption: !!props.inputObject.filter(f => !!f.optional).find(f => !!f.value),
         };
     }
+
     public componentDidMount() {
         if (this.props.inputObject && this.props.inputObject.filter(item => item.optional).length > 0) {
             this.setState({
@@ -132,10 +139,10 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                             <FormItem>
                                 <span className={`span-block input-title ${value.required ? "require" : ""}`}>{value.title}</span>
                                 {getFieldDecorator(value.name, {
-                                    initialValue: 0,
+                                    initialValue: value.value ? value.value :  0,
                                     rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                 })(
-                                    <Rating allowHalf className={"rating-utm"}/>
+                                    <Rating allowHalf className={"rating-utm"} onChange={(r) => {console.log(r); }}/>
                                 )}
                             </FormItem>
                             </Col>;
@@ -145,7 +152,7 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                                 <FormItem>
                                     <span className={`span-block input-title ${value.required ? "require" : ""}`}>{value.title}</span>
                                     {getFieldDecorator(value.name, {
-                                        initialValue: "",
+                                        initialValue: value.value,
                                         rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                     })(
                                         <CurrencySelector type={value.currancyType} placeholder={value.placeholder}/>
