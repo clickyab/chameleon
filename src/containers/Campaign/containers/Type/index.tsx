@@ -67,7 +67,8 @@ enum INTERNAL_STEPS {
 }
 export enum CAMPAIGN_STATUS {
   START = "start",
-  PAUSE = "pause"
+  PAUSE = "pause",
+  ARCHIVE = "archive",
 }
 /**
  * @enum DEVICE_TYPES

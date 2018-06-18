@@ -33,7 +33,39 @@ const MENUS = [
         name: i18n._t("Reports"),
         to: "/reports",
         perms: []
-    }
+    },
+    {
+        key: "user-management",
+        className: "",
+        icon: "cif-usermanager",
+        name: i18n._t("User List"),
+        to: "/backoffice/user/list",
+        perms: ["list_user:self"]
+    },
+    {
+        key: "approvereject",
+        className: "",
+        icon: "cif-approvereject",
+        name: i18n._t("Check creative"),
+        to: "/backoffice/approveReject",
+        perms: ["change_creatives_status:superGlobal"]
+    },
+    {
+        key: "whitelabel-list",
+        className: "",
+        icon: "cif-wlmanager",
+        name: i18n._t("Whitelabel list"),
+        to: "/backoffice/whitelabel/list",
+        perms: ["list_domain:superGlobal"]
+    },
+    {
+        key: "billing",
+        className: "",
+        icon: "cif-billingsec",
+        name: i18n._t("Billing"),
+        to: "/backoffice/whitelabel/financial/report/billing",
+        perms: ["get_billing:self"]
+    },
 ];
 
 export default MENUS;

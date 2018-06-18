@@ -252,7 +252,7 @@ class WhiteLabelDeductible extends React.Component<IProps, IState> {
                                             rules: [{
                                                 validator: rangeCheck,
                                                 minimum: 1000000,
-                                                message: this.i18n._t("Minimum price is 1000000 toman per click")
+                                                message: this.i18n._t("Minimum price is 1000000 toman for charge")
                                             }],
                                         })(
                                             <Currency className={"input-campaign"} type={"toman"}
