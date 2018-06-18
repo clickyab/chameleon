@@ -5,10 +5,34 @@
   .details {
     margin-top: 20px;
     width: 100%;
-
-    td {
-      padding: 5px 0;
+    .ant-row-flex{
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #A4AAB2;
+        .info-detail{
+            color: #5E6670;
+        }
     }
+      .active-campaign{
+          color: #66C395;
+      }
+      .disable-campaign{
+          color: #EC4E32;
+      }
+      i{
+          display: inline-block;
+          cursor: pointer;
+          line-height: 1;
+      }
+      .cif-edit{
+          margin: 0 5px;
+      }
+      .cif-checked{
+          &:hover{
+              color: #66C395;
+              transition: all .1s linear;
+          }
+      }
   }
 
   .dialog-wrapper {
@@ -132,4 +156,19 @@
 }
 .piechart-container{
   height: 250px !important;
+}
+.change-status-wrapper{
+    display: flex;
+    align-items: center;
+    .select-input{
+        display: block;
+        width: 60px;
+        margin: 0 5px;
+        .ant-select-selection {
+            height: 22px !important;
+        }
+        .ant-select-selection-selected-value{
+            line-height: 22px;
+        }
+    }
 }
