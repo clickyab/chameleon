@@ -40,7 +40,7 @@ enum STATUS {APPROVE = "accepted" ,  REJECT = "rejected"}
 /**
  * Approve reject Modal
  *
- * @desc This component is like ant modal
+ * @desc This component is a modal for Approve and Reject of Creative
  *
  * @class
  */
@@ -76,12 +76,20 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
     componentWillUnmount() {
         document.removeEventListener("mousedown", this.handleClickOutside);
     }
+    /**
+     * @func handleClickOutside
+     * @desc will handle click outside of modal and close modal
+     **/
     public handleClickOutside = (event) => {
         if (this.reasonRef && !this.reasonRef.contains(event.target)) {
             this.setState({showReason: false});
         }
     }
 
+    /**
+     * @func getRejectReasons
+     * @desc will fetch reject reasons from DB and set default reason
+     **/
     public getRejectReasons() {
         this.controllerApi.adCreativeRejectReasonsGet({})
             .then((respond) => {
@@ -102,6 +110,11 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
             }
         });
     }
+    /**
+     * @func getCreatives
+     * @desc get creative of  campaign from DB
+     * @param {string} campId
+     **/
     public getCreatives(campId: string)  {
         this.controllerApi.campaignCreativeIdGet({id: campId})
             .then((respond) => {
@@ -125,7 +138,10 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                 }
             });
     }
-
+    /**
+     * @func showReasonsRadio
+     * @desc show radio reason - create array of radio from reject reasons
+     **/
     private showReasonsRadio() {
         return (
             this.rejectReasons.map((item) => {
@@ -133,7 +149,10 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
             })
         );
     }
-
+    /**
+     * @func addRejectBanner
+     * @desc will add selected banner to reject list
+     **/
     public addRejectBanner = () => {
         let creativeRejectObj: ControllersChangeStatusResultCreativesStatus = {};
         creativeRejectObj.creative_id = this.state.pendingCreatives[this.state.currentCreativeNum].creative.id;
@@ -144,7 +163,10 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
             showReason: false,
             currentCreativeNum: this.state.currentCreativeNum + 1});
     }
-
+    /**
+     * @func addAcceptBanner
+     * @desc will add selected banner to Accepted list
+     **/
     public addAcceptBanner = () => {
         let creativeRejectObj: ControllersChangeStatusResultCreativesStatus = {};
         creativeRejectObj.creative_id = this.state.pendingCreatives[this.state.currentCreativeNum].creative.id;
@@ -153,7 +175,10 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
         this.creativeStatus.push(creativeRejectObj);
         this.setState({currentCreativeNum: this.state.currentCreativeNum + 1});
     }
-
+    /**
+     * @func finalizeCheck
+     * @desc generate payload from accepted and rejected lists
+     **/
     public finalizeCheck = () => {
         this.controllerApi.adChangeCreativesStatusIdPut({id: this.props.campaignId.toString(), payloadData: {new_status: this.creativeStatus}})
             .then((respond) => {
@@ -161,7 +186,7 @@ export default class ApproveRejectModal extends React.Component<IProps, IState> 
                     this.props.onCancel();
                 }
                 if (this.props.tableRef) {
-                    if (this.state.pendingCreatives.length - this.creativeStatus.filter((item => item.status === STATUS.REJECT)).length - this.creativeStatus.filter((item => item.status === STATUS.APPROVE)).length !==0) {
+                    if (this.state.pendingCreatives.length - this.creativeStatus.filter((item => item.status === STATUS.REJECT)).length - this.creativeStatus.filter((item => item.status === STATUS.APPROVE)).length !== 0) {
                         this.props.tableRef.removeRecords([this.state.currentCreativeNum]);
                     }
                 }

@@ -17,12 +17,14 @@ import {setBreadcrumb} from "../../../../redux/app/actions";
 import Switch from "antd/es/switch";
 import Icon from "../../../../components/Icon";
 import Modal from "../../../../components/Modal";
+import AAA from "../../../../services/AAA";
 
 const FormItem = Form.Item;
 
 interface IProps extends RouteComponentProps<void> {
     form: any;
     setBreadcrumb: (name: string, title: string, parent: string) => void;
+    user: UserResponseLoginOKAccount;
 }
 
 interface IState {
@@ -127,6 +129,7 @@ class List extends React.Component<IProps, IState> {
                                         }
                                         {value !== CAMPAIGN_STATUS.ARCHIVE &&
                                         <Switch
+                                            disabled={!AAA.getInstance().hasPerm("change_campaign_status:self")}
                                             checked={switchValue}
                                             className={CONFIG.DIR === "rtl" ? "switch-rtl" : "switch"}
                                             onChange={() => {

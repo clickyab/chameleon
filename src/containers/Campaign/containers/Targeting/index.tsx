@@ -477,55 +477,57 @@ class TargetingComponent extends React.Component <IProps, IState> {
                 </Row>
 
                 {/* Browsers */}
-                <Row type="flex" className="targeting-row">
-                  <Col span={5} lg={3} className="title-target">
-                    <Tooltip/>
-                    <label>{this.i18n._t("Browsers")}</label>
-                  </Col>
-                  <Col span={19}>
-                    <FormItem>
-                      <RadioButtonGroup
-                        className="campaign-radio-group" name="browsers"
-                        defaultSelected={this.state.showOtherBrowser}
-                        valueSelected={this.state.showOtherBrowser}
-                        onChange={(a, checked) => {
-                          this.setState({
-                            browsers: [],
-                            showOtherBrowser: checked ? true : false,
-                          });
-                        }}>
-                        <RadioButton className="campaign-radio-button"
-                                     value={false}
-                                     label={this.i18n._t("All Browsers")}
-                        />
-                        <RadioButton className="campaign-radio-button"
-                                     value={true}
-                                     label={this.i18n._t("Select Browsers")}
-                        />
-                      </RadioButtonGroup>
-                      {this.state.showOtherBrowser &&
-                      <div className="select-tag-component-wrapper">
-                        <FormItem>
-                          {getFieldDecorator("browsers", {
-                            initialValue: this.state.browsers,
-                            rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
-                          })(
-                            <SelectTag
-                              className="targeting-select-tag"
-                              OnChange={(browsers: string[]) => (this.setState({browsers}))}
-                              allOption={false}
-                              placeholder={this.i18n._t("Select Browsers").toString()}
-                              type={this.i18n._t("Browsers").toString()}
-                              data={this.browsers.map(b => ({value: b.name, name: b.name}))}
-                            />
-                          )}
-                        </FormItem>
+                  {this.state.currentCampaign.kind === DEVICE_TYPES.WEB &&
+                  <Row type="flex" className="targeting-row">
+                      <Col span={5} lg={3} className="title-target">
+                          <Tooltip/>
+                          <label>{this.i18n._t("Browsers")}</label>
+                      </Col>
+                      <Col span={19}>
+                          <FormItem>
+                              <RadioButtonGroup
+                                  className="campaign-radio-group" name="browsers"
+                                  defaultSelected={this.state.showOtherBrowser}
+                                  valueSelected={this.state.showOtherBrowser}
+                                  onChange={(a, checked) => {
+                                      this.setState({
+                                          browsers: [],
+                                          showOtherBrowser: checked ? true : false,
+                                      });
+                                  }}>
+                                  <RadioButton className="campaign-radio-button"
+                                               value={false}
+                                               label={this.i18n._t("All Browsers")}
+                                  />
+                                  <RadioButton className="campaign-radio-button"
+                                               value={true}
+                                               label={this.i18n._t("Select Browsers")}
+                                  />
+                              </RadioButtonGroup>
+                              {this.state.showOtherBrowser &&
+                              <div className="select-tag-component-wrapper">
+                                  <FormItem>
+                                      {getFieldDecorator("browsers", {
+                                          initialValue: this.state.browsers,
+                                          rules: [{required: true, message: this.i18n._t("Please select browsers!")}],
+                                      })(
+                                          <SelectTag
+                                              className="targeting-select-tag"
+                                              OnChange={(browsers: string[]) => (this.setState({browsers}))}
+                                              allOption={false}
+                                              placeholder={this.i18n._t("Select Browsers").toString()}
+                                              type={this.i18n._t("Browsers").toString()}
+                                              data={this.browsers.map(b => ({value: b.name, name: b.name}))}
+                                          />
+                                      )}
+                                  </FormItem>
 
-                      </div>
-                      }
-                    </FormItem>
-                  </Col>
-                </Row>
+                              </div>
+                              }
+                          </FormItem>
+                      </Col>
+                  </Row>
+                  }
 
                 {/* IAB Categorie */}
                 <Row type="flex" className="targeting-row">
