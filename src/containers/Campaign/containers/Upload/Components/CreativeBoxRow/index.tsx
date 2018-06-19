@@ -45,7 +45,7 @@ const CreativeBoxRow = (props: IProps) => {
                 </span>
             </div>
             <hr/>
-            <div>
+            <div className={"creative-box-content"}>
                 <div className={"thumbnail"}>
                     <img src={`http://staging.crab.clickyab.ae/uploads/` + getImgUrl()}
                          alt=""/>

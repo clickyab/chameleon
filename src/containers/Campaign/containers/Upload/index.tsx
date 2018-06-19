@@ -98,7 +98,6 @@ class UploadComponent extends React.Component <IProps, IState> {
                     this.setState({
                         currentCampaign: campaign,
                     });
-                    console.log(campaign);
                     this.props.setCurrentCampaign(campaign as OrmCampaign);
                 });
         }

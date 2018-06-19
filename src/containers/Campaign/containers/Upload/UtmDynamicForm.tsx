@@ -142,7 +142,7 @@ class UtmDynamicForm extends React.Component<IProps, IState> {
                                     initialValue: value.value ? value.value :  0,
                                     rules: [value.rules ? value.rules : {required: value.required ? value.required : false , message: this.i18n._t("This field is required")}],
                                 })(
-                                    <Rating allowHalf className={"rating-utm"} onChange={(r) => {console.log(r); }}/>
+                                    <Rating allowHalf className={"rating-utm"}/>
                                 )}
                             </FormItem>
                             </Col>;
