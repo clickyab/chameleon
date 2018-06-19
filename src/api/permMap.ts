@@ -36,6 +36,10 @@ const permMap = {
         "protected": true,
         "resource": "edit_creative:self"
     },
+    "adVastPost": {
+        "protected": true,
+        "resource": "create_creative:self"
+    },
     "assetBrowserGet": {
         "protected": true,
         "resource": ""

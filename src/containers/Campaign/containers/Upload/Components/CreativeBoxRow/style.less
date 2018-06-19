@@ -1,0 +1,65 @@
+.creative-box-row {
+    border-radius: 5px;
+    border: #DFE0E6 solid 1px;
+    height: 125px;
+    padding: 5px;
+    margin-bottom: 16px;
+
+    .creative-name {
+        font-weight: bold;
+        padding-left: 5px;
+    }
+
+    hr {
+        background-color: #DFE0E6;
+        height: 1px;
+        border: 0;
+        margin-top: 5px;
+    }
+
+    span.edit-btn {
+        float: left;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+    .creative-box-content {
+
+        display: flex;
+
+        .texts {
+            padding-top: 20px;
+            line-height: 22px;
+
+            .placeholder {
+                background-color: #DFE0E6;
+                display: inline-block;
+                height: 20px;
+
+                &.title {
+                    width: 20%;
+                }
+
+                &.description {
+                    width: 40%;
+                }
+
+            }
+        }
+
+        .thumbnail {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            width: 80px;
+            margin: 0 16px;
+            img {
+                max-height: 66px;
+                max-width: 80px;
+            }
+        }
+    }
+}

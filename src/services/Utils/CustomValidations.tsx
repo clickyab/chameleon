@@ -10,7 +10,7 @@ const i18n = I18n.getInstance();
  * @desc National code validation with ant Design Api standard (no need to pass params automatically will be bind)
  */
 export const validateID = (rule, value , callback) => {
-  if (value.length === 10) {
+  if (value && value.length === 10) {
     if (value === "1111111111" ||
       value === "0000000000" ||
       value === "2222222222" ||
@@ -45,7 +45,7 @@ export const validateID = (rule, value , callback) => {
     }
   }
   else {
-    if (value.length > 0) {
+    if (value && value.length > 0) {
       callback("error");
     }
     else {

@@ -35,6 +35,7 @@ export default class Rating extends React.Component<IProps, IState> {
         } else {
             this.setState({value: 0});
         }
+        this.props.onChange(value);
     }
     render() {
         return (<div>

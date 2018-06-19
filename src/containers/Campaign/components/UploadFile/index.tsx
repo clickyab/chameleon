@@ -25,7 +25,7 @@ export const enum UPLOAD_MODULES {
     NATIVE_VIDEO = "native-video",
     VAST_IMAGE = "vast-image",
     VAST_VIDEO = "vast-video",
-    DOMAIN_IMAGE= "domain-image"
+    DOMAIN_IMAGE = "domain-image"
 }
 
 interface IDimension {
@@ -46,6 +46,7 @@ interface IProps {
     customDragDisc?: JSX.Element;
     showBelowDragDescription?: boolean;
     onChange?: (value: string) => void;
+    value?: string;
 }
 
 interface IState {
@@ -71,11 +72,12 @@ class UploadFile extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        let initalValue = this.props.value ? "http://staging.crab.clickyab.ae/uploads/" + this.props.value : "";
         this.state = {
             disableDragger: false,
-            imgUrlOriginal: "",
-            imgUrlCropped: "",
-            value: "",
+            imgUrlOriginal: initalValue,
+            imgUrlCropped: initalValue,
+            value: initalValue,
             showCropModal: false,
             videoFile: null,
             progress: 0,
@@ -228,7 +230,6 @@ class UploadFile extends React.Component<IProps, IState> {
             }
         }
         else if (this.props.minDimension) {
-            console.log(file, this.props.minDimension);
             if (file.height >= this.props.minDimension.height && file.width >= this.props.minDimension.width) {
                 return true;
             }
@@ -390,6 +391,7 @@ class UploadFile extends React.Component<IProps, IState> {
                 return "cif-extensions-mp4";
         }
     }
+
     public render() {
         return (
             <div>
@@ -397,63 +399,66 @@ class UploadFile extends React.Component<IProps, IState> {
                 <span className={`image-drag-upload ${this.props.required ? "require" : ""}`}><Translate
                     value={this.props.label}/></span>
                 }
-                <div onDragOver={() => this.setState({dragOver: true}) } onDragLeave={() => this.setState({dragOver: false})} onMouseLeave={() => this.setState({dragOver: false})}>
-                <Dragger
-                    beforeUpload={(file) => this.uploadFile(file, this.props.fileType)}
-                    className={`banner-dragger-comp ${this.state.dragOver ? "dragger-dragover" : ""}`}
-                    disabled={this.state.disableDragger}
-                >
-                    {this.state.progress > 0 && !(this.state.imgUrlCropped && this.state.progress === 100) &&
-                    <div className="dragger-progress-container">
-                        <Icon name={this.selectIcon(this.mediaType)}/>
-                        <div className="dragger-progress">
-                            <div className="progress-info-wrapper">
-                            <span className="file-name">{this.fileName}</span>
-                            <Icon className="loading-icon" name={"cif-loading-circle"}/>
+                <div onDragOver={() => this.setState({dragOver: true})}
+                     onDragLeave={() => this.setState({dragOver: false})}
+                     onMouseLeave={() => this.setState({dragOver: false})}>
+                    <Dragger
+                        beforeUpload={(file) => this.uploadFile(file, this.props.fileType)}
+                        className={`banner-dragger-comp ${this.state.dragOver ? "dragger-dragover" : ""}`}
+                        disabled={this.state.disableDragger}
+                    >
+                        {this.state.progress > 0 && !(this.state.imgUrlCropped && this.state.progress === 100) &&
+                        <div className="dragger-progress-container">
+                            <Icon name={this.selectIcon(this.mediaType)}/>
+                            <div className="dragger-progress">
+                                <div className="progress-info-wrapper">
+                                    <span className="file-name">{this.fileName}</span>
+                                    <Icon className="loading-icon" name={"cif-loading-circle"}/>
+                                </div>
+                                <Progress strokeWidth={5} type={"line"}
+                                          percent={parseInt((this.state.progress).toString())} width={100}/>
+                                <span className={"uploading"}><Translate value={"uploading"}/></span>
                             </div>
-                         <Progress strokeWidth={5} type={"line"} percent={parseInt((this.state.progress).toString())} width={100}/>
-                         <span className={"uploading"}><Translate value={"uploading"}/></span>
-                        </div>
-                    </div>
-                    }
-                    {this.state.progress === 0 && !this.state.imgUrlCropped &&
-                    <div className="dragger-content">
-                        {!this.props.customDragDisc &&
-                        <div>
-                            {this.props.uploadModule.includes("image") &&
-                             <div className={"dragger-content-inner"} >
-                              <Icon name={"cif-img-upload"}/>
-                              <Translate value={"Drag your image over here or"}/>
-                             </div>
-                            }
-                            {this.props.uploadModule.includes("video") &&
-                            <div className={"dragger-content-inner"}>
-                              <Icon name={"cif-vid-upload"}/>
-                              <Translate value={"Drag your video over here or"}/>
-                            </div>
-                            }
-                            <span className="upload-image-link"><Translate value={"upload it"}/></span>
                         </div>
                         }
-                        {this.props.customDragDisc &&
-                        <div>
-                            {this.props.customDragDisc}
+                        {this.state.progress === 0 && !this.state.imgUrlCropped &&
+                        <div className="dragger-content">
+                            {!this.props.customDragDisc &&
+                            <div>
+                                {this.props.uploadModule.includes("image") &&
+                                <div className={"dragger-content-inner"}>
+                                    <Icon name={"cif-img-upload"}/>
+                                    <Translate value={"Drag your image over here or"}/>
+                                </div>
+                                }
+                                {this.props.uploadModule.includes("video") &&
+                                <div className={"dragger-content-inner"}>
+                                    <Icon name={"cif-vid-upload"}/>
+                                    <Translate value={"Drag your video over here or"}/>
+                                </div>
+                                }
+                                <span className="upload-image-link"><Translate value={"upload it"}/></span>
+                            </div>
+                            }
+                            {this.props.customDragDisc &&
+                            <div>
+                                {this.props.customDragDisc}
+                            </div>
+                            }
                         </div>
                         }
-                    </div>
-                    }
-                    {this.state.imgUrlCropped &&
-                    <div className="upload-thumb-container">
-                        <div className="edit-upload" onClick={(e) => this.handleEdit(e)}>
-                            <Icon name="cif-edit"/>
+                        {this.state.imgUrlCropped &&
+                        <div className="upload-thumb-container">
+                            <div className="edit-upload" onClick={(e) => this.handleEdit(e)}>
+                                <Icon name="cif-edit"/>
+                            </div>
+                            <div className="remove-upload" onClick={(e) => this.handleReset(e)}>
+                                <Icon name="cif-close"/>
+                            </div>
+                            <img src={this.state.imgUrlCropped}/>
                         </div>
-                        <div className="remove-upload" onClick={(e) => this.handleReset(e)}>
-                            <Icon name="cif-close"/>
-                        </div>
-                        <img src={this.state.imgUrlCropped}/>
-                    </div>
-                    }
-                </Dragger>
+                        }
+                    </Dragger>
                     {(this.props.showBelowDragDescription === undefined || this.props.showBelowDragDescription) &&
                     <div className="drag-description">
 
@@ -481,25 +486,30 @@ class UploadFile extends React.Component<IProps, IState> {
                             value={"allowed extensions:"}/>{this.props.fileType.join("/").replace(/image\//g, "").replace(/video\//g, "").toUpperCase()}</span>
                     </div>
                     }
-                {this.state.imgUrlOriginal && this.state.showCropModal &&
-                <Modal
-                    maskClosable={false}
-                    closable={false}
-                    title={this.i18n._t("Crop image").toString()}
-                    visible={this.state.showCropModal}
-                    onOk={this.cropImg}
-                    footer={<Button type={"primary"} onClick={this.cropImg}>{this.i18n._t("Crop")}</Button>}>
-                    <div>
-                        <Cropper
-                            source={this.state.imgUrlOriginal}
-                            type={this.state.imageType}
-                            onChange={(img: Blob) => {
-                                this.tmpImg = img;
-                                this.setState({imgUrlCropped: ""});
-                            }}/>
-                    </div>
-                </Modal>
-                }
+                    {this.state.imgUrlOriginal && this.state.showCropModal &&
+                    <Modal
+                        maskClosable={false}
+                        closable={false}
+                        title={this.i18n._t("Crop image").toString()}
+                        visible={this.state.showCropModal}
+                        onOk={this.cropImg}
+                        footer={<Button type={"primary"} onClick={this.cropImg}>{this.i18n._t("Crop")}</Button>}>
+                        <div>
+                            <Cropper
+                                source={this.state.imgUrlOriginal}
+                                type={this.state.imageType}
+                                aspect={this.props.minDimension.width / this.props.minDimension.height}
+                                minHeight={this.props.minDimension ? this.props.minDimension.height : null}
+                                minWidth={this.props.minDimension ? this.props.minDimension.width : null}
+                                height={this.props.exactDimension ? this.props.minDimension.height : null}
+                                width={this.props.exactDimension ? this.props.minDimension.width : null}
+                                onChange={(img: Blob) => {
+                                    this.tmpImg = img;
+                                    this.setState({imgUrlCropped: ""});
+                                }}/>
+                        </div>
+                    </Modal>
+                    }
                 </div>
             </div>
         );

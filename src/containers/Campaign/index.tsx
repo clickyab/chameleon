@@ -20,6 +20,7 @@ import STEPS from "./steps";
 import CONFIG from "../../constants/config" ;
 
 import "./style.less";
+import {Switch} from "react-router";
 
 /**
  * @interface
@@ -50,13 +51,17 @@ export default class CampaignContainer extends React.Component <IProps, IState> 
           </Col>
         </Row>
         <Row>
-          <PrivateRoute path={`${match.url}/type/:id?`} component={TypeComponent}/>
-          <PrivateRoute path={`${match.url}/naming/:id?`} component={NamingComponent}/>
-          <PrivateRoute path={`${match.url}/budget/:id`} component={BudgetComponent}/>
-          <PrivateRoute path={`${match.url}/targeting/:id`} component={TargetingComponent}/>
-          <PrivateRoute path={`${match.url}/select-publisher/:id`} component={SelectPublisherComponent}/>
-          <PrivateRoute path={`${match.url}/upload/:id`} component={UploadComponent}/>
-          <PrivateRoute path={`${match.url}/check-publish/:id`} component={CheckPublishComponent}/>
+          <Switch>
+            <PrivateRoute path={`${match.url}/type/:id?`} component={TypeComponent}/>
+            <PrivateRoute path={`${match.url}/naming/:id?`} component={NamingComponent}/>
+            <PrivateRoute path={`${match.url}/naming/:id?`} component={NamingComponent}/>
+            <PrivateRoute path={`${match.url}/budget/:id`} component={BudgetComponent}/>
+            <PrivateRoute path={`${match.url}/targeting/:id`} component={TargetingComponent}/>
+            <PrivateRoute path={`${match.url}/select-publisher/:id`} component={SelectPublisherComponent}/>
+            <PrivateRoute path={`${match.url}/upload/:id/creative/:creative_id`} component={UploadComponent}/>
+            <PrivateRoute path={`${match.url}/upload/:id`} component={UploadComponent}/>
+            <PrivateRoute path={`${match.url}/check-publish/:id`} component={CheckPublishComponent}/>
+          </Switch>
         </Row>
       </div>
     );

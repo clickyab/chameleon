@@ -68,7 +68,7 @@ class UserBox extends React.Component<IProps, IState> {
                                 <Translate value={"Charge"}/>
                             </Link>
                         </div>
-                        {AAA.getInstance().hasPerm("user_list:global") &&
+                        {AAA.getInstance().hasPerm("list_user:self") &&
                         <div className={"nav-item"}>
                             <Icon name={"cif-access-management"}/>
                             <Link to="/backoffice/user/list">

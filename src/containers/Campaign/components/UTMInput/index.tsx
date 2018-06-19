@@ -58,7 +58,6 @@ interface IProps {
     form?: any;
     onChange?: (item: string) => void;
     file?: IFileItem;
-    link?: string;
     onSubmit?: (params: ISubmitParams) => void;
     name?: string;
     cta?: string;
@@ -71,7 +70,7 @@ export default class UTMInput extends React.Component<IProps, IState> {
     private i18n = I18n.getInstance();
     private Data: UTMInfo = {
         CTA: this.props.cta ? this.props.cta : "",
-        URL: this.props.link ? this.props.link : "",
+        URL: this.props.value ? this.props.value : "",
         campaign: "",
         source: "",
         content: "",
@@ -93,8 +92,8 @@ export default class UTMInput extends React.Component<IProps, IState> {
      * @desc set params and file from props
      */
     public componentDidMount() {
-        if (this.props.link) {
-            this.setParamsValues(this.props.link);
+        if (this.props.value) {
+            this.setParamsValues(this.props.value);
         }
         if (this.props.file) {
             this.setState({
@@ -129,6 +128,7 @@ export default class UTMInput extends React.Component<IProps, IState> {
      * @param value
      */
     private setParamsValues(value) {
+        console.log("setParamsValues", value);
         value = value.toLowerCase();
         let utm: UTMInfo = this.Data;
         utm.URL = value;

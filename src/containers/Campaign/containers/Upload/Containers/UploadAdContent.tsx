@@ -5,18 +5,19 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {Row, Col, Button, Form, Spin, notification} from "antd";
-import Translate from "../../../../components/i18n/Translate/index";
-import CONFIG from "../../../../constants/config";
-import {UploadState} from "../../../../services/Upload/index";
-import I18n from "../../../../services/i18n/index";
-import "./style.less";
-import {ControllersApi, OrmCampaign} from "../../../../api/api";
-import STEPS from "../../steps";
-import {RootState} from "../../../../redux/reducers/index";
-import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../redux/campaign/actions/index";
-import UTMDynamicForm, {InputInfo} from "./UtmDynamicForm";
-import UploadFile, {FILE_TYPE, UPLOAD_MODULES} from "../../components/UploadFile";
-import CreativeGeneralInfo from "../../../../components/CreativeGeneralInfo";
+import Translate from "../../../../../components/i18n/Translate/index";
+import CONFIG from "../../../../../constants/config";
+import {UploadState} from "../../../../../services/Upload/index";
+import I18n from "../../../../../services/i18n/index";
+import "../style.less";
+import {ControllersApi, OrmCampaign, ControllersCreateBannerResponseInner} from "../../../../../api/api";
+import STEPS from "../../../steps";
+import {RootState} from "../../../../../redux/reducers/index";
+import {setCurrentStep, setCurrentCampaign, setSelectedCampaignId} from "../../../../../redux/campaign/actions/index";
+import UTMDynamicForm, {InputInfo} from "../UtmDynamicForm";
+import UploadFile, {FILE_TYPE, UPLOAD_MODULES} from "../../../components/UploadFile";
+import CreativeGeneralInfo from "../../../../../components/CreativeGeneralInfo";
+import getCrativeFormValues from "./../utils/getCrativeFormValues";
 
 const FormItem = Form.Item;
 
@@ -45,6 +46,7 @@ interface IProps {
     selectedCampaignId?: number | null;
     match?: any;
     history?: any;
+    currentCreative?: ControllersCreateBannerResponseInner;
 }
 
 
@@ -181,6 +183,8 @@ class UploadAdContent extends React.Component <IProps, IState> {
             return <Spin/>;
         }
 
+        const initialValues = getCrativeFormValues(this.props.currentCreative);
+
         return (
             <div dir={CONFIG.DIR} className="upload-content">
                 <div className="title">
@@ -194,7 +198,9 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         <Row type={"flex"} gutter={16}>
                             <Col span={8}>
                                 <FormItem>
-                                    {getFieldDecorator("image", {})(
+                                    {getFieldDecorator("image", {
+                                        initialValue: initialValues.imageHorizontalUrl,
+                                    })(
                                         <UploadFile label={this.i18n._t("wide image") as string}
                                                     minDimension={this.minSizeWide}
                                                     required={true}
@@ -205,7 +211,9 @@ class UploadAdContent extends React.Component <IProps, IState> {
                             </Col>
                             <Col span={5}>
                                 <FormItem>
-                                    {getFieldDecorator("logo", {})(
+                                    {getFieldDecorator("logo", {
+                                        initialValue: initialValues.logoUrl,
+                                    })(
                                         <UploadFile label={this.i18n._t("Logo") as string}
                                                     minDimension={this.minSizeWide}
                                                     fileType={[FILE_TYPE.IMG_PNG]}
@@ -226,7 +234,10 @@ class UploadAdContent extends React.Component <IProps, IState> {
                         </span>
                                 </div>
                             </Col>
-                            <CreativeGeneralInfo form={this.props.form}/>
+                            <CreativeGeneralInfo form={this.props.form}
+                                                 value={{
+                                                     name: initialValues.adName,
+                                                     unitCost: initialValues.maxBid}}/>
                         </Col>
                     </Col>
                     <Col span={8}>

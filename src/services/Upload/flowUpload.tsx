@@ -96,7 +96,6 @@ export default class FlowUpload {
                    });
                }
             });
-            console.log(this);
             this.flowFile.upload();
         });
     }

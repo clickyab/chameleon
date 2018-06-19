@@ -1,5 +1,5 @@
 import * as React from "react";
-import Translate from "../../../../components/i18n/Translate";
+import Translate from "../../../../components/i18n/Translate/index";
 import InputLimit from "../../components/InputLimit/InputLimit";
 import {Row, Col, notification, Input} from "antd";
 import I18n from "../../../../services/i18n/index";
