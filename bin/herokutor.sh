@@ -131,10 +131,10 @@ RUN chmod a+x /run.sh && ln -snf /usr/share/zoneinfo/\$TZ /etc/localtime && echo
 
 CMD ["/run.sh"]
 
-TAG registry.clickyab.ae/clickyab/{{ .App }}:{{ .Version }}
-PUSH registry.clickyab.ae/clickyab/{{ .App }}:{{ .Version }}
-TAG registry.clickyab.ae/clickyab/{{ .App }}:latest
-PUSH registry.clickyab.ae/clickyab/{{ .App }}:latest
+TAG registry.3rdad.com/clickyab/{{ .App }}:{{ .Version }}
+PUSH registry.3rdad.com/clickyab/{{ .App }}:{{ .Version }}
+TAG registry.3rdad.com/clickyab/{{ .App }}:latest
+PUSH registry.3rdad.com/clickyab/{{ .App }}:latest
 
 EOF
 
@@ -158,6 +158,6 @@ fi
 echo "${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
 echo "The branch ${BRANCH} build finished, try to deploy it" >> ${OUT_LOG}
 echo "If there is no report after this for successful deploy, it means the deploy failed. report it please." >> ${OUT_LOG}
-kubectl -n ${PROJECT} set image deployment  ${APP}-${BRANCH} ${APP}-${BRANCH}=registry.clickyab.ae/clickyab/${APP}_${BRANCH}:${COMMIT_COUNT} --record
-echo "Deploy done successfully to image registry.clickyab.ae/clickyab/${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
+kubectl  --insecure-skip-tls-verify -n ${PROJECT} set image deployment  ${APP}-${BRANCH} ${APP}-${BRANCH}=registry.3rdad.com/clickyab/${APP}_${BRANCH}:${COMMIT_COUNT} --record
+echo "Deploy done successfully to image registry.3rdad.com/clickyab/${APP}:${BRANCH}.${COMMIT_COUNT}" >> ${OUT_LOG}
 echo "green" > ${OUT_LOG_COLOR}
