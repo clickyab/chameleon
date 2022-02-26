@@ -114,7 +114,7 @@
     "tslint": "5.5.0",
     "tslint-react": "3.2.0",
     "typescript-formatter": "^7.2.0",
-    "url-parse": "1.1.9",
+    "url-parse": "1.5.8",
     "whatwg-fetch": "2.0.3",
     "zanata-js": "2.1.4"
   }
